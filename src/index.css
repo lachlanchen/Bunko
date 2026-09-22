@@ -1,0 +1,68 @@
+/* Design tokens. Paper by day, ink by night, one warm accent for the readings. */
+:root {
+  --paper: #faf7f1;
+  --paper-raised: #fffdf9;
+  --ink: #1c1b22;
+  --ink-soft: #55525f;
+  --ink-faint: #8b8794;
+  --line: #e6e0d6;
+  --indigo: #3a3878;
+  --indigo-soft: #ecebf6;
+  --coral: #c2553c;
+  --coral-soft: #fbeee9;
+  --radius: 16px;
+  --shadow: 0 1px 2px rgba(28, 27, 34, .05), 0 8px 24px rgba(28, 27, 34, .06);
+  --serif: 'Iowan Old Style', 'Palatino Linotype', 'Songti SC', 'Source Han Serif SC', 'Noto Serif CJK SC',
+    'Hiragino Mincho ProN', 'Yu Mincho', Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans', 'Noto Sans CJK SC',
+    Roboto, sans-serif;
+  color-scheme: light;
+}
+
+:root[data-theme='night'] {
+  --paper: #12111a;
+  --paper-raised: #1b1a25;
+  --ink: #ece8e1;
+  --ink-soft: #a7a2b0;
+  --ink-faint: #7b7686;
+  --line: #2b2938;
+  --indigo: #a6a3e8;
+  --indigo-soft: #232140;
+  --coral: #e79176;
+  --coral-soft: #33251f;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior-y: none;
+}
+
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; border: none; background: none; }
+a { color: var(--indigo); }
+
+/* Ruby is the point of the app, so it gets the care. */
+ruby { ruby-position: over; -webkit-ruby-position: before; }
+rt {
+  font-size: .52em;
+  font-family: var(--sans);
+  color: var(--coral);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: .02em;
+  user-select: none;
+}
+:root[data-theme='night'] rt { color: var(--coral); }

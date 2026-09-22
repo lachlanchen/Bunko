@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Bunko">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2f2d63"/>
+      <stop offset="1" stop-color="#17162c"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="114" fill="url(#tile)"/>
+  <rect x="34" y="34" width="444" height="444" rx="86" fill="none" stroke="#f4efe4" stroke-opacity="0.16" stroke-width="3"/>
+  <!-- the ruby annotation, the thing this app is for -->
+  <text x="256" y="139" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="58" font-weight="600" fill="#e07a5a" letter-spacing="4">ぶん</text>
+  <!-- 文: pocket library -->
+  <text x="256" y="396" text-anchor="middle" font-family="'Songti SC','Source Han Serif SC','Noto Serif CJK SC','Hiragino Mincho ProN',serif" font-size="268" fill="#f6f1e6">文</text>
+</svg>

@@ -3,9 +3,13 @@ dist/
 build/
 bundles/
 android/app/build/
+android/.gradle/
+android/app/release/
 ios/App/Pods/
+ios/App/build/
 .work/
 .runtime/
 release/
 *.log
 .env
+.DS_Store
