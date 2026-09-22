@@ -39,12 +39,14 @@ A safe first catalogue: the Chinese canon (道德經, 論語 in 四書集注, �
 ## 4. Architecture
 
 ```
-data/interlinear/<slug>/*.json      (existing pipeline output)
-        ↓  app/tools/build_catalogue.py
-cleared, compressed book bundles + a signed catalogue index
-        ↓  CDN (bunko.lazying.art)
+../ZhJpBook/data/interlinear/<slug>/*.json      (existing pipeline output, private working copy)
+        ↓  tools/build_bundles.py  (rights filter + compression)
+LinguaLeaf, the public GitHub shelf: per-book reader JSON + catalogue index
+        ↓  raw.githubusercontent / cdn.jsdelivr.net/gh/lachlanchen/LinguaLeaf@main/...
 app: download → IndexedDB → render (ruby, layouts) → companion
 ```
+
+**The data origin is GitHub, not a server of ours.** `lachlanchen/LinguaLeaf` is already public, already the artifact shelf for these books, already has a catalogue (`docs/library/CANONICAL-LIBRARY.json`, rows keyed by `book_id` with family, edition, category and mode) and already publishes a landing page at http://lachlan.lazying.art/LinguaLeaf/. The app reads only from there: no backend, no hosting bill, free CDN through jsDelivr, and the private working repository never has to be pushed. What LinguaLeaf still lacks is the reader payload: the pipeline must publish, per cleared book, a compressed reader JSON plus a small `reader-index.json` (id, titles, languages, mode, byte size, checksum). Large payloads go to a GitHub release rather than into the tree, which jsDelivr also serves. Everything the app ships must exist in that public repo; if a title is not cleared, it is not published there and the app never sees it.
 
 - **Shell:** React + TypeScript + Vite PWA in Capacitor, copied from `../L-And-N` (its `tools/`, `store/` layout, i18n pattern, Android flavors, iOS project, `tools/deploy-web.sh`).
 - **Rendering:** real `<ruby><rt>` markup so the platform handles line breaking; a CSS fallback for WebViews that break ruby; `ruby-position` above for Japanese, and pinyin above Chinese. `../EchoMind/EchoMind/echomind/enhancements/japanese_enhancement.py` and `cantonese_enhancement.py` show how readings and grammar roles were produced there; the reading data here is already in the JSON, so the app only renders it.
