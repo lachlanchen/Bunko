@@ -13,3 +13,4 @@ release/
 *.log
 .env
 .DS_Store
+android/local.properties

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Bunko</string>
+    <string name="title_activity_main">Bunko</string>
+    <string name="package_name">art.lazying.bunko</string>
+    <string name="custom_url_scheme">art.lazying.bunko</string>
+</resources>
