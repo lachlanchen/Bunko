@@ -2,7 +2,7 @@
 
 Bunko: Classics with Ruby (`art.lazying.bunko`, Play app `4972575539744983205`) was created as a **paid** app before the first upload. The United States price was verified as **USD 0.99** in the live console.
 
-Signed bundle **1 (1.0.0)** is uploaded and **available to internal testers**. The internal track is Active with the existing owner license-test and phone-test lists enabled. No emails or invitations were sent. The exact artifact hashes are in `store/artifacts/release-1.0.0.json`.
+Signed bundle **1 (1.0.0)** is uploaded and **available to internal testers**. The internal track is Active with the existing owner license-test and phone-test lists enabled. The opt-in link and installation instructions were emailed to the owner on 2026-09-23, and Gmail confirmed sending; the message was verified in Sent. Until the first review completes, Play displays the temporary name `art.lazying.bunko (unreviewed)`. The exact artifact hashes are in `store/artifacts/release-1.0.0.json`.
 
 Four store languages (en-US, zh-CN, zh-TW, ja-JP), the icon, feature graphic, five phone screenshots, two 7-inch and two 10-inch tablet screenshots are saved. Category: Books & Reference. Contact and website saved. Prior content declarations were retained.
 
