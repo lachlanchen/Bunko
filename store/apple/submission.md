@@ -12,3 +12,5 @@ Bunko: Classics with Ruby (`art.lazying.bunko`, Apple ID `6815137919`) version *
 - Validation: eight web tests, production build, archive/export, strict codesign and Apple server validation passed. The app includes a UserDefaults privacy manifest for local preferences (`CA92.1`) and reports no non-exempt encryption. Exact hashes are in `store/artifacts/release-1.0.0.json`.
 
 Public link after approval: https://apps.apple.com/app/id6815137919 . This is a submission record, not an approval or live-publication claim.
+
+App Store Connect also reports **1.0.1 build 2** (`5fcc84a8-d44c-4b0c-84ed-7bbf8563f02b`) as **VALID**. The Bunko Internal TestFlight group has access to all builds. The public 1.0.0 (1) version remains **Waiting for Review**; build 2 is a tester update and is not attached to that review submission.

@@ -9,3 +9,5 @@ Four store languages (en-US, zh-CN, zh-TW, ja-JP), the icon, feature graphic, fi
 Production **1.0.0 (1)** and 12 accompanying listing/declaration changes were **sent for review** on 2026-09-23. The publishing overview confirmed **Changes in review** and **13 changes sent for review**. Full rollout targets 172 eligible paid-app countries/regions. Managed publishing is off, so the app will publish after approval.
 
 Internal test opt-in: https://play.google.com/apps/internaltest/4701547714770281380 . Public listing after approval: https://play.google.com/store/apps/details?id=art.lazying.bunko . Do not claim the app is publicly available until Play reports production published.
+
+On 2026-09-23, Android **1.0.1 (2)** was published to the internal testing track. The live Play Console confirmed **Active**, latest release `1.0.1 (2) — Live library and clean covers`, and **Available to internal testers**. Its AAB SHA-256 is `138bd655335b0da7d9d2a2fa909eff2678936b01fc82b35da9e917d50eb67b66`. Production 1.0.0 (1) remains in review; the internal update did not change that review.
