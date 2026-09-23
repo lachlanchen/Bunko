@@ -10,5 +10,7 @@
     "app_id": "6815137919",
     "ipa_sha256": "9e823573c14b1891a4457d1ee9dac625b318fa20fcd460a0ea923e450d38d6a1",
     "validation": "archive, export, strict deep codesign, Apple server validation passed; Preferences privacy manifest present"
-  }
+  },
+  "source_commit": "c2bcb0c70ee61bd87871a35d87492557b9780e75",
+  "browser_validation": "Downloaded all 13 Sanshiro chapters, disabled network, reloaded reader, and opened final chapter offline with 275 ruby elements; passed."
 }

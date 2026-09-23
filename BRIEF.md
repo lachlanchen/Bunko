@@ -64,7 +64,7 @@ Paper-first: warm off-white page, one serif for the source text with a CJK face 
 1. Catalogue audit (`app/docs/catalogue.md`) and the bundle builder, with one book end to end.
 2. PWA reader: layouts, ruby, language switch, offline download, progress.
 3. Companion packs and the drawer.
-4. Android and iOS shells, the US$0.99 unlock, store assets and listings in four languages.
+4. Android and iOS shells, US$0.99 paid-up-front releases, store assets and listings in four languages.
 5. TestFlight and Play internal, then the formal release for review on both stores.
 
 ## 7. Publishing

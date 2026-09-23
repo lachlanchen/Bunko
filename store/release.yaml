@@ -5,17 +5,22 @@ app:
   build: 1
   price: USD 0.99 paid up front on both stores
   data_origin: https://github.com/lachlanchen/bunko-books
-  pwa: http://lachlan.lazying.art/Bunko/
+  pwa: https://lachlan.lazying.art/Bunko/
 
 channels:
   web:
     host: GitHub Pages, deployed by .github/workflows/pages.yml on every push to main
-    url: http://lachlan.lazying.art/Bunko/
+    url: https://lachlan.lazying.art/Bunko/
   google_play:
     app_id: "4972575539744983205"
     package: art.lazying.bunko
     created: 2026-09-23 as a PAID app, before any upload, because Play can never convert a published free app to paid
-    status: paid listing and declarations saved; first upload and submission in progress
+    status: IN_REVIEW
+    production: 1.0.0 (1), full rollout after approval
+    countries: 172
+    managed_publishing: false
+    internal_track: "4701547714770281380"
+    internal_status: available to internal testers
   apple:
     bundle_id: art.lazying.bunko
     app_id: "6815137919"
