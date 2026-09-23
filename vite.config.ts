@@ -32,8 +32,12 @@ export default defineConfig({
         // Book JSON is cached by the app in IndexedDB, not by the service
         // worker: the app needs to know what it holds, and a 10 MB chapter has
         // no business in the precache.
-        navigateFallbackDenylist: [/^\/api/],
-        runtimeCaching: [],
+        navigateFallbackDenylist: [/^\/api/, /\/admin(?:\/|$)/],
+        runtimeCaching: [{
+          urlPattern: /^https:\/\/(?:raw\.githubusercontent\.com|cdn\.jsdelivr\.net)\/.*\/books\/[^/]+\/cover-[a-f0-9]+\.(?:webp|png|jpg)$/,
+          handler: 'CacheFirst',
+          options: { cacheName: 'bunko-covers', expiration: { maxEntries: 200, maxAgeSeconds: 365 * 24 * 60 * 60 }, cacheableResponse: { statuses: [200] } },
+        }],
       },
     }),
   ],

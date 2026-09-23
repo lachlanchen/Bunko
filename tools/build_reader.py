@@ -243,6 +243,10 @@ def main() -> None:
         slugs = slugs[: args.limit]
     if not slugs:
         raise SystemExit("nothing to build: pass --slug or --all-cleared")
+    allowed = set(cleared_slugs(Path(args.catalogue)))
+    refused = set(slugs) - allowed
+    if refused:
+        raise SystemExit("Uncleared books refused: " + ", ".join(sorted(refused)))
 
     index_path = out_root / "reader-index.json"
     existing = {}
@@ -254,8 +258,7 @@ def main() -> None:
         try:
             row = build_book(slug, out_root)
         except SystemExit as error:
-            print(f"skip {slug}: {error}", file=sys.stderr)
-            continue
+            raise SystemExit(f"Publication stopped: {slug}: {error}") from error
         existing[slug] = row
         print(f"{slug:38s} {row['chapters']:4d} ch  {row['bytes']/1e6:7.1f} MB  {row['title'].get(row['primary'],'')[:30]}")
 
@@ -268,4 +271,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit("This legacy publisher is retired. Use tools/publish_library.py --out ../bunko-books; then validate with bunko-books/tools/catalogue.py --write.")

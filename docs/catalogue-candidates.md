@@ -1,3 +1,5 @@
+> Historical shortlist. Superseded by [the complete audit](catalogue.md) and [edition registry](library-editions.json), 2026-09-23.
+
 # Catalogue candidates
 
 First pass by the L & N session, 2026-09-22, over the 237 books that have interlinear data in `../ZhJpBook/data/interlinear/`. **This is a shortlist, not a clearance.** A title ships only after its row in `catalogue.md` records the verdict, the reason and the date, checked for the United States, the European Union and Japan. Tick a box here when that row exists.

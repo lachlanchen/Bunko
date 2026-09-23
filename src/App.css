@@ -209,3 +209,17 @@ input[type='range'] { width: 100%; accent-color: var(--indigo); }
   .sheet-backdrop { align-items: center; }
   .sheet { border-radius: 20px; }
 }
+
+/* Catalog artwork stays text-free, with the title set separately below. */
+.cover { width: 100%; }
+.cover-art { padding: 0; }
+.cover-art::after { display: none; }
+.cover img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+.library-tools { display: flex; align-items: center; gap: 7px; flex-shrink: 0; }
+.theme-select { max-width: 128px; padding: 10px 8px; border-radius: 12px; border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink); font: inherit; font-size: 12px; }
+.library-status { display: flex; align-items: center; justify-content: space-between; color: var(--ink-faint); font-size: 12px; margin: 0 0 15px; }
+.library-status button { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-soft); padding: 8px 0 8px 8px; }
+.spinning { animation: rotate 1s linear infinite; }
+@keyframes rotate { to { transform: rotate(360deg); } }
+@media (max-width: 420px) { .masthead { flex-wrap: wrap; } .library-tools { margin-left: auto; } }
+@media (prefers-reduced-motion: reduce) { .spinning { animation: none; } }

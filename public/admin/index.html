@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex"><meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src https://api.github.com https://raw.githubusercontent.com; img-src 'self' https://raw.githubusercontent.com data:; base-uri 'none'; form-action 'none'">
+  <title>Bunko · Library management</title><link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main>
+    <header><div><a href="../">← Bunko</a><h1>Library management</h1><p>Publish books and covers. Readers receive the catalog online, without an app update.</p></div><button id="theme" type="button">Light / dark</button></header>
+    <nav><a href="https://github.com/lachlanchen/bunko-books" target="_blank" rel="noopener noreferrer">Book repository ↗</a><a href="https://github.com/lachlanchen/bunko-books/actions/workflows/library.yml" target="_blank" rel="noopener noreferrer">Publishing runs ↗</a><a href="https://github.com/lachlanchen/Bunko/blob/main/docs/library-publishing.md" target="_blank" rel="noopener noreferrer">Publishing guide ↗</a></nav>
+    <section class="panel">
+      <h2>Add or update a book</h2>
+      <p>Choose a prepared book folder containing <code>meta.json</code>, <code>rights.json</code>, chapter files, and its clean cover. A checked pull request keeps the change reviewable. Merging publishes the catalog automatically.</p>
+      <label for="files">Book folder</label><input id="files" type="file" webkitdirectory multiple>
+      <p id="bundle" role="status">No folder selected.</p>
+      <details><summary>Connect GitHub to upload</summary>
+        <p>Use a fine-grained token restricted to <strong>bunko-books</strong>, with Contents and Pull requests read/write permissions. The token stays in this page's memory and is sent only to api.github.com. Reload or disconnect to clear it.</p>
+        <label for="token">GitHub token</label><input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
+        <div class="actions"><button id="connect" type="button">Connect</button><button id="disconnect" type="button">Disconnect</button></div>
+        <p id="identity" role="status">Not connected.</p>
+      </details>
+      <label class="check"><input id="confirm" type="checkbox"> I have reviewed the original work's rights, the final translation, chapter completeness, and text-free cover.</label>
+      <button id="publish" class="primary" type="button" disabled>Create publishing pull request</button>
+      <p id="progress" role="status" aria-live="polite"></p>
+    </section>
+    <section><div class="shelf-heading"><h2 id="count">Published library</h2><button id="refresh" type="button">Refresh</button></div><input id="search" type="search" placeholder="Search titles or authors" aria-label="Search library"><div id="library" class="grid"></div></section>
+    <footer>Book content is managed in GitHub. There is no shared administrator password and no public write endpoint.</footer>
+  </main><script src="./admin.js" type="module"></script>
+</body></html>

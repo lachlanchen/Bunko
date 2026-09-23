@@ -42,6 +42,8 @@ export interface UICopy {
   grammar: string
   grammarHint: string
   textSize: string
+  books: string
+  refreshLibrary: string
   theme: string
   themePaper: string
   themeNight: string
@@ -105,9 +107,11 @@ const en: UICopy = {
   grammar: 'Colour by grammar',
   grammarHint: 'Subject, predicate, object and the rest, as the generator labelled them.',
   textSize: 'Text size',
+  books: 'books',
+  refreshLibrary: 'Refresh library',
   theme: 'Theme',
-  themePaper: 'Paper',
-  themeNight: 'Night',
+  themePaper: 'Light',
+  themeNight: 'Dark',
   themeSystem: 'Match device',
   serif: 'Serif text',
   interfaceLanguage: 'Interface language',
@@ -171,6 +175,8 @@ const zhHans: UICopy = {
   grammar: '语法着色',
   grammarHint: '主语、谓语、宾语等，按生成时的标注。',
   textSize: '字号',
+  books: '本书',
+  refreshLibrary: '刷新书库',
   theme: '主题',
   themePaper: '纸色',
   themeNight: '夜间',
@@ -235,6 +241,8 @@ const zhHant: UICopy = {
   grammar: '語法著色',
   grammarHint: '主語、謂語、賓語等，按生成時的標註。',
   textSize: '字號',
+  books: '本書',
+  refreshLibrary: '重新整理書庫',
   theme: '主題',
   themePaper: '紙色',
   themeNight: '夜間',
@@ -301,6 +309,8 @@ const ja: UICopy = {
   grammar: '文法で色分け',
   grammarHint: '主語・述語・目的語など、生成時の注記に従います。',
   textSize: '文字の大きさ',
+  books: '冊',
+  refreshLibrary: 'ライブラリを更新',
   theme: 'テーマ',
   themePaper: '紙',
   themeNight: '夜',

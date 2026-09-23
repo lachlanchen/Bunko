@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { BookOpen, Check, Download, Library as LibraryIcon, Search, Trash2, X } from 'lucide-react'
+import { BookOpen, Check, Download, Settings, RefreshCw, Search, Trash2, X } from 'lucide-react'
 import type { BookMeta, BookRow, LangCode, Place, ReaderIndex, ReadingSettings } from './types'
 import { copies, languageName, uiLanguageNames, type UILanguage } from './i18n'
 import {
+  cachedBookCounts,
+  subscribeIndex,
   downloadBook,
   downloadedChapterCount,
   issueUrl,
@@ -22,6 +24,7 @@ import {
   saveUI,
 } from './lib/settings'
 import { Reader } from './components/Reader'
+import { Cover } from './components/Cover'
 
 type View = 'library' | 'book' | 'reader'
 type Filter = 'all' | 'chinese' | 'japanese' | 'world' | 'device'
@@ -35,25 +38,13 @@ function categoryOf(book: BookRow): Filter {
   return 'world'
 }
 
-/** A cover drawn from the title, so the repository carries no images. */
-function Cover({ book, ui }: { book: BookRow; ui: UILanguage }) {
-  const primary = book.title[book.primary] ?? Object.values(book.title)[0] ?? book.id
-  const chars = [...primary].filter((c) => c.trim()).slice(0, 4)
-  const cjk = /[㐀-鿿぀-ヿ]/.test(primary)
-  const hue = [...book.id].reduce((sum, c) => sum + c.charCodeAt(0), 0) % 360
-  return (
-    <div className="cover" style={{ '--hue': hue } as React.CSSProperties} aria-hidden="true">
-      <span className={cjk ? 'cover-cjk' : 'cover-latin'}>{cjk ? chars.join('') : primary.slice(0, 18)}</span>
-      <small>{languageName(book.primary, ui)}</small>
-    </div>
-  )
-}
-
 export default function App() {
   const [ui, setUI] = useState<UILanguage>('en')
   const [settings, setSettings] = useState<ReadingSettings>(DEFAULT_SETTINGS)
   const [index, setIndex] = useState<ReaderIndex | null>(null)
   const [indexError, setIndexError] = useState('')
+  const [refreshing, setRefreshing] = useState(false)
+  const [bookError, setBookError] = useState('')
   const [view, setView] = useState<View>('library')
   const [filter, setFilter] = useState<Filter>('all')
   const [query, setQuery] = useState('')
@@ -76,18 +67,35 @@ export default function App() {
       setSettings(saved)
       setPlaces(savedPlaces)
     })()
+    const unsubscribe = subscribeIndex(setIndex)
     loadIndex()
       .then(setIndex)
       .catch((error: unknown) => setIndexError(error instanceof Error ? error.message : String(error)))
     void storageEstimate().then(setStorage)
+    const refresh = () => {
+      if (document.visibilityState !== 'hidden') void loadIndex({ refresh: true }).catch(() => {})
+    }
+    window.addEventListener('online', refresh)
+    document.addEventListener('visibilitychange', refresh)
+    return () => {
+      unsubscribe()
+      window.removeEventListener('online', refresh)
+      document.removeEventListener('visibilitychange', refresh)
+    }
   }, [])
 
   useEffect(() => {
-    const root = document.documentElement
-    const dark =
-      settings.theme === 'night' ||
-      (settings.theme === 'system' && window.matchMedia?.('(prefers-color-scheme: dark)').matches)
-    root.dataset.theme = dark ? 'night' : 'paper'
+    if (index) void cachedBookCounts(index.books).then(setOnDevice)
+  }, [index])
+
+  useEffect(() => {
+    const media = window.matchMedia?.('(prefers-color-scheme: dark)')
+    const apply = () => {
+      document.documentElement.dataset.theme = settings.theme === 'night' || (settings.theme === 'system' && media?.matches) ? 'night' : 'paper'
+    }
+    apply()
+    media?.addEventListener('change', apply)
+    return () => media?.removeEventListener('change', apply)
   }, [settings.theme])
 
   const update = useCallback((patch: Partial<ReadingSettings>) => {
@@ -114,7 +122,9 @@ export default function App() {
     async (book: BookRow) => {
       setView('book')
       setMeta(null)
-      const loaded = await loadMeta(book.id)
+      setBookError('')
+      let loaded: BookMeta
+      try { loaded = await loadMeta(book.id) } catch { setBookError(copy.offlineError); return }
       setMeta(loaded)
       const count = await downloadedChapterCount(loaded)
       setOnDevice((current) => ({ ...current, [loaded.id]: count }))
@@ -125,7 +135,7 @@ export default function App() {
         return next
       })
     },
-    [ui],
+    [ui, copy.offlineError],
   )
 
   const startReading = useCallback(
@@ -143,6 +153,7 @@ export default function App() {
     downloadRef.current?.abort()
     const controller = new AbortController()
     downloadRef.current = controller
+    setBookError('')
     setDownloading({ id: meta.id, done: 0, total: meta.chapters.length })
     try {
       await downloadBook(
@@ -152,10 +163,14 @@ export default function App() {
       )
       setOnDevice((current) => ({ ...current, [meta.id]: meta.chapters.length }))
       void storageEstimate().then(setStorage)
+    } catch {
+      if (!controller.signal.aborted) setBookError(copy.offlineError)
+      const count = await downloadedChapterCount(meta)
+      setOnDevice((current) => ({ ...current, [meta.id]: count }))
     } finally {
       setDownloading(null)
     }
-  }, [meta])
+  }, [meta, copy.offlineError])
 
   const handlePlace = useCallback(
     (paragraph: number) => {
@@ -244,11 +259,12 @@ export default function App() {
         <button className="link-back" type="button" onClick={() => setView('library')}>
           ← {copy.library}
         </button>
-        {!meta && <p className="notice">{copy.loading}…</p>}
+        {!meta && <p className={`notice${bookError ? ' error' : ''}`}>{bookError || `${copy.loading}…`}</p>}
+        {meta && bookError && <p className="notice error" role="status">{bookError}</p>}
         {meta && row && (
           <>
             <section className="book-hero">
-              <Cover book={row} ui={ui} />
+              <Cover book={row} />
               <div>
                 <h1>{meta.titleText[meta.primary] ?? meta.id}</h1>
                 <p className="book-alt">
@@ -335,9 +351,16 @@ export default function App() {
           <h1>{copy.appName}</h1>
           <p>{copy.tagline}</p>
         </div>
-        <button type="button" className="icon" onClick={() => setShowSettings(true)} aria-label={copy.settings}>
-          <LibraryIcon size={18} />
-        </button>
+        <div className="library-tools">
+          <select className="theme-select" aria-label={copy.theme} value={settings.theme} onChange={(event) => update({ theme: event.target.value as ReadingSettings['theme'] })}>
+            <option value="paper">☀ {copy.themePaper}</option>
+            <option value="night">☾ {copy.themeNight}</option>
+            <option value="system">◐ {copy.themeSystem}</option>
+          </select>
+          <button type="button" className="icon" onClick={() => setShowSettings(true)} aria-label={copy.settings}>
+            <Settings size={18} />
+          </button>
+        </div>
       </header>
 
       <div className="search">
@@ -379,10 +402,17 @@ export default function App() {
       )}
       {!index && !indexError && <p className="notice">{copy.loading}…</p>}
 
+      {index && <div className="library-status">
+        <span>{index.count} {copy.books}</span>
+        <button type="button" disabled={refreshing} onClick={async () => {
+          setRefreshing(true)
+          try { setIndex(await loadIndex({ refresh: true })) } finally { setRefreshing(false) }
+        }}><RefreshCw size={14} className={refreshing ? 'spinning' : ''} /> {copy.refreshLibrary}</button>
+      </div>}
       <section className="grid">
         {books.map((book) => (
           <button key={book.id} type="button" className="card" onClick={() => void openBook(book)}>
-            <Cover book={book} ui={ui} />
+            <Cover book={book} />
             <strong>{book.title[book.primary] ?? book.id}</strong>
             <small>{book.author}</small>
             <em>

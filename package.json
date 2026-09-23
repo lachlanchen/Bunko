@@ -1,7 +1,7 @@
 {
   "name": "bunko",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Public-domain classics in English, Chinese and Japanese, with a reading above every character",
   "scripts": {

@@ -18,6 +18,9 @@ export interface BookRow {
   paras: number
   bytes: number
   sha256: string
+  cat?: 'chinese' | 'japanese' | 'world'
+  cover?: string
+  edition?: 'multilingual' | 'original-only'
 }
 
 export interface ReaderIndex {
@@ -33,6 +36,7 @@ export interface ChapterRow {
   bytes: number
   paras: number
   title: Partial<Record<LangCode, string>>
+  sha256?: string
 }
 
 export interface BookMeta {

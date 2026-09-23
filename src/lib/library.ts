@@ -6,7 +6,7 @@
  * once, stored in IndexedDB, and read from there forever after, which is what
  * makes the reader work on a plane.
  */
-import type { BookMeta, Chapter, ReaderIndex } from '../types'
+import type { BookMeta, BookRow, Chapter, ReaderIndex } from '../types'
 
 const REPO = 'lachlanchen/bunko-books'
 const BRANCH = 'main'
@@ -52,6 +52,32 @@ function openDb(): Promise<IDBDatabase | null> {
 }
 
 const memory = new Map<string, unknown>()
+const indexListeners = new Set<(index: ReaderIndex) => void>()
+
+export function subscribeIndex(listener: (index: ReaderIndex) => void): () => void {
+  indexListeners.add(listener)
+  return () => { indexListeners.delete(listener) }
+}
+
+export function coverUrls(book: BookRow): string[] {
+  // Catalog data cannot point the reader at arbitrary hosts or executable SVGs.
+  if (!book.cover || !/^books\/[a-z0-9-]+\/cover-[a-f0-9]+\.(webp|png|jpg)$/.test(book.cover)) return []
+  return ORIGINS.map((origin) => `${origin}/${book.cover}`)
+}
+
+function validIndex(value: ReaderIndex): ReaderIndex {
+  if (value.schema !== 1 || !Array.isArray(value.books) || value.count !== value.books.length ||
+      value.books.some((book) => !/^[a-z0-9-]+$/.test(book.id) || !Array.isArray(book.langs) || !book.langs.includes(book.primary))) {
+    throw new Error('Unsupported or incomplete library catalog')
+  }
+  return value
+}
+
+async function storeIndex(index: ReaderIndex): Promise<void> {
+  validIndex(index)
+  await cachePut('index', index)
+  for (const listener of indexListeners) listener(index)
+}
 
 async function cacheGet<T>(key: string): Promise<T | null> {
   if (memory.has(key)) return memory.get(key) as T
@@ -106,6 +132,7 @@ async function cacheDeletePrefix(prefix: string): Promise<void> {
       }
       transaction.oncomplete = () => resolve()
       transaction.onerror = () => resolve()
+      transaction.onabort = () => resolve()
     } catch {
       resolve()
     }
@@ -115,13 +142,21 @@ async function cacheDeletePrefix(prefix: string): Promise<void> {
 async function fetchJson<T>(path: string, signal?: AbortSignal): Promise<T> {
   let lastError: unknown = new Error('no origin tried')
   for (const origin of ORIGINS) {
+    const controller = new AbortController()
+    const abort = () => controller.abort()
+    if (signal?.aborted) throw new Error('Download cancelled')
+    signal?.addEventListener('abort', abort, { once: true })
+    const timer = setTimeout(abort, 15000)
     try {
-      const response = await fetch(`${origin}/${path}`, { signal, cache: 'default' })
+      const response = await fetch(`${origin}/${path}`, { signal: controller.signal, cache: path === 'reader-index.json' || path.endsWith('/meta.json') ? 'no-cache' : 'default' })
       if (!response.ok) throw new Error(`${response.status} ${response.statusText}`)
       return (await response.json()) as T
     } catch (error) {
       if (signal?.aborted) throw error
       lastError = error
+    } finally {
+      clearTimeout(timer)
+      signal?.removeEventListener('abort', abort)
     }
   }
   throw lastError instanceof Error ? lastError : new Error(String(lastError))
@@ -136,7 +171,7 @@ export async function loadIndex(options: { refresh?: boolean } = {}): Promise<Re
   }
   try {
     const fresh = await fetchJson<ReaderIndex>('reader-index.json')
-    await cachePut('index', fresh)
+    await storeIndex(fresh)
     return fresh
   } catch (error) {
     if (cached) return cached
@@ -147,19 +182,40 @@ export async function loadIndex(options: { refresh?: boolean } = {}): Promise<Re
 async function refreshIndexInBackground(): Promise<void> {
   try {
     const fresh = await fetchJson<ReaderIndex>('reader-index.json')
-    await cachePut('index', fresh)
+    await storeIndex(fresh)
   } catch {
     // Offline is normal here; the cached catalogue stays valid.
   }
 }
 
 export async function loadMeta(id: string, signal?: AbortSignal): Promise<BookMeta> {
-  const key = `meta:${id}`
+  const index = await cacheGet<ReaderIndex>('index')
+  const row = index?.books.find((book) => book.id === id)
+  const key = `meta:${id}:${row?.sha256 ?? 'legacy'}`
   const cached = await cacheGet<BookMeta>(key)
   if (cached) return cached
-  const meta = await fetchJson<BookMeta>(`books/${id}/meta.json`, signal)
-  await cachePut(key, meta)
-  return meta
+  // Retain the last working edition when an updated catalog arrives before its
+  // metadata, or when a 1.0.0 installation is upgraded while offline.
+  const previous = await cacheGet<BookMeta>(`meta:${id}`)
+  try {
+    const meta = await fetchJson<BookMeta>(`books/${id}/meta.json`, signal)
+    await cachePut(key, meta)
+    await cachePut(`meta:${id}`, meta)
+    return meta
+  } catch (error) {
+    if (previous && !signal?.aborted) return previous
+    throw error
+  }
+}
+
+/** Restore the downloaded shelf without fetching metadata for every book. */
+export async function cachedBookCounts(books: BookRow[]): Promise<Record<string, number>> {
+  const counts: Record<string, number> = {}
+  for (const book of books) {
+    const meta = await cacheGet<BookMeta>(`meta:${book.id}:${book.sha256}`) ?? await cacheGet<BookMeta>(`meta:${book.id}`)
+    if (meta) counts[book.id] = await downloadedChapterCount(meta)
+  }
+  return counts
 }
 
 export async function loadChapter(id: string, file: string, signal?: AbortSignal): Promise<Chapter> {
@@ -186,7 +242,7 @@ export async function downloadBook(
   let done = 0
   onProgress(0, meta.chapters.length)
   for (const chapter of meta.chapters) {
-    if (signal?.aborted) return
+    if (signal?.aborted) throw new Error('Download cancelled')
     await loadChapter(id, chapter.file, signal)
     done += 1
     onProgress(done, meta.chapters.length)
@@ -201,7 +257,20 @@ export async function downloadedChapterCount(meta: BookMeta): Promise<number> {
 /** Give the space back. The book stays in the catalogue and can be fetched again. */
 export async function removeBook(id: string): Promise<void> {
   await cacheDeletePrefix(`ch:${id}:`)
-  await cacheDeletePrefix(`meta:${id}`)
+  await cacheDeletePrefix(`meta:${id}:`)
+  // The original 1.0.0 reader used this exact legacy key. Including a trailing
+  // separator above avoids deleting another book whose id shares this prefix.
+  memory.delete(`meta:${id}`)
+  const db = await openDb()
+  if (db) {
+    await new Promise<void>((resolve) => {
+      const tx = db.transaction(STORE, 'readwrite')
+      tx.objectStore(STORE).delete(`meta:${id}`)
+      tx.oncomplete = () => resolve()
+      tx.onerror = () => resolve()
+      tx.onabort = () => resolve()
+    })
+  }
 }
 
 export async function storageEstimate(): Promise<{ usage: number; quota: number } | null> {
