@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "build": 1,
+  "android": {
+    "aab_sha256": "40ce1e1b599683c7751366010f395e33b49aa69a5ed605a67801c77f330b4ab1",
+    "apk_sha256": "16c9b71d7122258d908eb2f01c1e04b2b0a2e7c52e7a47add6f4149972e7c36e",
+    "validation": "npm lint, eight tests and build passed; Gradle testReleaseUnitTest and lintRelease passed"
+  },
+  "apple": {
+    "app_id": "6815137919",
+    "ipa_sha256": "9e823573c14b1891a4457d1ee9dac625b318fa20fcd460a0ea923e450d38d6a1",
+    "validation": "archive, export, strict deep codesign, Apple server validation passed; Preferences privacy manifest present"
+  }
+}

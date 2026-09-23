@@ -59,7 +59,7 @@ export function Reader({
     () => settings.langs.filter((lang) => meta.langs.includes(lang)),
     [settings.langs, meta.langs],
   )
-  const shown: LangCode[] = langs.length ? langs : [meta.primary]
+  const shown: LangCode[] = settings.layout === 'source' ? [meta.primary] : langs.length ? langs : [meta.primary]
 
   useEffect(() => {
     if (!row) return

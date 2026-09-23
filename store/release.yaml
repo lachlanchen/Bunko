@@ -15,17 +15,18 @@ channels:
     app_id: "4972575539744983205"
     package: art.lazying.bunko
     created: 2026-09-23 as a PAID app, before any upload, because Play can never convert a published free app to paid
-    status: created; pricing, listing, declarations and first upload pending
+    status: paid listing and declarations saved; first upload and submission in progress
   apple:
     bundle_id: art.lazying.bunko
-    status: not created yet
+    app_id: "6815137919"
+    status: created; four-language metadata and pricing saved; build upload in progress
 
 android:
   version_code: 1
   version_name: 1.0.0
   keystore: ~/.config/bunko/android/upload-keystore.jks (alias bunko-upload, mode 600)
-  aab_sha256: 931ad819a1dcb91efc405371835829e3f5783618837cd73ed2b664edd34c8df9
-  apk_sha256: dd4f930896b466b876536000cf5bca5dbd770212ffe06e210cbec0d043eab842
+  aab_sha256: 40ce1e1b599683c7751366010f395e33b49aa69a5ed605a67801c77f330b4ab1
+  apk_sha256: 16c9b71d7122258d908eb2f01c1e04b2b0a2e7c52e7a47add6f4149972e7c36e
 
 catalogue:
   cleared: 56

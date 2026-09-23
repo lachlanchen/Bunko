@@ -1,0 +1,30 @@
+{
+  "en-US": {
+    "name": "Bunko: Classics with Ruby",
+    "subtitle": "Pinyin & furigana for classics",
+    "short": "Read classics in English, Chinese and Japanese with pinyin and furigana.",
+    "keywords": "books,reading,classics,Chinese,Japanese,English,pinyin,furigana,ruby,offline,literature",
+    "description": "Bunko brings public-domain classics to your pocket, with Chinese pinyin and Japanese furigana above the text.\n\nExplore 56 works from the Chinese canon, Japanese literature and world classics. Choose the original text, translations alongside it, or several languages together. Switch between interlinear and paragraph layouts, hide the readings, highlight grammar, adjust text size, and choose paper or night mode.\n\nDownload a book for offline reading. Your reading position and preferences stay on your device. No account, advertising, analytics, subscription or in-app purchases. One purchase includes the whole available library.\n\nThe source texts are in the public domain. Chinese, Japanese and English study renderings are AI-generated adaptations by LazyingArt; they may contain errors and are not scholarly editions. Books download from our public GitHub repository. Request a public-domain title through the in-app link to GitHub.\n\nInterface languages: English, Simplified Chinese, Traditional Chinese and Japanese."
+  },
+  "zh-Hans": {
+    "name": "Bunko 文库：经典与注音",
+    "subtitle": "中英日经典，拼音与假名伴读",
+    "short": "阅读中英日经典，随文查看拼音与假名，下载后离线阅读。",
+    "keywords": "读书,经典,文库,中文,日语,英语,拼音,假名,注音,文学,离线,古文",
+    "description": "Bunko 将公版经典装进口袋，在中文文字上方显示拼音，在日文汉字上方显示假名。\n\n书库收录 56 部中国典籍、日本文学与世界名著。可以只看原文，也可以搭配译文或同时显示多种语言。切换逐句对照与逐段排列，开关注音和语法配色，调整字号，选择纸张或夜间主题。\n\n下载整本书后即可离线阅读。阅读位置和偏好保存在设备上。无需账户，无广告、无分析追踪、无订阅和应用内购买。一次购买即可阅读书库内所有作品。\n\n原文属于公有领域。供学习参考的现代汉语、日语和英语译写由 LazyingArt 使用 AI 生成，可能存在错误，不属于学术校勘本。书籍从公开的 GitHub 仓库下载；应用内链接可前往 GitHub 提议希望加入的公版作品。\n\n界面支持英语、简体中文、繁体中文和日语。"
+  },
+  "zh-Hant": {
+    "name": "Bunko 文庫：經典與注音",
+    "subtitle": "中英日經典，拼音與假名伴讀",
+    "short": "閱讀中英日經典，隨文查看拼音與假名，下載後離線閱讀。",
+    "keywords": "讀書,經典,文庫,中文,日語,英語,拼音,假名,注音,文學,離線,古文",
+    "description": "Bunko 將公版經典裝進口袋，在中文文字上方顯示拼音，在日文漢字上方顯示假名。\n\n書庫收錄 56 部中國典籍、日本文學與世界名著。可以只看原文，也可以搭配譯文或同時顯示多種語言。切換逐句對照與逐段排列，開關注音和語法配色，調整字級，選擇紙張或夜間主題。\n\n下載整本書後即可離線閱讀。閱讀位置和偏好保存在裝置上。無需帳戶，無廣告、無分析追蹤、無訂閱和 App 內購買。一次購買即可閱讀書庫內所有作品。\n\n原文屬於公有領域。供學習參考的現代漢語、日語和英語譯寫由 LazyingArt 使用 AI 生成，可能存在錯誤，不屬於學術校勘本。書籍從公開的 GitHub 儲存庫下載；App 內連結可前往 GitHub 提議希望加入的公版作品。\n\n介面支援英語、簡體中文、繁體中文和日語。"
+  },
+  "ja": {
+    "name": "Bunko 文庫：ルビで読む古典",
+    "subtitle": "ふりがなとピンインで、原文を身近に",
+    "short": "日本・中国・世界の古典を、ふりがなとピンイン付きで。ダウンロードしてオフラインでも読めます。",
+    "keywords": "読書,古典,文庫,日本語,中国語,英語,ふりがな,ピンイン,ルビ,文学,オフライン",
+    "description": "Bunko は、パブリックドメインの古典を持ち歩ける読書アプリです。日本語の漢字にはふりがな、中国語にはピンインを表示します。\n\n中国の古典、日本文学、世界文学から 56 作品を収録。原文だけ、訳文と一緒に、複数の言語を並べて読むなど、表示する言語を選べます。文ごと・段落ごとの配置、ルビの表示、文法の色分け、文字サイズ、紙色・ナイトモードを切り替えられます。\n\n本をダウンロードすればオフラインで読めます。読書位置と設定は端末内に保存されます。アカウント、広告、アクセス解析、定期購読、アプリ内課金はありません。一度の購入で公開中の全作品を読めます。\n\n原文はパブリックドメインです。学習用の現代中国語・日本語・英語の訳文は LazyingArt が AI で生成したもので、誤りを含む可能性があり、学術版ではありません。本は公開 GitHub リポジトリからダウンロードします。追加してほしい公版作品は、アプリ内リンクから GitHub でリクエストできます。\n\n表示言語は英語、簡体字中国語、繁体字中国語、日本語に対応しています。"
+  }
+}
