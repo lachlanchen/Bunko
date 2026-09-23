@@ -11,10 +11,18 @@ import type { BookMeta, Chapter, ReaderIndex } from '../types'
 const REPO = 'lachlanchen/bunko-books'
 const BRANCH = 'main'
 
-/** jsDelivr first: it is CORS-open, globally cached and free. raw is the fallback. */
+/**
+ * Where the books come from, in the order they are tried.
+ *
+ * raw.githubusercontent leads because it serves the current commit within
+ * seconds, while jsDelivr caches a branch reference for hours: publishing a
+ * correction and watching readers keep the old file is worse than the extra
+ * bandwidth. jsDelivr stays as the fallback, which also covers the networks
+ * where raw.githubusercontent is unreachable.
+ */
 const ORIGINS = [
-  `https://cdn.jsdelivr.net/gh/${REPO}@${BRANCH}`,
   `https://raw.githubusercontent.com/${REPO}/${BRANCH}`,
+  `https://cdn.jsdelivr.net/gh/${REPO}@${BRANCH}`,
 ]
 
 const DB_NAME = 'bunko'

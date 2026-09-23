@@ -41,12 +41,47 @@ ROLES = {
     "adverbial": "d", "complement": "c", "topic": "t", "function": "f",
 }
 
-# Which language keys each mode carries, and which one is the source text.
+# Which language keys each mode carries, and which one the pipeline treated as
+# the source. `trilingual_standard` always carries `source_en`, but a Japanese or
+# Chinese original also carries `source_ja` or `source_zh`, and for those books
+# English is the translation, not the text. Which line leads is decided per book.
 MODES = {
     "trilingual_standard": {"langs": ["en", "zh", "ja"], "primary": "en"},
     "quadrilingual_wenyan_main": {"langs": ["wenyan", "zh_modern", "ja_modern", "en"], "primary": "wenyan"},
     "wenyan_ja_zh": {"langs": ["wenyan", "ja", "zh"], "primary": "wenyan"},
 }
+
+# The section each slug sits under in docs/catalogue-candidates.md decides which
+# language a reader should meet first: the one the author wrote in.
+ORIGIN_BY_SECTION = {"Chinese canon": "zh", "Japanese classics": "ja", "World literature": "en"}
+
+
+def origin_language(slug: str, unit: dict, default: str) -> str:
+    """The language this book was written in, if the data actually carries it."""
+    section = _sections().get(slug)
+    wanted = ORIGIN_BY_SECTION.get(section or "", default)
+    if wanted != default and f"source_{wanted}" in unit and unit.get(wanted):
+        return wanted
+    return default
+
+
+_SECTION_CACHE: dict[str, str] = {}
+
+
+def _sections() -> dict[str, str]:
+    if _SECTION_CACHE:
+        return _SECTION_CACHE
+    path = Path(__file__).resolve().parent.parent / "docs" / "catalogue-candidates.md"
+    if not path.exists():
+        return _SECTION_CACHE
+    section = ""
+    for line in path.read_text().splitlines():
+        if line.startswith("## "):
+            section = line[3:].split(" (")[0].strip()
+        match = re.match(r"- \[[ x]\] `([^`]+)`", line)
+        if match:
+            _SECTION_CACHE[match.group(1)] = section
+    return _SECTION_CACHE
 
 
 def compact_token(token: dict) -> object:
@@ -85,6 +120,14 @@ def build_book(slug: str, out_root: Path) -> dict:
         raise SystemExit(f"{slug}: unknown mode {mode!r}")
     langs = MODES[mode]["langs"]
     primary = MODES[mode]["primary"]
+    first_unit = next(
+        (unit for chapter in book.get("chapters", []) for paragraph in chapter.get("paragraphs", [])
+         for unit in (paragraph.get("units") or [])),
+        {},
+    )
+    primary = origin_language(slug, first_unit, primary)
+    # the original leads, the rest follow in their usual order
+    langs = [primary] + [lang for lang in langs if lang != primary]
     source_key = f"source_{primary}"
 
     book_dir = out_root / "books" / slug
