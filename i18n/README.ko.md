@@ -10,7 +10,7 @@
 
 Bunko는 공개 도메인 중국어·일본어·영어 고전을 읽는 앱입니다. 표시 언어와 화면 구성을 고르고, 글자 위의 병음이나 후리가나를 보며, 다운로드한 장을 오프라인에서 읽을 수 있습니다. 인터페이스는 영어, 중국어 간체·번체, 일본어를 지원합니다. 책 목록은 별도 [bunko-books](https://github.com/lachlanchen/bunko-books)에 있으며 이 저장소에는 책 본문을 넣지 않습니다.
 
-[![Bunko 리더 화면](../store/assets/play-phone-01.png)](../store/assets/play-phone-01.png)
+<p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko 리더 화면" width="300"></a></p>
 
 ## 저장소 구성
 

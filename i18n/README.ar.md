@@ -10,7 +10,7 @@
 
 Bunko قارئ لكلاسيكيات الملك العام بالصينية واليابانية والإنجليزية. اختر اللغات والتخطيط الظاهرين، واقرأ البينيين أو الفوريغانا فوق الحروف، واحتفظ بالفصول المحمّلة للقراءة دون اتصال. تتوفر الواجهة بالإنجليزية والصينية المبسطة والتقليدية واليابانية. يوجد فهرس الكتب في مستودع [bunko-books](https://github.com/lachlanchen/bunko-books) المنفصل؛ ولا يحتوي هذا المستودع على نصوص الكتب.
 
-[![صورة قارئ Bunko](../store/assets/play-phone-01.png)](../store/assets/play-phone-01.png)
+<p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="صورة قارئ Bunko" width="300"></a></p>
 
 ## محتويات المستودع
 

@@ -10,7 +10,7 @@
 
 Bunko ist ein Reader für gemeinfreie Klassiker auf Chinesisch, Japanisch und Englisch. Wähle sichtbare Sprachen und Layout, lies Pinyin oder Furigana über den Zeichen und öffne heruntergeladene Kapitel offline. Die Oberfläche gibt es auf Englisch, vereinfachtem und traditionellem Chinesisch sowie Japanisch. Der Katalog liegt im separaten Repository [bunko-books](https://github.com/lachlanchen/bunko-books); dieser App-Code enthält keine Buchtexte.
 
-[![Bunko-Reader-Bildschirm](../store/assets/play-phone-01.png)](../store/assets/play-phone-01.png)
+<p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko-Reader-Bildschirm" width="300"></a></p>
 
 ## In diesem Repository
 

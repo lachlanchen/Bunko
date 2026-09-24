@@ -10,7 +10,7 @@
 
 Bunko はパブリックドメインの中国語・日本語・英語の古典を読むアプリです。表示言語とレイアウトを選び、漢字の上のピンインやふりがなを読み、保存した章をオフラインで開けます。UI は英語・簡体字中国語・繁体字中国語・日本語に対応しています。書籍カタログは別の [bunko-books](https://github.com/lachlanchen/bunko-books) にあり、このリポジトリには書籍本文を置きません。
 
-[![Bunko リーダーの画面](../store/assets/play-phone-01.png)](../store/assets/play-phone-01.png)
+<p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko リーダーの画面" width="300"></a></p>
 
 ## リポジトリの内容
 

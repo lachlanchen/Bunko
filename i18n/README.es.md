@@ -10,7 +10,7 @@
 
 Bunko es un lector de clásicos de dominio público en chino, japonés e inglés. Elige los idiomas y el diseño, lee pinyin o furigana sobre los caracteres y conserva los capítulos descargados para leer sin conexión. La interfaz está en inglés, chino simplificado, chino tradicional y japonés. El catálogo está en [bunko-books](https://github.com/lachlanchen/bunko-books); este repositorio no almacena los textos de los libros.
 
-[![Captura del lector Bunko](../store/assets/play-phone-01.png)](../store/assets/play-phone-01.png)
+<p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Captura del lector Bunko" width="300"></a></p>
 
 ## Contenido del repositorio
 

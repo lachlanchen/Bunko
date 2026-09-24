@@ -10,7 +10,7 @@
 
 Bunko 是閱讀中文、日文與英文公版經典的應用程式。讀者可選擇顯示語言與排版，在漢字上方查看拼音或假名，並離線閱讀已下載的章節。介面支援英語、簡體中文、繁體中文與日語。書目存放在獨立的 [bunko-books](https://github.com/lachlanchen/bunko-books) 儲存庫；此應用程式儲存庫不收錄書籍正文。
 
-[![Bunko 閱讀器截圖](../store/assets/play-phone-01.png)](../store/assets/play-phone-01.png)
+<p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko 閱讀器截圖" width="300"></a></p>
 
 ## 儲存庫內容
 
