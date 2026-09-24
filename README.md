@@ -1,14 +1,28 @@
+[English](README.md) · [العربية](i18n/README.ar.md) · [Español](i18n/README.es.md) · [Français](i18n/README.fr.md) · [日本語](i18n/README.ja.md) · [한국어](i18n/README.ko.md) · [Tiếng Việt](i18n/README.vi.md) · [中文 (简体)](i18n/README.zh-Hans.md) · [中文（繁體）](i18n/README.zh-Hant.md) · [Deutsch](i18n/README.de.md) · [Русский](i18n/README.ru.md)
+
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+
 # Bunko 文庫
 
-Read public-domain classics in Chinese, Japanese and English with pinyin and furigana, multilingual layouts, and downloads for offline reading.
+*A quiet library for classics in three languages, with readings above the text.*
 
-[Open the reader](https://lachlan.lazying.art/Bunko/) · [Privacy](https://lachlan.lazying.art/Bunko/privacy.html) · [Support](https://lachlan.lazying.art/Bunko/support.html)
+[![Reader](https://img.shields.io/badge/Open-Bunko-303F68?style=for-the-badge)](https://lachlan.lazying.art/Bunko/) [![Sponsor](https://img.shields.io/badge/GitHub-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors)](https://github.com/sponsors/lachlanchen)
 
-Bunko uses React, TypeScript and Capacitor. The 56 cleared books are downloaded from the separate [bunko-books](https://github.com/lachlanchen/bunko-books) repository; no book payloads are stored in this repository. The rights gate is [docs/catalogue.md](docs/catalogue.md). Study renderings are AI-generated and may contain errors.
+Bunko is a reader for public-domain Chinese, Japanese and English classics. Choose the visible languages and layout, read pinyin or furigana above characters, and keep downloaded chapters available offline. The interface offers English, Simplified Chinese, Traditional Chinese and Japanese. The book catalogue lives in the separate [bunko-books](https://github.com/lachlanchen/bunko-books) repository; this app repository contains no book payloads.
 
-The interface supports English, Simplified Chinese, Traditional Chinese and Japanese. Readers can select displayed languages, switch between source-only, interlinear and paragraph layouts, control ruby and grammar colors, and choose text size and theme. Reading position and preferences stay on the device.
+[![Bunko reader screenshot](store/assets/play-phone-01.png)](store/assets/play-phone-01.png)
 
-Store release 1.0.0 is US$0.99 paid up front, with no subscription or in-app purchase. Apple is waiting for review and Google Play production is in review. Both will publish after approval. [Current release state](store/release.yaml) · [Publishing handoff](store/operator-handoff.md).
+## Inside the repository
+
+| Path | Description |
+| --- | --- |
+| [`src/`](src/) | Reader, ruby layout, offline cache and theme controls |
+| [`docs/catalogue.md`](docs/catalogue.md) | Rights audit and publishing guide |
+| [`store/`](store/) | Store status and operator handoff |
+
+## Run the reader
+
+Install dependencies, run checks, then open the Vite development server. Native packages use Capacitor and private signing material outside Git.
 
 ```sh
 npm ci
@@ -16,4 +30,33 @@ npm run check
 npm run dev
 ```
 
-See [BRIEF.md](BRIEF.md) for the product contract and planned companion features. Native builds use private signing material outside the repository. [L & N](https://github.com/lachlanchen/L-And-N) supplied the publishing infrastructure.
+## Library and release
+
+The live catalogue has 150 cleared editions. New book bundles publish through GitHub without an app build; changes to reader code still need a new web or native release. The first paid store release is under review. Check the linked release record for its current state.
+
+[store/release.yaml](store/release.yaml)
+
+## Support Bunko
+
+Bunko is a LazyingArt project. If it helps your reading or research, you can support its ongoing work:
+
+| Donate | PayPal | Stripe |
+| --- | --- | --- |
+| [![Donate](https://img.shields.io/badge/Donate-LazyingArt-0EA5E9?style=for-the-badge&logo=kofi&logoColor=white)](https://chat.lazying.art/donate) | [![PayPal](https://img.shields.io/badge/PayPal-RongzhouChen-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/RongzhouChen) | [![Stripe](https://img.shields.io/badge/Stripe-Donate-635BFF?style=for-the-badge&logo=stripe&logoColor=white)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |
+
+## Citation
+
+If you use Bunko in research, cite this repository. GitHub reads [CITATION.cff](CITATION.cff) and provides a “Cite this repository” panel.
+
+```bibtex
+@software{chen_bunko_2026,
+  author = {Chen, Lachlan},
+  title = {Bunko: Classics with Ruby},
+  year = {2026},
+  url = {https://github.com/lachlanchen/Bunko}
+}
+```
+
+## Scope and feedback
+
+Study renderings are AI-generated and may contain errors. The catalogue publishes only audited, complete editions; public-domain rules vary by territory. Report reader bugs in [Bunko issues](https://github.com/lachlanchen/Bunko/issues), or book and rights problems in [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues).
