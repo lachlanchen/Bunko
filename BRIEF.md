@@ -61,6 +61,8 @@ Updated 2026-09-23: text-free cover art, visible Light / Dark / System selection
 
 Updated 2026-09-25: Tapping a word opens a reading desk with its ruby reading, Wiktionary definitions, and the aligned English, Chinese and Japanese passage where available. The dictionary caches definitions after the first lookup; readers may edit the query to search a multi-character word. Each passage has a stable discussion anchor. Readers can keep a private note on-device or open a public GitHub issue for that passage; existing issue comments appear in the reading desk. Posting and moderation use GitHub accounts and the `passage` label in `bunko-books`. Language labels in multilingual reading views use bold, high-contrast badges.
 
+Updated 2026-09-25: Optional full dictionary packs download to the phone from `bunko-books/dictionaries/`. CC-CEDICT covers Chinese, JMdict covers Japanese, and Open English WordNet covers English. The packs are separately attributed and licensed; the app install does not bundle them. IndexedDB holds compressed, checksum-verified shards, and lookup runs locally once a pack is installed. Wiktionary remains the online fallback before installation.
+
 Paper-first: warm off-white page, one serif for the source text with a CJK face that has proper ruby metrics, generous line height, a reading progress line rather than a bar, and a quiet dark mode. The companion lives in a drawer that never covers the text it is explaining. Everything the reader does must survive going offline.
 
 ## 6. Milestones

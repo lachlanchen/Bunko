@@ -58,6 +58,7 @@ export interface UICopy {
   requestSend: string
   about: string
   aboutBody: string
+  dictionarySources: string
   rights: string
   rightsBody: string
   loading: string
@@ -123,7 +124,8 @@ const en: UICopy = {
   requestSend: 'Open the request',
   about: 'About',
   aboutBody:
-    'Bunko reads public-domain classics in English, Chinese and Japanese. Downloaded books and private notes stay on this device. Dictionary lookups use Wiktionary; public discussions use GitHub.',
+    'Bunko reads public-domain classics in English, Chinese and Japanese. Downloaded books, private notes and optional dictionary packs stay on this device. Online lookups use Wiktionary; public discussions use GitHub.',
+  dictionarySources: 'Dictionary sources',
   rights: 'Rights',
   rightsBody:
     'Every book here is out of copyright. The modern Chinese, Japanese and English renderings were generated from those public-domain originals by LazyingArt LLC, which owns them.',
@@ -191,7 +193,8 @@ const zhHans: UICopy = {
   requestSend: '提交申请',
   about: '关于',
   aboutBody:
-    '文库支持阅读英、中、日文公共领域经典，字字有音。已下载的书和私人笔记保存在本机。查词使用维基词典，公开讨论使用 GitHub。',
+    '文库支持阅读英、中、日文公共领域经典，字字有音。已下载的书、私人笔记和可选词典包保存在本机。在线查词使用维基词典，公开讨论使用 GitHub。',
+  dictionarySources: '词典来源',
   rights: '版权',
   rightsBody:
     '本应用收录的作品均已进入公共领域。现代中文、日文与英文译文由 LazyingArt LLC 根据公共领域原文生成并拥有。',
@@ -257,7 +260,8 @@ const zhHant: UICopy = {
   requestSend: '提交申請',
   about: '關於',
   aboutBody:
-    '文庫支援閱讀英、中、日文公共領域經典，字字有音。已下載的書和私人筆記儲存在本機。查詞使用維基詞典，公開討論使用 GitHub。',
+    '文庫支援閱讀英、中、日文公共領域經典，字字有音。已下載的書、私人筆記和可選詞典包儲存在本機。線上查詞使用維基詞典，公開討論使用 GitHub。',
+  dictionarySources: '詞典來源',
   rights: '版權',
   rightsBody:
     '本應用收錄的作品均已進入公共領域。現代中文、日文與英文譯文由 LazyingArt LLC 根據公共領域原文生成並擁有。',
@@ -325,7 +329,8 @@ const ja: UICopy = {
   requestSend: 'リクエストを開く',
   about: 'このアプリについて',
   aboutBody:
-    '文庫では英語・中国語・日本語の古典を読み付きで楽しめます。ダウンロードした本と個人メモは端末に保存します。辞書検索にはウィクショナリー、公開討論には GitHub を使います。',
+    '文庫では英語・中国語・日本語の古典を読み付きで楽しめます。ダウンロードした本、個人メモ、任意の辞書パックは端末に保存します。オンライン検索にはウィクショナリー、公開討論には GitHub を使います。',
+  dictionarySources: '辞書の出典',
   rights: '権利',
   rightsBody:
     '収録作品はすべて著作権保護期間が終了しています。現代語訳は LazyingArt LLC がパブリックドメインの原文から生成し、保有しています。',

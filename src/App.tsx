@@ -628,6 +628,8 @@ function SettingsSheet({
         <p className="hint">{copy.aboutBody}</p>
         <h3>{copy.rights}</h3>
         <p className="hint">{copy.rightsBody}</p>
+        <h3>{copy.dictionarySources}</h3>
+        <p className="hint"><a href="https://en-word.net/downloads" target="_blank" rel="noopener noreferrer">Open English WordNet 2025</a> (CC BY 4.0) · <a href="https://www.mdbg.net/chinese/dictionary?page=cc-cedict" target="_blank" rel="noopener noreferrer">CC-CEDICT / MDBG</a> (CC BY-SA 4.0) · <a href="https://www.edrdg.org/edrdg/licence.html" target="_blank" rel="noopener noreferrer">JMdict / EDRDG</a> (CC BY-SA 4.0)</p>
       </section>
     </Sheet>
   )

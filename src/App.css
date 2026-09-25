@@ -170,6 +170,12 @@
 .definition-list small { display: block; color: var(--coral); font: 700 11px var(--sans); margin-bottom: 4px; }
 .panel-hint { font: 13px/1.55 var(--sans); color: var(--ink-soft); margin: 0 0 17px; }
 .panel-link { display: inline-flex; align-items: center; gap: 5px; color: var(--indigo); font: 700 13px var(--sans); margin-top: 10px; }
+.offline-pack { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; padding: 13px; border: 1px solid var(--line); border-radius: 11px; background: var(--paper-raised); }
+.offline-pack strong, .offline-pack small { display: block; font-family: var(--sans); }
+.offline-pack strong { font-size: 13px; }
+.offline-pack small { color: var(--ink-soft); font-size: 11px; margin-top: 4px; }
+.offline-pack button { color: var(--indigo); font: 800 11px var(--sans); text-align: right; min-width: 82px; }
+.offline-pack button:disabled { opacity: .6; }
 .contextual-lines p { margin: 0; padding: 12px 0; border-top: 1px solid var(--line); line-height: 1.7; }
 .contextual-lines strong { display: block; color: var(--indigo); font: 800 11px var(--sans); margin-bottom: 3px; }
 .discussion-comments p { border-left: 2px solid var(--coral); margin: 12px 0; padding: 7px 0 7px 13px; white-space: pre-wrap; }

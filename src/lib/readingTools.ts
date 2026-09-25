@@ -1,5 +1,6 @@
 import type { BookMeta, LangCode, Unit } from '../types'
 import { plainText } from './text'
+import { lookupOffline } from './offlineDictionary'
 
 export function passageKey(meta: BookMeta, chapterFile: string, paragraphId: string, unitIndex: number): string {
   return [meta.id, chapterFile, paragraphId, unitIndex].join('/')
@@ -9,7 +10,7 @@ export function passageText(unit: Unit, lang: LangCode): string {
   return plainText(unit[lang]).trim()
 }
 
-export interface Definition { partOfSpeech: string; meaning: string }
+export interface Definition { partOfSpeech: string; meaning: string; reading?: string }
 
 interface WiktionaryEntry {
   partOfSpeech?: string
@@ -27,6 +28,8 @@ export function dictionaryLanguage(lang: LangCode): 'en' | 'zh' | 'ja' {
 export async function lookupWord(word: string, lang: LangCode, signal?: AbortSignal): Promise<Definition[]> {
   const clean = word.trim().replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '')
   if (!clean) return []
+  const offline = await lookupOffline(clean, dictionaryLanguage(lang)).catch(() => null)
+  if (offline !== null) return offline
   const cacheKey = `bunko:dict:${dictionaryLanguage(lang)}:${clean.toLowerCase()}`
   try {
     const cached = localStorage.getItem(cacheKey)
