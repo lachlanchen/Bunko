@@ -60,3 +60,8 @@ Si vous utilisez Bunko dans une recherche, citez ce dépôt. GitHub lit [CITATIO
 ## Portée et retours
 
 Les rendus d’étude produits par IA peuvent comporter des erreurs. Seules les éditions complètes et auditées sont publiées ; le domaine public varie selon les territoires. Signalez les bugs du lecteur dans [Bunko issues](https://github.com/lachlanchen/Bunko/issues) et les problèmes de livres ou de droits dans [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues).
+## Lire dans Bunko
+
+La bibliothèque réunit 150 classiques du domaine public et 12 éditions autorisées par leur auteur : notes de physique, guide d’apprentissage, livres de finance et trois guides de voyage multilingues. Chaque livre peut proposer une ou plusieurs langues ; les équations et figures restent lisibles sur mobile.
+
+[App Store d’Apple](https://apps.apple.com/app/id6815137919) · [Google Play · publication en attente](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)

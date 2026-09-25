@@ -7,6 +7,7 @@
  * makes the reader work on a plane.
  */
 import type { BookMeta, BookRow, Chapter, ReaderIndex } from '../types'
+import { cacheFigure, removeFigures } from './bookAssets'
 
 const REPO = 'lachlanchen/bunko-books'
 const BRANCH = 'main'
@@ -243,7 +244,11 @@ export async function downloadBook(
   onProgress(0, meta.chapters.length)
   for (const chapter of meta.chapters) {
     if (signal?.aborted) throw new Error('Download cancelled')
-    await loadChapter(id, chapter.file, signal)
+    const loaded = await loadChapter(id, chapter.file, signal)
+    for (const figure of loaded.p.map((paragraph) => paragraph.figure).filter((item) => item !== undefined)) {
+      if (signal?.aborted) throw new Error('Download cancelled')
+      await cacheFigure(id, figure.path)
+    }
     done += 1
     onProgress(done, meta.chapters.length)
   }
@@ -256,6 +261,7 @@ export async function downloadedChapterCount(meta: BookMeta): Promise<number> {
 
 /** Give the space back. The book stays in the catalogue and can be fetched again. */
 export async function removeBook(id: string): Promise<void> {
+  await removeFigures(id)
   await cacheDeletePrefix(`ch:${id}:`)
   await cacheDeletePrefix(`meta:${id}:`)
   // The original 1.0.0 reader used this exact legacy key. Including a trailing

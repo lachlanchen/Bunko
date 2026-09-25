@@ -60,3 +60,8 @@ Bunko は LazyingArt のプロジェクトです。読書や研究に役立っ�
 ## 対象と報告先
 
 AI が生成した学習用の文章には誤りがあり得ます。カタログは調査済みの完結版だけを公開し、パブリックドメインの扱いは地域で異なります。リーダーの不具合は [Bunko issues](https://github.com/lachlanchen/Bunko/issues)、書籍や権利の問題は [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues) に報告してください。
+## Bunko で読む
+
+書庫には、パブリックドメインの古典150点に加え、権利を確認した著者自身の版12点を収録しています。物理学の伴読ノート、学習ガイド、金融の本、多言語の旅行ガイド3冊です。単言語・多言語に対応し、数式と図もモバイルで表示します。
+
+[Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 公開待ち](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)

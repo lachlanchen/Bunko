@@ -12,6 +12,8 @@ import type { UICopy, UILanguage } from '../i18n'
 import { languageName } from '../i18n'
 import { loadChapter } from '../lib/library'
 import { Line } from './Line'
+import { RichLine } from './RichLine'
+import { BookFigure } from './BookFigure'
 import { plainText } from '../lib/text'
 import { passageKey } from '../lib/readingTools'
 import { ReadingPanel, type ReadingFocus } from './ReadingPanel'
@@ -163,13 +165,14 @@ export function Reader({
               <Line line={chapter.title?.[shown[0]] ?? chapter.title?.[meta.primary]} ruby={settings.ruby} />
             </h1>
             {chapter.p.map((paragraph, index) => (
-              <div className="para" key={paragraph.id || index} data-para={index}>
+              <div className={`para${paragraph.kind ? ` para-${paragraph.kind}` : ''}`} key={paragraph.id || index} data-para={index}>
+                {paragraph.figure && <BookFigure bookId={meta.id} figure={paragraph.figure} lang={shown[0]} primary={meta.primary} />}
                 {settings.layout === 'paired'
                   ? shown.map((lang) => (
                       <p className={`para-line lang-${lang}`} key={lang} lang={htmlLang(lang)}>
                         <strong className="language-label">{languageName(lang, ui)}</strong>
                         {paragraph.u.map((unit, unitIndex) => (
-                          <span key={unitIndex} className="paired-unit"><Line line={unit[lang]} ruby={settings.ruby} grammar={settings.grammar} lang={htmlLang(lang)} onToken={(word, reading) => openFocus(paragraph.id, unit, unitIndex, lang, word, reading)} />{lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
+                          <span key={unitIndex} className="paired-unit"><RichLine unit={unit} lang={lang} ruby={settings.ruby} grammar={settings.grammar} onToken={(word, reading) => openFocus(paragraph.id, unit, unitIndex, lang, word, reading)} />{lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
                         ))}
                       </p>
                     ))
@@ -179,11 +182,11 @@ export function Reader({
                           unit[lang]?.length ? (
                             <p className={`unit-line lang-${lang}`} key={lang} lang={htmlLang(lang)}>
                               {shown.length > 1 && <strong className="language-label">{languageName(lang, ui)}</strong>}
-                              <Line
-                                line={unit[lang]}
+                              <RichLine
+                                unit={unit}
+                                lang={lang}
                                 ruby={settings.ruby}
                                 grammar={settings.grammar}
-                                lang={htmlLang(lang)}
                                 onToken={(word, reading) => openFocus(paragraph.id, unit, unitIndex, lang, word, reading)}
                               />
                               {lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}

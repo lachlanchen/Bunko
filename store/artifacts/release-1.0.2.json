@@ -1,0 +1,41 @@
+{
+  "version": "1.0.2",
+  "build": 3,
+  "checked": "2026-09-25",
+  "catalogue": {
+    "count": 162,
+    "repository": "lachlanchen/bunko-books",
+    "commit": "101f521",
+    "index_bytes": 2745200447
+  },
+  "android": {
+    "track": "internal testing",
+    "status": "Available to internal testers",
+    "aab_sha256": "3ff9c3f87ec367cd3afbaab9282089032ab621e03efd001e7ddc33b38a169228",
+    "aab_bytes": 2969719,
+    "production_unchanged": "1.0.0 (1) in review"
+  },
+  "ios": {
+    "channel": "Bunko Internal TestFlight",
+    "processing_state": "VALID",
+    "build_id": "6057045f-30d5-47ae-8beb-047dabb37be2",
+    "delivery_uuid": "6057045f-30d5-47ae-8beb-047dabb37be2",
+    "ipa_sha256": "d2b90b0a912b70a94ca044685ac57f95868885bda6cf9136ade528ea281c9c4b",
+    "public_review_unchanged": "1.0.1 (2) waiting for review"
+  },
+  "web": {
+    "bundle_sha256": "5ab3643fc88126bbdc3fedfc1bf8bf058f76f7e7a51a2aabf40f8c67706377a7",
+    "bundle_file": "index-DLV_DgnO.js"
+  },
+  "checks": [
+    "npm run lint",
+    "npm run test (17 passed)",
+    "npm run build",
+    "Android lintRelease and bundleRelease",
+    "Xcode archive and export",
+    "altool validate and upload",
+    "bunko-books catalogue.py (162 books)",
+    "TestFlight group build relationship",
+    "Play Console internal track availability"
+  ]
+}

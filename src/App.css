@@ -33,6 +33,8 @@
   transition: background .15s, color .15s, border-color .15s;
 }
 .chips button.active { background: var(--indigo); border-color: var(--indigo); color: #fff; }
+.library-chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; padding-bottom: 5px; scroll-snap-type: x proximity; }
+.library-chips button { flex: 0 0 auto; white-space: nowrap; scroll-snap-align: start; }
 :root[data-theme='night'] .chips button.active { color: #14131c; }
 
 /* ---------- library grid ---------- */
@@ -143,6 +145,14 @@
   letter-spacing: .025em; vertical-align: .17em; white-space: nowrap;
 }
 .paired-unit { display: inline; }
+.para-heading { margin-top: 2.2em; font-weight: 750; color: var(--indigo); }
+.para-equation { text-align: center; }
+.math-display { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: .4em 0; -webkit-overflow-scrolling: touch; }
+.math-inline { max-width: 100%; }
+.math-error { overflow-wrap: anywhere; }
+.book-figure { margin: 1.4em auto; max-width: 38em; }
+.book-figure img { display: block; width: 100%; height: auto; border-radius: 9px; }
+.book-figure figcaption { margin-top: .55em; color: var(--ink-soft); font: .75em/1.5 var(--sans); }
 .tk-lookup { cursor: pointer; border-radius: 2px; }
 .tk-lookup:hover, .tk-lookup:focus-visible { background: color-mix(in srgb, var(--coral) 18%, transparent); outline: none; }
 .passage-action { display: inline-flex; vertical-align: middle; margin: 0 .45em 0 .1em; padding: .2em; color: var(--ink-faint); opacity: .6; }

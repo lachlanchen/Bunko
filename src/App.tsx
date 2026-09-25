@@ -27,7 +27,7 @@ import { Reader } from './components/Reader'
 import { Cover } from './components/Cover'
 
 type View = 'library' | 'book' | 'reader'
-type Filter = 'all' | 'chinese' | 'japanese' | 'world' | 'device'
+type Filter = 'all' | 'chinese' | 'japanese' | 'world' | 'physics' | 'learning' | 'finance' | 'travel' | 'device'
 
 /** Which shelf a book belongs on, from its id and mode. */
 function categoryOf(book: BookRow): Filter {
@@ -373,23 +373,15 @@ export default function App() {
         />
       </div>
 
-      <nav className="chips" aria-label={copy.library}>
-        {(['all', 'chinese', 'japanese', 'world', 'device'] as Filter[]).map((key) => (
+      <nav className="chips library-chips" aria-label={copy.library}>
+        {(['all', 'chinese', 'japanese', 'world', 'physics', 'learning', 'finance', 'travel', 'device'] as Filter[]).map((key) => (
           <button
             key={key}
             type="button"
             className={filter === key ? 'active' : ''}
             onClick={() => setFilter(key)}
           >
-            {key === 'all'
-              ? copy.allLanguages
-              : key === 'chinese'
-                ? copy.chinese
-                : key === 'japanese'
-                  ? copy.japanese
-                  : key === 'world'
-                    ? copy.world
-                    : copy.onDevice}
+            {key === 'all' ? copy.allLanguages : key === 'device' ? copy.onDevice : copy[key]}
           </button>
         ))}
       </nav>

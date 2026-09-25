@@ -8,7 +8,7 @@
 
 [![Reader](https://img.shields.io/badge/Open-Bunko-303F68?style=for-the-badge)](https://lachlan.lazying.art/Bunko/) [![Sponsor](https://img.shields.io/badge/GitHub-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors)](https://github.com/sponsors/lachlanchen)
 
-Bunko is a reader for public-domain Chinese, Japanese and English classics. Choose the visible languages and layout, read pinyin or furigana above characters, and keep downloaded chapters available offline. The interface offers English, Simplified Chinese, Traditional Chinese and Japanese. The book catalogue lives in the separate [bunko-books](https://github.com/lachlanchen/bunko-books) repository; this app repository contains no book payloads.
+Bunko is a reader for public-domain classics and rights-cleared original books. Choose the visible languages and layout, read pinyin or furigana above characters, and keep downloaded chapters available offline. The interface offers English, Simplified Chinese, Traditional Chinese and Japanese. The book catalogue lives in the separate [bunko-books](https://github.com/lachlanchen/bunko-books) repository; this app repository contains no book payloads.
 
 <p align="center"><a href="store/assets/play-phone-01.png"><img src="store/assets/play-phone-01.png" alt="Bunko reader screenshot" width="300"></a></p>
 
@@ -32,7 +32,7 @@ npm run dev
 
 ## Library and release
 
-The live catalogue has 150 cleared editions. New book bundles publish through GitHub without an app build; changes to reader code still need a new web or native release. Platform availability and update reviews are tracked in the release record below.
+The live catalogue has 162 cleared editions: 150 classics and 12 owner editions. New book bundles publish through GitHub without an app build; changes to reader code still need a new web or native release. Platform availability and update reviews are tracked in the release record below.
 
 [store/release.yaml](store/release.yaml)
 
@@ -59,4 +59,9 @@ If you use Bunko in research, cite this repository. GitHub reads [CITATION.cff](
 
 ## Scope and feedback
 
-Study renderings are AI-generated and may contain errors. The catalogue publishes only audited, complete editions; public-domain rules vary by territory. Report reader bugs in [Bunko issues](https://github.com/lachlanchen/Bunko/issues), or book and rights problems in [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues).
+Study renderings and companion notes can be AI-assisted and may contain errors. The catalogue publishes only audited, complete editions; public-domain rules vary by territory. Report reader bugs in [Bunko issues](https://github.com/lachlanchen/Bunko/issues), or book and rights problems in [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues).
+## Read Bunko
+
+The library now includes 150 public-domain classics and 12 rights-cleared owner editions: physics companion notes, a learning guide, finance books, and three multilingual travel guides. Each book may offer one or several languages. Equations and figures are kept in the mobile reader.
+
+[Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · publication pending](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)

@@ -16,6 +16,10 @@ export interface UICopy {
   chinese: string
   japanese: string
   world: string
+  physics: string
+  learning: string
+  finance: string
+  travel: string
   onDevice: string
   chapters: string
   paragraphs: string
@@ -82,6 +86,10 @@ const en: UICopy = {
   chinese: 'Chinese canon',
   japanese: 'Japanese',
   world: 'World literature',
+  physics: 'Physics',
+  learning: 'Learning',
+  finance: 'Finance',
+  travel: 'Travel',
   onDevice: 'On this device',
   chapters: 'chapters',
   paragraphs: 'paragraphs',
@@ -124,11 +132,11 @@ const en: UICopy = {
   requestSend: 'Open the request',
   about: 'About',
   aboutBody:
-    'Bunko reads public-domain classics in English, Chinese and Japanese. Downloaded books, private notes and optional dictionary packs stay on this device. Online lookups use Wiktionary; public discussions use GitHub.',
+    'Bunko reads classics and original books in English, Chinese and Japanese, from one language to several. Downloaded books, private notes and optional dictionary packs stay on this device. Online lookups use Wiktionary; public discussions use GitHub.',
   dictionarySources: 'Dictionary sources',
   rights: 'Rights',
   rightsBody:
-    'Every book here is out of copyright. The modern Chinese, Japanese and English renderings were generated from those public-domain originals by LazyingArt LLC, which owns them.',
+    'The classics are rights-audited public-domain editions. Original books and companion notes are published with the owner’s permission and source attribution; each downloadable bundle has a rights record.',
   loading: 'Loading',
   offlineError: 'Could not reach the library. Downloaded books still work.',
   retry: 'Try again',
@@ -151,6 +159,10 @@ const zhHans: UICopy = {
   chinese: '中华经典',
   japanese: '日本文学',
   world: '世界文学',
+  physics: '物理学',
+  learning: '学习',
+  finance: '财经',
+  travel: '旅行',
   onDevice: '已下载',
   chapters: '章',
   paragraphs: '段',
@@ -193,11 +205,11 @@ const zhHans: UICopy = {
   requestSend: '提交申请',
   about: '关于',
   aboutBody:
-    '文库支持阅读英、中、日文公共领域经典，字字有音。已下载的书、私人笔记和可选词典包保存在本机。在线查词使用维基词典，公开讨论使用 GitHub。',
+    '文库收录英、中、日文经典和原创书籍，支持单语、双语和多语阅读。已下载的书、私人笔记和可选词典包保存在本机。在线查词使用维基词典，公开讨论使用 GitHub。',
   dictionarySources: '词典来源',
   rights: '版权',
   rightsBody:
-    '本应用收录的作品均已进入公共领域。现代中文、日文与英文译文由 LazyingArt LLC 根据公共领域原文生成并拥有。',
+    '经典作品经过公共领域权利审核。原创书籍和课程伴读笔记经所有者授权发布，并标注来源；每个下载书包都有权利记录。',
   loading: '加载中',
   offlineError: '无法连接书库，已下载的书仍可阅读。',
   retry: '重试',
@@ -220,6 +232,10 @@ const zhHant: UICopy = {
   chinese: '中華經典',
   japanese: '日本文學',
   world: '世界文學',
+  physics: '物理學',
+  learning: '學習',
+  finance: '財經',
+  travel: '旅行',
   onDevice: '已下載',
   download: '下載以離線閱讀',
   downloading: '下載中',
@@ -260,11 +276,11 @@ const zhHant: UICopy = {
   requestSend: '提交申請',
   about: '關於',
   aboutBody:
-    '文庫支援閱讀英、中、日文公共領域經典，字字有音。已下載的書、私人筆記和可選詞典包儲存在本機。線上查詞使用維基詞典，公開討論使用 GitHub。',
+    '文庫收錄英、中、日文經典和原創書籍，支援單語、雙語與多語閱讀。已下載的書、私人筆記和可選詞典包儲存在本機。線上查詞使用維基詞典，公開討論使用 GitHub。',
   dictionarySources: '詞典來源',
   rights: '版權',
   rightsBody:
-    '本應用收錄的作品均已進入公共領域。現代中文、日文與英文譯文由 LazyingArt LLC 根據公共領域原文生成並擁有。',
+    '經典作品經過公共領域權利審核。原創書籍與課程伴讀筆記經所有者授權發布，並標明來源；每個下載書包都有權利記錄。',
   loading: '載入中',
   offlineError: '無法連線書庫，已下載的書仍可閱讀。',
   retry: '重試',
@@ -287,6 +303,10 @@ const ja: UICopy = {
   chinese: '中国古典',
   japanese: '日本文学',
   world: '世界文学',
+  physics: '物理学',
+  learning: '学び',
+  finance: 'お金',
+  travel: '旅',
   onDevice: '端末にあり',
   chapters: '章',
   paragraphs: '段落',
@@ -329,11 +349,11 @@ const ja: UICopy = {
   requestSend: 'リクエストを開く',
   about: 'このアプリについて',
   aboutBody:
-    '文庫では英語・中国語・日本語の古典を読み付きで楽しめます。ダウンロードした本、個人メモ、任意の辞書パックは端末に保存します。オンライン検索にはウィクショナリー、公開討論には GitHub を使います。',
+    '文庫では英語・中国語・日本語の古典とオリジナル書籍を、単言語から多言語まで読めます。ダウンロードした本、個人メモ、任意の辞書パックは端末に保存します。オンライン検索にはウィクショナリー、公開討論には GitHub を使います。',
   dictionarySources: '辞書の出典',
   rights: '権利',
   rightsBody:
-    '収録作品はすべて著作権保護期間が終了しています。現代語訳は LazyingArt LLC がパブリックドメインの原文から生成し、保有しています。',
+    '古典は権利確認済みのパブリックドメイン版です。オリジナル書籍と講義の伴読ノートは所有者の許可と出典表示の下で公開され、各書籍に権利記録があります。',
   loading: '読み込み中',
   offlineError: '書庫に接続できません。ダウンロード済みの本は読めます。',
   retry: '再試行',

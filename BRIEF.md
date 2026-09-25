@@ -2,6 +2,8 @@
 
 Written 2026-09-22 by the L & N session from the owner's request. This is the contract for the reader app. The app code lives in this repository (`../Bunko`); the book data and its pipeline stay in `../ZhJpBook`. Refine it in place and date every change.
 
+**2026-09-25 scope amendment:** The owner requested their own books from LazyTravel, HowYouGotRich, LazyEarn, LazyLearn and the independent Leonard Susskind companion-note project. Bunko now accepts public-domain classics **and rights-cleared owner editions**. Each bundle is still separately reviewed and documented in `bunko-books/rights.json`; source repositories are read only during import. Books may have one, two, three or more language layers. Figures and TeX equations are preserved for mobile reading. The original public-domain-only points below describe the first catalogue, not the expanded catalogue.
+
 ## 1. The app
 
 **Bunko** (文庫 / 文库, "pocket library") is a beautiful reader for public-domain classics in English, Chinese and Japanese, with ruby readings on every character and an AI reading companion beside the text.

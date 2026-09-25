@@ -18,7 +18,7 @@ export interface BookRow {
   paras: number
   bytes: number
   sha256: string
-  cat?: 'chinese' | 'japanese' | 'world'
+  cat?: 'chinese' | 'japanese' | 'world' | 'physics' | 'learning' | 'finance' | 'travel'
   cover?: string
   edition?: 'multilingual' | 'original-only'
 }
@@ -55,12 +55,15 @@ export interface BookMeta {
 
 export interface Unit extends Partial<Record<LangCode, Line>> {
   src: string
+  rich?: Partial<Record<LangCode, Array<{ text?: string; math?: string; display?: boolean }>>>
 }
 
 export interface Paragraph {
   id: string
   src: string
   u: Unit[]
+  kind?: 'text' | 'heading' | 'equation' | 'figure'
+  figure?: { path: string; caption?: Partial<Record<LangCode, string>> }
 }
 
 export interface Chapter {

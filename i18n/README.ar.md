@@ -60,3 +60,8 @@ Bunko مشروع من LazyingArt. إذا أفاد قراءتك أو بحثك، �
 ## النطاق والملاحظات
 
 قد تحتوي النصوص الدراسية المنشأة بالذكاء الاصطناعي على أخطاء. ينشر الفهرس الطبعات المكتملة والمدققة فقط، وتختلف قواعد الملك العام حسب الإقليم. أبلغ عن أخطاء القارئ في [Bunko issues](https://github.com/lachlanchen/Bunko/issues) وعن مشكلات الكتب والحقوق في [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues).
+## اقرأ Bunko
+
+تضم المكتبة 150 عملاً كلاسيكياً من الملكية العامة و12 إصداراً مرخّصاً من المؤلف: ملاحظات في الفيزياء، ودليل تعليمي، وكتباً مالية، وثلاثة أدلة سفر متعددة اللغات. يدعم القارئ لغة واحدة أو لغات متعددة، مع المعادلات والصور.
+
+[متجر Apple](https://apps.apple.com/app/id6815137919) · [Google Play · النشر قيد الانتظار](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)

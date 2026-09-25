@@ -1,0 +1,298 @@
+#!/usr/bin/env python3
+"""Build reviewed owner editions from adjacent source repositories.
+
+The source checkouts are read only. Run from Bunko; output goes to bunko-books.
+"""
+import hashlib
+import json
+import re
+import shutil
+import subprocess
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT.parent / 'bunko-books' / 'books'
+DATE = '2026-09-25'
+
+
+def dump(value):
+    return json.dumps(value, ensure_ascii=False, separators=(',', ':')).encode()
+
+
+def digest(value):
+    return hashlib.sha256(value).hexdigest()
+
+
+def make_cover(folder, source, original_design=False):
+    if not source or not source.exists():
+        return None, None
+    from PIL import Image
+    import io
+    image = Image.open(source).convert('RGB')
+    image.thumbnail((900, 1200))
+    buffer = io.BytesIO()
+    image.save(buffer, 'WEBP', quality=83, method=5)
+    data = buffer.getvalue()
+    name = f'cover-{digest(data)[:12]}.webp'
+    (folder / name).write_bytes(data)
+    return name, {'textFree': not original_design, 'originalDesign': original_design,
+                  'basis': 'Author project cover artwork, adapted from the published source edition.',
+                  'sourceAsset': str(source.relative_to(ROOT.parent))}
+
+
+def publish(slug, title, langs, primary, category, author, chapters, source_repo, basis, cover=None, original_cover=False):
+    folder = OUT / slug
+    folder.mkdir(parents=True, exist_ok=True)
+    rows = []
+    total = 0
+    paras = 0
+    for i, (chapter_title, blocks, assets) in enumerate(chapters, 1):
+        if not blocks:
+            continue
+        for path, source in assets.items():
+            target = folder / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            from PIL import Image
+            if source.suffix.lower() == '.svg':
+                import io
+                import cairosvg
+                image = Image.open(io.BytesIO(cairosvg.svg2png(url=str(source)))).convert('RGB')
+            else:
+                image = Image.open(source).convert('RGB')
+            image.thumbnail((1500, 1500))
+            image.save(target, 'WEBP', quality=76, method=5)
+        chapter = {'id': f'{slug}-c{i:03d}', 'n': i,
+                   'title': {lang: [chapter_title.get(lang) or chapter_title[primary]] for lang in langs}, 'p': blocks}
+        raw = dump(chapter)
+        name = f'c{i:04d}-{digest(raw)[:12]}.json'
+        (folder / name).write_bytes(raw)
+        rows.append({'n': i, 'file': name, 'bytes': len(raw), 'paras': len(blocks),
+                     'title': chapter_title, 'sha256': digest(raw)})
+        total += len(raw)
+        paras += len(blocks)
+    cover_name, cover_rights = make_cover(folder, cover, original_cover)
+    meta = {'schema': 1, 'id': slug, 'mode': 'owner-edition', 'langs': langs, 'primary': primary,
+            'title': {lang: [title.get(lang) or title[primary]] for lang in langs},
+            'titleText': title, 'author': {'name': author}, 'chapters': rows,
+            'bytes': total, 'paras': paras, 'cat': category,
+            'edition': 'multilingual' if len(langs) > 1 else 'original-only'}
+    if cover_name:
+        meta['cover'] = cover_name
+    (folder / 'meta.json').write_bytes(dump(meta))
+    rights = {'id': slug, 'status': 'ship', 'edition': meta['edition'], 'langs': langs,
+              'basis': basis, 'references': [source_repo], 'checked': DATE}
+    if cover_rights:
+        rights['cover'] = cover_rights
+    (folder / 'rights.json').write_text(json.dumps(rights, ensure_ascii=False, indent=2) + '\n')
+    print(slug, len(rows), paras, f'{total / 1e6:.1f} MB')
+
+
+def travel():
+    root = ROOT.parent / 'LazyTravel'
+    for city, path in [('xian', 'china/cities/xian'), ('hakone', 'japan/prefectures/kanagawa/hakone'),
+                       ('lanzhou', 'china/cities/lanzhou')]:
+        doc = json.loads((root / 'data' / path / 'book.json').read_text())
+        assets_by_id = {a['id']: a for a in doc['assets']}
+        chapters = []
+        for chapter in doc['chapters']:
+            blocks, assets = [], {}
+            for block in chapter['blocks']:
+                unit = {'src': block['text']['en']}
+                for lang in ('en', 'zh', 'ja'):
+                    tokens = block.get('readings', {}).get(lang, {}).get('tokens')
+                    if tokens and ''.join(t['text'] for t in tokens) == block['text'][lang]:
+                        unit[lang] = [[t['text'], t['reading']] if t.get('reading') else t['text'] for t in tokens]
+                    else:
+                        unit[lang] = [block['text'][lang]]
+                row = {'id': block['id'], 'src': block['text']['en'], 'u': [unit]}
+                for asset_id in block.get('asset_ids', []):
+                    asset = assets_by_id[asset_id]
+                    candidate = root / (asset.get('variants', {}).get('web') or asset['path'])
+                    if candidate.exists():
+                        dest = f'assets/{asset_id}.webp'
+                        assets[dest] = candidate
+                        row['figure'] = {'path': dest, 'caption': asset.get('captions', {})}
+                        row['kind'] = 'figure'
+                        break
+                blocks.append(row)
+            chapters.append((chapter['titles'], blocks, assets))
+        publish('travel-' + city, doc['book']['titles'], ['en', 'zh', 'ja'], 'en', 'travel',
+                'LazyTravel · LazyingArt LLC', chapters,
+                f'https://github.com/lachlanchen/LazyTravel/tree/main/data/{path}',
+                'Original LazyingArt travel-guide text and generated illustrations; accepted multilingual edition with source and asset provenance in the source repository.',
+                root / f'assets/images/{city}/{city}-cover-underlay.png')
+
+
+def markdown_rich(markdown):
+    parts = []
+    for piece in re.split(r'(\$\$[\s\S]*?\$\$|(?<!\\)\$[^$\n]+(?<!\\)\$)', markdown):
+        if not piece:
+            continue
+        if piece.startswith('$$') and piece.endswith('$$'):
+            parts.append({'math': piece[2:-2].strip(), 'display': True})
+        elif piece.startswith('$') and piece.endswith('$'):
+            parts.append({'math': piece[1:-1].strip()})
+        else:
+            parts.append({'text': piece})
+    return parts
+
+
+def wealth_book():
+    root = ROOT.parent / 'HowYouGotRich'
+    manifest = json.loads((root / 'docs/data/web-edition.json').read_text())
+    chapters = []
+    for entry in manifest['entries']:
+        path = root / 'multilingual/entries' / (Path(entry['output']).stem + '.json')
+        doc = json.loads(path.read_text())
+        blocks = []
+        for block in doc['blocks']:
+            unit = {'src': block['en']['markdown']}
+            for lang in ('en', 'ja', 'zh'):
+                layer = block[lang]
+                rich = markdown_rich(layer['markdown'])
+                tokens = layer.get('tokens', [])
+                line = [[t.get('t', ''), t['r']] if t.get('r') else t.get('t', '') for t in tokens if t.get('t')]
+                unit[lang] = line or [layer['markdown']]
+                if any('math' in part for part in rich):
+                    unit.setdefault('rich', {})[lang] = rich
+            blocks.append({'id': block['id'], 'src': unit['src'], 'u': [unit],
+                           'kind': 'heading' if block['kind'] == 'Header' else 'text'})
+        chapters.append((doc['metadata']['title'], blocks, {}))
+    publish('how-you-got-rich', {'en': 'How You Got Rich', 'ja': '豊かさをどう築いたか', 'zh': '你是如何富起来的'},
+            ['en', 'ja', 'zh'], 'en', 'finance', 'LazyingArt LLC', chapters,
+            'https://github.com/lachlanchen/HowYouGotRich/tree/main/multilingual/entries',
+            'Author-owned V3 original book and reviewed Japanese and Chinese editions, supplied by the owner for Bunko.',
+            root / 'assets/cover-page-1.png', True)
+
+
+def pandoc_text(nodes):
+    output = []
+    for node in nodes:
+        if not isinstance(node, dict):
+            continue
+        tag = node.get('t')
+        value = node.get('c')
+        if tag == 'Str': output.append(value)
+        elif tag in ('Space', 'SoftBreak', 'LineBreak'): output.append(' ')
+        elif tag == 'Math': output.append('$' + value[1] + '$')
+        elif tag in ('Emph', 'Strong', 'Span', 'Link', 'Quoted'):
+            nested = value[-1] if isinstance(value, list) and value and isinstance(value[-1], list) else value
+            output.append(pandoc_text(nested if isinstance(nested, list) else []))
+        elif tag == 'Code': output.append(value[-1])
+    return ''.join(output).strip()
+
+
+def pandoc_rich(nodes):
+    parts = []
+    for node in nodes:
+        if not isinstance(node, dict):
+            continue
+        tag, value = node.get('t'), node.get('c')
+        if tag == 'Math':
+            tex = re.sub(r'\\label\{[^}]+\}', '', value[1]).strip()
+            parts.append({'math': tex, 'display': value[0]['t'] == 'DisplayMath'})
+        elif tag == 'Str': parts.append({'text': value})
+        elif tag in ('Space', 'SoftBreak', 'LineBreak'): parts.append({'text': ' '})
+        elif tag in ('Emph', 'Strong', 'Span', 'Link', 'Quoted'):
+            nested = value[-1] if isinstance(value, list) and value and isinstance(value[-1], list) else value
+            parts.extend(pandoc_rich(nested if isinstance(nested, list) else []))
+        elif tag == 'Code': parts.append({'text': value[-1]})
+    return parts
+
+
+def tex_blocks(source, figure_root=None):
+    doc = json.loads(subprocess.check_output(['pandoc', '-f', 'latex', '-t', 'json', str(source)]))
+    blocks, assets = [], {}
+    def add(nodes, kind='text'):
+        rich = pandoc_rich(nodes)
+        if not rich: return
+        plain = ''.join(item['text'] if 'text' in item else '$' + item['math'] + '$' for item in rich).strip()
+        if not plain: return
+        unit = {'src': plain, 'en': [plain]}
+        if any('math' in item for item in rich): unit['rich'] = {'en': rich}
+        blocks.append({'id': f'b{len(blocks)+1:04d}', 'src': plain, 'kind': kind, 'u': [unit]})
+    def walk(items):
+        for block in items:
+            tag, value = block['t'], block.get('c')
+            if tag in ('Para', 'Plain'):
+                images = [n for n in value if isinstance(n, dict) and n.get('t') == 'Image']
+                if images and figure_root:
+                    for image in images:
+                        path = Path(image['c'][2][0]).name
+                        candidate = figure_root / path
+                        if candidate.exists():
+                            dest = f'assets/{Path(path).stem}.webp'
+                            assets[dest] = candidate
+                            caption = pandoc_text(image['c'][1])
+                            add([{'t': 'Str', 'c': caption or 'Figure'}], 'figure')
+                            blocks[-1]['figure'] = {'path': dest, 'caption': {'en': caption}}
+                else: add(value, 'equation' if any(n.get('t') == 'Math' and n['c'][0]['t'] == 'DisplayMath' for n in value if isinstance(n, dict)) else 'text')
+            elif tag == 'Header': add(value[2], 'heading')
+            elif tag == 'Div': walk(value[1])
+            elif tag == 'BlockQuote': walk(value)
+            elif tag in ('BulletList', 'OrderedList'):
+                for item in (value if tag == 'BulletList' else value[1]): walk(item)
+    walk(doc['blocks'])
+    return blocks, assets
+
+
+def physics_and_learning():
+    root = ROOT.parent / 'leonardsusskind' / 'generated_course_notes' / 'core'
+    courses = [
+        ('classical-mechanics', 'classical_mechanics/2011_fall_theoretical_minimum', 'Classical Mechanics', 'classical_mechanics_theoretical_minimum.png'),
+        ('quantum-mechanics', 'quantum_mechanics/2012_winter_theoretical_minimum_alt_title', 'Quantum Mechanics', 'quantum_mechanics_theoretical_minimum.png'),
+        ('special-relativity', 'special_relativity/2012_spring_theoretical_minimum', 'Special Relativity', 'special_relativity_theoretical_minimum.png'),
+        ('general-relativity', 'general_relativity/2012_fall_theoretical_minimum', 'General Relativity', 'general_relativity_theoretical_minimum.png'),
+        ('statistical-mechanics', 'statistical_mechanics/2013_spring_theoretical_minimum', 'Statistical Mechanics', 'statistical_mechanics_theoretical_minimum_first_page.png'),
+        ('cosmology', 'cosmology/2013_winter_theoretical_minimum', 'Cosmology', 'cosmology_theoretical_minimum_first_page.png'),
+    ]
+    for short, location, title, cover_file in courses:
+        path = root / location
+        chapters = []
+        for source in sorted((path / 'chapters').glob('lecture_*/content.tex')):
+            blocks, assets = tex_blocks(source, path / 'figures')
+            heading = next((b['src'] for b in blocks if b['kind'] == 'heading'), source.parent.name.replace('_', ' ').title())
+            chapters.append(({'en': heading}, blocks, assets))
+        publish('physics-' + short, {'en': title + ' · Theoretical Minimum'}, ['en'], 'en', 'physics',
+                'LazyingArt LLC · companion notes to Leonard Susskind lectures', chapters,
+                f'https://github.com/lachlanchen/leonardsusskind/tree/main/generated_course_notes/core/{location}',
+                'Independent edited AI-assisted companion notes by the owner, adapted from public lectures; not a transcript, Susskind manuscript or endorsed edition. Original source repo is GPL-3.0; preserve attribution and GPL terms.',
+                ROOT.parent / 'leonardsusskind' / 'figs/readme-covers' / cover_file, True)
+    path = ROOT.parent / 'LazyLearn' / 'generated_course_notes/lazylearn/how-you-speak-and-write'
+    chapters = []
+    for source in sorted((path / 'chapters').glob('*/content.tex')):
+        blocks, assets = tex_blocks(source, path / 'figures')
+        heading = next((b['src'] for b in blocks if b['kind'] == 'heading'), source.parent.name)
+        chapters.append(({'en': heading}, blocks, assets))
+    publish('learning-speak-and-write', {'en': 'How to Speak and Write'}, ['en'], 'en', 'learning',
+            'LazyingArt LLC · companion notes', chapters,
+            'https://github.com/lachlanchen/LazyLearn/tree/main/generated_course_notes/lazylearn/how-you-speak-and-write',
+            'Owner-authored edited learning notes, supplied by the owner for Bunko. This is a companion edition, not a verbatim lecture transcript.',
+            path / 'how-to-speak-and-write/assets/cover-art.png')
+
+
+def finance_notes():
+    root = ROOT.parent / 'LazyEarn'
+    source = root / 'investment_pdfs/wealth-from-first-principles/wealth-from-first-principles.tex'
+    blocks, assets = tex_blocks(source)
+    # Split at chapter headings so the large book remains quick to download.
+    chapters = []
+    current, title = [], 'Introduction'
+    for block in blocks:
+        if block['kind'] == 'heading' and current:
+            chapters.append(({'en': title}, current, {}))
+            current, title = [], block['src']
+        current.append(block)
+    if current: chapters.append(({'en': title}, current, assets))
+    publish('finance-wealth-first-principles', {'en': 'Wealth From First Principles'}, ['en'], 'en',
+            'finance', 'LazyingArt LLC', chapters,
+            'https://github.com/lachlanchen/LazyEarn/tree/main/investment_pdfs/wealth-from-first-principles',
+            'Original LazyingArt LLC field guide, supplied by the owner for Bunko.',
+            root / 'docs/publications/wealth-from-first-principles/cover-art.png')
+
+
+if __name__ == '__main__':
+    travel()
+    wealth_book()
+    physics_and_learning()
+    finance_notes()
