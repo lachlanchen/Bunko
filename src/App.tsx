@@ -58,6 +58,7 @@ export default function App() {
   const [storage, setStorage] = useState<{ usage: number; quota: number } | null>(null)
   const [request, setRequest] = useState('')
   const downloadRef = useRef<AbortController | null>(null)
+  const linkedBookOpened = useRef(false)
   const copy = copies[ui]
 
   useEffect(() => {
@@ -137,6 +138,16 @@ export default function App() {
     },
     [ui, copy.offlineError],
   )
+
+  useEffect(() => {
+    if (!index || linkedBookOpened.current) return
+    const id = new URLSearchParams(window.location.search).get('book')
+    if (!id) return
+    const book = index.books.find((row) => row.id === id)
+    if (!book) return
+    linkedBookOpened.current = true
+    queueMicrotask(() => { void openBook(book) })
+  }, [index, openBook])
 
   const startReading = useCallback(
     (fromStart: boolean) => {
