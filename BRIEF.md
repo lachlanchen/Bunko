@@ -59,6 +59,8 @@ Files are committed as plain minified JSON rather than as `.gz`, deliberately. j
 
 Updated 2026-09-23: text-free cover art, visible Light / Dark / System selection on the library, and automatic catalogue refresh when returning online or reopening the app. The web management page at `/Bunko/admin/` uploads prepared book folders as GitHub pull requests. Future books, corrections and covers publish without an app build once the reader supports those fields.
 
+Updated 2026-09-25: Tapping a word opens a reading desk with its ruby reading, Wiktionary definitions, and the aligned English, Chinese and Japanese passage where available. The dictionary caches definitions after the first lookup; readers may edit the query to search a multi-character word. Each passage has a stable discussion anchor. Readers can keep a private note on-device or open a public GitHub issue for that passage; existing issue comments appear in the reading desk. Posting and moderation use GitHub accounts and the `passage` label in `bunko-books`. Language labels in multilingual reading views use bold, high-contrast badges.
+
 Paper-first: warm off-white page, one serif for the source text with a CJK face that has proper ruby metrics, generous line height, a reading progress line rather than a bar, and a quiet dark mode. The companion lives in a drawer that never covers the text it is explaining. Everything the reader does must survive going offline.
 
 ## 6. Milestones

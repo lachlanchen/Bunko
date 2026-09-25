@@ -137,7 +137,46 @@
   font-family: var(--sans); font-size: .58em; letter-spacing: .06em; text-transform: uppercase;
   color: var(--ink-faint); margin-right: .7em; vertical-align: .15em;
 }
+.language-label {
+  display: inline-block; margin-right: .8em; padding: .2em .5em; border-radius: 5px;
+  background: var(--paper-raised); color: var(--indigo); font: 800 .6em/1.4 var(--sans);
+  letter-spacing: .025em; vertical-align: .17em; white-space: nowrap;
+}
+.paired-unit { display: inline; }
+.tk-lookup { cursor: pointer; border-radius: 2px; }
+.tk-lookup:hover, .tk-lookup:focus-visible { background: color-mix(in srgb, var(--coral) 18%, transparent); outline: none; }
+.passage-action { display: inline-flex; vertical-align: middle; margin: 0 .45em 0 .1em; padding: .2em; color: var(--ink-faint); opacity: .6; }
+.passage-action:hover, .passage-action:focus-visible { color: var(--coral); opacity: 1; }
 .line { white-space: pre-wrap; }
+
+/* A page-side reading desk: the passage remains visible while a tool is open. */
+.reading-panel-backdrop { position: fixed; inset: 0; z-index: 30; background: rgba(16, 17, 31, .3); display: flex; justify-content: flex-end; }
+.reading-panel { width: min(420px, 100%); height: 100%; display: flex; flex-direction: column; background: var(--paper); box-shadow: -12px 0 40px rgba(25, 20, 34, .15); }
+.reading-panel header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: max(20px, env(safe-area-inset-top)) 22px 15px; border-bottom: 1px solid var(--line); }
+.reading-panel header button { color: var(--ink-soft); padding: 5px; }
+.reading-panel-kicker { display: flex; align-items: center; gap: 7px; color: var(--indigo); font: 800 12px var(--sans); letter-spacing: .04em; }
+.reading-panel blockquote { margin: 0; padding: 22px; max-height: 25vh; overflow: auto; border-bottom: 1px solid var(--line); font: 1.1rem/1.8 var(--serif); }
+.reading-panel-tabs { display: flex; gap: 3px; padding: 9px 13px 0; border-bottom: 1px solid var(--line); }
+.reading-panel-tabs button { display: flex; align-items: center; gap: 5px; flex: 1; justify-content: center; padding: 10px 4px 12px; color: var(--ink-soft); border-bottom: 2px solid transparent; font: 700 12px var(--sans); }
+.reading-panel-tabs button.active { color: var(--indigo); border-color: var(--coral); }
+.reading-panel-body { padding: 22px; overflow-y: auto; padding-bottom: calc(30px + env(safe-area-inset-bottom)); }
+.reading-panel-body h3 { color: var(--ink-faint); font: 800 11px var(--sans); letter-spacing: .1em; text-transform: uppercase; margin: 28px 0 12px; }
+.dictionary-search { display: flex; gap: 8px; }
+.dictionary-search input, .reading-panel textarea { width: 100%; border: 1px solid var(--line); border-radius: 9px; background: var(--paper-raised); color: var(--ink); padding: 11px 12px; font: inherit; outline-color: var(--indigo); }
+.dictionary-search button, .panel-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; border-radius: 9px; background: var(--indigo); color: white; padding: 11px 15px; font: 700 13px var(--sans); text-decoration: none; }
+:root[data-theme='night'] .dictionary-search button, :root[data-theme='night'] .panel-cta { color: #14131c; }
+.definition-list { margin-top: 18px; }
+.definition-list p { border-bottom: 1px solid var(--line); padding: 0 0 12px; line-height: 1.55; font-size: 14px; }
+.definition-list small { display: block; color: var(--coral); font: 700 11px var(--sans); margin-bottom: 4px; }
+.panel-hint { font: 13px/1.55 var(--sans); color: var(--ink-soft); margin: 0 0 17px; }
+.panel-link { display: inline-flex; align-items: center; gap: 5px; color: var(--indigo); font: 700 13px var(--sans); margin-top: 10px; }
+.contextual-lines p { margin: 0; padding: 12px 0; border-top: 1px solid var(--line); line-height: 1.7; }
+.contextual-lines strong { display: block; color: var(--indigo); font: 800 11px var(--sans); margin-bottom: 3px; }
+.discussion-comments p { border-left: 2px solid var(--coral); margin: 12px 0; padding: 7px 0 7px 13px; white-space: pre-wrap; }
+.discussion-comments strong { display: block; color: var(--indigo); font: 800 12px var(--sans); margin-bottom: 6px; }
+.discussion-comments span { font-size: 13px; line-height: 1.5; }
+.reading-panel textarea { display: block; resize: vertical; margin-bottom: 12px; line-height: 1.6; }
+@media (max-width: 620px) { .reading-panel-backdrop { align-items: flex-end; } .reading-panel { width: 100%; height: auto; min-height: 45vh; max-height: min(83vh, 720px); border-radius: 19px 19px 0 0; box-shadow: 0 -12px 40px rgba(25, 20, 34, .18); } }
 
 /* Grammar colouring, off by default and deliberately gentle. */
 .role-s { color: #2f6f8f; } .role-p { color: #a1543a; } .role-o { color: #3f7a52; }

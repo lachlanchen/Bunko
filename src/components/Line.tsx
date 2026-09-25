@@ -14,11 +14,13 @@ export function Line({
   ruby = true,
   grammar = false,
   lang,
+  onToken,
 }: {
   line: LineTokens | undefined
   ruby?: boolean
   grammar?: boolean
   lang?: string
+  onToken?: (text: string, reading: string) => void
 }) {
   if (!line?.length) return null
   return (
@@ -26,18 +28,20 @@ export function Line({
       {line.map((token, index) => {
         const { text, reading, role } = tokenParts(token)
         if (!text) return null
-        const className = grammar && role ? `tk role-${role}` : 'tk'
+        const lookup = Boolean(onToken && /[\p{L}\p{N}]/u.test(text))
+        const className = `${grammar && role ? `tk role-${role}` : 'tk'}${lookup ? ' tk-lookup' : ''}`
         const title = grammar && role ? ROLE_NAMES[role] : undefined
+        const action = lookup ? { onClick: () => onToken?.(text.trim(), reading), role: 'button', tabIndex: 0, onKeyDown: (event: React.KeyboardEvent) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onToken?.(text.trim(), reading) } } } : {}
         if (ruby && reading) {
           return (
-            <ruby key={index} className={className} title={title}>
+            <ruby key={index} className={className} title={title} {...action}>
               {text}
               <rt>{reading}</rt>
             </ruby>
           )
         }
         return (
-          <span key={index} className={className} title={title}>
+          <span key={index} className={className} title={title} {...action}>
             {text}
           </span>
         )

@@ -6,13 +6,15 @@
  * gloss under its own source line, or whole paragraphs one after another.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { ChevronLeft, ChevronRight, List, Settings2 } from 'lucide-react'
-import type { BookMeta, Chapter, LangCode, ReadingSettings } from '../types'
+import { ChevronLeft, ChevronRight, List, MessageCircle, Settings2 } from 'lucide-react'
+import type { BookMeta, Chapter, LangCode, ReadingSettings, Unit } from '../types'
 import type { UICopy, UILanguage } from '../i18n'
 import { languageName } from '../i18n'
 import { loadChapter } from '../lib/library'
 import { Line } from './Line'
 import { plainText } from '../lib/text'
+import { passageKey } from '../lib/readingTools'
+import { ReadingPanel, type ReadingFocus } from './ReadingPanel'
 
 interface ReaderProps {
   meta: BookMeta
@@ -49,6 +51,7 @@ export function Reader({
     error: '',
   })
   const [progress, setProgress] = useState(0)
+  const [focus, setFocus] = useState<ReadingFocus | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const row = meta.chapters[chapterIndex]
   // Anything not matching the chapter now on screen is a stale load.
@@ -113,6 +116,12 @@ export function Reader({
     plainText(chapter?.title?.[shown[0]] ?? chapter?.title?.[meta.primary]) ||
     row?.title?.[meta.primary] ||
     `${copy.chapterList} ${row?.n ?? ''}`
+  const discussLabel = { en: 'Discuss passage', 'zh-Hans': '讨论这段', 'zh-Hant': '討論這段', ja: 'この箇所を話し合う' }[ui]
+
+  const openFocus = (paragraphId: string, unit: Unit, unitIndex: number, lang: LangCode, word?: string, reading?: string) => {
+    setFocus({ key: passageKey(meta, row.file, paragraphId, unitIndex), unit, lang, word, reading })
+  }
+
 
   return (
     <div className="reader">
@@ -158,14 +167,9 @@ export function Reader({
                 {settings.layout === 'paired'
                   ? shown.map((lang) => (
                       <p className={`para-line lang-${lang}`} key={lang} lang={htmlLang(lang)}>
+                        <strong className="language-label">{languageName(lang, ui)}</strong>
                         {paragraph.u.map((unit, unitIndex) => (
-                          <Line
-                            key={unitIndex}
-                            line={unit[lang]}
-                            ruby={settings.ruby}
-                            grammar={settings.grammar}
-                            lang={htmlLang(lang)}
-                          />
+                          <span key={unitIndex} className="paired-unit"><Line line={unit[lang]} ruby={settings.ruby} grammar={settings.grammar} lang={htmlLang(lang)} onToken={(word, reading) => openFocus(paragraph.id, unit, unitIndex, lang, word, reading)} />{lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
                         ))}
                       </p>
                     ))
@@ -174,15 +178,15 @@ export function Reader({
                         {shown.map((lang) =>
                           unit[lang]?.length ? (
                             <p className={`unit-line lang-${lang}`} key={lang} lang={htmlLang(lang)}>
-                              {settings.layout === 'interlinear' && shown.length > 1 && lang !== shown[0] && (
-                                <span className="gloss-tag">{languageName(lang, ui)}</span>
-                              )}
+                              {shown.length > 1 && <strong className="language-label">{languageName(lang, ui)}</strong>}
                               <Line
                                 line={unit[lang]}
                                 ruby={settings.ruby}
                                 grammar={settings.grammar}
                                 lang={htmlLang(lang)}
+                                onToken={(word, reading) => openFocus(paragraph.id, unit, unitIndex, lang, word, reading)}
                               />
+                              {lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}
                             </p>
                           ) : null,
                         )}
@@ -191,7 +195,7 @@ export function Reader({
               </div>
             ))}
             <nav className="chapter-nav">
-              <button type="button" disabled={chapterIndex <= 0} onClick={() => onChapter(chapterIndex - 1)}>
+              <button type="button" disabled={chapterIndex <= 0} onClick={() => { setFocus(null); onChapter(chapterIndex - 1) }}>
                 <ChevronLeft size={16} /> {copy.previous}
               </button>
               <span>
@@ -200,7 +204,7 @@ export function Reader({
               <button
                 type="button"
                 disabled={chapterIndex >= meta.chapters.length - 1}
-                onClick={() => onChapter(chapterIndex + 1)}
+                onClick={() => { setFocus(null); onChapter(chapterIndex + 1) }}
               >
                 {copy.next} <ChevronRight size={16} />
               </button>
@@ -209,6 +213,7 @@ export function Reader({
           </article>
         )}
       </div>
+      {focus && focus.key.startsWith(`${meta.id}/${row.file}/`) && <ReadingPanel key={`${focus.key}:${focus.word ?? ''}:${focus.lang}`} focus={focus} ui={ui} onClose={() => setFocus(null)} />}
     </div>
   )
 }

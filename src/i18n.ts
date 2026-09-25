@@ -123,7 +123,7 @@ const en: UICopy = {
   requestSend: 'Open the request',
   about: 'About',
   aboutBody:
-    'Bunko reads public-domain classics with a reading above every character, in English, Chinese and Japanese. Everything is downloaded once and read offline; nothing you do here leaves your device.',
+    'Bunko reads public-domain classics in English, Chinese and Japanese. Downloaded books and private notes stay on this device. Dictionary lookups use Wiktionary; public discussions use GitHub.',
   rights: 'Rights',
   rightsBody:
     'Every book here is out of copyright. The modern Chinese, Japanese and English renderings were generated from those public-domain originals by LazyingArt LLC, which owns them.',
@@ -191,7 +191,7 @@ const zhHans: UICopy = {
   requestSend: '提交申请',
   about: '关于',
   aboutBody:
-    '文库让你读公共领域的经典，每个字上都有读音，支持英文、中文与日文。书籍下载一次即可离线阅读，你的一切操作都留在本机。',
+    '文库支持阅读英、中、日文公共领域经典，字字有音。已下载的书和私人笔记保存在本机。查词使用维基词典，公开讨论使用 GitHub。',
   rights: '版权',
   rightsBody:
     '本应用收录的作品均已进入公共领域。现代中文、日文与英文译文由 LazyingArt LLC 根据公共领域原文生成并拥有。',
@@ -257,7 +257,7 @@ const zhHant: UICopy = {
   requestSend: '提交申請',
   about: '關於',
   aboutBody:
-    '文庫讓你讀公共領域的經典，每個字上都有讀音，支援英文、中文與日文。書籍下載一次即可離線閱讀，你的一切操作都留在本機。',
+    '文庫支援閱讀英、中、日文公共領域經典，字字有音。已下載的書和私人筆記儲存在本機。查詞使用維基詞典，公開討論使用 GitHub。',
   rights: '版權',
   rightsBody:
     '本應用收錄的作品均已進入公共領域。現代中文、日文與英文譯文由 LazyingArt LLC 根據公共領域原文生成並擁有。',
@@ -325,7 +325,7 @@ const ja: UICopy = {
   requestSend: 'リクエストを開く',
   about: 'このアプリについて',
   aboutBody:
-    '文庫は、すべての文字に読みを添えてパブリックドメインの古典を読むアプリです。英語・中国語・日本語に対応し、一度ダウンロードすればオフラインで読めます。操作は端末の外に出ません。',
+    '文庫では英語・中国語・日本語の古典を読み付きで楽しめます。ダウンロードした本と個人メモは端末に保存します。辞書検索にはウィクショナリー、公開討論には GitHub を使います。',
   rights: '権利',
   rightsBody:
     '収録作品はすべて著作権保護期間が終了しています。現代語訳は LazyingArt LLC がパブリックドメインの原文から生成し、保有しています。',
