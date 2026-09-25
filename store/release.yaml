@@ -18,6 +18,7 @@ channels:
     status: IN_REVIEW
     production: 1.0.0 (1), full rollout after approval
     countries: 172
+    country_selection: all paid-app eligible regions; China, Cuba, Iran, Sudan and Rest of World are not targetable for paid apps
     managed_publishing: false
     internal_track: "4701547714770281380"
     internal_status: available to internal testers
@@ -26,6 +27,8 @@ channels:
     bundle_id: art.lazying.bunko
     app_id: "6815137919"
     status: READY_FOR_SALE
+    territories: 175
+    available_in_new_territories: true
     release: automatic after approval
     review_submission: 94daf1ea-f335-40e0-8d0d-854a14246983
     build_id: 512883f9-e3c0-4972-9546-e5785154c5af

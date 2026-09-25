@@ -1,0 +1,24 @@
+{
+  "checked_at": "2026-09-25T02:12:16Z",
+  "apple": {
+    "app_id": "6815137919",
+    "territories_total": 175,
+    "territories_available": 175,
+    "content_status": "AVAILABLE",
+    "available_in_new_territories": true,
+    "public_version": "1.0.0",
+    "public_state": "READY_FOR_SALE",
+    "update_version": "1.0.1",
+    "update_state": "WAITING_FOR_REVIEW"
+  },
+  "google_play": {
+    "app_id": "4972575539744983205",
+    "package": "art.lazying.bunko",
+    "paid_app": true,
+    "country_region_entries_total": 177,
+    "targeted": 172,
+    "not_targetable_for_paid_app": ["China", "Cuba", "Iran", "Sudan", "Rest of World"],
+    "production_release": "1.0.0 (1)",
+    "production_state": "in review"
+  }
+}

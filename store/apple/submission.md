@@ -22,3 +22,5 @@ App Store Connect now reports 1.0.0 (1) **Ready for Sale**, and its original rev
 Version **1.0.1 (2)** was created with build `5fcc84a8-d44c-4b0c-84ed-7bbf8563f02b` (processing **VALID**, marketing version 1.0.1). Its four localized descriptions now say 150 books, and all four have release notes for covers, Light/Dark/System themes, catalogue refresh and offline improvements. Five inherited iPhone and two iPad screenshots remain attached to the English localization. Review notes were updated to explain the live catalogue and the new reader features.
 
 Review submission `e560b7c7-e6e5-4342-bb64-5d8486e69b21` was submitted on 2026-09-25 at 02:05:30 UTC and is **Waiting for Review**. Automatic release after approval remains selected. See [`../artifacts/apple-submission-1.0.1.json`](../artifacts/apple-submission-1.0.1.json) for the curated IDs and state.
+
+Availability rechecked 2026-09-25: App Store Connect lists **175 territories total**, with Bunko marked **available** and content status **AVAILABLE** in all 175. `availableInNewTerritories` is true, so newly added App Store territories are included automatically, subject to Apple's local rules.
