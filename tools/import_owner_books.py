@@ -40,7 +40,7 @@ def make_cover(folder, source, original_design=False):
                   'sourceAsset': str(source.relative_to(ROOT.parent))}
 
 
-def publish(slug, title, langs, primary, category, author, chapters, source_repo, basis, cover=None, original_cover=False):
+def publish(slug, title, langs, primary, category, author, chapters, source_repo, basis, cover=None, original_cover=False, license=None):
     folder = OUT / slug
     folder.mkdir(parents=True, exist_ok=True)
     rows = []
@@ -83,6 +83,9 @@ def publish(slug, title, langs, primary, category, author, chapters, source_repo
               'basis': basis, 'references': [source_repo], 'checked': DATE}
     if cover_rights:
         rights['cover'] = cover_rights
+    if license:
+        rights['license'] = license
+        rights['licenseFile'] = 'licenses/GPL-3.0.txt'
     (folder / 'rights.json').write_text(json.dumps(rights, ensure_ascii=False, indent=2) + '\n')
     print(slug, len(rows), paras, f'{total / 1e6:.1f} MB')
 
@@ -208,6 +211,7 @@ def tex_blocks(source, figure_root=None):
         if not rich: return
         plain = ''.join(item['text'] if 'text' in item else '$' + item['math'] + '$' for item in rich).strip()
         if not plain: return
+        if re.fullmatch(r'\[(?:fig|eq|sec|tab):[^\]]+\]', plain): return
         unit = {'src': plain, 'en': [plain]}
         if any('math' in item for item in rich): unit['rich'] = {'en': rich}
         blocks.append({'id': f'b{len(blocks)+1:04d}', 'src': plain, 'kind': kind, 'u': [unit]})
@@ -226,7 +230,13 @@ def tex_blocks(source, figure_root=None):
                             caption = pandoc_text(image['c'][1])
                             add([{'t': 'Str', 'c': caption or 'Figure'}], 'figure')
                             blocks[-1]['figure'] = {'path': dest, 'caption': {'en': caption}}
-                else: add(value, 'equation' if any(n.get('t') == 'Math' and n['c'][0]['t'] == 'DisplayMath' for n in value if isinstance(n, dict)) else 'text')
+                            # The image and its figcaption already present this text.
+                            # Retain a passage anchor without printing the caption twice.
+                            blocks[-1]['u'][0]['en'] = ['']
+                else:
+                    meaningful = [n for n in value if isinstance(n, dict) and n.get('t') not in ('Space', 'SoftBreak', 'LineBreak')]
+                    standalone = bool(meaningful) and all(n.get('t') == 'Math' and n['c'][0]['t'] == 'DisplayMath' for n in meaningful)
+                    add(value, 'equation' if standalone else 'text')
             elif tag == 'Header': add(value[2], 'heading')
             elif tag == 'Div': walk(value[1])
             elif tag == 'BlockQuote': walk(value)
@@ -257,7 +267,7 @@ def physics_and_learning():
                 'LazyingArt LLC · companion notes to Leonard Susskind lectures', chapters,
                 f'https://github.com/lachlanchen/leonardsusskind/tree/main/generated_course_notes/core/{location}',
                 'Independent edited AI-assisted companion notes by the owner, adapted from public lectures; not a transcript, Susskind manuscript or endorsed edition. Original source repo is GPL-3.0; preserve attribution and GPL terms.',
-                ROOT.parent / 'leonardsusskind' / 'figs/readme-covers' / cover_file, True)
+                ROOT.parent / 'leonardsusskind' / 'figs/readme-covers' / cover_file, True, 'GPL-3.0-only')
     path = ROOT.parent / 'LazyLearn' / 'generated_course_notes/lazylearn/how-you-speak-and-write'
     chapters = []
     for source in sorted((path / 'chapters').glob('*/content.tex')):
