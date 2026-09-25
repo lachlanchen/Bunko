@@ -32,7 +32,7 @@ npm run dev
 
 ## Bibliothèque et versions
 
-Le catalogue public compte 150 éditions autorisées. Les nouveaux livres sont publiés via GitHub sans reconstruire l’application ; les changements du lecteur demandent une nouvelle version web ou native. Le dossier ci-dessous indique la disponibilité et les examens des mises à jour selon la plateforme.
+Le catalogue public compte 183 éditions autorisées. Les nouveaux livres sont publiés via GitHub sans reconstruire l’application ; les changements du lecteur demandent une nouvelle version web ou native. Le dossier ci-dessous indique la disponibilité et les examens des mises à jour selon la plateforme.
 
 [store/release.yaml](../store/release.yaml)
 
@@ -62,6 +62,6 @@ Si vous utilisez Bunko dans une recherche, citez ce dépôt. GitHub lit [CITATIO
 Les rendus d’étude produits par IA peuvent comporter des erreurs. Seules les éditions complètes et auditées sont publiées ; le domaine public varie selon les territoires. Signalez les bugs du lecteur dans [Bunko issues](https://github.com/lachlanchen/Bunko/issues) et les problèmes de livres ou de droits dans [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues).
 ## Lire dans Bunko
 
-La bibliothèque réunit 150 classiques du domaine public et 12 éditions autorisées par leur auteur : notes de physique, guide d’apprentissage, livres de finance et trois guides de voyage multilingues. Chaque livre peut proposer une ou plusieurs langues ; les équations et figures restent lisibles sur mobile.
+La bibliothèque réunit 150 classiques du domaine public et 33 éditions autorisées par leur auteur : notes de physique, guide d’apprentissage, livres de finance et trois guides de voyage multilingues. Chaque livre peut proposer une ou plusieurs langues ; les équations et figures restent lisibles sur mobile.
 
 [App Store d’Apple](https://apps.apple.com/app/id6815137919) · [Google Play · publication en attente](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)

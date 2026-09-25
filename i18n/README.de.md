@@ -32,7 +32,7 @@ npm run dev
 
 ## Bibliothek und Releases
 
-Der öffentliche Katalog umfasst 150 geprüfte Ausgaben. Neue Bücher erscheinen über GitHub ohne neuen App-Build; Änderungen am Reader-Code brauchen dagegen ein neues Web- oder natives Release. Das folgende Release-Protokoll zeigt Verfügbarkeit und Update-Prüfungen je Plattform.
+Der öffentliche Katalog umfasst 183 geprüfte Ausgaben. Neue Bücher erscheinen über GitHub ohne neuen App-Build; Änderungen am Reader-Code brauchen dagegen ein neues Web- oder natives Release. Das folgende Release-Protokoll zeigt Verfügbarkeit und Update-Prüfungen je Plattform.
 
 [store/release.yaml](../store/release.yaml)
 
@@ -62,6 +62,6 @@ Wenn du Bunko für Forschung nutzt, zitiere dieses Repository. GitHub liest [CIT
 KI-erzeugte Lernfassungen können Fehler enthalten. Der Katalog veröffentlicht nur geprüfte, vollständige Ausgaben; Gemeinfreiheit hängt vom Gebiet ab. Reader-Fehler bitte bei [Bunko issues](https://github.com/lachlanchen/Bunko/issues), Buch- und Rechteprobleme bei [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues) melden.
 ## Bunko lesen
 
-Die Bibliothek enthält jetzt 150 gemeinfreie Klassiker und 12 vom Autor freigegebene Ausgaben: Physik-Begleittexte, einen Lernführer, Finanzbücher und drei mehrsprachige Reiseführer. Bücher können eine oder mehrere Sprachen haben; Formeln und Abbildungen bleiben im mobilen Reader erhalten.
+Die Bibliothek enthält jetzt 150 gemeinfreie Klassiker und 33 vom Autor freigegebene Ausgaben: Physik-Begleittexte, einen Lernführer, Finanzbücher und drei mehrsprachige Reiseführer. Bücher können eine oder mehrere Sprachen haben; Formeln und Abbildungen bleiben im mobilen Reader erhalten.
 
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · Veröffentlichung ausstehend](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)

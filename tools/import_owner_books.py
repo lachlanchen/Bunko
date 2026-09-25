@@ -8,6 +8,8 @@ import json
 import re
 import shutil
 import subprocess
+import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -193,7 +195,10 @@ def pandoc_rich(nodes):
         tag, value = node.get('t'), node.get('c')
         if tag == 'Math':
             tex = re.sub(r'\\label\{[^}]+\}', '', value[1]).strip()
-            parts.append({'math': tex, 'display': value[0]['t'] == 'DisplayMath'})
+            # KaTeX requires split in display mode and does not support TeX
+            # inter-column @{...} spacing in array specifications.
+            tex = re.sub(r'(@\{[^}]*\})', '', tex)
+            parts.append({'math': tex, 'display': value[0]['t'] == 'DisplayMath' or '\\begin{split}' in tex})
         elif tag == 'Str': parts.append({'text': value})
         elif tag in ('Space', 'SoftBreak', 'LineBreak'): parts.append({'text': ' '})
         elif tag in ('Emph', 'Strong', 'Span', 'Link', 'Quoted'):
@@ -301,8 +306,107 @@ def finance_notes():
             root / 'docs/publications/wealth-from-first-principles/cover-art.png')
 
 
+def chapter_sources(path):
+    """Read the edited chapter manuscripts, never the raw transcripts."""
+    chapters = []
+    for source in sorted((path / 'chapters').glob('*/content.tex')):
+        blocks, assets = tex_blocks(source, path / 'figures')
+        heading = next((b['src'] for b in blocks if b['kind'] == 'heading'),
+                       source.parent.name.replace('_', ' ').title())
+        chapters.append(({'en': heading}, blocks, assets))
+    if not chapters:
+        raise ValueError(f'No edited chapters: {path}')
+    return chapters
+
+
+def split_long_tex(source, figure_root=None):
+    """Keep the author's chapter structure when a book uses one TeX file."""
+    manuscript = source.read_text()
+    sections = re.split(r'(?=\\chapter\{)', manuscript)
+    chapters = []
+    with tempfile.TemporaryDirectory(prefix='bunko-tex-') as scratch:
+        temp = Path(scratch) / 'chapter.tex'
+        for section in sections[1:]:
+            temp.write_text(section.split('\\end{document}', 1)[0])
+            blocks, assets = tex_blocks(temp, figure_root)
+            if blocks:
+                title = next((b['src'] for b in blocks if b['kind'] == 'heading'), 'Chapter')
+                chapters.append(({'en': title}, blocks, assets))
+    if not chapters:
+        raise ValueError(f'Empty manuscript: {source}')
+    return chapters
+
+
+def remaining_physics():
+    root = ROOT.parent / 'leonardsusskind'
+    specs = [
+        ('core', 'classical_mechanics/2011_fall_modern_physics_stanford_partial', 'classical-mechanics-stanford', 'Classical Mechanics · Stanford Partial Run', 'classical_mechanics_stanford_partial.png'),
+        ('core', 'quantum_mechanics/2012_winter_modern_physics_stanford', 'quantum-mechanics-stanford', 'Quantum Mechanics · Stanford Modern Physics', 'quantum_mechanics_modern_physics_stanford_first_page.png'),
+        ('core', 'general_relativity/2008_fall_einsteins_general_theory_of_relativity', 'general-relativity-2008', 'General Relativity · Einstein 2008', 'general_relativity_2008_fall_einsteins_general_theory_of_relativity_first_page.png'),
+        ('core', 'cosmology/2009_winter_legacy_cosmology', 'cosmology-legacy', 'Cosmology · Legacy Course', 'cosmology_legacy.png'),
+        ('supplementary', 'advanced_quantum_mechanics/2013_fall', 'advanced-quantum-mechanics', 'Advanced Quantum Mechanics · Supplementary', 'advanced_quantum_mechanics.png'),
+        ('supplementary', 'particle_physics_1_basic_concepts/2009_fall', 'particle-physics-1', 'Particle Physics 1 · Basic Concepts', 'particle_physics_1_basic_concepts.png'),
+        ('supplementary', 'particle_physics_2_standard_model/2010_winter', 'particle-physics-2', 'Particle Physics 2 · Standard Model', 'particle_physics_2_standard_model.png'),
+        ('supplementary', 'particle_physics_3_supersymmetry_and_grand_unification/2010_spring', 'particle-physics-3', 'Particle Physics 3 · Supersymmetry', 'particle_physics_3_supersymmetry_and_grand_unification.png'),
+        ('supplementary', 'quantum_entanglement/2006_fall_part_1', 'quantum-entanglement-1', 'Quantum Entanglement · Part 1', 'quantum_entanglement_part_1.png'),
+        ('supplementary', 'quantum_entanglement/2006_fall_part_3', 'quantum-entanglement-3', 'Quantum Entanglement · Part 3', 'quantum_entanglement_part_3.png'),
+        ('supplementary', 'cosmology_and_black_holes/2011_winter_topics_in_string_theory', 'cosmology-and-black-holes', 'Topics in String Theory · Cosmology and Black Holes', 'topics_in_string_theory.png'),
+        ('supplementary', 'string_theory/2010_fall_string_theory_and_m_theory', 'string-theory-and-m-theory', 'String Theory and M-Theory · Supplementary', 'string_theory_and_m_theory.png'),
+        ('supplementary', 'higgs_boson/2012_summer', 'higgs-boson', 'Demystifying the Higgs Boson', 'demystifying_the_higgs_boson.png'),
+    ]
+    for shelf, location, slug, title, cover in specs:
+        path = root / 'generated_course_notes' / shelf / location
+        publish('physics-' + slug, {'en': title}, ['en'], 'en', 'physics',
+                'LazyingArt LLC · companion notes to Leonard Susskind lectures',
+                chapter_sources(path),
+                f'https://github.com/lachlanchen/leonardsusskind/tree/main/generated_course_notes/{shelf}/{location}',
+                'Independent edited AI-assisted companion notes by the owner, adapted from public lectures; not a transcript, Susskind manuscript or endorsed edition. Source repo GPL-3.0.',
+                root / 'figs/readme-covers' / cover, True, 'GPL-3.0-only')
+
+
+def remaining_learning():
+    root = ROOT.parent / 'LazyLearn'
+    path = root / 'generated_course_notes/lazylearn/justice-with-michael-sandel'
+    publish('learning-justice-sandel', {'en': 'Justice with Michael Sandel'}, ['en'],
+            'en', 'learning', 'LazyingArt LLC · companion notes', chapter_sources(path),
+            'https://github.com/lachlanchen/LazyLearn/tree/main/generated_course_notes/lazylearn/justice-with-michael-sandel',
+            'Owner-edited course companion notes based on the published Justice lectures; not an original Sandel book or endorsed edition.',
+            root / 'docs/justice-with-michael-sandel-cover.png', True)
+
+
+def remaining_earn():
+    root = ROOT.parent / 'LazyEarn'
+    base = root / 'generated_course_notes/lazyearn'
+    specs = [
+        ('earn-happiness', 'How You Got Happiness?', 'jiddu-krishnamurti/how-you-got-happiness', 'how-you-got-happiness', 'J. Krishnamurti lectures'),
+        ('earn-millionaire-questions', '10 Questions With a Millionaire', 'school-of-hard-knocks/10-questions-with-a-millionaire', '10-questions-with-a-millionaire', 'School of Hard Knocks interviews'),
+        ('earn-yale-financial-markets', 'Yale Financial Markets Notes', 'yale-financial-markets', 'yale-financial-markets', 'Robert J. Shiller lectures'),
+        ('earn-mit-new-ventures', 'MIT Nuts and Bolts of New Ventures', 'mit-nuts-and-bolts-of-new-ventures', 'mit-nuts-and-bolts-of-new-ventures', 'Joseph Hadzima lectures'),
+        ('earn-entrepreneurship', 'Entrepreneurship', 'school-of-hard-knocks/entrepreneurship', 'entrepreneurship', 'School of Hard Knocks interviews'),
+        ('earn-wealth-freedom', 'The Way to Wealth Freedom', 'the-way-to-wealth-freedom-notes', 'the-way-to-wealth-freedom-notes', 'owner source notes'),
+    ]
+    for slug, title, location, cover, subject in specs:
+        path = base / location
+        publish(slug, {'en': title}, ['en'], 'en', 'finance',
+                'LazyingArt LLC · edited study notes', chapter_sources(path),
+                f'https://github.com/lachlanchen/LazyEarn/tree/main/generated_course_notes/lazyearn/{location}',
+                f'Owner-edited companion notes based on {subject}; not a transcript or an endorsed edition. Interview claims are source claims, not independently verified financial advice.',
+                root / 'docs/publications' / cover / 'cover-page-1.png', True)
+    source = base / 'school-of-hard-knocks/entrepreneurship/dynamic_book/how-you-build-a-business.tex'
+    publish('earn-build-a-business', {'en': 'How You Build a Business?'}, ['en'],
+            'en', 'finance', 'LazyingArt LLC', split_long_tex(source),
+            'https://github.com/lachlanchen/LazyEarn/tree/main/generated_course_notes/lazyearn/school-of-hard-knocks/entrepreneurship/dynamic_book',
+            'Owner-curated thematic synthesis from the interview corpus; interview claims remain attributed source claims, not independently verified financial advice.',
+            root / 'docs/publications/how-you-build-a-business/cover-art.png', True)
+
+
 if __name__ == '__main__':
-    travel()
-    wealth_book()
-    physics_and_learning()
-    finance_notes()
+    if sys.argv[1:] == ['remaining']:
+        remaining_physics()
+        remaining_learning()
+        remaining_earn()
+    else:
+        travel()
+        wealth_book()
+        physics_and_learning()
+        finance_notes()

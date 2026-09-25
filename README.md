@@ -32,7 +32,7 @@ npm run dev
 
 ## Library and release
 
-The live catalogue has 162 cleared editions: 150 classics and 12 owner editions. New book bundles publish through GitHub without an app build; changes to reader code still need a new web or native release. Platform availability and update reviews are tracked in the release record below.
+The live catalogue has 183 cleared editions: 150 classics and 33 owner editions. New book bundles publish through GitHub without an app build; changes to reader code still need a new web or native release. Platform availability and update reviews are tracked in the release record below.
 
 [store/release.yaml](store/release.yaml)
 
@@ -62,6 +62,6 @@ If you use Bunko in research, cite this repository. GitHub reads [CITATION.cff](
 Study renderings and companion notes can be AI-assisted and may contain errors. The catalogue publishes only audited, complete editions; public-domain rules vary by territory. Report reader bugs in [Bunko issues](https://github.com/lachlanchen/Bunko/issues), or book and rights problems in [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues).
 ## Read Bunko
 
-The library now includes 150 public-domain classics and 12 rights-cleared owner editions: physics companion notes, a learning guide, finance books, and three multilingual travel guides. Each book may offer one or several languages. Equations and figures are kept in the mobile reader.
+The library now includes 150 public-domain classics and 33 rights-cleared owner editions: 19 physics companion books (including all nine supplementary courses), two learning books, nine finance books, and three multilingual travel guides. Each book may offer one or several languages. Equations and figures are kept in the mobile reader.
 
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · publication pending](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)

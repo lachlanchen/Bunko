@@ -32,7 +32,7 @@ npm run dev
 
 ## Biblioteca y versiones
 
-El catálogo público contiene 150 ediciones autorizadas. Los nuevos libros se publican por GitHub sin reconstruir la app; los cambios en el lector sí requieren una nueva versión web o nativa. El registro siguiente muestra la disponibilidad y las revisiones de cada plataforma.
+El catálogo público contiene 183 ediciones autorizadas. Los nuevos libros se publican por GitHub sin reconstruir la app; los cambios en el lector sí requieren una nueva versión web o nativa. El registro siguiente muestra la disponibilidad y las revisiones de cada plataforma.
 
 [store/release.yaml](../store/release.yaml)
 
@@ -62,6 +62,6 @@ Si usas Bunko en investigación, cita este repositorio. GitHub lee [CITATION.cff
 Las versiones de estudio generadas por IA pueden contener errores. El catálogo solo publica ediciones completas y auditadas; el dominio público varía según el territorio. Informa de fallos del lector en [Bunko issues](https://github.com/lachlanchen/Bunko/issues) y de problemas de libros o derechos en [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues).
 ## Leer en Bunko
 
-La biblioteca reúne 150 clásicos de dominio público y 12 ediciones autorizadas por su autor: apuntes de física, una guía de aprendizaje, libros de finanzas y tres guías de viaje multilingües. Cada libro puede tener uno o varios idiomas; el lector móvil conserva las ecuaciones y figuras.
+La biblioteca reúne 150 clásicos de dominio público y 33 ediciones autorizadas por su autor: apuntes de física, una guía de aprendizaje, libros de finanzas y tres guías de viaje multilingües. Cada libro puede tener uno o varios idiomas; el lector móvil conserva las ecuaciones y figuras.
 
 [App Store de Apple](https://apps.apple.com/app/id6815137919) · [Google Play · publicación pendiente](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)

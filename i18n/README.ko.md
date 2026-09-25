@@ -32,7 +32,7 @@ npm run dev
 
 ## 도서관과 릴리스
 
-공개 목록에는 확인된 판본 150종이 있습니다. 새 책은 앱을 다시 빌드하지 않고 GitHub로 게시할 수 있습니다. 리더 코드가 바뀌면 웹 또는 네이티브 새 버전이 필요합니다. 플랫폼별 공개 상태와 업데이트 심사는 아래 릴리스 기록에서 확인하세요.
+공개 목록에는 확인된 판본 183종이 있습니다. 새 책은 앱을 다시 빌드하지 않고 GitHub로 게시할 수 있습니다. 리더 코드가 바뀌면 웹 또는 네이티브 새 버전이 필요합니다. 플랫폼별 공개 상태와 업데이트 심사는 아래 릴리스 기록에서 확인하세요.
 
 [store/release.yaml](../store/release.yaml)
 
@@ -62,6 +62,6 @@ Bunko는 LazyingArt 프로젝트입니다. 독서나 연구에 도움이 되었�
 AI가 생성한 학습용 번역에는 오류가 있을 수 있습니다. 목록에는 검토된 완결 판본만 게시하며 공개 도메인 기준은 지역마다 다릅니다. 리더 오류는 [Bunko issues](https://github.com/lachlanchen/Bunko/issues), 책이나 권리 문제는 [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues)에 알려 주세요.
 ## Bunko에서 읽기
 
-서재에는 퍼블릭 도메인 고전 150권과 저자가 공개를 허락한 도서 12권이 있습니다. 물리학 해설, 학습 안내서, 금융 도서, 다국어 여행 안내서 세 권을 포함합니다. 한 언어 또는 여러 언어로 읽을 수 있으며 수식과 그림도 모바일에서 표시됩니다.
+서재에는 퍼블릭 도메인 고전 150권과 저자가 공개를 허락한 도서 33권이 있습니다. 물리학 해설, 학습 안내서, 금융 도서, 다국어 여행 안내서 세 권을 포함합니다. 한 언어 또는 여러 언어로 읽을 수 있으며 수식과 그림도 모바일에서 표시됩니다.
 
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 출시 대기 중](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)

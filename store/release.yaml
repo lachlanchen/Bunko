@@ -49,6 +49,6 @@ android:
   apk_sha256: 16c9b71d7122258d908eb2f01c1e04b2b0a2e7c52e7a47add6f4149972e7c36e
 
 catalogue:
-  cleared: 162
+  cleared: 183
   audited: docs/catalogue.md
-  payload_bytes: 2745112265
+  payload_bytes: 2774079249

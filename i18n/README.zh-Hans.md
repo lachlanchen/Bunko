@@ -32,7 +32,7 @@ npm run dev
 
 ## 书库与版本
 
-在线书目已有 150 种通过审核的版本。新书可以通过 GitHub 发布，无须重新构建应用；阅读器代码的改动仍需发布新版网页或原生应用。各平台的上架情况与更新审核状态见下方发布记录。
+在线书目已有 183 种通过审核的版本。新书可以通过 GitHub 发布，无须重新构建应用；阅读器代码的改动仍需发布新版网页或原生应用。各平台的上架情况与更新审核状态见下方发布记录。
 
 [store/release.yaml](../store/release.yaml)
 
@@ -62,6 +62,6 @@ Bunko 是 LazyingArt 项目。如果它帮助了你的阅读或研究，可以�
 AI 生成的学习文本可能有误。书目只发布经过审核的完整版本，公版规则也因地区而异。阅读器问题请提交至 [Bunko issues](https://github.com/lachlanchen/Bunko/issues)；书籍或版权问题请提交至 [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues)。
 ## 在 Bunko 阅读
 
-书库现有 150 部公共领域经典和 12 部经作者授权的作品：物理学伴读笔记、学习指南、财经书籍，以及三本多语旅行指南。每本书可有一种或多种语言，公式和插图也能在手机上阅读。
+书库现有 150 部公共领域经典和 33 部经作者授权的作品：物理学伴读笔记、学习指南、财经书籍，以及三本多语旅行指南。每本书可有一种或多种语言，公式和插图也能在手机上阅读。
 
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 待上架](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
