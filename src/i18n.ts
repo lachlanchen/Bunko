@@ -70,6 +70,13 @@ export interface UICopy {
   retry: string
   back: string
   close: string
+  mobileStoreTitle: string
+  mobileStoreAppleBody: string
+  mobileStoreAndroidBody: string
+  mobileStoreAndroidPending: string
+  mobileStoreAppleAction: string
+  mobileStoreAndroidAction: string
+  mobileStoreContinue: string
 }
 
 const en: UICopy = {
@@ -142,6 +149,13 @@ const en: UICopy = {
   retry: 'Try again',
   back: 'Back',
   close: 'Close',
+  mobileStoreTitle: 'Take Bunko with you',
+  mobileStoreAppleBody: 'The iPhone and iPad app is available on the App Store. Your web reader stays here whenever you prefer it.',
+  mobileStoreAndroidBody: 'Bunko is available for Android on Google Play. Your web reader stays here whenever you prefer it.',
+  mobileStoreAndroidPending: 'Bunko for Android is in review. Keep reading here while we wait for the public Google Play release.',
+  mobileStoreAppleAction: 'Open App Store',
+  mobileStoreAndroidAction: 'Open Google Play',
+  mobileStoreContinue: 'Keep reading here',
 }
 
 const zhHans: UICopy = {
@@ -215,6 +229,13 @@ const zhHans: UICopy = {
   retry: '重试',
   back: '返回',
   close: '关闭',
+  mobileStoreTitle: '随身阅读文库',
+  mobileStoreAppleBody: 'iPhone 和 iPad 版已在 App Store 上架。也可以继续使用网页版阅读。',
+  mobileStoreAndroidBody: '安卓版已在 Google Play 上架，也可以继续使用网页版阅读。',
+  mobileStoreAndroidPending: '安卓版正在审核中。Google Play 正式上架前，可继续在这里阅读。',
+  mobileStoreAppleAction: '前往 App Store',
+  mobileStoreAndroidAction: '前往 Google Play',
+  mobileStoreContinue: '继续在这里阅读',
 }
 
 const zhHant: UICopy = {
@@ -286,6 +307,13 @@ const zhHant: UICopy = {
   retry: '重試',
   back: '返回',
   close: '關閉',
+  mobileStoreTitle: '隨身閱讀文庫',
+  mobileStoreAppleBody: 'iPhone 與 iPad 版已在 App Store 上架，也可以繼續使用網頁版閱讀。',
+  mobileStoreAndroidBody: '安卓版已在 Google Play 上架，也可以繼續使用網頁版閱讀。',
+  mobileStoreAndroidPending: '安卓版正在審核中。Google Play 正式上架前，可繼續在這裡閱讀。',
+  mobileStoreAppleAction: '前往 App Store',
+  mobileStoreAndroidAction: '前往 Google Play',
+  mobileStoreContinue: '繼續在這裡閱讀',
 }
 
 const ja: UICopy = {
@@ -359,6 +387,13 @@ const ja: UICopy = {
   retry: '再試行',
   back: '戻る',
   close: '閉じる',
+  mobileStoreTitle: '文庫を持ち歩こう',
+  mobileStoreAppleBody: 'iPhone・iPad 版は App Store で公開中です。ウェブ版でもそのまま読めます。',
+  mobileStoreAndroidBody: 'Android 版は Google Play で公開中です。ウェブ版でもそのまま読めます。',
+  mobileStoreAndroidPending: 'Android 版は審査中です。Google Play で公開されるまで、こちらでお読みください。',
+  mobileStoreAppleAction: 'App Store を開く',
+  mobileStoreAndroidAction: 'Google Play を開く',
+  mobileStoreContinue: 'ここで読み続ける',
 }
 
 export const copies: Record<UILanguage, UICopy> = { en, 'zh-Hans': zhHans, 'zh-Hant': zhHant, ja }

@@ -25,6 +25,7 @@ import {
 } from './lib/settings'
 import { Reader } from './components/Reader'
 import { Cover } from './components/Cover'
+import { MobileStorePrompt } from './components/MobileStorePrompt'
 
 type View = 'library' | 'book' | 'reader'
 type Filter = 'all' | 'chinese' | 'japanese' | 'world' | 'physics' | 'learning' | 'finance' | 'travel' | 'device'
@@ -267,6 +268,7 @@ export default function App() {
     const row = index?.books.find((book) => book.id === meta?.id)
     return (
       <main className="page-shell">
+        <MobileStorePrompt copy={copy} />
         <button className="link-back" type="button" onClick={() => setView('library')}>
           ← {copy.library}
         </button>
@@ -373,6 +375,8 @@ export default function App() {
           </button>
         </div>
       </header>
+
+      <MobileStorePrompt copy={copy} />
 
       <div className="search">
         <Search size={16} />

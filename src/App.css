@@ -13,6 +13,24 @@
   margin: 0 0 4px;
 }
 .masthead p { margin: 0; color: var(--ink-soft); font-size: 14px; max-width: 34ch; }
+.mobile-store-prompt {
+  position: relative; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  margin: 0 0 18px; padding: 14px 42px 14px 16px; border: 1px solid var(--line);
+  border-radius: 14px; background: var(--paper-raised); box-shadow: var(--shadow);
+}
+.mobile-store-prompt-copy { flex: 1 1 220px; }
+.mobile-store-prompt-copy strong { font-family: var(--serif); font-size: 16px; }
+.mobile-store-prompt-copy p { margin: 2px 0 0; color: var(--ink-soft); font-size: 13px; line-height: 1.45; }
+.mobile-store-prompt-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.mobile-store-prompt-actions a, .mobile-store-prompt-actions button {
+  display: inline-flex; align-items: center; min-height: 38px; padding: 7px 12px;
+  border-radius: 9px; font-size: 12px; font-weight: 700; text-decoration: none;
+}
+.mobile-store-prompt-actions a { background: var(--indigo); color: #fff; }
+.mobile-store-prompt-actions button { color: var(--ink-soft); border: 1px solid var(--line); }
+.mobile-store-prompt-close { position: absolute; top: 12px; right: 12px; color: var(--ink-faint); padding: 3px; }
+.mobile-store-prompt a:focus-visible, .mobile-store-prompt button:focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; }
+:root[data-theme='night'] .mobile-store-prompt-actions a { color: #14131c; }
 .icon {
   width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
   background: var(--paper-raised); border: 1px solid var(--line); color: var(--ink-soft);
