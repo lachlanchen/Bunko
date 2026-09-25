@@ -1,0 +1,118 @@
+{
+  "version": "1.0.2",
+  "build": 4,
+  "platform": "MAC_OS",
+  "checked": "2026-09-25",
+  "app_id": "6815137919",
+  "bundle_id": "art.lazying.bunko",
+  "version_id": "e6ebf529-e204-46a7-9f85-f19abe11831b",
+  "build_id": "0f2600ec-836f-4924-a423-6cc3a0c3985b",
+  "review_submission": "e49ee8d7-3964-40ac-99e4-ec47133ebd51",
+  "submitted_at": "2026-09-25T14:11:44.678Z",
+  "state": "WAITING_FOR_REVIEW",
+  "release_type": "AFTER_APPROVAL",
+  "processing_state": "VALID",
+  "internal_testflight_state": "IN_BETA_TESTING",
+  "testflight_group": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+  "minimum_macos": "12.0",
+  "architectures": [
+    "x86_64",
+    "arm64"
+  ],
+  "pkg_sha256": "79b8b3873b548d5a531ed469ed56c55398c239b9b1762d3e4fd68058fc4c20b6",
+  "pkg_bytes": 1555185,
+  "xcode": "26.3 (17C529)",
+  "screenshots": [
+    {
+      "file": "store/assets/macos-01-library.png",
+      "sha256": "9c8ea402e0d6cc62c36c289092e2aa54b6e53ec0f6b15e33a8d51506900cd6db",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "mode": "RGB",
+      "apple_asset_state": "COMPLETE"
+    },
+    {
+      "file": "store/assets/macos-02-reading.png",
+      "sha256": "ae2b9b54324a1050bb76b20c36fcd804e67ec3077c6d0b4876055b86c7f871ef",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "mode": "RGB",
+      "apple_asset_state": "COMPLETE"
+    },
+    {
+      "file": "store/assets/macos-03-equations.png",
+      "sha256": "a4aabfee6624ec98d7a982bd23d62849e0e0f715bd3024693fd553d4181e1482",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "mode": "RGB",
+      "apple_asset_state": "COMPLETE"
+    }
+  ],
+  "native_tests": {
+    "kvm": {
+      "checks": [
+        "live 183-book catalogue in bundled macOS WebKit",
+        "native Settings menu opens reader settings",
+        "native Find a Book menu focuses search",
+        "complete book downloaded to IndexedDB",
+        "ruby and multilingual text render",
+        "native text-size controls update and restore reading size",
+        "chapter navigation reaches downloaded final chapter",
+        "offline reload restores downloaded book and renders its final chapter with HTTP blocked",
+        "physics equations and figures render without TeX errors"
+      ],
+      "passed": true,
+      "system": "Version 15.7.9 (Build 24G830)"
+    },
+    "7050": {
+      "checks": [
+        "live 183-book catalogue in bundled macOS WebKit",
+        "visible library cover artwork loaded",
+        "native Settings menu opens reader settings",
+        "native Find a Book menu focuses search",
+        "complete book downloaded to IndexedDB",
+        "ruby and multilingual text render",
+        "native text-size controls update and restore reading size",
+        "chapter navigation reaches downloaded final chapter",
+        "offline reload resumes the saved final chapter with HTTP blocked",
+        "physics equations and figures render without TeX errors"
+      ],
+      "passed": true,
+      "system": "Version 15.7.7 (Build 24G720)"
+    },
+    "3040": {
+      "checks": [
+        "live 183-book catalogue in bundled macOS WebKit",
+        "native Settings menu opens reader settings",
+        "native Find a Book menu focuses search",
+        "complete book downloaded to IndexedDB",
+        "ruby and multilingual text render",
+        "native text-size controls update and restore reading size",
+        "chapter navigation reaches downloaded final chapter",
+        "offline reload resumes the saved final chapter with HTTP blocked",
+        "physics equations and figures render without TeX errors"
+      ],
+      "passed": true,
+      "system": "Version 12.7.6 (Build 21H1320)"
+    }
+  },
+  "limitations": [
+    "No physical Apple silicon runtime test; universal binary compiled, signed and accepted by Apple validation.",
+    "Final saved-chapter regression was rerun on 7050 and 3040; KVM exercised the earlier offline harness."
+  ],
+  "checks": [
+    "npm run check: 21 tests, lint, TypeScript and web build",
+    "npm run build:macos",
+    "Xcode universal archive/export",
+    "codesign --verify --deep --strict",
+    "pkgutil installer signature",
+    "altool validate and upload",
+    "App Store Connect VALID build, internal group relationship and WAITING_FOR_REVIEW"
+  ]
+}

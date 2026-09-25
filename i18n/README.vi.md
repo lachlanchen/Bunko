@@ -65,3 +65,9 @@ Bản trình bày học tập do AI tạo có thể có lỗi. Danh mục chỉ 
 Thư viện hiện có 150 tác phẩm kinh điển thuộc phạm vi công cộng và 33 ấn bản được tác giả cho phép: ghi chú vật lý, sách học tập, sách tài chính và ba cẩm nang du lịch đa ngôn ngữ. Mỗi sách có thể có một hoặc nhiều ngôn ngữ; công thức và hình ảnh vẫn hiển thị trên điện thoại.
 
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · đang chờ phát hành](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+
+## Bunko dành cho Mac
+
+Phiên bản 1.0.2 (4) đã được gửi xét duyệt trên Mac App Store và có trong TestFlight nội bộ. Ứng dụng hỗ trợ macOS 12 trở lên, với menu gốc, phím tắt và đọc ngoại tuyến. Bản dựng hỗ trợ Intel và Apple silicon; các thử nghiệm chạy ứng dụng được thực hiện trên máy Mac Intel.
+
+[macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)

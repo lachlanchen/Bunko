@@ -61,6 +61,7 @@ export default function App() {
   const downloadRef = useRef<AbortController | null>(null)
   const linkedBookOpened = useRef(false)
   const copy = copies[ui]
+  const librarySearch = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     void (async () => {
@@ -200,6 +201,48 @@ export default function App() {
     [meta, chapterIndex],
   )
 
+  const goToChapter = useCallback((next: number) => {
+    if (!meta || next < 0 || next >= meta.chapters.length) return
+    const place = { chapter: next, paragraph: 0 }
+    setChapterIndex(next)
+    setPlaces((current) => ({ ...current, [meta.id]: place }))
+    void savePlace(meta.id, place)
+  }, [meta])
+
+  // The macOS shell sends menu commands; the same reader remains responsible
+  // for navigation, settings and their on-device persistence.
+  useEffect(() => {
+    const command = (event: Event) => {
+      switch ((event as CustomEvent<{ command: string }>).detail?.command) {
+        case 'settings': setShowSettings(true); break
+        case 'library': setView('library'); setShowChapters(false); setShowSettings(false); break
+        case 'search':
+          setView('library'); setShowChapters(false); setShowSettings(false)
+          requestAnimationFrame(() => librarySearch.current?.focus())
+          break
+        case 'larger-text': update({ fontScale: Math.min(1.6, +(settings.fontScale + 0.05).toFixed(2)) }); break
+        case 'smaller-text': update({ fontScale: Math.max(0.85, +(settings.fontScale - 0.05).toFixed(2)) }); break
+        case 'reset-text': update({ fontScale: 1 }); break
+        case 'chapters': if (view === 'reader') setShowChapters(true); break
+        case 'next-chapter':
+          if (view === 'reader') goToChapter(chapterIndex + 1)
+          break
+        case 'previous-chapter':
+          if (view === 'reader') goToChapter(chapterIndex - 1)
+          break
+      }
+    }
+    window.addEventListener('bunko-command', command)
+    return () => window.removeEventListener('bunko-command', command)
+  }, [view, chapterIndex, settings.fontScale, update, goToChapter])
+
+  const settingsSheet = showSettings && <SettingsSheet
+    copy={copy} ui={ui} settings={settings} bookLangs={meta?.langs}
+    onUI={(next) => { setUI(next); void saveUI({ language: next }) }}
+    onChange={update} onClose={() => setShowSettings(false)} storage={storage}
+    request={request} setRequest={setRequest}
+  />
+
   if (view === 'reader' && meta) {
     return (
       <>
@@ -210,10 +253,7 @@ export default function App() {
           copy={copy}
           ui={ui}
           startParagraph={places[meta.id]?.chapter === chapterIndex ? (places[meta.id]?.paragraph ?? 0) : 0}
-          onChapter={(next) => {
-            setChapterIndex(next)
-            handlePlace(0)
-          }}
+          onChapter={goToChapter}
           onPlace={handlePlace}
           onOpenChapters={() => setShowChapters(true)}
           onOpenSettings={() => setShowSettings(true)}
@@ -229,7 +269,7 @@ export default function App() {
                     type="button"
                     className={position === chapterIndex ? 'active' : ''}
                     onClick={() => {
-                      setChapterIndex(position)
+                      goToChapter(position)
                       setShowChapters(false)
                     }}
                   >
@@ -243,23 +283,7 @@ export default function App() {
             </ol>
           </Sheet>
         )}
-        {showSettings && (
-          <SettingsSheet
-            copy={copy}
-            ui={ui}
-            settings={settings}
-            bookLangs={meta.langs}
-            onUI={(next) => {
-              setUI(next)
-              void saveUI({ language: next })
-            }}
-            onChange={update}
-            onClose={() => setShowSettings(false)}
-            storage={storage}
-            request={request}
-            setRequest={setRequest}
-          />
-        )}
+        {settingsSheet}
       </>
     )
   }
@@ -269,6 +293,7 @@ export default function App() {
     return (
       <main className="page-shell">
         <MobileStorePrompt copy={copy} />
+        {settingsSheet}
         <button className="link-back" type="button" onClick={() => setView('library')}>
           ← {copy.library}
         </button>
@@ -339,7 +364,7 @@ export default function App() {
                   <button
                     type="button"
                     onClick={() => {
-                      setChapterIndex(position)
+                      goToChapter(position)
                       setView('reader')
                     }}
                   >
@@ -381,6 +406,7 @@ export default function App() {
       <div className="search">
         <Search size={16} />
         <input
+          ref={librarySearch}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder={copy.searchPlaceholder}
@@ -418,7 +444,7 @@ export default function App() {
       </div>}
       <section className="grid">
         {books.map((book) => (
-          <button key={book.id} type="button" className="card" onClick={() => void openBook(book)}>
+          <button key={book.id} data-book-id={book.id} type="button" className="card" onClick={() => void openBook(book)}>
             <Cover book={book} />
             <strong>{book.title[book.primary] ?? book.id}</strong>
             <small>{book.author}</small>
@@ -431,23 +457,7 @@ export default function App() {
       </section>
       {index && !books.length && <p className="notice">{copy.noResults}</p>}
 
-      {showSettings && (
-        <SettingsSheet
-          copy={copy}
-          ui={ui}
-          settings={settings}
-          bookLangs={meta?.langs}
-          onUI={(next) => {
-            setUI(next)
-            void saveUI({ language: next })
-          }}
-          onChange={update}
-          onClose={() => setShowSettings(false)}
-          storage={storage}
-          request={request}
-          setRequest={setRequest}
-        />
-      )}
+      {settingsSheet}
     </main>
   )
 }

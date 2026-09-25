@@ -40,6 +40,21 @@ channels:
     update_review_submission: e560b7c7-e6e5-4342-bb64-5d8486e69b21
     testflight_latest: 1.0.2 (3), VALID in Bunko Internal; build 2 remains available
     testflight_latest_build_id: 6057045f-30d5-47ae-8beb-047dabb37be2
+  mac_app_store:
+    app_id: "6815137919"
+    bundle_id: art.lazying.bunko
+    version: 1.0.2
+    build: 4
+    status: WAITING_FOR_REVIEW
+    submitted_at: "2026-09-25T14:11:44.678Z"
+    release: automatic after approval
+    version_id: e6ebf529-e204-46a7-9f85-f19abe11831b
+    build_id: 0f2600ec-836f-4924-a423-6cc3a0c3985b
+    review_submission: e49ee8d7-3964-40ac-99e4-ec47133ebd51
+    testflight: IN_BETA_TESTING in Bunko Internal
+    minimum_macos: "12.0"
+    architectures: [x86_64, arm64]
+    price_and_availability: shared existing Apple app record
 
 android:
   version_code: 1

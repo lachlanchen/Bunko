@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:macos": "tsc -b && vite build --mode macos --outDir macos/Bunko/web",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",

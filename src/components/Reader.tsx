@@ -126,7 +126,7 @@ export function Reader({
 
 
   return (
-    <div className="reader">
+    <div className="reader" data-book-id={meta.id} data-chapter={chapterIndex}>
       <header className="reader-bar">
         <button type="button" onClick={onBack} aria-label={backLabel}>
           <ChevronLeft size={20} />

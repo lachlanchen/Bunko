@@ -1,0 +1,22 @@
+{
+  "en-US": {
+    "description": "Bunko brings a quiet multilingual library to your Mac. Read public-domain classics and rights-cleared original books with ruby readings, aligned language layers, and an offline shelf.\n\nREAD AT YOUR PACE\nChoose the original, line-by-line translations, or paired paragraphs. Show one language or several. Japanese furigana and Chinese pinyin help you stay with the text. Adjust type size, serif text, and light or dark appearance.\n\nA LIBRARY WITH ROOM TO EXPLORE\nBrowse literature, Chinese classics, physics companion notes, learning, finance, and travel. Equations and figures stay with technical books. Each edition identifies its available languages and source rights.\n\nKEEP BOOKS ON YOUR MAC\nDownload a book for offline reading. Your place, private notes, and preferences stay on this Mac. Optional English, Chinese, and Japanese dictionary packs work locally after download; Wiktionary provides an online fallback.\n\nMADE COMFORTABLE ON MAC\nUse a resizable window, full screen, keyboard navigation, native menus, and familiar copy and paste. Quickly open the library, find a book, change text size, or move between chapters.\n\nNo reader account, advertising, or subscription. Optional public passage discussions and book requests open GitHub. Books and dictionary packs download from the public bunko-books repository. Study notes and generated renderings can contain errors; source and rights records accompany the editions.",
+    "keywords": "books,reader,offline,furigana,pinyin,Chinese,Japanese,English,physics,dictionary",
+    "promotionalText": "A quiet reading desk for Mac: multilingual books, offline reading, local dictionaries, equations, and keyboard controls."
+  },
+  "zh-Hans": {
+    "description": "文库把安静的多语言书架带到 Mac。阅读公共领域经典与经授权的原创书籍，使用注音、对照文本和离线书架。\n\n按自己的节奏阅读\n选择原文、逐句对照或整段对照，可显示一种或多种语言。日语振假名与中文拼音帮助理解原文；可调整字号、衬线字体与明暗主题。\n\n清晰分类的书架\n浏览文学、中华经典、物理伴读笔记、学习、财经与旅行。技术书籍保留公式和插图，每种版本标明可用语言与权利来源。\n\n保存在你的 Mac\n下载图书后可离线阅读。阅读进度、私人笔记与偏好保存在本机。可选的英、中、日词典包下载后在本机查词，也可在线使用维基词典。\n\n适合 Mac 的操作\n支持调整窗口、全屏、键盘导航、原生菜单与复制粘贴。可快捷打开书库、查找图书、调整字号和切换章节。\n\n无需阅读账户，没有广告或订阅。可选的公开段落讨论与图书申请会打开 GitHub。图书与词典包来自公开的 bunko-books 仓库。伴读笔记与生成的译文可能有误，各版本附有来源与权利记录。",
+    "keywords": "阅读,图书,离线,注音,拼音,日语,英语,中文,物理,词典,经典,书库",
+    "promotionalText": "Mac 上的安静阅读书桌：多语言图书、离线阅读、本机词典、公式与键盘操作。"
+  },
+  "zh-Hant": {
+    "description": "文庫把安靜的多語言書架帶到 Mac。閱讀公共領域經典與經授權的原創書籍，使用注音、對照文本和離線書架。\n\n按自己的節奏閱讀\n選擇原文、逐句對照或整段對照，可顯示一種或多種語言。日語振假名與中文拼音幫助理解原文；可調整字級、襯線字體與明暗主題。\n\n清楚分類的書架\n瀏覽文學、中華經典、物理伴讀筆記、學習、財經與旅行。技術書籍保留公式與插圖，每種版本標明可用語言與權利來源。\n\n儲存在你的 Mac\n下載圖書後可離線閱讀。閱讀進度、私人筆記與偏好儲存在本機。可選的英、中、日詞典包下載後在本機查詞，也可線上使用維基詞典。\n\n適合 Mac 的操作\n支援調整視窗、全螢幕、鍵盤導覽、原生選單與複製貼上。可快速開啟書庫、尋找圖書、調整字級和切換章節。\n\n無需閱讀帳戶，沒有廣告或訂閱。可選的公開段落討論與圖書申請會開啟 GitHub。圖書與詞典包來自公開的 bunko-books 儲存庫。伴讀筆記與生成的譯文可能有誤，各版本附有來源與權利記錄。",
+    "keywords": "閱讀,圖書,離線,注音,拼音,日語,英語,中文,物理,詞典,經典,書庫",
+    "promotionalText": "Mac 上的安靜閱讀書桌：多語言圖書、離線閱讀、本機詞典、公式與鍵盤操作。"
+  },
+  "ja": {
+    "description": "文庫は、Mac で静かに読書を楽しむための多言語ライブラリです。パブリックドメインの古典や許諾済みのオリジナル書籍を、ふりがな、対訳、オフライン本棚とともに読めます。\n\n自分のペースで読む\n原文のみ、行ごとの対訳、段落ごとの対訳から選べます。表示言語は一つでも複数でも。日本語のふりがなと中国語のピンインが読書を助けます。文字サイズ、明朝体、明暗テーマも調整できます。\n\n分野ごとに整った本棚\n文学、中国古典、物理学の伴読ノート、学び、お金、旅を探索できます。専門書の数式や図版もそのまま表示。各版には対応言語と出典・権利の記録があります。\n\nMac に保存して読む\n本をダウンロードすればオフラインで読めます。読書位置、個人メモ、設定はこの Mac に保存されます。英語・中国語・日本語の任意の辞書パックもダウンロード後は端末内で検索でき、オンラインではウィクショナリーも利用できます。\n\nMac らしい操作\nサイズ変更できるウインドウ、フルスクリーン、キーボード操作、ネイティブメニュー、コピーとペーストに対応。書庫、検索、文字サイズ変更、章移動をすばやく操作できます。\n\n読書用アカウント、広告、サブスクリプションはありません。任意の公開討論や書籍リクエストは GitHub を開きます。書籍と辞書は公開の bunko-books リポジトリから取得します。伴読ノートや生成された訳文には誤りがあり得ます。各版の出典・権利記録をご確認ください。",
+    "keywords": "読書,本,オフライン,ふりがな,ピンイン,中国語,英語,日本語,物理,辞書,古典",
+    "promotionalText": "Mac の静かな読書机。多言語の本、オフライン読書、端末内の辞書、数式、キーボード操作。"
+  }
+}

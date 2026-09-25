@@ -2,8 +2,9 @@
 
 Updated 2026-09-25. Owner authorized takeover of the prior session and completion of publication on both stores, including formal review submission. The agreed price is USD 0.99 paid up front.
 
-- PWA: https://lachlan.lazying.art/Bunko/ — deployed from `c2bcb0c`, GitHub Actions passed.
+- PWA: https://lachlan.lazying.art/Bunko/ — deployed by the Pages workflow on `main`; check the latest successful run before reporting deployment status.
 - Apple: app `6815137919`, version 1.0.0 (1) **Ready for Sale**. The US public listing resolves and reports USD 0.99. Version 1.0.1 (2) is **Waiting for Review** with automatic release after approval. See `apple/submission.md`.
+- Mac: native **1.0.2 (4)** is **Waiting for Review**, submitted 2026-09-25 at 14:11:44 UTC with automatic release after approval. Build `0f2600ec-836f-4924-a423-6cc3a0c3985b` is VALID and IN_BETA_TESTING in Bunko Internal. It shares the existing Apple app record, price and availability. Intel and Apple silicon are compiled; native runtime tests passed on 3040, 7050 iMac and KVM. See `macos/submission.md` and `../docs/macos.md`. The iOS 1.0.1 review was left intact.
 - Google Play: paid app `4972575539744983205`, package `art.lazying.bunko`; production 1.0.0 (1) **In review**, full rollout in 172 countries after approval; internal testing Active. See `release.yaml`.
 - Availability verified 2026-09-25: Apple lists all **175 of 175** current territories as available, with automatic availability in future territories enabled. Play targets all **172 paid-app-eligible** country/region entries; the other five entries are marked "Cannot target for paid app" in the Console. See `artifacts/availability-2026-09-25.json`.
 - Update 1.0.1 (2), containing cover display, visible theme controls and catalogue refresh: Apple build 2 is **VALID**, available through the internal TestFlight group and formally submitted for review on 2026-09-25. Google Play internal release 1.0.1 (2) is **Available to internal testers**; production 1.0.0 (1) remains in review. Do not send another Play change while that review is active.

@@ -65,3 +65,9 @@ Les rendus d’étude produits par IA peuvent comporter des erreurs. Seules les 
 La bibliothèque réunit 150 classiques du domaine public et 33 éditions autorisées par leur auteur : notes de physique, guide d’apprentissage, livres de finance et trois guides de voyage multilingues. Chaque livre peut proposer une ou plusieurs langues ; les équations et figures restent lisibles sur mobile.
 
 [App Store d’Apple](https://apps.apple.com/app/id6815137919) · [Google Play · publication en attente](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+
+## Bunko pour Mac
+
+La version 1.0.2 (4) a été soumise à la validation du Mac App Store et est disponible dans TestFlight interne. Elle propose des menus natifs, des raccourcis clavier et la lecture hors ligne sur macOS 12 ou ultérieur. Le binaire prend en charge Intel et Apple silicon ; les tests ont été effectués sur des Mac Intel.
+
+[macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)

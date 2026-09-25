@@ -10,6 +10,9 @@ ios/App/build/
 .work/
 .runtime/
 release/
+macos/Bunko/web/
+macos/build/
+macos/DerivedData/
 *.log
 .env
 .DS_Store

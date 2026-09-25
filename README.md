@@ -17,18 +17,23 @@ Bunko is a reader for public-domain classics and rights-cleared original books. 
 | Path | Description |
 | --- | --- |
 | [`src/`](src/) | Reader, ruby layout, offline cache and theme controls |
+| [`macos/`](macos/) | Native Mac window, menus, sandbox and Xcode project |
 | [`docs/catalogue.md`](docs/catalogue.md) | Rights audit and publishing guide |
 | [`store/`](store/) | Store status and operator handoff |
 
 ## Run the reader
 
-Install dependencies, run checks, then open the Vite development server. Native packages use Capacitor and private signing material outside Git.
+Install dependencies, run checks, then open the Vite development server. iOS and Android packages use Capacitor; macOS uses AppKit and WebKit. Private signing material stays outside Git.
 
 ```sh
 npm ci
 npm run check
 npm run dev
 ```
+
+### Bunko for Mac
+
+The Mac edition includes a resizable reading window, native menus, keyboard chapter navigation, offline books, and local dictionaries. It supports macOS 12 or later with a universal Intel/Apple silicon binary. Build and test instructions are in [docs/macos.md](docs/macos.md); the current review status is recorded in [store/macos/submission.md](store/macos/submission.md).
 
 ## Library and release
 

@@ -1,0 +1,40 @@
+// !$*UTF8*$!
+{
+ archiveVersion = 1; classes = {}; objectVersion = 56; objects = {
+		B70EF8F287B988A45022836E = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App.swift"; sourceTree = "<group>"; };
+		48CD02DF754AD4A38EF8C21B = { isa = PBXBuildFile; fileRef = B70EF8F287B988A45022836E; };
+		F0F6E85164269EC42A20BBE6 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BundleSchemeHandler.swift"; sourceTree = "<group>"; };
+		83568056B06AFD2BB04D6E2D = { isa = PBXBuildFile; fileRef = F0F6E85164269EC42A20BBE6; };
+		06718099142646EAE8343052 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SmokeTests.swift"; sourceTree = "<group>"; };
+		5C15D44485183D7E7712D7E9 = { isa = PBXBuildFile; fileRef = 06718099142646EAE8343052; };
+		4B5E57F6EB2F42B9039B3D1E = { isa = PBXFileReference; lastKnownFileType = folder; path = "web"; sourceTree = "<group>"; };
+		7554BC4959FEBA656B1E9F98 = { isa = PBXBuildFile; fileRef = 4B5E57F6EB2F42B9039B3D1E; };
+		795A02A63DC9C1E86758E98F = { isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets.xcassets"; sourceTree = "<group>"; };
+		D0ADC22F3C046CC76298F620 = { isa = PBXBuildFile; fileRef = 795A02A63DC9C1E86758E98F; };
+		6D123AE8AB04EEE632CC6C18 = { isa = PBXFileReference; lastKnownFileType = text.xml; path = "PrivacyInfo.xcprivacy"; sourceTree = "<group>"; };
+		FD57E9B16885BEBF76EEE08F = { isa = PBXBuildFile; fileRef = 6D123AE8AB04EEE632CC6C18; };
+		FF0284A4A57CBDF1DE59F048 = { isa = PBXFileReference; lastKnownFileType = folder; path = "en.lproj"; sourceTree = "<group>"; };
+		784CF749C472FE8B6C6E31FC = { isa = PBXBuildFile; fileRef = FF0284A4A57CBDF1DE59F048; };
+		5E79670D02A83CC7B6B4F256 = { isa = PBXFileReference; lastKnownFileType = folder; path = "zh-Hans.lproj"; sourceTree = "<group>"; };
+		8BF3A2D45E6B0CCE79DB46D5 = { isa = PBXBuildFile; fileRef = 5E79670D02A83CC7B6B4F256; };
+		5D449619ED06F2465D249A76 = { isa = PBXFileReference; lastKnownFileType = folder; path = "zh-Hant.lproj"; sourceTree = "<group>"; };
+		12B964E86BBFD07BA2425F71 = { isa = PBXBuildFile; fileRef = 5D449619ED06F2465D249A76; };
+		CA41A8635D3B6C43F0D002B3 = { isa = PBXFileReference; lastKnownFileType = folder; path = "ja.lproj"; sourceTree = "<group>"; };
+		05CB65BA2BF60929379291D1 = { isa = PBXBuildFile; fileRef = CA41A8635D3B6C43F0D002B3; };
+		A8792157CB4F27FB949C035F = { isa = PBXFileReference; explicitFileType = wrapper.application; path = Bunko.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D6E4079E36703EBD37C0072 = { isa = PBXGroup; children = (A172CEDCAE47474B615C54D5,0A3E27B8CA818264D75C8D81,); sourceTree = "<group>"; };
+		A172CEDCAE47474B615C54D5 = { isa = PBXGroup; children = (B70EF8F287B988A45022836E,F0F6E85164269EC42A20BBE6,06718099142646EAE8343052,4B5E57F6EB2F42B9039B3D1E,795A02A63DC9C1E86758E98F,6D123AE8AB04EEE632CC6C18,FF0284A4A57CBDF1DE59F048,5E79670D02A83CC7B6B4F256,5D449619ED06F2465D249A76,CA41A8635D3B6C43F0D002B3,); path = Bunko; sourceTree = "<group>"; };
+		0A3E27B8CA818264D75C8D81 = { isa = PBXGroup; children = (A8792157CB4F27FB949C035F,); name = Products; sourceTree = "<group>"; };
+		878A52FC5FF6A57D50B7B870 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (48CD02DF754AD4A38EF8C21B,83568056B06AFD2BB04D6E2D,5C15D44485183D7E7712D7E9); runOnlyForDeploymentPostprocessing = 0; };
+		41D311A605520FC7B8B9A980 = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (7554BC4959FEBA656B1E9F98,D0ADC22F3C046CC76298F620,FD57E9B16885BEBF76EEE08F,784CF749C472FE8B6C6E31FC,8BF3A2D45E6B0CCE79DB46D5,12B964E86BBFD07BA2425F71,05CB65BA2BF60929379291D1); runOnlyForDeploymentPostprocessing = 0; };
+		E2AA269EB967A8853A258BFA = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		34A04005BCAF206EEC990BD9 = { isa = PBXNativeTarget; buildConfigurationList = 1B672BF3DA427763BF644BE3; buildPhases = (878A52FC5FF6A57D50B7B870,E2AA269EB967A8853A258BFA,41D311A605520FC7B8B9A980,); buildRules = (); dependencies = (); name = Bunko; productName = Bunko; productReference = A8792157CB4F27FB949C035F; productType = "com.apple.product-type.application"; };
+		244210E48437B6556980A702 = { isa = PBXProject; attributes = { LastSwiftUpdateCheck = 2630; LastUpgradeCheck = 2630; TargetAttributes = { 34A04005BCAF206EEC990BD9 = {CreatedOnToolsVersion = 26.3; ProvisioningStyle = Manual; }; }; }; buildConfigurationList = 76F8DEC3DFE0BDB465198890; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, "zh-Hans", "zh-Hant", ja, Base); mainGroup = 0D6E4079E36703EBD37C0072; productRefGroup = 0A3E27B8CA818264D75C8D81; projectDirPath = ""; projectRoot = ""; targets = (34A04005BCAF206EEC990BD9,); };
+		73EBF6644258C120893E685D = { isa = XCBuildConfiguration; buildSettings = { SDKROOT = "macosx"; MACOSX_DEPLOYMENT_TARGET = "12.0"; SWIFT_VERSION = "5.0"; CLANG_ENABLE_MODULES = "YES"; CLANG_ENABLE_OBJC_ARC = "YES"; GCC_C_LANGUAGE_STANDARD = "gnu17"; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; DEBUG_INFORMATION_FORMAT = "dwarf"; ONLY_ACTIVE_ARCH = "YES"; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG"; }; name = Debug; };
+		0B0C687DF8B6B8DC790B519C = { isa = XCBuildConfiguration; buildSettings = { SDKROOT = "macosx"; MACOSX_DEPLOYMENT_TARGET = "12.0"; SWIFT_VERSION = "5.0"; CLANG_ENABLE_MODULES = "YES"; CLANG_ENABLE_OBJC_ARC = "YES"; GCC_C_LANGUAGE_STANDARD = "gnu17"; SWIFT_OPTIMIZATION_LEVEL = "-O"; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; ONLY_ACTIVE_ARCH = "NO"; }; name = Release; };
+		76F8DEC3DFE0BDB465198890 = { isa = XCConfigurationList; buildConfigurations = (73EBF6644258C120893E685D,0B0C687DF8B6B8DC790B519C,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		6C7EFF6369083C8E1F2B1994 = { isa = XCBuildConfiguration; buildSettings = { PRODUCT_BUNDLE_IDENTIFIER = "art.lazying.bunko"; PRODUCT_NAME = "Bunko"; INFOPLIST_FILE = "Bunko/Info.plist"; CODE_SIGN_ENTITLEMENTS = "Bunko/Bunko.entitlements"; CODE_SIGN_STYLE = "Manual"; DEVELOPMENT_TEAM = "Q8M2S2FY77"; MARKETING_VERSION = "1.0.2"; CURRENT_PROJECT_VERSION = "4"; ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon"; ENABLE_HARDENED_RUNTIME = "YES"; ENABLE_APP_SANDBOX = "YES"; SWIFT_EMIT_LOC_STRINGS = "NO"; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks"; COMBINE_HIDPI_IMAGES = "YES"; CODE_SIGN_IDENTITY = "-"; }; name = Debug; };
+		DD75E2CB1C510A828AC72D96 = { isa = XCBuildConfiguration; buildSettings = { PRODUCT_BUNDLE_IDENTIFIER = "art.lazying.bunko"; PRODUCT_NAME = "Bunko"; INFOPLIST_FILE = "Bunko/Info.plist"; CODE_SIGN_ENTITLEMENTS = "Bunko/Bunko.entitlements"; CODE_SIGN_STYLE = "Manual"; DEVELOPMENT_TEAM = "Q8M2S2FY77"; MARKETING_VERSION = "1.0.2"; CURRENT_PROJECT_VERSION = "4"; ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon"; ENABLE_HARDENED_RUNTIME = "YES"; ENABLE_APP_SANDBOX = "YES"; SWIFT_EMIT_LOC_STRINGS = "NO"; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks"; COMBINE_HIDPI_IMAGES = "YES"; CODE_SIGN_IDENTITY = "Apple Distribution"; PROVISIONING_PROFILE_SPECIFIER = "Bunko Mac App Store"; }; name = Release; };
+		1B672BF3DA427763BF644BE3 = { isa = XCConfigurationList; buildConfigurations = (6C7EFF6369083C8E1F2B1994,DD75E2CB1C510A828AC72D96,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+ }; rootObject = 244210E48437B6556980A702;
+}

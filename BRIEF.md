@@ -4,13 +4,15 @@ Written 2026-09-22 by the L & N session from the owner's request. This is the co
 
 **2026-09-25 scope amendment:** The owner requested their own books from LazyTravel, HowYouGotRich, LazyEarn, LazyLearn and the independent Leonard Susskind companion-note project. Bunko now accepts public-domain classics **and rights-cleared owner editions**. Each bundle is still separately reviewed and documented in `bunko-books/rights.json`; source repositories are read only during import. Books may have one, two, three or more language layers. Figures and TeX equations are preserved for mobile reading. The original public-domain-only points below describe the first catalogue, not the expanded catalogue.
 
+**2026-09-25 macOS amendment:** The owner requested a native Mac edition, tested on the 3040, 7050 iMac and shared KVM Mac, and submitted under the existing Apple app record. The Mac app uses an AppKit window and native menus around the bundled reader, with persistent on-device storage, offline downloads, and no local web server. The release supports Intel and Apple silicon, with a macOS 12.0 deployment target. Physical runtime tests cover Intel Macs on macOS 12.7.6 and 15.7.7; the KVM test covers macOS 15.7.9. Apple silicon is compiled and signed but has not been tested on physical hardware.
+
 ## 1. The app
 
 **Bunko** (文庫 / 文库, "pocket library") is a beautiful reader for public-domain classics in English, Chinese and Japanese, with ruby readings on every character and an AI reading companion beside the text.
 
 - Store name: **Bunko — Classics with Ruby**. Bundle id `art.lazying.bunko`, developer LazyingArt LLC. (If the owner vetoes the name, the runner-up is *Yomitomo* 読み友.)
 - Icon: a deep indigo rounded tile, a cream 文 glyph centred, one coral ruby stroke floating above it like a furigana annotation. No text beyond the glyph, legible at 60 px.
-- Platforms: PWA first, then Android and iOS through Capacitor, exactly like `../L-And-N`. Interface languages en, zh-Hans, zh-Hant, ja.
+- Platforms: PWA, Android and iOS through Capacitor, and macOS through AppKit/WebKit. Interface languages en, zh-Hans, zh-Hant, ja.
 - Price: **US$0.99 paid up front on both stores** (Apple tier 1 is US$0.99 / CNY 8 / HKD 8), decided 2026-09-23 from the owner's "app is one usd". Not a free app with an unlock. The consequence is a hard ordering constraint: **the Play listing must be created as paid before its first upload**, because Google Play can never convert a published free app to paid. That mistake is exactly why L & N ships an in-app product instead. There is no billing code in this app at all, which removes the whole purchase, restore and entitlement surface.
 
 ## 2. What the owner asked for, point by point

@@ -65,3 +65,9 @@ AI が生成した学習用の文章には誤りがあり得ます。カタロ�
 書庫には、パブリックドメインの古典150点に加え、権利を確認した著者自身の版33点を収録しています。物理学の伴読ノート、学習ガイド、金融の本、多言語の旅行ガイド3冊です。単言語・多言語に対応し、数式と図もモバイルで表示します。
 
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 公開待ち](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+
+## Mac 版 Bunko
+
+1.0.2 (4) を Mac App Store の審査に提出し、内部 TestFlight でも利用できるようにしました。macOS 12 以降で、ネイティブメニュー、キーボード操作、オフライン読書に対応します。Intel と Apple silicon の両方を含むバイナリを作成し、実機の動作確認は Intel Mac で行いました。
+
+[macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)

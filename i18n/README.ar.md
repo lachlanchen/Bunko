@@ -65,3 +65,9 @@ Bunko مشروع من LazyingArt. إذا أفاد قراءتك أو بحثك، �
 تضم المكتبة 150 عملاً كلاسيكياً من الملكية العامة و33 إصداراً مرخّصاً من المؤلف: ملاحظات في الفيزياء، ودليل تعليمي، وكتباً مالية، وثلاثة أدلة سفر متعددة اللغات. يدعم القارئ لغة واحدة أو لغات متعددة، مع المعادلات والصور.
 
 [متجر Apple](https://apps.apple.com/app/id6815137919) · [Google Play · النشر قيد الانتظار](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+
+## Bunko على Mac
+
+أُرسل الإصدار 1.0.2 (4) إلى مراجعة متجر Mac App Store، وهو متاح للاختبار الداخلي عبر TestFlight. يدعم macOS 12 أو أحدث، مع قوائم أصلية واختصارات لوحة المفاتيح والقراءة دون اتصال. يتضمن التطبيق بنيتين لـ Intel وApple silicon؛ أُجريت اختبارات التشغيل على أجهزة Intel.
+
+[macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)

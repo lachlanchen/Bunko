@@ -5,11 +5,13 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // `base: './'` keeps the build working from a GitHub Pages project path, from a
 // custom domain, and from the file:// origin a Capacitor WebView uses.
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   base: './',
+  build: { target: mode === 'macos' ? 'safari15.6' : undefined },
   plugins: [
     react(),
     VitePWA({
+      disable: mode === 'macos',
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg'],
       manifest: {
@@ -42,4 +44,4 @@ export default defineConfig({
     }),
   ],
   test: { environment: 'node', include: ['src/**/*.test.{ts,tsx}'], globals: true },
-})
+}))

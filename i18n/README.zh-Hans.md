@@ -65,3 +65,9 @@ AI 生成的学习文本可能有误。书目只发布经过审核的完整版�
 书库现有 150 部公共领域经典和 33 部经作者授权的作品：物理学伴读笔记、学习指南、财经书籍，以及三本多语旅行指南。每本书可有一种或多种语言，公式和插图也能在手机上阅读。
 
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 待上架](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+
+## Mac 版 Bunko
+
+1.0.2 (4) 已提交 Mac App Store 审核，并已开放内部 TestFlight 测试。支持 macOS 12 及以上，提供原生菜单、键盘快捷键与离线阅读。通用二进制包含 Intel 与 Apple 芯片架构；实际运行测试在 Intel Mac 上完成。
+
+[macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)

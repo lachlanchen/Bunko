@@ -65,3 +65,9 @@ AI가 생성한 학습용 번역에는 오류가 있을 수 있습니다. 목록
 서재에는 퍼블릭 도메인 고전 150권과 저자가 공개를 허락한 도서 33권이 있습니다. 물리학 해설, 학습 안내서, 금융 도서, 다국어 여행 안내서 세 권을 포함합니다. 한 언어 또는 여러 언어로 읽을 수 있으며 수식과 그림도 모바일에서 표시됩니다.
 
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 출시 대기 중](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+
+## Mac용 Bunko
+
+1.0.2 (4)를 Mac App Store 심사에 제출했으며 내부 TestFlight에서도 사용할 수 있습니다. macOS 12 이상에서 기본 메뉴, 키보드 단축키, 오프라인 읽기를 지원합니다. Intel과 Apple silicon용 바이너리를 포함하며 실제 실행 테스트는 Intel Mac에서 진행했습니다.
+
+[macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)

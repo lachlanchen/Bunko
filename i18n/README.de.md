@@ -65,3 +65,9 @@ KI-erzeugte Lernfassungen können Fehler enthalten. Der Katalog veröffentlicht 
 Die Bibliothek enthält jetzt 150 gemeinfreie Klassiker und 33 vom Autor freigegebene Ausgaben: Physik-Begleittexte, einen Lernführer, Finanzbücher und drei mehrsprachige Reiseführer. Bücher können eine oder mehrere Sprachen haben; Formeln und Abbildungen bleiben im mobilen Reader erhalten.
 
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · Veröffentlichung ausstehend](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+
+## Bunko für Mac
+
+Version 1.0.2 (4) wurde zur Prüfung im Mac App Store eingereicht und ist im internen TestFlight verfügbar. Sie unterstützt macOS 12 oder neuer mit nativen Menüs, Tastaturkürzeln und Offline-Lesen. Die Universaldatei enthält Intel und Apple silicon; die Laufzeittests wurden auf Intel-Macs durchgeführt.
+
+[macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)
