@@ -32,7 +32,7 @@ npm run dev
 
 ## Thư viện và bản phát hành
 
-Danh mục trực tuyến hiện có 150 ấn bản đã được duyệt. Sách mới được xuất bản qua GitHub mà không cần tạo lại ứng dụng; thay đổi mã trình đọc vẫn cần bản web hoặc ứng dụng mới. Bản trả phí đầu tiên đang được cửa hàng xét duyệt; xem hồ sơ phát hành liên kết để biết trạng thái hiện tại.
+Danh mục trực tuyến hiện có 150 ấn bản đã được duyệt. Sách mới được xuất bản qua GitHub mà không cần tạo lại ứng dụng; thay đổi mã trình đọc vẫn cần bản web hoặc ứng dụng mới. Hồ sơ phát hành bên dưới ghi trạng thái từng nền tảng và các bản cập nhật đang xét duyệt.
 
 [store/release.yaml](../store/release.yaml)
 

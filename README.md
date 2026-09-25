@@ -32,7 +32,7 @@ npm run dev
 
 ## Library and release
 
-The live catalogue has 150 cleared editions. New book bundles publish through GitHub without an app build; changes to reader code still need a new web or native release. The first paid store release is under review. Check the linked release record for its current state.
+The live catalogue has 150 cleared editions. New book bundles publish through GitHub without an app build; changes to reader code still need a new web or native release. Platform availability and update reviews are tracked in the release record below.
 
 [store/release.yaml](store/release.yaml)
 

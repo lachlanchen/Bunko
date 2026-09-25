@@ -21,13 +21,19 @@ channels:
     managed_publishing: false
     internal_track: "4701547714770281380"
     internal_status: available to internal testers
+    internal_update: 1.0.1 (2), available to internal testers
   apple:
     bundle_id: art.lazying.bunko
     app_id: "6815137919"
-    status: WAITING_FOR_REVIEW
+    status: READY_FOR_SALE
     release: automatic after approval
     review_submission: 94daf1ea-f335-40e0-8d0d-854a14246983
     build_id: 512883f9-e3c0-4972-9546-e5785154c5af
+    update_version: 1.0.1
+    update_build: 2
+    update_build_id: 5fcc84a8-d44c-4b0c-84ed-7bbf8563f02b
+    update_status: WAITING_FOR_REVIEW
+    update_review_submission: e560b7c7-e6e5-4342-bb64-5d8486e69b21
 
 android:
   version_code: 1
@@ -37,6 +43,6 @@ android:
   apk_sha256: 16c9b71d7122258d908eb2f01c1e04b2b0a2e7c52e7a47add6f4149972e7c36e
 
 catalogue:
-  cleared: 56
+  cleared: 150
   audited: docs/catalogue.md
-  payload_bytes: 760800000
+  payload_bytes: 2729820983

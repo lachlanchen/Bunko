@@ -32,7 +32,7 @@ npm run dev
 
 ## Bibliothèque et versions
 
-Le catalogue public compte 150 éditions autorisées. Les nouveaux livres sont publiés via GitHub sans reconstruire l’application ; les changements du lecteur demandent une nouvelle version web ou native. La première version payante est en cours d’examen ; consultez le dossier lié pour son état actuel.
+Le catalogue public compte 150 éditions autorisées. Les nouveaux livres sont publiés via GitHub sans reconstruire l’application ; les changements du lecteur demandent une nouvelle version web ou native. Le dossier ci-dessous indique la disponibilité et les examens des mises à jour selon la plateforme.
 
 [store/release.yaml](../store/release.yaml)
 

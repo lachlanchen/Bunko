@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-09-25T02:05:30Z",
+  "app_id": "6815137919",
+  "bundle_id": "art.lazying.bunko",
+  "version": "1.0.1",
+  "version_id": "78554777-d8e6-45df-be4d-33ab07e4c078",
+  "build_number": 2,
+  "build_id": "5fcc84a8-d44c-4b0c-84ed-7bbf8563f02b",
+  "build_processing_state": "VALID",
+  "review_submission_id": "e560b7c7-e6e5-4342-bb64-5d8486e69b21",
+  "review_state": "WAITING_FOR_REVIEW",
+  "release_type": "AFTER_APPROVAL",
+  "locales": ["en-US", "ja", "zh-Hans", "zh-Hant"],
+  "catalogue_count": 150
+}

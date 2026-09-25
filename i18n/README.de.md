@@ -32,7 +32,7 @@ npm run dev
 
 ## Bibliothek und Releases
 
-Der öffentliche Katalog umfasst 150 geprüfte Ausgaben. Neue Bücher erscheinen über GitHub ohne neuen App-Build; Änderungen am Reader-Code brauchen dagegen ein neues Web- oder natives Release. Das erste kostenpflichtige Release ist in der Store-Prüfung. Den aktuellen Stand zeigt das verlinkte Release-Protokoll.
+Der öffentliche Katalog umfasst 150 geprüfte Ausgaben. Neue Bücher erscheinen über GitHub ohne neuen App-Build; Änderungen am Reader-Code brauchen dagegen ein neues Web- oder natives Release. Das folgende Release-Protokoll zeigt Verfügbarkeit und Update-Prüfungen je Plattform.
 
 [store/release.yaml](../store/release.yaml)
 

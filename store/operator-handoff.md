@@ -1,11 +1,11 @@
 # Bunko store handoff
 
-Updated 2026-09-23. Owner authorized takeover of the prior session and completion of publication on both stores, including formal review submission. The agreed price is USD 0.99 paid up front.
+Updated 2026-09-25. Owner authorized takeover of the prior session and completion of publication on both stores, including formal review submission. The agreed price is USD 0.99 paid up front.
 
 - PWA: https://lachlan.lazying.art/Bunko/ — deployed from `c2bcb0c`, GitHub Actions passed.
-- Apple: app `6815137919`, version 1.0.0 (1), **Waiting for Review**, automatic release. See `apple/submission.md`.
+- Apple: app `6815137919`, version 1.0.0 (1) **Ready for Sale**. The US public listing resolves and reports USD 0.99. Version 1.0.1 (2) is **Waiting for Review** with automatic release after approval. See `apple/submission.md`.
 - Google Play: paid app `4972575539744983205`, package `art.lazying.bunko`; production 1.0.0 (1) **In review**, full rollout in 172 countries after approval; internal testing Active. See `release.yaml`.
-- Update 1.0.1 (2), containing cover display, visible theme controls and catalogue refresh: Apple build 2 is **VALID** and available through the internal TestFlight group; Google Play internal release 1.0.1 (2) was published and confirmed **Available to internal testers** on 2026-09-23. The public store reviews still concern 1.0.0 (1). Do not replace those submissions while review is active; submit 1.0.1 publicly after the initial approvals or in response to specific review feedback.
+- Update 1.0.1 (2), containing cover display, visible theme controls and catalogue refresh: Apple build 2 is **VALID**, available through the internal TestFlight group and formally submitted for review on 2026-09-25. Google Play internal release 1.0.1 (2) is **Available to internal testers**; production 1.0.0 (1) remains in review. Do not send another Play change while that review is active.
 - Book payloads remain in the separate public `bunko-books` repository. No payloads or private session logs are committed here.
 - Native hashes and validation: `artifacts/release-1.0.0.json`.
 - Owner testing: TestFlight invitation received and tester state **INSTALLED**; Android internal opt-in and iOS installation instructions emailed on 2026-09-23. Personal invitation links and email evidence are private under `.runtime/store/`.

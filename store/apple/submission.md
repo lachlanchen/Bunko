@@ -1,6 +1,6 @@
 # App Store submission — 2026-09-23
 
-Bunko: Classics with Ruby (`art.lazying.bunko`, Apple ID `6815137919`) version **1.0.0 (1)** is **Waiting for Review**. Automatic release after approval is selected. US base price is **$0.99**, with availability configured for all 175 Apple territories and future territories (local availability still depends on Apple's regional requirements).
+Bunko: Classics with Ruby (`art.lazying.bunko`, Apple ID `6815137919`) version **1.0.0 (1)** was **Waiting for Review** when submitted on 2026-09-23. Automatic release after approval was selected. US base price is **$0.99**, with availability configured for all 175 Apple territories and future territories (local availability still depends on Apple's regional requirements).
 
 - Review submission: `94daf1ea-f335-40e0-8d0d-854a14246983`.
 - Version: `b98be3d1-d25b-4d08-b22b-499403cfc4e3`.
@@ -13,4 +13,12 @@ Bunko: Classics with Ruby (`art.lazying.bunko`, Apple ID `6815137919`) version *
 
 Public link after approval: https://apps.apple.com/app/id6815137919 . This is a submission record, not an approval or live-publication claim.
 
-App Store Connect also reports **1.0.1 build 2** (`5fcc84a8-d44c-4b0c-84ed-7bbf8563f02b`) as **VALID**. The Bunko Internal TestFlight group has access to all builds. The public 1.0.0 (1) version remains **Waiting for Review**; build 2 is a tester update and is not attached to that review submission.
+Before the first approval, App Store Connect also reported **1.0.1 build 2** (`5fcc84a8-d44c-4b0c-84ed-7bbf8563f02b`) as **VALID** and available to the Bunko Internal TestFlight group. It was not attached to the 1.0.0 review submission.
+
+## Approval and 1.0.1 update — 2026-09-25
+
+App Store Connect now reports 1.0.0 (1) **Ready for Sale**, and its original review submission **Complete**. The public US App Store page resolves; Apple's US lookup reports version 1.0.0 at **USD 0.99**. Availability on other storefronts may follow their local rollout timing.
+
+Version **1.0.1 (2)** was created with build `5fcc84a8-d44c-4b0c-84ed-7bbf8563f02b` (processing **VALID**, marketing version 1.0.1). Its four localized descriptions now say 150 books, and all four have release notes for covers, Light/Dark/System themes, catalogue refresh and offline improvements. Five inherited iPhone and two iPad screenshots remain attached to the English localization. Review notes were updated to explain the live catalogue and the new reader features.
+
+Review submission `e560b7c7-e6e5-4342-bb64-5d8486e69b21` was submitted on 2026-09-25 at 02:05:30 UTC and is **Waiting for Review**. Automatic release after approval remains selected. See [`../artifacts/apple-submission-1.0.1.json`](../artifacts/apple-submission-1.0.1.json) for the curated IDs and state.
