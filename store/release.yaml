@@ -16,10 +16,11 @@ channels:
     package: art.lazying.bunko
     created: 2026-09-23 as a PAID app, before any upload, because Play can never convert a published free app to paid
     status: IN_REVIEW
-    production: 1.0.0 (1), full rollout after approval
+    production: 1.0.4 (6), full rollout after approval
     countries: 172
     country_selection: all paid-app eligible regions; China, Cuba, Iran, Sudan and Rest of World are not targetable for paid apps
     managed_publishing: false
+    pre_review_checks: submitted; automatic checks running before review
     internal_track: "4701547714770281380"
     internal_status: available to internal testers
     internal_update: 1.0.1 (2), available to internal testers
@@ -34,24 +35,24 @@ channels:
     public_version: 1.0.1 (2)
     review_submission: e560b7c7-e6e5-4342-bb64-5d8486e69b21
     build_id: 5fcc84a8-d44c-4b0c-84ed-7bbf8563f02b
-    update_version: 1.0.3
-    update_build: 5
-    update_build_id: 37bc403e-26d8-4553-9848-91287d29f8b3
+    update_version: 1.0.4
+    update_build: 6
+    update_build_id: 7f94444e-1598-4e2c-8630-8ad188f9cda1
     update_status: WAITING_FOR_REVIEW
-    update_review_submission: 67ade8e6-50c0-429f-a5fb-268aea4b5863
+    update_review_submission: c2b55561-aa37-4eab-93be-da10b70098ba
     testflight_latest: 1.0.4 (6), VALID and IN_BETA_TESTING in Bunko Internal
     testflight_latest_build_id: 7f94444e-1598-4e2c-8630-8ad188f9cda1
   mac_app_store:
     app_id: "6815137919"
     bundle_id: art.lazying.bunko
-    version: 1.0.2
-    build: 4
-    status: IN_REVIEW
-    submitted_at: "2026-09-25T14:11:44.678Z"
+    version: 1.0.4
+    build: 6
+    status: WAITING_FOR_REVIEW
+    submitted_at: "2026-09-26T02:49:20.274Z"
     release: automatic after approval
     version_id: e6ebf529-e204-46a7-9f85-f19abe11831b
-    build_id: 0f2600ec-836f-4924-a423-6cc3a0c3985b
-    review_submission: e49ee8d7-3964-40ac-99e4-ec47133ebd51
+    build_id: 7774df2d-47aa-49a1-9dbe-32f2ecf04285
+    review_submission: 43b3b629-b7e3-4524-b100-1c97495a877f
     testflight_latest: 1.0.4 (6), VALID and IN_BETA_TESTING in Bunko Internal
     testflight_latest_build_id: 7774df2d-47aa-49a1-9dbe-32f2ecf04285
     minimum_macos: "12.0"

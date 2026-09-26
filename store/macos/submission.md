@@ -1,3 +1,9 @@
+**Current: macOS 1.0.4 (6) — WAITING_FOR_REVIEW.** Submitted 2026-09-26 at 02:49:20.274 UTC, review `43b3b629-b7e3-4524-b100-1c97495a877f`, build `7774df2d-47aa-49a1-9dbe-32f2ecf04285`. Automatic release after approval. The owner requested replacing the earlier 1.0.2 review; review timing restarted. The same version record now says 1.0.4, with all three delivered screenshots and four localizations retained. Apple does not accept a What’s New field before the first public Mac release; features are covered by the listing, reviewer notes and TestFlight notes.
+
+See [current submission receipts](../artifacts/submission-1.0.4.json). The records below describe earlier checkpoints.
+
+---
+
 # Mac App Store submission — 2026-09-25
 
 Bunko **1.0.2 (4)** was submitted at **2026-09-25 14:11:44 UTC** and App Store Connect confirmed **Waiting for Review**. Automatic release after approval is selected. This is the first native Mac version on the existing Bunko app record; it is not yet a publicly approved Mac release.

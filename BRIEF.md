@@ -85,4 +85,6 @@ Updated 2026-09-26: Bunko detects app updates and offers an optional prompt on t
 
 ## 7. Publishing
 
-Reuse the L & N pipeline and its hard-won lessons, which are written up in `../L-And-N/store/publishing-runbook.md`, `../L-And-N/store/operator-handoff.md` and `../Company/playbooks/new-app-publication.md`: the CDP/noVNC store browser, the App Store Connect API helper, the Mac build host `echomind-kvm-macos`, `MARKETING_VERSION` must match the version you create, and never send a Play change while another review is running.
+Reuse the L & N pipeline and its hard-won lessons, which are written up in `../L-And-N/store/publishing-runbook.md`, `../L-And-N/store/operator-handoff.md` and `../Company/playbooks/new-app-publication.md`: the CDP/noVNC store browser, the App Store Connect API helper, the Mac build host `echomind-kvm-macos`, `MARKETING_VERSION` must match the version you create, and preserve active reviews unless the owner explicitly requests replacing them with a newer tested build.
+
+Updated 2026-09-26: After internal testing of 1.0.4 (6), the owner requested formal review. Earlier iOS, Mac and Play submissions were replaced so the stores review that build; this restarts review timing. Price and country availability remain unchanged.

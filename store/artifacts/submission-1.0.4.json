@@ -1,0 +1,44 @@
+{
+  "version": "1.0.4",
+  "build": 6,
+  "requested": "2026-09-26",
+  "authorization": "Owner explicitly requested submission of the latest tested release after internal publication. Earlier reviews were replaced as necessary.",
+  "apple": [
+    {
+      "platform": "IOS",
+      "version": "1.0.4",
+      "build": "6",
+      "version_id": "724eb6b6-f757-4419-986b-fae45a885d08",
+      "build_id": "7f94444e-1598-4e2c-8630-8ad188f9cda1",
+      "review_id": "c2b55561-aa37-4eab-93be-da10b70098ba",
+      "submitted_at": "2026-09-26T02:47:23.734Z",
+      "review_state": "WAITING_FOR_REVIEW",
+      "release": "AFTER_APPROVAL",
+      "replaces": "1.0.3 (5)"
+    },
+    {
+      "platform": "MAC_OS",
+      "version": "1.0.4",
+      "build": "6",
+      "version_id": "e6ebf529-e204-46a7-9f85-f19abe11831b",
+      "build_id": "7774df2d-47aa-49a1-9dbe-32f2ecf04285",
+      "review_id": "43b3b629-b7e3-4524-b100-1c97495a877f",
+      "submitted_at": "2026-09-26T02:49:20.274Z",
+      "review_state": "WAITING_FOR_REVIEW",
+      "release": "AFTER_APPROVAL",
+      "replaces": "1.0.2 (4)"
+    }
+  ],
+  "google_play": {
+    "state": "Changes in review",
+    "version_code": 6,
+    "rollout_percent": 100,
+    "countries": 172,
+    "managed_publishing": false,
+    "pre_review_checks": "Running; changes will proceed automatically when checks pass",
+    "submission_confirmed": true,
+    "replaces": "1.0.0 (1)"
+  },
+  "public_update_feed": "Unchanged until store release is public; iOS 1.0.1 (2), Android/Mac null.",
+  "checked_at": "2026-09-26T02:52:32.331868+00:00"
+}

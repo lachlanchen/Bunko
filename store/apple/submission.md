@@ -1,3 +1,9 @@
+**Current: iOS 1.0.4 (6) — WAITING_FOR_REVIEW.** Submitted 2026-09-26 at 02:47:23.734 UTC, review `c2b55561-aa37-4eab-93be-da10b70098ba`, build `7f94444e-1598-4e2c-8630-8ad188f9cda1`. Automatic release after approval. The owner requested replacing the earlier 1.0.3 submission. The existing version record was renamed to 1.0.4, preserving all seven delivered screenshots and four localizations. Public version remains 1.0.1 (2).
+
+See [current submission receipts](../artifacts/submission-1.0.4.json). The records below describe earlier checkpoints.
+
+---
+
 # App Store submission — 2026-09-23
 
 Bunko: Classics with Ruby (`art.lazying.bunko`, Apple ID `6815137919`) version **1.0.0 (1)** was **Waiting for Review** when submitted on 2026-09-23. Automatic release after approval was selected. US base price is **$0.99**, with availability configured for all 175 Apple territories and future territories (local availability still depends on Apple's regional requirements).

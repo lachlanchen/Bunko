@@ -1,15 +1,15 @@
 # Publication status — 2026-09-26
 
-The Apple launch is live in the US; the remaining dependencies are provider reviews:
+The owner requested formal review of the latest tested **1.0.4 (6)** build after internal publication. All three submissions are complete:
 
-- Apple version 1.0.1 (2): **Ready for Sale**. Version 1.0.3 (5): **Waiting for Review** since 2026-09-26 01:58 UTC, automatic release after approval.
-- Mac version 1.0.2 (4): **In Review**, automatic release after approval. New Mac 1.0.4 (6) is internal only. Three Intel Mac hosts passed the original native runtime tests; Apple silicon has compile/signature validation only.
-- Google Play production 1.0.0 (1): **Changes in review**, full rollout in 172 countries, managed publishing off.
+- iOS **1.0.4 (6): Waiting for Review**, submitted at 02:47:23 UTC. Public iOS remains **1.0.1 (2)**.
+- Mac **1.0.4 (6): Waiting for Review**, submitted at 02:49:20 UTC. The earlier Mac 1.0.2 review was replaced.
+- Google Play production **1.0.4 (6): Changes in review**. Google's automatic pre-review checks are running and will forward the submission when they pass. Full rollout is selected in all 172 previously configured eligible countries; managed publishing remains off.
 
-No owner login, payment or approval action is currently required. If a store returns review feedback, address the specific issue and preserve these build and submission records. Do not resubmit or restart an active review merely to refresh status. The Google Play public listing still returns 404 while production 1.0.0 remains in review.
+Replacing the earlier submissions restarts their review timing. Apple releases are automatic after approval. No owner login, payment or approval action is currently required. Store acceptance is still pending; do not describe these builds as publicly available before the listings resolve. Submission receipts: [`artifacts/submission-1.0.4.json`](artifacts/submission-1.0.4.json).
 
-Internal testing carries **1.0.4 (6)** on Play, iOS and macOS. No external TestFlight group was created. PWA is at https://lachlan.lazying.art/Bunko/ . The expanded 183-edition catalogue is live independently of the app builds. This update was exercised on Android API 34, desktop Chrome with phone viewports, and WebKit; physical iPhone touch behavior was not tested.
+Internal testing continues to offer **1.0.4 (6)** on Play and iOS/Mac TestFlight. The web reader is live at https://lachlan.lazying.art/Bunko/ . The 183-edition catalogue is independently downloadable. Android update migration and production web service-worker tests passed; no physical iPhone test was performed for this update. The original Mac runtime was tested on three Intel hosts; Apple silicon was compiled and signed.
 
-The initial release provides the multilingual offline reader. Companion packs described in BRIEF.md remain a later product milestone and are not advertised in the store listing.
+Existing native installations must install the new binary before they can show future update prompts. Once a store release becomes public, verify availability, update `public/updates.json`, deploy Pages and verify the feed. It currently advertises only the verified public iOS 1.0.1 (2), with Android/Mac null. See [`../docs/app-updates.md`](../docs/app-updates.md).
 
-App update detection is live on the web and included in native internal build 6. Existing native installations must install that build before they can show future update prompts. Public releases must be recorded in `public/updates.json` after availability is verified; the initial feed advertises only iOS 1.0.1 (2). See `../docs/app-updates.md`.
+Companion packs described in BRIEF.md remain a later product milestone and are not advertised in the store listing.

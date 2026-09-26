@@ -1,3 +1,9 @@
+**Current: production 1.0.4 (6) — Changes in review.** Promoted the tested internal release to production and confirmed Restart review on 2026-09-26 at the owner’s request. The earlier production build 1 was replaced by build 6. The full rollout remains 100% across the existing 172 eligible countries, with managed publishing off and four localized release notes. Google is running its automatic pre-review checks; successful checks forward the changes automatically. Internal build 6 remains available.
+
+See [current submission receipts](../artifacts/submission-1.0.4.json). The records below describe earlier checkpoints.
+
+---
+
 # Google Play submission — 2026-09-23
 
 Bunko: Classics with Ruby (`art.lazying.bunko`, Play app `4972575539744983205`) was created as a **paid** app before the first upload. The United States price was verified as **USD 0.99** in the live console.
