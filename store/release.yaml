@@ -1,8 +1,8 @@
 # Bunko release state. Secret-free; the upload key and API credentials live under ~/.config/bunko/.
 app:
   name: "Bunko: Classics with Ruby"
-  version: 1.0.3
-  build: 5
+  version: 1.0.4
+  build: 6
   price: USD 0.99 paid up front on both stores
   data_origin: https://github.com/lachlanchen/bunko-books
   pwa: https://lachlan.lazying.art/Bunko/
@@ -23,7 +23,7 @@ channels:
     internal_track: "4701547714770281380"
     internal_status: available to internal testers
     internal_update: 1.0.1 (2), available to internal testers
-    internal_latest: 1.0.3 (5), available to internal testers on 2026-09-26
+    internal_latest: 1.0.4 (6), available to internal testers on 2026-09-26
   apple:
     bundle_id: art.lazying.bunko
     app_id: "6815137919"
@@ -39,8 +39,8 @@ channels:
     update_build_id: 37bc403e-26d8-4553-9848-91287d29f8b3
     update_status: WAITING_FOR_REVIEW
     update_review_submission: 67ade8e6-50c0-429f-a5fb-268aea4b5863
-    testflight_latest: 1.0.3 (5), VALID and IN_BETA_TESTING in Bunko Internal
-    testflight_latest_build_id: 37bc403e-26d8-4553-9848-91287d29f8b3
+    testflight_latest: 1.0.4 (6), VALID and IN_BETA_TESTING in Bunko Internal
+    testflight_latest_build_id: 7f94444e-1598-4e2c-8630-8ad188f9cda1
   mac_app_store:
     app_id: "6815137919"
     bundle_id: art.lazying.bunko
@@ -52,18 +52,18 @@ channels:
     version_id: e6ebf529-e204-46a7-9f85-f19abe11831b
     build_id: 0f2600ec-836f-4924-a423-6cc3a0c3985b
     review_submission: e49ee8d7-3964-40ac-99e4-ec47133ebd51
-    testflight_latest: 1.0.3 (5), VALID and IN_BETA_TESTING in Bunko Internal
-    testflight_latest_build_id: b80dbad6-76ed-4042-919c-8fcccb1e4fb1
+    testflight_latest: 1.0.4 (6), VALID and IN_BETA_TESTING in Bunko Internal
+    testflight_latest_build_id: 7774df2d-47aa-49a1-9dbe-32f2ecf04285
     minimum_macos: "12.0"
     architectures: [x86_64, arm64]
     price_and_availability: shared existing Apple app record
 
 android:
-  version_code: 5
-  version_name: 1.0.3
+  version_code: 6
+  version_name: 1.0.4
   keystore: ~/.config/bunko/android/upload-keystore.jks (alias bunko-upload, mode 600)
-  aab_sha256: 029db977eeaece82a27b03300e10ec59bed3db53f03fa9f1e6f2121490b25dc8
-  apk_sha256: d8e761d175b5b2f4e45131cfaa4a66789812719af8a1c7114453a1246b9725fe
+  aab_sha256: 268e249ed5f9e2dda639dff1043a0b7b14bca69a2f29787f30acaaf19572f78e
+  apk_sha256: 5f50010af57237d8554f45e7b0007231951205548dcfebeae5e089f63abe3d75
 
 catalogue:
   cleared: 183

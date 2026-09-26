@@ -42,3 +42,7 @@ See [build and test instructions](../../docs/macos.md) and [curated artifact evi
 ## Internal update — 2026-09-26
 
 The original Mac 1.0.2 (4) submission is now **In Review**. Mac **1.0.3 (5)** is VALID and **IN_BETA_TESTING** in Bunko Internal, build/delivery `b80dbad6-76ed-4042-919c-8fcccb1e4fb1`. It adds explicit selected-text lookup, Sentence selection, compact header controls, and independent main/ruby sizing. Its four TestFlight notes describe mouse selection and native Mac menus. The ongoing 1.0.2 review was not replaced. See [1.0.3 evidence](../artifacts/release-1.0.3.json).
+
+## Update detection — 1.0.4 (6), September 26
+
+Universal Mac build `7774df2d-47aa-49a1-9dbe-32f2ecf04285` is VALID and IN_BETA_TESTING in Bunko Internal. The existing 1.0.2 (4) In Review submission was preserved; 1.0.4 is internal only. Update controls support all four UI languages. See [release evidence](../artifacts/release-1.0.4.json) and [update guide](../../docs/app-updates.md).

@@ -40,3 +40,7 @@ Apple now reports iOS **1.0.1 (2) Ready for Sale**. Version **1.0.3 (5)** was va
 - Thirty automated tests, Android native selection/back testing and browser/WebKit checks passed. Physical iPhone gestures were not tested in this update.
 
 See [release evidence](../artifacts/release-1.0.3.json) and [reading controls](../../docs/reading-controls.md).
+
+## Update detection — 1.0.4 (6), September 26
+
+iOS build `7f94444e-1598-4e2c-8630-8ad188f9cda1` is VALID and IN_BETA_TESTING in Bunko Internal. The existing 1.0.3 (5) Waiting for Review submission was preserved; 1.0.4 is internal only. Update controls support all four UI languages. See [release evidence](../artifacts/release-1.0.4.json) and [update guide](../../docs/app-updates.md).

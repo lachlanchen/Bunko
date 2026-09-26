@@ -1,0 +1,86 @@
+{
+  "version": "1.0.4",
+  "build": 6,
+  "checked": "2026-09-26",
+  "source_commit": "1cd8e4db25375d3729fc9f41a407a9b922e1a1cb",
+  "features": [
+    "optional update detection on web, iOS, Android and macOS",
+    "manual update checks and installed version in four UI languages",
+    "public-release-only native feed; no downgrade offers for beta builds",
+    "user-controlled PWA update with reading/download/draft protection",
+    "24-hour release-specific dismissal",
+    "Android legacy service-worker migration preserving local book data"
+  ],
+  "web": {
+    "state": "live",
+    "url": "https://lachlan.lazying.art/Bunko/",
+    "workflow": 36211776621,
+    "deployment_revision": "8616179d723702278a8bb058478a86edcef63704b69e0f025768d95bf8013150",
+    "public_feed_cors": "*"
+  },
+  "android": {
+    "track": "internal",
+    "state": "Available to internal testers",
+    "aab_sha256": "268e249ed5f9e2dda639dff1043a0b7b14bca69a2f29787f30acaaf19572f78e",
+    "aab_bytes": 2970194,
+    "apk_sha256": "5f50010af57237d8554f45e7b0007231951205548dcfebeae5e089f63abe3d75",
+    "production_unchanged": "1.0.0 (1) in review"
+  },
+  "ios": {
+    "build_id": "7f94444e-1598-4e2c-8630-8ad188f9cda1",
+    "processing": "VALID",
+    "internal_state": "IN_BETA_TESTING",
+    "group": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+    "ipa_sha256": "aa16c50e8ace52dbebdc871f7c0759a20fe3df7a801c5243aaba9229a04722df",
+    "public_review_unchanged": "1.0.3 (5) WAITING_FOR_REVIEW"
+  },
+  "macos": {
+    "build_id": "7774df2d-47aa-49a1-9dbe-32f2ecf04285",
+    "processing": "VALID",
+    "internal_state": "IN_BETA_TESTING",
+    "group": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+    "pkg_sha256": "d3571ed67459d71392f9fa0ab35aecd071600ba826d82c6e36710131ea848a78",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "public_review_unchanged": "1.0.2 (4) IN_REVIEW"
+  },
+  "checks": {
+    "automated": 36,
+    "lint": "passed",
+    "typescript_build": "passed",
+    "web_lifecycle": [
+      "first installation does not offer an update",
+      "production service worker controls the reader",
+      "reload disabled while reading",
+      "ready update neither prompts nor reloads the reading view",
+      "Later dismisses the prompt",
+      "dismissal survives reopening while Settings keeps the update available",
+      "reader preference survives waiting update",
+      "explicit update activates the waiting worker",
+      "updating one tab does not reload another open tab",
+      "preferences survive applied update",
+      "offline check shows a retryable status",
+      "cached book remains readable offline after update"
+    ],
+    "native_android": [
+      "native Capacitor reports installed 1.0.4 (6)",
+      "native build has no registered web service worker",
+      "newer native release opens the exact Play listing",
+      "native dismissal survives reload and update stays in Settings",
+      "localized update controls: 简体中文",
+      "localized update controls: 繁體中文",
+      "localized update controls: 日本語",
+      "localized update controls: English",
+      "broken native feed gives retry status instead of claiming latest",
+      "previously saved chapter opens after migration",
+      "deployed public feed fetched successfully by native app"
+    ],
+    "android_release_lint_and_signature": "passed",
+    "apple_archives_validation_processing": "passed",
+    "readme_languages": 11,
+    "physical_iphone": "not tested for this update",
+    "mac_runtime": "not repeated for this update; original native release tested on three Intel Macs"
+  }
+}

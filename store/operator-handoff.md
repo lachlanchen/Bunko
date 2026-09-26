@@ -4,6 +4,13 @@ Updated 2026-09-26. Owner authorized takeover of the prior session and completio
 
 ## Current update — 2026-09-26
 
+- **1.0.4 (6)** adds optional update prompts, Settings checks and installed-version details in all four interface languages. The web deployment is live; Play internal and iOS/Mac Bunko Internal TestFlight are available. Apple build IDs: iOS `7f94444e-1598-4e2c-8630-8ad188f9cda1`, Mac `7774df2d-47aa-49a1-9dbe-32f2ecf04285`, both VALID and IN_BETA_TESTING.
+- Public iOS remains 1.0.1 (2); iOS 1.0.3 (5) is Waiting for Review, Mac 1.0.2 (4) is In Review, and Google production 1.0.0 (1) remains in review. **1.0.4 is internal only on native platforms**; do not cancel the existing reviews to promote it.
+- Android upgrade QA uncovered an old native service worker hiding new reader code. The native startup migration removes registrations and their app-shell precache, preserving IndexedDB and Preferences. The installed 1.0.4 (6) app, saved chapter, feed check and all localized controls passed. Real web waiting-worker, dismissal, multiple-tab and offline tests also passed; 36 automated tests and all signed builds passed.
+- **On each public store release**, verify the listing and rollout, then update `public/updates.json`, deploy Pages and verify its live JSON. Never place testing/review-only builds in that feed. See `../docs/app-updates.md` and `artifacts/release-1.0.4.json`.
+
+## Reader update — 2026-09-26
+
 - **1.0.3 (5)** is available in Google Play internal testing and in iOS/Mac Bunko Internal TestFlight. All five reader requests transferred from the LazyOracle session are completed: right-edge back, explicit selection before Dictionary, word/phrase/sentence selection, compact header, and separate main/ruby sizes.
 - Apple approved iOS **1.0.1 (2)**. The new iOS **1.0.3 (5)** review was submitted at **2026-09-26 01:58:51 UTC** and is **Waiting for Review**, automatic release after approval. Review ID `67ade8e6-50c0-429f-a5fb-268aea4b5863`.
 - Mac **1.0.2 (4)** is **In Review**; the new Mac build 5 is internal only. Google production **1.0.0 (1)** remains in review. Neither active review was replaced.

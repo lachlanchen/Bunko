@@ -20,3 +20,7 @@ Country selection rechecked 2026-09-25: the production track targets **172** of 
 ## Internal update 1.0.3 (5) — 2026-09-26
 
 The signed bundle was uploaded once and published as **1.0.3 (5) — Selection and reading controls**. Play Console confirmed **Available to internal testers** at Sep 26, 9:56 AM (Hong Kong time). Four-language release notes were accepted. Supported device counts did not change. The production 1.0.0 review was left in place. Native Android API 34 tests verified long-press handles, explicit Dictionary, Sentence expansion, hardware Back, vertical scrolling and edge swipe. Exact bundle/APK checksums are in [release evidence](../artifacts/release-1.0.3.json).
+
+## Update detection — 1.0.4 (6), September 26
+
+Release **1.0.4 (6) — App update detection** is Available to internal testers, published September 26 at 10:30 AM Hong Kong time. Production 1.0.0 (1) remains in review. The Android startup migration was tested against an existing cached 1.0.3 installation. Update controls support all four UI languages. See [release evidence](../artifacts/release-1.0.4.json) and [update guide](../../docs/app-updates.md).
