@@ -1,0 +1,6 @@
+{
+  "schema": 1,
+  "ios": { "version": "1.0.1", "build": "2" },
+  "android": null,
+  "macos": null
+}

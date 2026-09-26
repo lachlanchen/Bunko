@@ -28,6 +28,8 @@ import { Cover } from './components/Cover'
 import { MobileStorePrompt } from './components/MobileStorePrompt'
 import { useBackAction, useBackNavigation } from './lib/backNavigation'
 import { Line } from './components/Line'
+import { UpdatePrompt, UpdateSettings } from './components/UpdatePrompt'
+import { useUpdates, type Updates } from './lib/updateService'
 
 type View = 'library' | 'book' | 'reader'
 type Filter = 'all' | 'chinese' | 'japanese' | 'world' | 'physics' | 'learning' | 'finance' | 'travel' | 'device'
@@ -64,6 +66,9 @@ export default function App() {
   const linkedBookOpened = useRef(false)
   const copy = copies[ui]
   const librarySearch = useRef<HTMLInputElement>(null)
+  const updates = useUpdates()
+  const checkForUpdates = updates.check
+  const canReload = view !== 'reader' && !downloading && !request.trim()
   useBackNavigation()
   useBackAction(() => setView(view === 'reader' ? 'book' : 'library'), view !== 'library')
   useBackAction(() => { if (showSettings) setShowSettings(false); else setShowChapters(false) }, showSettings || showChapters, 40)
@@ -220,6 +225,7 @@ export default function App() {
     const command = (event: Event) => {
       switch ((event as CustomEvent<{ command: string }>).detail?.command) {
         case 'settings': setShowSettings(true); break
+        case 'check-updates': setShowSettings(true); void checkForUpdates(true); break
         case 'library': setView('library'); setShowChapters(false); setShowSettings(false); break
         case 'search':
           setView('library'); setShowChapters(false); setShowSettings(false)
@@ -239,13 +245,14 @@ export default function App() {
     }
     window.addEventListener('bunko-command', command)
     return () => window.removeEventListener('bunko-command', command)
-  }, [view, chapterIndex, settings.fontScale, update, goToChapter])
+  }, [view, chapterIndex, settings.fontScale, update, goToChapter, checkForUpdates])
 
   const settingsSheet = showSettings && <SettingsSheet
     copy={copy} ui={ui} settings={settings} bookLangs={meta?.langs}
     onUI={(next) => { setUI(next); void saveUI({ language: next }) }}
     onChange={update} onClose={() => setShowSettings(false)} storage={storage}
     request={request} setRequest={setRequest}
+    updates={updates} canReload={canReload}
   />
 
   if (view === 'reader' && meta) {
@@ -298,6 +305,7 @@ export default function App() {
     const row = index?.books.find((book) => book.id === meta?.id)
     return (
       <main className="page-shell">
+        <UpdatePrompt ui={ui} updates={updates} canReload={canReload} />
         <MobileStorePrompt copy={copy} />
         {settingsSheet}
         <button className="link-back" type="button" onClick={() => setView('library')}>
@@ -405,6 +413,7 @@ export default function App() {
         <p>{copy.tagline}</p>
       </header>
 
+      <UpdatePrompt ui={ui} updates={updates} canReload={canReload} />
       <MobileStorePrompt copy={copy} />
 
       <div className="search">
@@ -493,6 +502,8 @@ function Sheet({
 }
 
 function SettingsSheet({
+  updates,
+  canReload,
   copy,
   ui,
   settings,
@@ -504,6 +515,8 @@ function SettingsSheet({
   request,
   setRequest,
 }: {
+  updates: Updates
+  canReload: boolean
   copy: import('./i18n').UICopy
   ui: UILanguage
   settings: ReadingSettings
@@ -650,6 +663,7 @@ function SettingsSheet({
         </section>
       )}
 
+      <UpdateSettings ui={ui} updates={updates} canReload={canReload} />
       <section>
         <h3>{copy.about}</h3>
         <p className="hint">{copy.aboutBody}</p>

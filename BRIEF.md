@@ -73,6 +73,8 @@ Updated 2026-09-25: Mobile web visitors see a dismissible, localized store sugge
 
 Paper-first: warm off-white page, one serif for the source text with a CJK face that has proper ruby metrics, generous line height, a reading progress line rather than a bar, and a quiet dark mode. The companion lives in a drawer that never covers the text it is explaining. Everything the reader does must survive going offline.
 
+Updated 2026-09-26: Bunko detects app updates and offers an optional prompt on the library/book screens. Settings provides a manual check in all four UI languages. Web updates wait for an explicit reload, with reading and downloads protected; native apps open their store only for a newer verified public release. Test builds never cause downgrade prompts. The release feed lives on GitHub Pages; no new server is required. See `docs/app-updates.md`.
+
 ## 6. Milestones
 
 1. Catalogue audit (`app/docs/catalogue.md`) and the bundle builder, with one book end to end.

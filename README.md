@@ -31,7 +31,7 @@ npm run check
 npm run dev
 ```
 
-### Bunko for Mac
+## Bunko for Mac
 
 The Mac edition includes a resizable reading window, native menus, keyboard chapter navigation, offline books, and local dictionaries. It supports macOS 12 or later with a universal Intel/Apple silicon binary. Build and test instructions are in [docs/macos.md](docs/macos.md); the current review status is recorded in [store/macos/submission.md](store/macos/submission.md).
 
@@ -74,3 +74,7 @@ Study renderings and companion notes can be AI-assisted and may contain errors. 
 The library now includes 150 public-domain classics and 33 rights-cleared owner editions: 19 physics companion books (including all nine supplementary courses), two learning books, nine finance books, and three multilingual travel guides. Each book may offer one or several languages. Equations and figures are kept in the mobile reader.
 
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · publication pending](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+
+## App updates
+
+Bunko checks for updates automatically and offers a dismissible prompt when a public release is available. Settings includes a manual check. Web updates wait until you choose to reload; native apps open their store. Reading, downloads and saved data are preserved. See the [update guide](docs/app-updates.md).

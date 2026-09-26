@@ -19,8 +19,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(schemeHandler, forURLScheme: "bunko")
         config.websiteDataStore = .default()
+        let appInfo = ["version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "",
+                       "build": Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""]
+        let appInfoJSON = String(data: try! JSONSerialization.data(withJSONObject: appInfo), encoding: .utf8)!
         config.userContentController.addUserScript(WKUserScript(
-            source: "window.__BUNKO_DESKTOP__ = true;", injectionTime: .atDocumentStart, forMainFrameOnly: true))
+            source: "window.__BUNKO_DESKTOP__ = true; window.__BUNKO_APP_INFO__ = \(appInfoJSON);", injectionTime: .atDocumentStart, forMainFrameOnly: true))
         webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = self
         webView.uiDelegate = self
@@ -63,6 +66,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         app.addItem(withTitle: NSLocalizedString("About Bunko", comment: "Mac menu"), action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
         app.addItem(.separator())
         command(app, "Settings…", "settings", ",")
+        command(app, "Check for Updates…", "check-updates", "")
         app.addItem(.separator())
         app.addItem(withTitle: NSLocalizedString("Hide Bunko", comment: "Mac menu"), action: #selector(NSApplication.hide(_:)), keyEquivalent: "h")
         app.addItem(withTitle: NSLocalizedString("Quit Bunko", comment: "Mac menu"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")

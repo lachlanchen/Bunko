@@ -1,0 +1,10 @@
+{
+  "version": "1.0.4",
+  "build": 6,
+  "whatsNew": {
+    "en-US": "Bunko now checks for updates automatically, with a gentle reminder you can postpone. Check manually from Settings. Native apps open their store for newer public releases; web updates wait until you choose to reload. Reading and downloads remain uninterrupted, and saved books, notes and settings are preserved. Android also fixes an older app cache that could hide newly installed reader updates.",
+    "zh-Hans": "文库现可自动检查更新，并显示可稍后处理的温和提示；也可在设置中手动检查。原生应用会打开商店查看正式新版，网页版等您选择后才重新载入。阅读、下载以及已保存的书籍、笔记和设置均予以保留。安卓版还修复了旧版应用缓存可能遮蔽新安装阅读器的问题。",
+    "zh-Hant": "文庫現在可自動檢查更新，並顯示可稍後處理的溫和提示；也可在設定中手動檢查。原生應用程式會開啟商店查看正式新版，網頁版等您選擇後才重新載入。閱讀、下載及已儲存的書籍、筆記和設定均予以保留。Android 版另修復舊版應用程式快取可能遮蔽新安裝閱讀器的問題。",
+    "ja": "更新の自動確認と、あとで表示できる穏やかな案内を追加しました。設定から手動でも確認できます。ネイティブ版は新しい正式版のストアを開き、ウェブ版は選択するまで再読み込みしません。読書やダウンロードを妨げず、本、メモ、設定を保持します。Android では古いアプリのキャッシュが新しいリーダーを隠してしまう問題も修正しました。"
+  }
+}

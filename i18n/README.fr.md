@@ -71,3 +71,13 @@ La bibliothèque réunit 150 classiques du domaine public et 33 éditions autori
 La version 1.0.2 (4) a été soumise à la validation du Mac App Store et est disponible dans TestFlight interne. Elle propose des menus natifs, des raccourcis clavier et la lecture hors ligne sur macOS 12 ou ultérieur. Le binaire prend en charge Intel et Apple silicon ; les tests ont été effectués sur des Mac Intel.
 
 [macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)
+
+## Mises à jour de l’application
+
+Bunko recherche automatiquement les mises à jour et propose une notification que vous pouvez reporter lorsqu’une version publique est disponible. Une vérification manuelle est aussi possible dans les réglages. La version web attend votre accord pour se recharger ; les applications natives ouvrent leur boutique. La lecture, les téléchargements et les données enregistrées sont préservés. Consultez le [guide des mises à jour](../docs/app-updates.md).
+
+## Commandes de lecture
+
+Appuyez longuement sur un mot, ajustez les poignées de sélection, puis choisissez Dictionnaire. Phrase étend la sélection ; un appui ordinaire laisse la page ouverte. Glissez vers la droite depuis le bord gauche pour revenir. Les réglages séparent la taille du texte et celle des lectures ruby, avec aperçu. Le thème et les réglages restent à côté du titre sur les petits écrans.
+
+[docs/reading-controls.md](../docs/reading-controls.md)

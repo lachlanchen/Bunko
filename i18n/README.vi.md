@@ -71,3 +71,13 @@ Thư viện hiện có 150 tác phẩm kinh điển thuộc phạm vi công cộ
 Phiên bản 1.0.2 (4) đã được gửi xét duyệt trên Mac App Store và có trong TestFlight nội bộ. Ứng dụng hỗ trợ macOS 12 trở lên, với menu gốc, phím tắt và đọc ngoại tuyến. Bản dựng hỗ trợ Intel và Apple silicon; các thử nghiệm chạy ứng dụng được thực hiện trên máy Mac Intel.
 
 [macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)
+
+## Cập nhật ứng dụng
+
+Bunko tự động kiểm tra bản cập nhật và hiển thị lời nhắc có thể để sau khi có bản phát hành công khai mới. Bạn cũng có thể kiểm tra thủ công trong Cài đặt. Bản web chỉ tải lại khi bạn chọn; ứng dụng gốc mở cửa hàng tương ứng. Việc đọc, tải xuống và dữ liệu đã lưu được giữ nguyên. Xem [hướng dẫn cập nhật](../docs/app-updates.md).
+
+## Thao tác đọc
+
+Nhấn giữ một từ, điều chỉnh tay nắm chọn văn bản rồi chọn Từ điển. Nút Câu mở rộng vùng chọn ra cả câu; chạm thông thường không mở từ điển. Vuốt sang phải từ mép trái để quay lại. Cài đặt cho phép chỉnh riêng cỡ chữ chính và chú âm ruby, kèm xem trước. Nút giao diện và Cài đặt nằm cạnh tiêu đề thư viện cả trên điện thoại hẹp.
+
+[docs/reading-controls.md](../docs/reading-controls.md)

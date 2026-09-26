@@ -71,3 +71,13 @@ Die Bibliothek enthält jetzt 150 gemeinfreie Klassiker und 33 vom Autor freigeg
 Version 1.0.2 (4) wurde zur Prüfung im Mac App Store eingereicht und ist im internen TestFlight verfügbar. Sie unterstützt macOS 12 oder neuer mit nativen Menüs, Tastaturkürzeln und Offline-Lesen. Die Universaldatei enthält Intel und Apple silicon; die Laufzeittests wurden auf Intel-Macs durchgeführt.
 
 [macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)
+
+## App-Updates
+
+Bunko sucht automatisch nach Updates und zeigt einen aufschiebbaren Hinweis, sobald eine neue öffentliche Version verfügbar ist. In den Einstellungen lässt sich die Suche auch manuell starten. Die Webversion lädt erst auf Wunsch neu; native Apps öffnen ihren Store. Lesestand, Downloads und gespeicherte Daten bleiben erhalten. Siehe die [Update-Anleitung](../docs/app-updates.md).
+
+## Lesesteuerung
+
+Ein Wort lange drücken, die Auswahlgriffe anpassen und dann Wörterbuch wählen. Satz erweitert die Auswahl auf den ganzen Satz; normales Tippen lässt die Seite offen. Vom linken Rand nach rechts wischen führt zurück. In den Einstellungen lassen sich Text und Ruby-Lesungen unabhängig mit Vorschau vergrößern. Thema und Einstellungen passen auch auf schmalen Handys neben den Bibliothekstitel.
+
+[docs/reading-controls.md](../docs/reading-controls.md)
