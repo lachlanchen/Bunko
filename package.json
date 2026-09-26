@@ -1,7 +1,7 @@
 {
   "name": "bunko",
   "private": false,
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "description": "Public-domain classics in English, Chinese and Japanese, with a reading above every character",
   "scripts": {
@@ -11,13 +11,15 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "check": "npm run lint && npm run test && npm run build",
+    "check": "npm run lint && npm run test && npm run test:server && npm run build",
     "cap:sync": "npm run build:native && npx cap sync",
-    "build:native": "tsc -b && vite build --mode native"
+    "build:native": "tsc -b && vite build --mode native",
+    "test:server": "node --test server/service.test.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.1",
     "@capacitor/app": "^8.0.0",
+    "@capacitor/browser": "8.0.0",
     "@capacitor/core": "^8.5.1",
     "@capacitor/ios": "^8.5.1",
     "@capacitor/preferences": "^8.0.0",

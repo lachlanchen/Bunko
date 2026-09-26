@@ -81,3 +81,9 @@ Bunko sucht automatisch nach Updates und zeigt einen aufschiebbaren Hinweis, sob
 Ein Wort lange drücken, die Auswahlgriffe anpassen und dann Wörterbuch wählen. Satz erweitert die Auswahl auf den ganzen Satz; normales Tippen lässt die Seite offen. Vom linken Rand nach rechts wischen führt zurück. In den Einstellungen lassen sich Text und Ruby-Lesungen unabhängig mit Vorschau vergrößern. Thema und Einstellungen passen auch auf schmalen Handys neben den Bibliothekstitel.
 
 [docs/reading-controls.md](../docs/reading-controls.md)
+
+## Gespräche in Bunko
+
+Mit der GitHub-Anmeldung kannst du öffentliche Kommentare zu Textstellen direkt in Bunko lesen und verfassen. Entwürfe und private Notizen bleiben auf deinem Gerät, bis du sie ausdrücklich veröffentlichst. Ein kleiner Cloud-Dienst übernimmt die Autorisierung, ohne dass der Computer des Betreibers eingeschaltet sein muss; GitHub speichert das öffentliche Gespräch. Die Oberfläche unterstützt Englisch, vereinfachtes und traditionelles Chinesisch sowie Japanisch. Version 1.0.5 (7) ist im internen Test bei Google Play und in TestFlight für iOS/Mac verfügbar; die Store-Prüfungen der öffentlichen Version 1.0.4 laufen weiter.
+
+[Umsetzung und Prüfung der Diskussionsfunktion](../docs/github-discussions-2026-09-26.md).

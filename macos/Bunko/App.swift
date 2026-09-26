@@ -1,8 +1,9 @@
 import AppKit
 import WebKit
+import AuthenticationServices
 
 @main
-final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandlerWithReply, ASWebAuthenticationPresentationContextProviding {
     static func main() {
         let app = NSApplication.shared
         let delegate = AppDelegate()
@@ -12,6 +13,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     private var window: NSWindow!
     private(set) var webView: WKWebView!
+    private var authSession: ASWebAuthenticationSession?
     private let schemeHandler = BundleSchemeHandler()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -19,6 +21,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(schemeHandler, forURLScheme: "bunko")
         config.websiteDataStore = .default()
+        config.userContentController.addScriptMessageHandler(self, contentWorld: .page, name: "bunkoAuth")
         let appInfo = ["version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "",
                        "build": Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""]
         let appInfoJSON = String(data: try! JSONSerialization.data(withJSONObject: appInfo), encoding: .utf8)!
@@ -50,6 +53,31 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         window.makeKeyAndOrderFront(nil); return true
+    }
+
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor { window }
+
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage,
+                               replyHandler: @escaping (Any?, String?) -> Void) {
+        guard message.frameInfo.isMainFrame,
+              message.frameInfo.request.url?.scheme == "bunko",
+              message.frameInfo.request.url?.host == "localhost",
+              let body = message.body as? [String: Any] else { replyHandler(nil, "Denied"); return }
+        if body["cancel"] as? Bool == true { authSession?.cancel(); authSession = nil; replyHandler(true, nil); return }
+        guard authSession == nil, let value = body["url"] as? String, let url = URL(string: value),
+              url.scheme == "https", url.host == "github.com", url.path == "/login/oauth/authorize" else {
+            replyHandler(nil, "Invalid authorization URL"); return
+        }
+        let session = ASWebAuthenticationSession(url: url, callbackURLScheme: "art.lazying.bunko") { [weak self] callback, error in
+            DispatchQueue.main.async {
+                self?.authSession = nil
+                if error != nil || callback == nil { replyHandler(nil, "Authorization cancelled") }
+                else { replyHandler(true, nil); self?.window.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps: true) }
+            }
+        }
+        session.presentationContextProvider = self
+        authSession = session
+        if !session.start() { authSession = nil; replyHandler(nil, "Could not open authorization") }
     }
 
     private func createMenus() {

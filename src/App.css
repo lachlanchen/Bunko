@@ -318,3 +318,28 @@ input[type='range'] { width: 100%; accent-color: var(--indigo); }
 .update-actions .primary { background: var(--indigo); color: var(--paper); }
 .update-actions :disabled { opacity: .5; cursor: default; }
 .update-actions :focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
+
+/* Passage conversations share the reader's paper, spacing and accessible controls. */
+.discussion-toolbar, .discussion-account, .discussion-submit { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.discussion-toolbar button, .discussion-account button, .discussion-more { color: var(--muted); font-size: .8rem; padding: 8px 4px; min-height: 36px; }
+.discussion-empty { text-align: center; color: var(--muted); padding: 18px 10px 26px; }
+.discussion-empty > span { font: 3.5rem/1 Georgia, serif; color: var(--indigo); }
+.discussion-empty p { margin: 0; font-family: var(--serif); }
+.native-discussion .discussion-comments article { position: relative; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.native-discussion .discussion-comments article > p { margin: 10px 0; padding: 0; border: 0; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.7; }
+.discussion-comments header { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
+.discussion-comments time { font-size: .7rem; color: var(--muted); }
+.discussion-comments details { font-size: .75rem; color: var(--muted); }
+.discussion-comments summary { cursor: pointer; width: 36px; min-height: 28px; list-style: none; font-size: 1rem; }
+.discussion-comments details button, .discussion-comments details a { display: inline-block; padding: 8px; color: inherit; }
+.discussion-compose { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+.discussion-account { margin-bottom: 12px; font-size: .82rem; }
+.discussion-account strong { display: flex; align-items: center; gap: 7px; }
+.github-signin { margin-bottom: 14px; }
+.discussion-compose textarea { resize: vertical; min-height: 110px; line-height: 1.6; font: inherit; }
+.discussion-privacy { font-size: .72rem; line-height: 1.6; margin: 9px 0 14px; }
+.discussion-submit { margin-bottom: 12px; }
+.discussion-submit small { color: var(--muted); font-variant-numeric: tabular-nums; font-size: .7rem; }
+.discussion-submit .panel-cta { margin: 0; }
+.discussion-error, .discussion-success { font-size: .8rem; line-height: 1.6; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper-raised); }
+.native-discussion button:disabled { opacity: .5; cursor: default; }

@@ -3,9 +3,10 @@ import { ArrowUpRight, BookOpen, MessageCircle, NotebookPen, X } from 'lucide-re
 import type { LangCode, Unit } from '../types'
 import type { UILanguage } from '../i18n'
 import { languageName } from '../i18n'
-import { dictionaryLanguage, discussionNewUrl, discussionTitle, lookupWord, passageText, type Definition } from '../lib/readingTools'
+import { dictionaryLanguage, lookupWord, passageText, type Definition } from '../lib/readingTools'
 import { downloadDictionary, installedDictionary, removeDictionary, type DictionaryLanguage } from '../lib/offlineDictionary'
 import { useBackAction } from '../lib/backNavigation'
+import { Discussion } from './Discussion'
 
 interface Focus {
   key: string
@@ -32,9 +33,6 @@ const packLabels = {
 const packNames: Record<DictionaryLanguage, string> = { en: 'Open English WordNet', zh: 'CC-CEDICT', ja: 'JMdict' }
 const packSizes: Record<DictionaryLanguage, string> = { en: '5.3 MB', zh: '6.9 MB', ja: '16 MB' }
 
-interface Issue { number: number; html_url: string; comments: number; body: string; user?: { login: string } }
-interface Comment { id: number; body: string; user?: { login: string } }
-
 export function ReadingPanel({ focus, ui, onClose }: { focus: Focus; ui: UILanguage; onClose: () => void }) {
   useBackAction(onClose, true, 30)
   const t = labels[ui]
@@ -47,9 +45,6 @@ export function ReadingPanel({ focus, ui, onClose }: { focus: Focus; ui: UILangu
   const [pack, setPack] = useState<Awaited<ReturnType<typeof installedDictionary>>>(null)
   const [packProgress, setPackProgress] = useState<[number, number] | null>(null)
   const [packError, setPackError] = useState(false)
-  const [issue, setIssue] = useState<Issue | null>(null)
-  const [comments, setComments] = useState<Comment[]>([])
-  const [discussionState, setDiscussionState] = useState<'loading' | 'ready' | 'error'>('loading')
   const noteKey = `bunko:note:${focus.key}`
   const [note, setNote] = useState(() => { try { return localStorage.getItem(noteKey) ?? '' } catch { return '' } })
   const [saved, setSaved] = useState(false)
@@ -86,24 +81,6 @@ export function ReadingPanel({ focus, ui, onClose }: { focus: Focus; ui: UILangu
       .catch(() => { if (!controller.signal.aborted) setDictState('error') })
     return () => controller.abort()
   }, [word, focus.lang, tab])
-
-  useEffect(() => {
-    if (tab !== 'discussion') return
-    const controller = new AbortController()
-    const query = `repo:lachlanchen/bunko-books in:title "${discussionTitle(focus.key)}"`
-    fetch(`https://api.github.com/search/issues?${new URLSearchParams({ q: query, per_page: '5' })}`, { signal: controller.signal })
-      .then((response) => { if (!response.ok) throw new Error(String(response.status)); return response.json() })
-      .then((data: { items?: Issue[] }) => {
-        const match = data.items?.find((item) => item.body?.includes(`Passage: ${focus.key}`)) ?? null
-        setIssue(match)
-        if (!match) { setDiscussionState('ready'); return }
-        return fetch(`https://api.github.com/repos/lachlanchen/bunko-books/issues/${match.number}/comments?per_page=30`, { signal: controller.signal })
-          .then((response) => response.ok ? response.json() as Promise<Comment[]> : [])
-          .then((items) => { setComments(items); setDiscussionState('ready') })
-      })
-      .catch(() => { if (!controller.signal.aborted) setDiscussionState('error') })
-    return () => controller.abort()
-  }, [focus.key, tab])
 
   const excerpt = passageText(focus.unit, focus.lang)
   const visibleDefinitions = definitions.slice().sort((left, right) => word === focus.word && focus.reading ? Number(right.reading === focus.reading) - Number(left.reading === focus.reading) : 0).slice(0, 8)
@@ -143,14 +120,7 @@ export function ReadingPanel({ focus, ui, onClose }: { focus: Focus; ui: UILangu
           <h3>{t.contextual}</h3>
           <div className="contextual-lines">{available.map((lang) => <p key={lang} lang={dictionaryLanguage(lang)}><strong>{languageName(lang, ui)}</strong><span>{passageText(focus.unit, lang)}</span></p>)}</div>
         </>}
-        {tab === 'discussion' && <>
-          <p className="panel-hint">{t.discussHint}</p>
-          {discussionState === 'loading' && <p className="panel-hint">…</p>}
-          {discussionState === 'error' && <p className="panel-hint">{t.offline}</p>}
-          {discussionState === 'ready' && !issue && <p className="panel-hint">{t.noDiscussion}</p>}
-          {issue && <div className="discussion-comments"><p><strong>{issue.user?.login}</strong><span>{issue.body.split('\n\n').slice(2).join('\n\n')}</span></p>{comments.map((comment) => <p key={comment.id}><strong>{comment.user?.login}</strong><span>{comment.body}</span></p>)}</div>}
-          <a className="panel-cta" href={issue?.html_url ?? discussionNewUrl(focus.key, excerpt)} target="_blank" rel="noopener noreferrer">{issue ? t.reply : t.start} <ArrowUpRight size={16} /></a>
-        </>}
+        {tab === 'discussion' && <Discussion key={focus.key} passage={focus.key} excerpt={excerpt} ui={ui} />}
         {tab === 'note' && <>
           <p className="panel-hint">{t.noteHint}</p>
           <textarea value={note} onChange={(event) => { setNote(event.target.value); setSaved(false) }} rows={7} aria-label={t.note} />

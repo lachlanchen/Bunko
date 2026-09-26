@@ -1,0 +1,36 @@
+[Unit]
+Description=Bunko GitHub discussions
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=bunko-discussions
+Group=bunko-discussions
+WorkingDirectory=/opt/bunko-discussions/current
+ExecStart=/usr/local/bin/node --max-old-space-size=64 /opt/bunko-discussions/current/service.mjs
+Environment=BUNKO_CONFIG=/run/credentials/bunko-discussions.service/config.json
+Environment=BUNKO_DATABASE=/var/lib/bunko-discussions/state.sqlite
+Environment=BUNKO_PORT=18624
+LoadCredential=config.json:/root/.config/bunko/discussions.json
+StateDirectory=bunko-discussions
+StateDirectoryMode=0700
+UMask=0077
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+MemoryMax=192M
+TasksMax=32
+LimitNOFILE=512
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,92 @@
+{
+  "version": "1.0.5",
+  "build": 7,
+  "checked": "2026-09-26",
+  "source_base": "43c1a18",
+  "features": [
+    "GitHub OAuth through a cloud-only service",
+    "in-app public passage comments in four interface languages",
+    "device-local drafts, pagination, reader hiding and sign-out",
+    "repository-restricted encrypted server tokens and one-use authorization flows"
+  ],
+  "web": {
+    "state": "pending Pages deployment",
+    "url": "https://lachlan.lazying.art/Bunko/"
+  },
+  "discussion_service": {
+    "state": "active; health ready",
+    "url": "https://llm.lazying.art/bunko",
+    "release": "e78d244ed06f4a91",
+    "workstation_dependency": false
+  },
+  "android": {
+    "track": "internal",
+    "state": "Available to internal testers",
+    "release_name": "1.0.5 (7) — In-app GitHub discussions",
+    "production_review": "1.0.4 (6); unchanged by this release",
+    "aab_sha256": "1b0dcd046661beb800e58e3370bacd170741e410d1068b9c887e8938e1ef6309",
+    "aab_bytes": 2993924,
+    "apk_sha256": "d25c4edd93b38b80f2ab1f50d2a2125684f79b8cf83ee71eadea7c8fb33bd25f",
+    "apk_bytes": 2605932
+  },
+  "ios": {
+    "build_id": "df651fed-86df-4dfe-8675-adc8b92ced9a",
+    "processing": "VALID",
+    "internal_state": "IN_BETA_TESTING",
+    "group": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+    "ipa_sha256": "d648e4a0862e655a5cecac4e3149095735f6a4fd0242e58bcd382f7f54e2befc",
+    "production_review": "1.0.4 (6); unchanged by this release"
+  },
+  "macos": {
+    "build_id": "d9269fa2-985b-476a-a1ca-5c3004277a5e",
+    "processing": "VALID",
+    "internal_state": "IN_BETA_TESTING",
+    "group": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+    "pkg_sha256": "21b149fb536dcf03e858541719ee5bbaf66029f8a771b16191ec482cccb0838d",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "production_review": "1.0.4 (6); unchanged by this release"
+  },
+  "checks": {
+    "frontend_tests": 41,
+    "server_security_tests": 5,
+    "lint_typescript_build": "passed",
+    "responsive_browser_widths": [
+      390,
+      320
+    ],
+    "web_real_oauth": [
+      "sign-in",
+      "authenticated read",
+      "composer enabled",
+      "sign-out"
+    ],
+    "android_real_oauth": {
+      "passed": true,
+      "platform": "Android API 34",
+      "version": "1.0.5 (7)",
+      "checks": [
+        "cloud anonymous read",
+        "system browser launch",
+        "real OAuth completion",
+        "callback intent brings Bunko forward",
+        "composer enabled",
+        "signout preserves draft"
+      ],
+      "authorizationBrowser": "shared authenticated browser; callback delivered to Android",
+      "publicCommentsPosted": 0
+    },
+    "readme_languages": 11,
+    "signed_native_builds_and_uploads": "passed",
+    "public_test_comments": 0,
+    "live_public_post": "not tested; GitHub fixture and UI fixture covered",
+    "ordinary_reader_account": "not tested",
+    "ios_macos_native_oauth": "not yet tested on a device"
+  },
+  "successor_formal_review_gates": [
+    "Apple privacy and Play data-safety disclosures for optional GitHub identifiers and public user content",
+    "ordinary-reader account permission and Apple native authorization verification"
+  ]
+}

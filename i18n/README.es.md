@@ -81,3 +81,9 @@ Bunko busca actualizaciones automáticamente y muestra un aviso que puedes pospo
 Mantén pulsada una palabra, ajusta los controles de selección y elige Diccionario. La opción Oración amplía la selección; los toques normales mantienen la página abierta. Desliza hacia la derecha desde el borde izquierdo para volver. Ajustes ofrece tamaños independientes para el texto y las lecturas ruby, con vista previa. Tema y Ajustes caben junto al título en teléfonos estrechos.
 
 [docs/reading-controls.md](../docs/reading-controls.md)
+
+## Conversaciones en Bunko
+
+Lee y escribe comentarios públicos sobre pasajes dentro de Bunko, iniciando sesión con GitHub. Los borradores y las notas privadas permanecen en tu dispositivo hasta que decidas publicarlos. Un pequeño servicio en la nube gestiona la autorización sin depender del ordenador del propietario; GitHub almacena la conversación pública. La interfaz está disponible en inglés, chino simplificado, chino tradicional y japonés. La versión 1.0.5 (7) está disponible en las pruebas internas de Google Play y en TestFlight para iOS y Mac; las revisiones de producción de 1.0.4 siguen su curso.
+
+[Implementación y verificación de las conversaciones](../docs/github-discussions-2026-09-26.md).

@@ -81,3 +81,9 @@ Bunko tự động kiểm tra bản cập nhật và hiển thị lời nhắc c
 Nhấn giữ một từ, điều chỉnh tay nắm chọn văn bản rồi chọn Từ điển. Nút Câu mở rộng vùng chọn ra cả câu; chạm thông thường không mở từ điển. Vuốt sang phải từ mép trái để quay lại. Cài đặt cho phép chỉnh riêng cỡ chữ chính và chú âm ruby, kèm xem trước. Nút giao diện và Cài đặt nằm cạnh tiêu đề thư viện cả trên điện thoại hẹp.
 
 [docs/reading-controls.md](../docs/reading-controls.md)
+
+## Trò chuyện trong Bunko
+
+Đăng nhập bằng GitHub để đọc và viết bình luận công khai về từng đoạn ngay trong Bunko. Bản nháp và ghi chú riêng ở lại trên thiết bị cho đến khi bạn chủ động đăng. Một dịch vụ đám mây nhỏ xử lý việc xác thực, không cần máy tính của chủ sở hữu hoạt động; GitHub lưu cuộc trò chuyện công khai. Giao diện hỗ trợ tiếng Anh, tiếng Trung giản thể, tiếng Trung phồn thể và tiếng Nhật. Phiên bản 1.0.5 (7) đã có trong thử nghiệm nội bộ Google Play và TestFlight cho iOS/Mac; đợt xét duyệt bản phát hành chính thức 1.0.4 vẫn tiếp tục.
+
+[Triển khai và kiểm chứng tính năng thảo luận](../docs/github-discussions-2026-09-26.md).

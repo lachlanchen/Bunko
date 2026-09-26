@@ -2,6 +2,13 @@
 
 Updated 2026-09-26. Owner authorized takeover of the prior session and completion of publication on both stores, including formal review submission. The agreed price is USD 0.99 paid up front.
 
+## Discussions update — 2026-09-26
+
+- **1.0.5 (7)** is available in Google Play internal testing and iOS/Mac **Bunko Internal TestFlight**. Apple builds `df651fed-86df-4dfe-8675-adc8b92ced9a` (iOS) and `d9269fa2-985b-476a-a1ca-5c3004277a5e` (Mac) are VALID and IN_BETA_TESTING. All four release-note languages are set. See `artifacts/release-1.0.5.json`.
+- GitHub sign-in and passage comments now use the cloud-hosted Bunko discussion service, with no workstation dependency. Drafts/private notes stay local; public comments use the reader's GitHub identity. Live web and Android authorization passed; 41 frontend and five backend security tests passed. No public test comment was posted.
+- iOS/Mac native authorization and a separate ordinary-reader account still need live verification. Before a successor formal review, update Apple privacy and Play data safety for optional GitHub identifiers and public user content. Current **1.0.4 (6)** formal submissions were not replaced by this internal release. Keep `public/updates.json` limited to verified public store releases.
+- Cloud operations and cleanup receipts are private in `.runtime/github-comments/handoff.md`. The shared store browser and other projects' Mac sessions remain under their owners' control.
+
 ## Current update — 2026-09-26
 
 - **1.0.4 (6)** adds optional update prompts, Settings checks and installed-version details in all four interface languages. The web deployment is live; Play internal and iOS/Mac Bunko Internal TestFlight are available. Apple build IDs: iOS `7f94444e-1598-4e2c-8630-8ad188f9cda1`, Mac `7774df2d-47aa-49a1-9dbe-32f2ecf04285`, both VALID and IN_BETA_TESTING.

@@ -1,0 +1,28 @@
+# Import only inside the existing https://llm.lazying.art site.
+@bunko_discussions {
+    method POST OPTIONS
+    path /bunko/v1/auth/start /bunko/v1/auth/complete /bunko/v1/session /bunko/v1/logout /bunko/v1/discussions/read /bunko/v1/discussions/post
+}
+@bunko_callback {
+    method GET
+    path /bunko/oauth/callback /bunko/healthz
+}
+handle @bunko_discussions {
+    request_body {
+        max_size 18KB
+    }
+    reverse_proxy 127.0.0.1:18624 {
+        header_up Host llm.lazying.art
+        header_up -Forwarded
+        header_up -X-Forwarded-For
+        header_up X-Bunko-Client-Address {remote_host}
+    }
+}
+handle @bunko_callback {
+    reverse_proxy 127.0.0.1:18624 {
+        header_up Host llm.lazying.art
+        header_up -Forwarded
+        header_up -X-Forwarded-For
+        header_up X-Bunko-Client-Address {remote_host}
+    }
+}

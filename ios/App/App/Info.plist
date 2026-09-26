@@ -26,6 +26,8 @@
 	<false/>
 	<key>CFBundleLocalizations</key>
 	<array><string>en</string><string>zh-Hans</string><string>zh-Hant</string><string>ja</string></array>
+  <key>CFBundleURLTypes</key>
+  <array><dict><key>CFBundleURLName</key><string>art.lazying.bunko.oauth</string><key>CFBundleURLSchemes</key><array><string>art.lazying.bunko</string></array></dict></array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>

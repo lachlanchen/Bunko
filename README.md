@@ -78,3 +78,9 @@ The library now includes 150 public-domain classics and 33 rights-cleared owner 
 ## App updates
 
 Bunko checks for updates automatically and offers a dismissible prompt when a public release is available. Settings includes a manual check. Web updates wait until you choose to reload; native apps open their store. Reading, downloads and saved data are preserved. See the [update guide](docs/app-updates.md).
+
+## Conversations in Bunko
+
+Read and compose public passage comments inside Bunko, using GitHub sign-in. Drafts and private notes stay on your device until you explicitly post. A small cloud service handles authorization without requiring the owner’s computer; GitHub stores the public conversation. The interface supports English, Simplified Chinese, Traditional Chinese and Japanese. Version 1.0.5 (7) is available through Google Play internal testing and iOS/Mac TestFlight; the 1.0.4 production reviews continue.
+
+[Discussion implementation and verification](docs/github-discussions-2026-09-26.md).
