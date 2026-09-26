@@ -1,0 +1,121 @@
+{
+  "version": "1.0.3",
+  "build": 5,
+  "checked": "2026-09-26",
+  "features": [
+    "rightward left-edge swipe back and Android system Back",
+    "explicit Dictionary action after native word/phrase selection",
+    "sentence expansion and base-text-only lookup",
+    "single-row title/theme/Settings on 320px phones",
+    "independent persistent main and ruby text sizes"
+  ],
+  "android": {
+    "track": "internal",
+    "state": "Available to internal testers",
+    "aab_sha256": "029db977eeaece82a27b03300e10ec59bed3db53f03fa9f1e6f2121490b25dc8",
+    "aab_bytes": 2974943,
+    "apk_sha256": "d8e761d175b5b2f4e45131cfaa4a66789812719af8a1c7114453a1246b9725fe",
+    "production_unchanged": "1.0.0 (1) in review"
+  },
+  "ios": {
+    "build_id": "37bc403e-26d8-4553-9848-91287d29f8b3",
+    "ipa_sha256": "49d93f2f92abfb1b6bf3329b790aa6adb4a4101bb6947d67152d41eb5c7ee47c",
+    "ipa_bytes": 2716638,
+    "processing_state": "VALID",
+    "internal_state": "IN_BETA_TESTING",
+    "version_id": "724eb6b6-f757-4419-986b-fae45a885d08",
+    "review_submission": "67ade8e6-50c0-429f-a5fb-268aea4b5863",
+    "review_state": "WAITING_FOR_REVIEW",
+    "submitted_at": "2026-09-26T01:58:51.364Z",
+    "release_type": "AFTER_APPROVAL",
+    "previous_approved_version": "1.0.1 (2)"
+  },
+  "macos": {
+    "build_id": "b80dbad6-76ed-4042-919c-8fcccb1e4fb1",
+    "pkg_sha256": "b6ae0c525860fda8811b97c7d8262ceee3ab35fdd996c2c43be63d3a3e73df6c",
+    "pkg_bytes": 1753342,
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "processing_state": "VALID",
+    "internal_state": "IN_BETA_TESTING",
+    "public_review_unchanged": "1.0.2 (4) IN_REVIEW"
+  },
+  "checks": {
+    "automated_tests": 30,
+    "lint_typescript_web_build": "passed",
+    "android_lint_signed_bundle_and_apk": "passed",
+    "ios_and_macos_archive_export_apple_validation_upload": "passed",
+    "android_native": {
+      "passed": true,
+      "checks": [
+        "Android ordinary word tap leaves dictionary closed",
+        "Android native long press selects a word and exposes actions",
+        "Android selected query is a word, not the entire sentence",
+        "Android Sentence action expands the selection",
+        "Android Dictionary receives exactly the highlighted word",
+        "Android system Back closes dictionary before leaving reader",
+        "Android vertical gesture stays in reader",
+        "Android edge swipe returns from reader to book",
+        "Android edge swipe returns from book to library"
+      ]
+    },
+    "browser": {
+      "passed": true,
+      "checks": [
+        "320px title, theme and Settings share a row",
+        "body and ruby sizes adjust independently",
+        "edge swipe closes Settings first",
+        "both size controls survive reload",
+        "ordinary sentence tap does not open dictionary",
+        "word selection exposes explicit actions",
+        "word selection waits for Dictionary action",
+        "edge swipe does not navigate while selection is active",
+        "Dictionary receives only the selected word",
+        "edge swipe closes dictionary before reader",
+        "vertical motion does not trigger Back",
+        "reader edge swipe returns to book",
+        "book edge swipe returns to library"
+      ]
+    },
+    "webkit": [
+      "native text selection exposes selection actions",
+      "Dictionary receives selected substring"
+    ]
+  },
+  "limitations": [
+    "No physical iPhone interaction test; iOS validation uses WebKit, Xcode archive and Apple validation.",
+    "No Apple silicon runtime test; universal Mac binary compiled and validated."
+  ],
+  "source_sha256": {
+    "src/App.css": "96fb0e5904d20e7a1f93f2da754eea7aa239c705a73a99f1d8a56c0bd15ce522",
+    "src/App.tsx": "fa55c638a19f26f9fbb31f49f84c9d796714c2772648ea944de1d5f8b6a2ad45",
+    "src/components/BookFigure.tsx": "215604f311875800439c83499463aa3d92380ef8f7fdee105483dc7e346eb705",
+    "src/components/Cover.tsx": "d2489620ac55d238f46bbac407a22e4242c2e2372658cd60f10521fef4784e93",
+    "src/components/Line.tsx": "7f3fe4bc9330d67a6bd94039ee2b7c9bbfe1225a1302d7672ac4fb7a1c81d2ff",
+    "src/components/MobileStorePrompt.tsx": "79c43e1337b113ae02dc4979455430163f5ae893f904fba5051197fec1dd7946",
+    "src/components/Reader.tsx": "234d48642326c75392739590ec1d07263cdadba10c5a0316c5b02ffdd03cd3ff",
+    "src/components/ReadingPanel.tsx": "084baff33b683cfd2e123c29354e4f34c790876ed1703e6ae824a3da5be1e760",
+    "src/components/RichLine.tsx": "0b0841ac4095a6c57effc95aacbc01f0d023958135e0c7626caa451a80003b2c",
+    "src/components/SelectionTools.tsx": "aaf2fc5bb7bff1242718036c35a74689741fa68184eb3dd4db0f25dbad5cc8bf",
+    "src/i18n.ts": "a182039d81a18aea40418d3f5277cef662729183039fe0cb1a9f23b142b5820c",
+    "src/index.css": "752b69550f9faf5ae1e6a1d43695c09f6425f5e93f60f9c2897c738173c997ba",
+    "src/lib/backNavigation.ts": "d217dcd044e789a5726fa1a5e701ae7c59fa44c9550974f8ee0d1cf41c3ac3c0",
+    "src/lib/bookAssets.ts": "d9b494b32ea3124e8266f828fd084622f8351606d1ad4be6fd2cdfd6c3c57cb5",
+    "src/lib/library.ts": "e0275475f865b8d971bf4876f628309de56086371185de864b53aa391ece0266",
+    "src/lib/mobileStore.ts": "74ba3426f9a24ace75513190f7c97e25fa2606d095bf8f212ddbd80f57ecd06e",
+    "src/lib/offlineDictionary.ts": "d0a931bb6e6b570d479373fb58099a448bcc65593852ffe76849de4829f6acd8",
+    "src/lib/readerSelection.ts": "5e5b4f008227d7f99f77130d85f7776ba4b59c20043df30a5a864a6b42372783",
+    "src/lib/readingTools.ts": "548da337d0f4531bf02398e23991e9dd7638b388a7af34c193dc6079d5fdf17c",
+    "src/lib/settings.ts": "ea780eb2c4bc0752fd2c8abe842c9f781f60e5f35645b4830bfa34d7399974e6",
+    "src/lib/text.ts": "076b09946f4d78d6770a82c843a97a2d3d52f8619b2db6731e34829e19548e89",
+    "src/main.tsx": "5f42b8ed2ef3773e39435651177a48266c5e06a5fe77c1985211459a53173b61",
+    "src/types.ts": "2222c6fbbaa1416824094631fbaacb550c11c2b29fdaf186d8cbc2b6601f1def"
+  },
+  "web_assets": {
+    "index-DBX-VliV.js": "8e8af207094dd3081c1a6a4f4f1e8008c86016653037ce6c76b54a0e6cdd9693",
+    "index-B-sYQkm_.css": "5859f52f17c7991b93d7fc00a2157f17b902067476ba3f3e739a06c9fff06a5f"
+  },
+  "cleanup": "Bunko QA desktop, preview and emulator stopped; owned Play release tab closed; no shared GUI restarted."
+}

@@ -1,6 +1,16 @@
 # Bunko store handoff
 
-Updated 2026-09-25. Owner authorized takeover of the prior session and completion of publication on both stores, including formal review submission. The agreed price is USD 0.99 paid up front.
+Updated 2026-09-26. Owner authorized takeover of the prior session and completion of publication on both stores, including formal review submission. The agreed price is USD 0.99 paid up front.
+
+## Current update — 2026-09-26
+
+- **1.0.3 (5)** is available in Google Play internal testing and in iOS/Mac Bunko Internal TestFlight. All five reader requests transferred from the LazyOracle session are completed: right-edge back, explicit selection before Dictionary, word/phrase/sentence selection, compact header, and separate main/ruby sizes.
+- Apple approved iOS **1.0.1 (2)**. The new iOS **1.0.3 (5)** review was submitted at **2026-09-26 01:58:51 UTC** and is **Waiting for Review**, automatic release after approval. Review ID `67ade8e6-50c0-429f-a5fb-268aea4b5863`.
+- Mac **1.0.2 (4)** is **In Review**; the new Mac build 5 is internal only. Google production **1.0.0 (1)** remains in review. Neither active review was replaced.
+- Thirty automated checks, native Android selection/back tests, responsive browser checks and WebKit selection tests passed. Physical iPhone interaction was not tested; iOS and universal Mac archives, signatures, Apple validation and uploads passed.
+- See `artifacts/release-1.0.3.json`, `updates/1.0.3.json` and `../docs/reading-controls.md`. The temporary Bunko QA browser/emulator was stopped, its Play tab closed, and KVM was used only for headless builds/uploads. Shared GUI and simulator sessions were left with their owners.
+
+## Earlier release history
 
 - PWA: https://lachlan.lazying.art/Bunko/ — deployed by the Pages workflow on `main`; check the latest successful run before reporting deployment status.
 - Apple: app `6815137919`, version 1.0.0 (1) **Ready for Sale**. The US public listing resolves and reports USD 0.99. Version 1.0.1 (2) is **Waiting for Review** with automatic release after approval. See `apple/submission.md`.

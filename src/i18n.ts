@@ -46,6 +46,7 @@ export interface UICopy {
   grammar: string
   grammarHint: string
   textSize: string
+  rubySize: string
   books: string
   refreshLibrary: string
   theme: string
@@ -122,13 +123,14 @@ const en: UICopy = {
   rubyHint: 'Furigana above kana, pinyin above hanzi.',
   grammar: 'Colour by grammar',
   grammarHint: 'Subject, predicate, object and the rest, as the generator labelled them.',
-  textSize: 'Text size',
+  textSize: 'Main text size',
+  rubySize: 'Ruby size',
   books: 'books',
   refreshLibrary: 'Refresh library',
   theme: 'Theme',
   themePaper: 'Light',
   themeNight: 'Dark',
-  themeSystem: 'Match device',
+  themeSystem: 'System',
   serif: 'Serif text',
   interfaceLanguage: 'Interface language',
   storage: 'Storage',
@@ -202,7 +204,8 @@ const zhHans: UICopy = {
   rubyHint: '汉字上标拼音，假名上标振假名。',
   grammar: '语法着色',
   grammarHint: '主语、谓语、宾语等，按生成时的标注。',
-  textSize: '字号',
+  textSize: '正文字号',
+  rubySize: '注音字号',
   books: '本书',
   refreshLibrary: '刷新书库',
   theme: '主题',
@@ -280,7 +283,8 @@ const zhHant: UICopy = {
   rubyHint: '漢字上標拼音，假名上標振假名。',
   grammar: '語法著色',
   grammarHint: '主語、謂語、賓語等，按生成時的標註。',
-  textSize: '字號',
+  textSize: '正文字號',
+  rubySize: '注音字號',
   books: '本書',
   refreshLibrary: '重新整理書庫',
   theme: '主題',
@@ -361,12 +365,13 @@ const ja: UICopy = {
   grammar: '文法で色分け',
   grammarHint: '主語・述語・目的語など、生成時の注記に従います。',
   textSize: '文字の大きさ',
+  rubySize: 'ルビの大きさ',
   books: '冊',
   refreshLibrary: 'ライブラリを更新',
   theme: 'テーマ',
   themePaper: '紙',
   themeNight: '夜',
-  themeSystem: '端末に合わせる',
+  themeSystem: 'システム',
   serif: '明朝体',
   interfaceLanguage: '表示言語',
   storage: '保存容量',

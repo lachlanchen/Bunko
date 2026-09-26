@@ -57,12 +57,13 @@ a { color: var(--indigo); }
 /* Ruby is the point of the app, so it gets the care. */
 ruby { ruby-position: over; -webkit-ruby-position: before; }
 rt {
-  font-size: .52em;
+  font-size: var(--ruby-size, .52em);
   font-family: var(--sans);
   color: var(--coral);
   font-weight: 500;
   line-height: 1.1;
   letter-spacing: .02em;
   user-select: none;
+  -webkit-user-select: none;
 }
 :root[data-theme='night'] rt { color: var(--coral); }

@@ -1,0 +1,10 @@
+{
+  "version": "1.0.3",
+  "build": 5,
+  "whatsNew": {
+    "en-US": "Long-press to select a word, adjust the selection, then choose Dictionary. Expand a selection to its sentence. Swipe right from the left edge to go back. Set main text and ruby sizes independently. Theme and Settings now fit beside Bunko on narrow screens. Also includes the new Physics, Learning, Finance and Travel shelves, local dictionaries, equations and figures.",
+    "zh-Hans": "长按选词，调整选区后点击查词；也可一键选中整句。从屏幕左边缘向右滑动可返回。正文字号与注音字号可分别调整。窄屏上主题与设置和 Bunko 标题并排显示。本次更新也包含物理、学习、财经与旅行书架、本机词典、公式及插图。",
+    "zh-Hant": "長按選詞，調整選區後點擊查詞；也可一鍵選取整句。從螢幕左邊緣向右滑動可返回。正文字級與注音字級可分別調整。窄螢幕上主題與設定和 Bunko 標題並排顯示。本次更新也包含物理、學習、財經與旅行書架、本機詞典、公式及插圖。",
+    "ja": "長押しで単語を選び、範囲を調整してから「辞書」を選択できます。文全体への選択拡張にも対応。画面左端から右へスワイプすると戻れます。本文とルビの大きさを別々に調整でき、狭い画面でもテーマと設定が Bunko の見出しと同じ行に収まります。物理・学び・お金・旅の本棚、端末内の辞書、数式と図版も含まれます。"
+  }
+}

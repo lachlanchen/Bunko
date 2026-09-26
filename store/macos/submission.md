@@ -37,3 +37,8 @@ The universal purchase uses the same app record, US $0.99 base price and existin
 The debug harness exits after capture. Bunko released the shared desktops; coordination is recorded in the owner's requested private `L-And-N/.runtime/macos-20260925/desktop-available.md`. No shared remote desktop or tunnel service was restarted.
 
 See [build and test instructions](../../docs/macos.md) and [curated artifact evidence](../artifacts/macos-release-1.0.2.json).
+
+
+## Internal update — 2026-09-26
+
+The original Mac 1.0.2 (4) submission is now **In Review**. Mac **1.0.3 (5)** is VALID and **IN_BETA_TESTING** in Bunko Internal, build/delivery `b80dbad6-76ed-4042-919c-8fcccb1e4fb1`. It adds explicit selected-text lookup, Sentence selection, compact header controls, and independent main/ruby sizing. Its four TestFlight notes describe mouse selection and native Mac menus. The ongoing 1.0.2 review was not replaced. See [1.0.3 evidence](../artifacts/release-1.0.3.json).

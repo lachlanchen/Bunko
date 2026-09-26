@@ -15,3 +15,8 @@ On 2026-09-23, Android **1.0.1 (2)** was published to the internal testing track
 On 2026-09-25, the signed Android **1.0.2 (3)** bundle was published to the same internal track. The Console confirms **Active**, latest release `1.0.2 (3) — New books and equations`, **Available to internal testers**. The AAB SHA-256 is `3ff9c3f87ec367cd3afbaab9282089032ab621e03efd001e7ddc33b38a169228`. The production 1.0.0 review was left intact.
 
 Country selection rechecked 2026-09-25: the production track targets **172** of the Console's **177** country/region entries. The five untargeted entries—China, Cuba, Iran, Sudan and Rest of World—each show **Cannot target for paid app**. Bunko is paid up front, so 172 is the maximum selectable reach for this listing. The production review is still active; this check made no submission change.
+
+
+## Internal update 1.0.3 (5) — 2026-09-26
+
+The signed bundle was uploaded once and published as **1.0.3 (5) — Selection and reading controls**. Play Console confirmed **Available to internal testers** at Sep 26, 9:56 AM (Hong Kong time). Four-language release notes were accepted. Supported device counts did not change. The production 1.0.0 review was left in place. Native Android API 34 tests verified long-press handles, explicit Dictionary, Sentence expansion, hardware Back, vertical scrolling and edge swipe. Exact bundle/APK checksums are in [release evidence](../artifacts/release-1.0.3.json).

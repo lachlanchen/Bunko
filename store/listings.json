@@ -4,27 +4,27 @@
     "subtitle": "Pinyin & furigana for classics",
     "short": "Read classics in English, Chinese and Japanese with pinyin and furigana.",
     "keywords": "books,reading,classics,Chinese,Japanese,English,pinyin,furigana,ruby,offline,literature",
-    "description": "Bunko brings public-domain classics to your pocket, with Chinese pinyin and Japanese furigana above the text.\n\nExplore 56 works from the Chinese canon, Japanese literature and world classics. Choose the original text, translations alongside it, or several languages together. Switch between interlinear and paragraph layouts, hide the readings, highlight grammar, adjust text size, and choose paper or night mode.\n\nDownload a book for offline reading. Your reading position and preferences stay on your device. No account, advertising, analytics, subscription or in-app purchases. One purchase includes the whole available library.\n\nThe source texts are in the public domain. Chinese, Japanese and English study renderings are AI-generated adaptations by LazyingArt; they may contain errors and are not scholarly editions. Books download from our public GitHub repository. Request a public-domain title through the in-app link to GitHub.\n\nInterface languages: English, Simplified Chinese, Traditional Chinese and Japanese."
+    "description": "Bunko brings a quiet multilingual library to your device. Read public-domain classics and rights-cleared original books with ruby readings, aligned language layers, and an offline shelf.\n\nREAD AT YOUR PACE\nChoose the original, line-by-line translations, or paired paragraphs. Show one language or several. Japanese furigana and Chinese pinyin help you stay with the text. Adjust type size, serif text, and light or dark appearance.\n\nA LIBRARY WITH ROOM TO EXPLORE\nBrowse literature, Chinese classics, physics companion notes, learning, finance, and travel. Equations and figures stay with technical books. Each edition identifies its available languages and source rights.\n\nKEEP BOOKS ON YOUR DEVICE\nDownload a book for offline reading. Your place, private notes, and preferences stay on this device. Optional English, Chinese, and Japanese dictionary packs work locally after download; Wiktionary provides an online fallback.\n\nSELECT AND READ\nLong-press a word to select it, adjust the selection handles, then choose Dictionary. Expand to the containing sentence or discuss its passage. Ordinary taps keep you reading. Swipe right from the left edge to go back. Adjust main text and ruby sizes separately.\n\nNo reader account, advertising, or subscription. Optional public passage discussions and book requests open GitHub. Books and dictionary packs download from the public bunko-books repository. Study notes and generated renderings can contain errors; source and rights records accompany the editions."
   },
   "zh-Hans": {
     "name": "Bunko 文库：经典与注音",
     "subtitle": "中英日经典，拼音与假名伴读",
     "short": "阅读中英日经典，随文查看拼音与假名，下载后离线阅读。",
     "keywords": "读书,经典,文库,中文,日语,英语,拼音,假名,注音,文学,离线,古文",
-    "description": "Bunko 将公版经典装进口袋，在中文文字上方显示拼音，在日文汉字上方显示假名。\n\n书库收录 56 部中国典籍、日本文学与世界名著。可以只看原文，也可以搭配译文或同时显示多种语言。切换逐句对照与逐段排列，开关注音和语法配色，调整字号，选择纸张或夜间主题。\n\n下载整本书后即可离线阅读。阅读位置和偏好保存在设备上。无需账户，无广告、无分析追踪、无订阅和应用内购买。一次购买即可阅读书库内所有作品。\n\n原文属于公有领域。供学习参考的现代汉语、日语和英语译写由 LazyingArt 使用 AI 生成，可能存在错误，不属于学术校勘本。书籍从公开的 GitHub 仓库下载；应用内链接可前往 GitHub 提议希望加入的公版作品。\n\n界面支持英语、简体中文、繁体中文和日语。"
+    "description": "文库把安静的多语言书架带到 设备。阅读公共领域经典与经授权的原创书籍，使用注音、对照文本和离线书架。\n\n按自己的节奏阅读\n选择原文、逐句对照或整段对照，可显示一种或多种语言。日语振假名与中文拼音帮助理解原文；可调整字号、衬线字体与明暗主题。\n\n清晰分类的书架\n浏览文学、中华经典、物理伴读笔记、学习、财经与旅行。技术书籍保留公式和插图，每种版本标明可用语言与权利来源。\n\n保存在你的 设备\n下载图书后可离线阅读。阅读进度、私人笔记与偏好保存在本机。可选的英、中、日词典包下载后在本机查词，也可在线使用维基词典。\n\n选择与阅读\n长按选词，拖动选区两端调整范围，然后点击查词。可一键选中整句或打开段落讨论。普通点按不会打开词典。从左边缘向右滑动可返回；正文字号与注音字号可分别调整。\n\n无需阅读账户，没有广告或订阅。可选的公开段落讨论与图书申请会打开 GitHub。图书与词典包来自公开的 bunko-books 仓库。伴读笔记与生成的译文可能有误，各版本附有来源与权利记录。"
   },
   "zh-Hant": {
     "name": "Bunko 文庫：經典與注音",
     "subtitle": "中英日經典，拼音與假名伴讀",
     "short": "閱讀中英日經典，隨文查看拼音與假名，下載後離線閱讀。",
     "keywords": "讀書,經典,文庫,中文,日語,英語,拼音,假名,注音,文學,離線,古文",
-    "description": "Bunko 將公版經典裝進口袋，在中文文字上方顯示拼音，在日文漢字上方顯示假名。\n\n書庫收錄 56 部中國典籍、日本文學與世界名著。可以只看原文，也可以搭配譯文或同時顯示多種語言。切換逐句對照與逐段排列，開關注音和語法配色，調整字級，選擇紙張或夜間主題。\n\n下載整本書後即可離線閱讀。閱讀位置和偏好保存在裝置上。無需帳戶，無廣告、無分析追蹤、無訂閱和 App 內購買。一次購買即可閱讀書庫內所有作品。\n\n原文屬於公有領域。供學習參考的現代漢語、日語和英語譯寫由 LazyingArt 使用 AI 生成，可能存在錯誤，不屬於學術校勘本。書籍從公開的 GitHub 儲存庫下載；App 內連結可前往 GitHub 提議希望加入的公版作品。\n\n介面支援英語、簡體中文、繁體中文和日語。"
+    "description": "文庫把安靜的多語言書架帶到 裝置。閱讀公共領域經典與經授權的原創書籍，使用注音、對照文本和離線書架。\n\n按自己的節奏閱讀\n選擇原文、逐句對照或整段對照，可顯示一種或多種語言。日語振假名與中文拼音幫助理解原文；可調整字級、襯線字體與明暗主題。\n\n清楚分類的書架\n瀏覽文學、中華經典、物理伴讀筆記、學習、財經與旅行。技術書籍保留公式與插圖，每種版本標明可用語言與權利來源。\n\n儲存在你的 裝置\n下載圖書後可離線閱讀。閱讀進度、私人筆記與偏好儲存在本機。可選的英、中、日詞典包下載後在本機查詞，也可線上使用維基詞典。\n\n選取與閱讀\n長按選詞，拖動選區兩端調整範圍，然後點擊查詞。可一鍵選取整句或開啟段落討論。普通點按不會開啟詞典。從左邊緣向右滑動可返回；正文字級與注音字級可分別調整。\n\n無需閱讀帳戶，沒有廣告或訂閱。可選的公開段落討論與圖書申請會開啟 GitHub。圖書與詞典包來自公開的 bunko-books 儲存庫。伴讀筆記與生成的譯文可能有誤，各版本附有來源與權利記錄。"
   },
   "ja": {
     "name": "Bunko 文庫：ルビで読む古典",
     "subtitle": "ふりがなとピンインで、原文を身近に",
     "short": "日本・中国・世界の古典を、ふりがなとピンイン付きで。ダウンロードしてオフラインでも読めます。",
     "keywords": "読書,古典,文庫,日本語,中国語,英語,ふりがな,ピンイン,ルビ,文学,オフライン",
-    "description": "Bunko は、パブリックドメインの古典を持ち歩ける読書アプリです。日本語の漢字にはふりがな、中国語にはピンインを表示します。\n\n中国の古典、日本文学、世界文学から 56 作品を収録。原文だけ、訳文と一緒に、複数の言語を並べて読むなど、表示する言語を選べます。文ごと・段落ごとの配置、ルビの表示、文法の色分け、文字サイズ、紙色・ナイトモードを切り替えられます。\n\n本をダウンロードすればオフラインで読めます。読書位置と設定は端末内に保存されます。アカウント、広告、アクセス解析、定期購読、アプリ内課金はありません。一度の購入で公開中の全作品を読めます。\n\n原文はパブリックドメインです。学習用の現代中国語・日本語・英語の訳文は LazyingArt が AI で生成したもので、誤りを含む可能性があり、学術版ではありません。本は公開 GitHub リポジトリからダウンロードします。追加してほしい公版作品は、アプリ内リンクから GitHub でリクエストできます。\n\n表示言語は英語、簡体字中国語、繁体字中国語、日本語に対応しています。"
+    "description": "文庫は、端末 で静かに読書を楽しむための多言語ライブラリです。パブリックドメインの古典や許諾済みのオリジナル書籍を、ふりがな、対訳、オフライン本棚とともに読めます。\n\n自分のペースで読む\n原文のみ、行ごとの対訳、段落ごとの対訳から選べます。表示言語は一つでも複数でも。日本語のふりがなと中国語のピンインが読書を助けます。文字サイズ、明朝体、明暗テーマも調整できます。\n\n分野ごとに整った本棚\n文学、中国古典、物理学の伴読ノート、学び、お金、旅を探索できます。専門書の数式や図版もそのまま表示。各版には対応言語と出典・権利の記録があります。\n\n端末 に保存して読む\n本をダウンロードすればオフラインで読めます。読書位置、個人メモ、設定はこの 端末 に保存されます。英語・中国語・日本語の任意の辞書パックもダウンロード後は端末内で検索でき、オンラインではウィクショナリーも利用できます。\n\n選んで読む\n単語を長押しし、ハンドルで範囲を調整してから「辞書」を選びます。文全体を選んだり、その箇所の討論を開いたりできます。通常のタップで辞書は開きません。画面左端から右へスワイプで戻り、本文とルビの大きさは別々に調整できます。\n\n読書用アカウント、広告、サブスクリプションはありません。任意の公開討論や書籍リクエストは GitHub を開きます。書籍と辞書は公開の bunko-books リポジトリから取得します。伴読ノートや生成された訳文には誤りがあり得ます。各版の出典・権利記録をご確認ください。"
   }
 }

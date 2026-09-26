@@ -26,3 +26,17 @@ Review submission `e560b7c7-e6e5-4342-bb64-5d8486e69b21` was submitted on 2026-0
 Availability rechecked 2026-09-25: App Store Connect lists **175 territories total**, with Bunko marked **available** and content status **AVAILABLE** in all 175. `availableInNewTerritories` is true, so newly added App Store territories are included automatically, subject to Apple's local rules.
 
 On 2026-09-25, the expanded-reader **1.0.2 build 3** IPA was validated and uploaded (delivery UUID `6057045f-30d5-47ae-8beb-047dabb37be2`). App Store Connect reports processing state **VALID**. The Bunko Internal TestFlight group lists builds 1, 2 and 3. This test build was not attached to or substituted into the pending public 1.0.1 review.
+
+
+## iOS 1.0.3 (5) — 2026-09-26
+
+Apple now reports iOS **1.0.1 (2) Ready for Sale**. Version **1.0.3 (5)** was validated, uploaded and made available in Bunko Internal TestFlight. Its new public review was submitted at **2026-09-26 01:58:51 UTC**, with automatic release after approval, and is **Waiting for Review**.
+
+- Version: `724eb6b6-f757-4419-986b-fae45a885d08`.
+- Build / delivery: `37bc403e-26d8-4553-9848-91287d29f8b3`, VALID and IN_BETA_TESTING.
+- Review: `67ade8e6-50c0-429f-a5fb-268aea4b5863`.
+- Four localized descriptions, release notes and TestFlight notes explain explicit word selection, edge swipe, compact header and independent ruby sizing, plus the owner shelves, local dictionaries and equation support added since 1.0.1.
+- Five inherited iPhone and two iPad screenshots were verified COMPLETE; review contact information was copied privately from the approved version. No price, territory or age-disclosure setting was changed.
+- Thirty automated tests, Android native selection/back testing and browser/WebKit checks passed. Physical iPhone gestures were not tested in this update.
+
+See [release evidence](../artifacts/release-1.0.3.json) and [reading controls](../../docs/reading-controls.md).

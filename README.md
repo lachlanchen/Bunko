@@ -41,6 +41,10 @@ The live catalogue has 183 cleared editions: 150 classics and 33 owner editions.
 
 [store/release.yaml](store/release.yaml)
 
+## Reading controls
+
+Long-press a word, adjust the native selection handles, then choose **Dictionary**. **Sentence** expands the selection; ordinary taps leave the page open. Swipe right from the left edge to go back. Settings includes independent main-text and ruby size controls, with a live preview. Theme and Settings fit beside the library title on narrow phones. See the [reading controls guide](docs/reading-controls.md).
+
 ## Support Bunko
 
 Bunko is a LazyingArt project. If it helps your reading or research, you can support its ongoing work:

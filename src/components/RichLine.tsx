@@ -11,12 +11,11 @@ const TEX_MACROS = {
 }
 
 /** Render author-supplied TeX locally; no script or remote MathJax dependency. */
-export function RichLine({ unit, lang, ruby, grammar, onToken }: {
+export function RichLine({ unit, lang, ruby, grammar }: {
   unit: Unit; lang: LangCode; ruby: boolean; grammar: boolean;
-  onToken: (word: string, reading: string) => void
 }) {
   const rich = unit.rich?.[lang]
-  if (!rich) return <Line line={unit[lang]} ruby={ruby} grammar={grammar} onToken={onToken} />
+  if (!rich) return <Line line={unit[lang]} ruby={ruby} grammar={grammar} />
   return <span className="rich-line">{rich.map((part, index) => {
     if (!part.math) return <span key={index}>{part.text}</span>
     try {

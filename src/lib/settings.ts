@@ -18,6 +18,7 @@ export const DEFAULT_SETTINGS: ReadingSettings = {
   ruby: true,
   grammar: false,
   fontScale: 1,
+  rubyScale: 1,
   theme: 'system',
   serif: true,
 }

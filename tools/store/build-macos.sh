@@ -4,7 +4,7 @@ set -euo pipefail
 # run here on the shared Xcode host. Never print signing passwords.
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin
 bunko_root="${BUNKO_ROOT:-$HOME/Projects/Bunko}"
-bunko_release="${BUNKO_RELEASE:-1.0.2-4}"
+bunko_release="${BUNKO_RELEASE:-1.0.3-5}"
 bunko_kc="$HOME/Library/Keychains/landn-release.keychain-db"
 bunko_pass=$(tr -d '\r\n' < "$HOME/.config/echomind/apple/release-keychain.pass")
 security unlock-keychain -p "$bunko_pass" "$bunko_kc"
@@ -17,7 +17,7 @@ cp "$bunko_profile" "$HOME/Library/MobileDevice/Provisioning Profiles/$bunko_pro
 cp "$bunko_profile" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/$bunko_profile_id.provisionprofile"
 cd "$bunko_root"
 xcodebuild -project macos/Bunko.xcodeproj -scheme Bunko -configuration Release -destination 'generic/platform=macOS' \
-  -archivePath "release/Bunko-macOS-$bunko_release.xcarchive" -derivedDataPath release/DerivedDataMacRelease -jobs 3 archive \
+  -archivePath "release/Bunko-macOS-$bunko_release.xcarchive" -derivedDataPath release/DerivedDataMacRelease -jobs "${BUNKO_BUILD_JOBS:-2}" archive \
   ARCHS='arm64 x86_64' ONLY_ACTIVE_ARCH=NO COMPILER_INDEX_STORE_ENABLE=NO "OTHER_CODE_SIGN_FLAGS=--keychain $bunko_kc"
 xcodebuild -exportArchive -archivePath "release/Bunko-macOS-$bunko_release.xcarchive" \
   -exportOptionsPlist macos/ExportOptions.plist -exportPath "release/macos-export-$bunko_release"

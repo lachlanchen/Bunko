@@ -5,6 +5,7 @@ import type { UILanguage } from '../i18n'
 import { languageName } from '../i18n'
 import { dictionaryLanguage, discussionNewUrl, discussionTitle, lookupWord, passageText, type Definition } from '../lib/readingTools'
 import { downloadDictionary, installedDictionary, removeDictionary, type DictionaryLanguage } from '../lib/offlineDictionary'
+import { useBackAction } from '../lib/backNavigation'
 
 interface Focus {
   key: string
@@ -35,6 +36,7 @@ interface Issue { number: number; html_url: string; comments: number; body: stri
 interface Comment { id: number; body: string; user?: { login: string } }
 
 export function ReadingPanel({ focus, ui, onClose }: { focus: Focus; ui: UILanguage; onClose: () => void }) {
+  useBackAction(onClose, true, 30)
   const t = labels[ui]
   const p = packLabels[ui]
   const packLang = dictionaryLanguage(focus.lang)

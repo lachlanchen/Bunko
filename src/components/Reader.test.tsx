@@ -31,3 +31,22 @@ it('opens a passage discussion and shows strong language labels', async () => {
   expect(screen.getByText('日本語の原文', { selector: 'blockquote' })).toBeTruthy()
   vi.unstubAllGlobals()
 })
+
+it('waits for an explicit Dictionary action and keeps the selected substring', async () => {
+  vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, json: async () => ({ items: [] }) })))
+  const props = { meta, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs: ['ja', 'en'] as LangCode[] }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
+  const { container } = render(<Reader {...props} />)
+  const text = await screen.findByText('English translation')
+  fireEvent.click(text)
+  expect(screen.queryByRole('dialog')).toBeNull()
+  const node = text.firstChild!
+  const range = document.createRange()
+  range.setStart(node, 0); range.setEnd(node, 7)
+  window.getSelection()?.addRange(range)
+  fireEvent(document, new Event('selectionchange'))
+  expect(container.querySelector('.selection-preview strong')?.textContent).toBe('English')
+  expect(screen.queryByRole('dialog')).toBeNull()
+  fireEvent.click(screen.getByRole('button', { name: 'Dictionary' }))
+  expect((screen.getByRole('textbox', { name: 'Look up' }) as HTMLInputElement).value).toBe('English')
+  vi.unstubAllGlobals()
+})

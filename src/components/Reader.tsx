@@ -5,7 +5,7 @@
  * three arrangements come from the same data: the source line alone, every
  * gloss under its own source line, or whole paragraphs one after another.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { ChevronLeft, ChevronRight, List, MessageCircle, Settings2 } from 'lucide-react'
 import type { BookMeta, Chapter, LangCode, ReadingSettings, Unit } from '../types'
 import type { UICopy, UILanguage } from '../i18n'
@@ -17,6 +17,8 @@ import { BookFigure } from './BookFigure'
 import { plainText } from '../lib/text'
 import { passageKey } from '../lib/readingTools'
 import { ReadingPanel, type ReadingFocus } from './ReadingPanel'
+import { SelectionTools } from './SelectionTools'
+import type { ReaderSelection } from '../lib/readerSelection'
 
 interface ReaderProps {
   meta: BookMeta
@@ -31,6 +33,7 @@ interface ReaderProps {
   onOpenSettings: () => void
   onBack: () => void
   backLabel: string
+  overlayOpen?: boolean
 }
 
 export function Reader({
@@ -46,6 +49,7 @@ export function Reader({
   onOpenSettings,
   onBack,
   backLabel,
+  overlayOpen = false,
 }: ReaderProps) {
   const [loaded, setLoaded] = useState<{ file: string; chapter: Chapter | null; error: string }>({
     file: '',
@@ -59,6 +63,7 @@ export function Reader({
   // Anything not matching the chapter now on screen is a stale load.
   const chapter = loaded.file === row?.file ? loaded.chapter : null
   const error = loaded.file === row?.file ? loaded.error : ''
+  const activeFocus = focus?.key.startsWith(`${meta.id}/${row?.file}/`) ? focus : null
 
   const langs = useMemo(
     () => settings.langs.filter((lang) => meta.langs.includes(lang)),
@@ -121,7 +126,15 @@ export function Reader({
   const discussLabel = { en: 'Discuss passage', 'zh-Hans': '讨论这段', 'zh-Hant': '討論這段', ja: 'この箇所を話し合う' }[ui]
 
   const openFocus = (paragraphId: string, unit: Unit, unitIndex: number, lang: LangCode, word?: string, reading?: string) => {
+    window.getSelection()?.removeAllRanges()
     setFocus({ key: passageKey(meta, row.file, paragraphId, unitIndex), unit, lang, word, reading })
+  }
+
+  const openSelection = (selection: ReaderSelection, dictionary: boolean) => {
+    const { readingPara: para, unit: unitIndex, lang } = selection.passage.dataset
+    const paragraph = chapter?.p[Number(para)]
+    const unit = paragraph?.u[Number(unitIndex)]
+    if (paragraph && unit && lang) openFocus(paragraph.id, unit, Number(unitIndex), lang as LangCode, dictionary ? selection.text : undefined)
   }
 
 
@@ -147,7 +160,7 @@ export function Reader({
 
       <div
         className={`page layout-${settings.layout}${settings.serif ? ' serif' : ''}`}
-        style={{ fontSize: `${settings.fontScale}rem` }}
+        style={{ fontSize: `${settings.fontScale}rem`, '--ruby-size': `${settings.rubyScale * .52}rem` } as CSSProperties}
         ref={scrollRef}
         onScroll={handleScroll}
       >
@@ -172,7 +185,7 @@ export function Reader({
                       <p className={`para-line lang-${lang}`} key={lang} lang={htmlLang(lang)}>
                         <strong className="language-label">{languageName(lang, ui)}</strong>
                         {paragraph.u.map((unit, unitIndex) => (
-                          <span key={unitIndex} className="paired-unit"><RichLine unit={unit} lang={lang} ruby={settings.ruby} grammar={settings.grammar} onToken={(word, reading) => openFocus(paragraph.id, unit, unitIndex, lang, word, reading)} />{lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
+                          <span key={unitIndex} className="paired-unit"><span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLang(lang)}><RichLine unit={unit} lang={lang} ruby={settings.ruby} grammar={settings.grammar} /></span>{lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
                         ))}
                       </p>
                     ))
@@ -182,13 +195,12 @@ export function Reader({
                           unit[lang]?.length ? (
                             <p className={`unit-line lang-${lang}`} key={lang} lang={htmlLang(lang)}>
                               {shown.length > 1 && <strong className="language-label">{languageName(lang, ui)}</strong>}
-                              <RichLine
+                              <span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLang(lang)}><RichLine
                                 unit={unit}
                                 lang={lang}
                                 ruby={settings.ruby}
                                 grammar={settings.grammar}
-                                onToken={(word, reading) => openFocus(paragraph.id, unit, unitIndex, lang, word, reading)}
-                              />
+                              /></span>
                               {lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}
                             </p>
                           ) : null,
@@ -216,7 +228,8 @@ export function Reader({
           </article>
         )}
       </div>
-      {focus && focus.key.startsWith(`${meta.id}/${row.file}/`) && <ReadingPanel key={`${focus.key}:${focus.word ?? ''}:${focus.lang}`} focus={focus} ui={ui} onClose={() => setFocus(null)} />}
+      {chapter && !activeFocus && !overlayOpen && <SelectionTools key={`${row.file}:${settings.layout}:${shown.join(',')}`} host={scrollRef} ui={ui} onOpen={openSelection} />}
+      {activeFocus && <ReadingPanel key={`${activeFocus.key}:${activeFocus.word ?? ''}:${activeFocus.lang}`} focus={activeFocus} ui={ui} onClose={() => setFocus(null)} />}
     </div>
   )
 }

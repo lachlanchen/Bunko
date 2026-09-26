@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { BookOpen, Check, Download, Settings, RefreshCw, Search, Trash2, X } from 'lucide-react'
 import type { BookMeta, BookRow, LangCode, Place, ReaderIndex, ReadingSettings } from './types'
 import { copies, languageName, uiLanguageNames, type UILanguage } from './i18n'
@@ -26,6 +26,8 @@ import {
 import { Reader } from './components/Reader'
 import { Cover } from './components/Cover'
 import { MobileStorePrompt } from './components/MobileStorePrompt'
+import { useBackAction, useBackNavigation } from './lib/backNavigation'
+import { Line } from './components/Line'
 
 type View = 'library' | 'book' | 'reader'
 type Filter = 'all' | 'chinese' | 'japanese' | 'world' | 'physics' | 'learning' | 'finance' | 'travel' | 'device'
@@ -62,6 +64,9 @@ export default function App() {
   const linkedBookOpened = useRef(false)
   const copy = copies[ui]
   const librarySearch = useRef<HTMLInputElement>(null)
+  useBackNavigation()
+  useBackAction(() => setView(view === 'reader' ? 'book' : 'library'), view !== 'library')
+  useBackAction(() => { if (showSettings) setShowSettings(false); else setShowChapters(false) }, showSettings || showChapters, 40)
 
   useEffect(() => {
     void (async () => {
@@ -259,6 +264,7 @@ export default function App() {
           onOpenSettings={() => setShowSettings(true)}
           onBack={() => setView('book')}
           backLabel={copy.back}
+          overlayOpen={showChapters || showSettings}
         />
         {showChapters && (
           <Sheet title={copy.chapterList} onClose={() => setShowChapters(false)} closeLabel={copy.close}>
@@ -385,10 +391,7 @@ export default function App() {
   return (
     <main className="page-shell">
       <header className="masthead">
-        <div>
-          <h1>{copy.appName}</h1>
-          <p>{copy.tagline}</p>
-        </div>
+        <h1>{copy.appName}</h1>
         <div className="library-tools">
           <select className="theme-select" aria-label={copy.theme} value={settings.theme} onChange={(event) => update({ theme: event.target.value as ReadingSettings['theme'] })}>
             <option value="paper">☀ {copy.themePaper}</option>
@@ -399,6 +402,7 @@ export default function App() {
             <Settings size={18} />
           </button>
         </div>
+        <p>{copy.tagline}</p>
       </header>
 
       <MobileStorePrompt copy={copy} />
@@ -572,8 +576,9 @@ function SettingsSheet({
       <Toggle label={copy.serif} on={settings.serif} onChange={(serif) => onChange({ serif })} />
 
       <section>
-        <h3>{copy.textSize}</h3>
+        <label className="size-label" htmlFor="main-text-size">{copy.textSize}<output>{Math.round(settings.fontScale * 100)}%</output></label>
         <input
+          id="main-text-size"
           type="range"
           min={0.85}
           max={1.6}
@@ -581,6 +586,11 @@ function SettingsSheet({
           value={settings.fontScale}
           onChange={(event) => onChange({ fontScale: Number(event.target.value) })}
         />
+        <label className="size-label" htmlFor="ruby-text-size">{copy.rubySize}<output>{Math.round(settings.rubyScale * 100)}%</output></label>
+        <input id="ruby-text-size" type="range" min={0.7} max={1.8} step={0.05} value={settings.rubyScale} onChange={(event) => onChange({ rubyScale: Number(event.target.value) })} />
+        <div className="type-preview" style={{ fontSize: `${settings.fontScale}rem`, '--ruby-size': `${settings.rubyScale * .52}rem` } as CSSProperties}>
+          <Line line={ui === 'ja' ? [['文庫', 'ぶんこ'], 'で読む。'] : ui.startsWith('zh') ? [['阅读', 'yuè dú'], '，慢慢品味。'] : [['文庫', 'ぶんこ'], ' · A page to enjoy.']} ruby={settings.ruby} />
+        </div>
       </section>
 
       <section>
