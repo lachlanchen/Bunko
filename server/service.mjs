@@ -8,6 +8,8 @@ const REPO = 'lachlanchen/bunko-books'
 const REPO_ID = 1381952467
 const PREFIX = '/bunko'
 const SESSION_MS = 8 * 60 * 60 * 1000
+const PERSISTENT_MS = 90 * 86400000
+const COOKIE = '__Host-bunko'
 const FLOW_MS = 10 * 60 * 1000
 const opaque = () => randomBytes(32).toString('base64url')
 const hash = value => createHash('sha256').update(value).digest('base64url')
@@ -99,12 +101,48 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     if (found) db.prepare('INSERT OR REPLACE INTO threads VALUES (?,?)').run(key, found.number)
     return found ?? null
   }
-  async function session(req) {
-    const value = req.headers.authorization?.match(/^Bearer ([A-Za-z0-9_-]{43})$/)?.[1]
+  const refreshing = new Map()
+  function cookie(res, value, expires = 0) {
+    res.setHeader('Set-Cookie', `${COOKIE}=${value}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${Math.max(0, Math.floor((expires - now()) / 1000))}`)
+  }
+  function credential(req) {
+    const bearer = req.headers.authorization?.match(/^Bearer ([A-Za-z0-9_-]{43})$/)?.[1]
+    // Cookies are accepted only from the canonical same-site web reader.
+    const saved = req.headers.origin === 'https://lachlan.lazying.art' ? req.headers.cookie?.split(';').map(v => v.trim()).find(v => v.startsWith(COOKIE + '='))?.slice(COOKIE.length + 1) : null
+    return bearer ?? (validOpaque(saved) ? saved : null)
+  }
+  async function session(req, res, refresh = true) {
+    const value = credential(req)
     if (!value) fail(401, 'sign_in_again')
     const row = db.prepare('SELECT * FROM sessions WHERE id=? AND expires>?').get(hash(value), now())
     if (!row) fail(401, 'sign_in_again')
-    return { ...unseal(row.data), sessionId: row.id }
+    if (refreshing.has(row.id)) await refreshing.get(row.id)
+    const latest = db.prepare('SELECT * FROM sessions WHERE id=? AND expires>?').get(row.id, now())
+    if (!latest) fail(401, 'sign_in_again')
+    let auth = unseal(latest.data)
+    if (refresh && (auth.accessExpires ?? auth.expires) <= now() + 60000) {
+      if (!auth.refreshToken || auth.refreshExpires <= now()) { db.prepare('DELETE FROM sessions WHERE id=?').run(row.id); fail(401, 'sign_in_again') }
+      const pending = (async () => {
+        const response = await fetchImpl('https://github.com/login/oauth/access_token', {
+          method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ client_id: config.clientId, client_secret: config.clientSecret, grant_type: 'refresh_token', refresh_token: auth.refreshToken }),
+          signal: AbortSignal.timeout(12000), redirect: 'error',
+        })
+        const token = await response.json()
+        if (token.error === 'bad_refresh_token' || response.status === 401) { db.prepare('DELETE FROM sessions WHERE id=?').run(row.id); fail(401, 'sign_in_again') }
+        if (!response.ok || !token.access_token || !token.refresh_token) fail(503, 'temporarily_unavailable')
+        auth = { ...auth, token: token.access_token, refreshToken: token.refresh_token, accessExpires: now() + Math.min(SESSION_MS, token.expires_in * 1000), refreshExpires: now() + token.refresh_token_expires_in * 1000 }
+        // Logout during a refresh must not resurrect a deleted session.
+        db.prepare('UPDATE sessions SET data=? WHERE id=?').run(seal(auth), row.id)
+      })()
+      refreshing.set(row.id, pending)
+      try { await pending } finally { refreshing.delete(row.id) }
+    }
+    if (!db.prepare('SELECT id FROM sessions WHERE id=?').get(row.id)) fail(401, 'sign_in_again')
+    const expires = auth.persistent ? Math.min(now() + PERSISTENT_MS, auth.refreshExpires) : row.expires
+    db.prepare('UPDATE sessions SET expires=? WHERE id=?').run(expires, row.id)
+    if (auth.storage === 'cookie' && res) cookie(res, value, expires)
+    return { ...auth, expires, sessionId: row.id }
   }
   async function body(req) {
     if (req.headers['content-type'] !== 'application/json') fail(415, 'json_required')
@@ -141,7 +179,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       if (!postPaths.includes(path) && ![`${PREFIX}/healthz`, `${PREFIX}/oauth/callback`].includes(path)) fail(404, 'not_found')
       const origin = req.headers.origin
       if (origin && !origins.has(origin)) fail(403, 'origin_denied')
-      if (origin) res.setHeader('Access-Control-Allow-Origin', origin)
+      if (origin) { res.setHeader('Access-Control-Allow-Origin', origin); res.setHeader('Access-Control-Allow-Credentials', 'true') }
       if (req.method === 'OPTIONS' && postPaths.includes(path)) {
         res.setHeader('Access-Control-Allow-Methods', 'POST')
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Bunko-Client')
@@ -171,8 +209,11 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
           if (!response.ok || !token.access_token || token.error) fail(502, 'exchange_failed')
           const user = safeUser(await github('/user', token.access_token))
           if (!Number.isSafeInteger(user.id) || typeof user.login !== 'string') fail(502, 'invalid_user')
-          flow.auth = { token: token.access_token, user, expires: now() + Math.min(SESSION_MS, (token.expires_in ?? 28800) * 1000) }
-          // Refresh tokens are deliberately discarded. Only an eight-hour access token is retained.
+          const accessExpires = now() + Math.min(SESSION_MS, (token.expires_in ?? 28800) * 1000)
+          const persistent = !!flow.storage && typeof token.refresh_token === 'string' && Number.isFinite(token.refresh_token_expires_in)
+          flow.auth = { token: token.access_token, user, accessExpires, expires: accessExpires, persistent, storage: flow.storage,
+            ...(persistent ? { refreshToken: token.refresh_token, refreshExpires: now() + token.refresh_token_expires_in * 1000 } : {}) }
+          // Refresh tokens stay encrypted on the cloud; only Bunko's opaque session reaches native storage.
           delete flow.githubVerifier
           db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal(flow), row.id)
           callbackPage(res, flow.platform, row.id)
@@ -189,8 +230,12 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         if (!config.clientId || !config.clientSecret) fail(503, 'not_configured')
         limit(`start:${ip}`, 10, 600000)
         if (!validOpaque(input.challenge) || !['web', 'native'].includes(input.platform)) fail(400, 'invalid_flow')
+        const storage = input.storage
+        if (storage !== undefined && !['cookie', 'secure'].includes(storage)) fail(400, 'invalid_flow')
+        if (storage === 'cookie' && (origin !== 'https://lachlan.lazying.art' || input.platform !== 'web')) fail(400, 'invalid_flow')
+        if (storage === 'secure' && input.platform !== 'native') fail(400, 'invalid_flow')
         const id = opaque(), state = opaque(), verifier = opaque()
-        db.prepare('INSERT INTO flows VALUES (?,?,?,?)').run(id, hash(state), seal({ challenge: input.challenge, platform: input.platform, githubVerifier: verifier }), now() + FLOW_MS)
+        db.prepare('INSERT INTO flows VALUES (?,?,?,?)').run(id, hash(state), seal({ challenge: input.challenge, platform: input.platform, storage, githubVerifier: verifier }), now() + FLOW_MS)
         json(res, { flow: id, url: `https://github.com/login/oauth/authorize?${new URLSearchParams({ client_id: config.clientId, redirect_uri: `${config.publicUrl}/oauth/callback`, state, code_challenge: hash(verifier), code_challenge_method: 'S256' })}` }); return
       }
       if (path === `${PREFIX}/v1/auth/complete`) {
@@ -199,31 +244,46 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         if (!row) fail(410, 'flow_expired')
         const flow = unseal(row.data)
         if (!same(flow.challenge, hash(input.verifier))) fail(403, 'invalid_verifier')
+        if (flow.completed) {
+          if (!db.prepare('SELECT id FROM sessions WHERE id=? AND expires>?').get(hash(flow.completed.token), now())) fail(410, 'flow_expired')
+          if (flow.storage === 'cookie') cookie(res, flow.completed.token, flow.completed.expires)
+          json(res, { ...flow.completed, ...(flow.storage === 'cookie' ? { token: undefined } : {}) }); return
+        }
         if (flow.error) { db.prepare('DELETE FROM flows WHERE id=?').run(row.id); fail(400, 'authorization_cancelled') }
         if (!flow.auth) { json(res, { pending: true }); return }
         const token = opaque()
-        db.prepare('INSERT INTO sessions VALUES (?,?,?)').run(hash(token), seal(flow.auth), flow.auth.expires)
-        db.prepare('DELETE FROM flows WHERE id=?').run(row.id)
-        json(res, { token, user: flow.auth.user, expires: flow.auth.expires }); return
+        const expires = flow.auth.persistent ? Math.min(now() + PERSISTENT_MS, flow.auth.refreshExpires) : flow.auth.expires
+        db.prepare('INSERT INTO sessions VALUES (?,?,?)').run(hash(token), seal(flow.auth), expires)
+        const completed = { token, user: flow.auth.user, expires }
+        // A lost completion response can be recovered with the same bound verifier.
+        db.prepare('UPDATE flows SET data=?, expires=? WHERE id=?').run(seal({ challenge: flow.challenge, storage: flow.storage, completed }), now() + 60000, row.id)
+        if (flow.storage === 'cookie') cookie(res, token, expires)
+        json(res, { ...completed, ...(flow.storage === 'cookie' ? { token: undefined } : {}) }); return
       }
       if (path === `${PREFIX}/v1/discussions/read`) {
         const key = passage(input.passage), page = input.page ?? 1
         if (!Number.isSafeInteger(page) || page < 1 || page > 100) fail(400, 'invalid_page')
         const cacheKey = `${key}:${page}`, cached = cache.get(cacheKey)
         if (cached?.until > now()) { json(res, cached.value); return }
-        const auth = req.headers.authorization ? await session(req) : null
-        const token = auth?.token ?? await publicReadToken()
+        const token = await publicReadToken()
         const issue = await findThread(key, token)
         const comments = issue ? await github(`/repos/${REPO}/issues/${issue.number}/comments?per_page=30&page=${page}`, token) : []
         const value = { issue: safeIssue(issue), comments: comments.map(safeComment), nextPage: comments.length === 30 ? page + 1 : null }
         if (cache.size >= 500) cache.delete(cache.keys().next().value)
         cache.set(cacheKey, { value, until: now() + 60000 }); json(res, value); return
       }
-      const auth = await session(req)
-      if (path === `${PREFIX}/v1/session`) { json(res, { user: auth.user, expires: auth.expires }); return }
       if (path === `${PREFIX}/v1/logout`) {
-        db.prepare('DELETE FROM sessions WHERE id=?').run(auth.sessionId)
-        json(res, { ok: true }); return
+        const value = credential(req)
+        if (value) db.prepare('DELETE FROM sessions WHERE id=?').run(hash(value))
+        cookie(res, ''); json(res, { ok: true }); return
+      }
+      const auth = await session(req, res)
+      if (path === `${PREFIX}/v1/session`) {
+        try { await github('/user', auth.token) } catch (error) {
+          if (error.status === 401) { db.prepare('DELETE FROM sessions WHERE id=?').run(auth.sessionId); cookie(res, '') }
+          throw error
+        }
+        json(res, { user: auth.user, expires: auth.expires }); return
       }
       if (path === `${PREFIX}/v1/discussions/post`) {
         const key = passage(input.passage)
@@ -239,7 +299,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         limit(`post:${auth.user.id}`, 6, 60000)
         locks.set(key, true)
         try {
-          const issue = await findThread(key, auth.token)
+          const issue = await findThread(key, await publicReadToken())
           if (issue?.locked) fail(423, 'thread_locked')
           const marker = `\n<!-- bunko-post:${id} -->`
           db.prepare('INSERT INTO posts VALUES (?,?,NULL,?)').run(id, fingerprint, now() + 7 * 86400000)
@@ -266,7 +326,12 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       }
       fail(404, 'not_found')
     } catch (error) {
-      if (!res.headersSent) json(res, { error: error.code ?? 'temporarily_unavailable' }, error.status ?? 503)
+      // Only fixed route names and controlled error codes; never queries, bodies or tokens.
+      if (process.env.BUNKO_LOG_ERRORS === '1' && (error.status ?? 503) >= 400) {
+        const route = (req.url ?? '').split('?')[0]
+        console.warn(JSON.stringify({ event: 'request_failed', route: postPaths.includes(route) ? route : 'other', status: error.status ?? 503, error: error.status ? error.code : 'temporarily_unavailable' }))
+      }
+      if (!res.headersSent) json(res, { error: error.status ? error.code : 'temporarily_unavailable' }, error.status ?? 503)
       else res.end()
     } finally { if (counted) active-- }
   })

@@ -1,8 +1,8 @@
 # Bunko release state. Secret-free; the upload key and API credentials live under ~/.config/bunko/.
 app:
   name: "Bunko: Classics with Ruby"
-  version: 1.0.5
-  build: 7
+  version: 1.0.6
+  build: 8
   price: USD 0.99 paid up front on both stores
   data_origin: https://github.com/lachlanchen/bunko-books
   pwa: https://lachlan.lazying.art/Bunko/
@@ -24,7 +24,7 @@ channels:
     internal_track: "4701547714770281380"
     internal_status: available to internal testers
     internal_update: 1.0.1 (2), available to internal testers
-    internal_latest: 1.0.5 (7), available to internal testers on 2026-09-26
+    internal_latest: 1.0.6 (8), available to internal testers on 2026-09-26
   apple:
     bundle_id: art.lazying.bunko
     app_id: "6815137919"
@@ -60,11 +60,11 @@ channels:
     price_and_availability: shared existing Apple app record
 
 android:
-  version_code: 7
-  version_name: 1.0.5
+  version_code: 8
+  version_name: 1.0.6
   keystore: ~/.config/bunko/android/upload-keystore.jks (alias bunko-upload, mode 600)
-  aab_sha256: 1b0dcd046661beb800e58e3370bacd170741e410d1068b9c887e8938e1ef6309
-  apk_sha256: d25c4edd93b38b80f2ab1f50d2a2125684f79b8cf83ee71eadea7c8fb33bd25f
+  aab_sha256: 324ef0a6cb2498383571f67189020185f2f5e3816b4b91405ca1b486500e2455
+  apk_sha256: 1ca54fd4a796e4d8cf41bbab1fee5644231005ad1644c89611b85c1ff7fa0bd1
 
 catalogue:
   cleared: 183

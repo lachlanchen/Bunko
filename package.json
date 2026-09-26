@@ -1,7 +1,7 @@
 {
   "name": "bunko",
   "private": false,
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "module",
   "description": "Public-domain classics in English, Chinese and Japanese, with a reading above every character",
   "scripts": {
@@ -17,6 +17,7 @@
     "test:server": "node --test server/service.test.mjs"
   },
   "dependencies": {
+    "@aparajita/capacitor-secure-storage": "8.0.0",
     "@capacitor/android": "^8.5.1",
     "@capacitor/app": "^8.0.0",
     "@capacitor/browser": "8.0.0",

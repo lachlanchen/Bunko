@@ -4,6 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
+Environment=BUNKO_LOG_ERRORS=1
 Type=simple
 User=bunko-discussions
 Group=bunko-discussions

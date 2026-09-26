@@ -1,0 +1,91 @@
+{
+  "version": "1.0.6",
+  "build": 8,
+  "checked": "2026-09-26",
+  "source_base": "fec262ae5ccf62871ba4efab2fca0806927ae63f",
+  "features": [
+    "persistent login in secure native storage and HttpOnly web cookie",
+    "automatic server-side GitHub token rotation",
+    "90-day inactivity expiry; explicit sign-out and revocation",
+    "recoverable OAuth completion and transient network retry",
+    "COOP-safe web authorization polling",
+    "clearer connection errors in four interface languages"
+  ],
+  "web": {
+    "state": "awaiting Pages deployment",
+    "url": "https://lachlan.lazying.art/Bunko/"
+  },
+  "discussion_service": {
+    "state": "active; ready",
+    "release": "782671144e6bf0cf",
+    "workstation_dependency": false
+  },
+  "android": {
+    "track": "internal",
+    "state": "Available to internal testers",
+    "release_name": "1.0.6 (8) — Persistent GitHub login",
+    "aab_sha256": "324ef0a6cb2498383571f67189020185f2f5e3816b4b91405ca1b486500e2455",
+    "aab_bytes": 3004220,
+    "apk_sha256": "1ca54fd4a796e4d8cf41bbab1fee5644231005ad1644c89611b85c1ff7fa0bd1",
+    "apk_bytes": 2613314
+  },
+  "ios": {
+    "state": "upload in progress",
+    "ipa_sha256": "8bc7d9340df93d03fcece02ab37c47a23034573a73fbb37bf66d9c754489663e"
+  },
+  "macos": {
+    "state": "upload queued behind iOS",
+    "pkg_sha256": "d1351196996971c2a085a93bfb04fa302d77f49c55789ef5bb7ac416d777148a",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ]
+  },
+  "production_reviews": "1.0.4 (6); unchanged",
+  "checks": {
+    "frontend_tests": 44,
+    "server_security_tests": 8,
+    "lint_typescript_build": "passed",
+    "runtime_dependencies_audit": "no known vulnerabilities reported",
+    "web": {
+      "passed": true,
+      "realOAuth": true,
+      "checks": [
+        "sign-in",
+        "HttpOnly Secure SameSite cookie",
+        "full page reload restores login",
+        "draft survives reload",
+        "sign-out deletes cookie"
+      ],
+      "publicCommentsPosted": 0
+    },
+    "android": {
+      "passed": true,
+      "platform": "Android API 34",
+      "version": "1.0.6 (8)",
+      "checks": [
+        "cloud read",
+        "system browser launch",
+        "callback return",
+        "real OAuth completion",
+        "composer",
+        "process restart restores login from secure storage",
+        "draft survives process restart",
+        "signout"
+      ],
+      "authorizationBrowser": "shared authenticated browser; callback delivered to Android",
+      "publicCommentsPosted": 0
+    },
+    "native_builds": "signed iOS, universal macOS and Android passed",
+    "readme_languages": 11,
+    "apple_native_oauth": "not tested on a device",
+    "ordinary_reader_account": "not tested",
+    "public_test_comments": 0,
+    "draft_durability": "survives normal reload/restart after WebView disk flush; immediate forced termination directly after typing can lose the newest draft"
+  },
+  "reported_connection_failure": "Device and exact error were not identified; reproduced popup-isolation and lost-response cases now have regression coverage.",
+  "formal_review_gates": [
+    "Apple native and ordinary-reader verification",
+    "update Apple privacy and Google Play data safety for optional GitHub identifiers and public content"
+  ]
+}

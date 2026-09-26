@@ -1,6 +1,7 @@
 import AppKit
 import WebKit
 import AuthenticationServices
+import Security
 
 @main
 final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandlerWithReply, ASWebAuthenticationPresentationContextProviding {
@@ -63,6 +64,35 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
               message.frameInfo.request.url?.scheme == "bunko",
               message.frameInfo.request.url?.host == "localhost",
               let body = message.body as? [String: Any] else { replyHandler(nil, "Denied"); return }
+        if let action = body["storage"] as? String {
+            let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                kSecAttrService as String: "art.lazying.bunko.discussions",
+                kSecAttrAccount as String: "session", kSecUseDataProtectionKeychain as String: true]
+            switch action {
+            case "read":
+                var read = query
+                read[kSecReturnData as String] = true
+                read[kSecMatchLimit as String] = kSecMatchLimitOne
+                var result: CFTypeRef?
+                let status = SecItemCopyMatching(read as CFDictionary, &result)
+                if status == errSecItemNotFound { replyHandler(NSNull(), nil) }
+                else if status == errSecSuccess, let data = result as? Data { replyHandler(String(data: data, encoding: .utf8), nil) }
+                else { replyHandler(nil, "Secure storage unavailable") }
+            case "save":
+                guard let token = body["token"] as? String,
+                      token.range(of: "^[A-Za-z0-9_-]{43}$", options: .regularExpression) != nil else { replyHandler(nil, "Invalid session"); return }
+                let attributes: [String: Any] = [kSecValueData as String: Data(token.utf8),
+                    kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlockedThisDeviceOnly]
+                var status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
+                if status == errSecItemNotFound { status = SecItemAdd(query.merging(attributes) { _, new in new } as CFDictionary, nil) }
+                replyHandler(status == errSecSuccess, status == errSecSuccess ? nil : "Secure storage unavailable")
+            case "clear":
+                let status = SecItemDelete(query as CFDictionary)
+                replyHandler(true, status == errSecSuccess || status == errSecItemNotFound ? nil : "Secure storage unavailable")
+            default: replyHandler(nil, "Invalid storage action")
+            }
+            return
+        }
         if body["cancel"] as? Bool == true { authSession?.cancel(); authSession = nil; replyHandler(true, nil); return }
         guard authSession == nil, let value = body["url"] as? String, let url = URL(string: value),
               url.scheme == "https", url.host == "github.com", url.path == "/login/oauth/authorize" else {

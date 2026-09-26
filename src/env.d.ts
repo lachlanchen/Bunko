@@ -6,5 +6,5 @@ interface Window {
 }
 
 interface Window {
-  webkit?: { messageHandlers: { bunkoAuth: { postMessage: (message: { url?: string; cancel?: boolean }) => Promise<unknown> } } }
+  webkit?: { messageHandlers: { bunkoAuth: { postMessage: (message: { url?: string; cancel?: boolean; storage?: 'read' | 'save' | 'clear'; token?: string }) => Promise<unknown> } } }
 }

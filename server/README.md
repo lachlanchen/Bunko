@@ -27,10 +27,10 @@ The operator's private `.runtime/github-comments/` receipt records exact release
 
 ## Security and retention
 
-- OAuth state and GitHub PKCE are single-use and expire in ten minutes. Completing a flow also requires the client's original verifier. Return links contain only a noncredential flow ID.
-- GitHub access tokens are encrypted with AES-256-GCM in SQLite. Refresh tokens are discarded. Sessions expire within eight hours; the client keeps only an opaque session in memory.
-- Signing out deletes the Bunko session and encrypted token. GitHub authorization can also be revoked from GitHub settings. A cold app launch requires sign-in again.
-- No request bodies, OAuth callback queries, tokens, or raw upstream errors are logged. Do not enable unrestricted access logging on the callback route.
+- OAuth state and GitHub PKCE are single-use and expire in ten minutes. Completing a flow requires the client's original verifier; its exact response can be recovered for one minute after completion if the connection drops. Return links contain only a noncredential flow ID.
+- GitHub access and refresh tokens are encrypted with AES-256-GCM in SQLite. From 1.0.6, sessions opt into automatic token rotation and expire after 90 days without authenticated use. GitHub expiry or revocation can end them earlier. Refresh calls are serialized per session, and logout during a refresh cannot recreate a deleted session. Legacy 1.0.5 sessions remain limited to eight hours.
+- Native apps store only an opaque Bunko session in Keychain/Keystore; the canonical web reader uses a Secure, HttpOnly, SameSite=Lax cookie. Nothing secret goes into localStorage. Signing out deletes the Bunko session and encrypted tokens. An offline sign-out clears native credentials and records a local sign-out marker so the browser does not silently restore a cookie before its deletion reaches the service. GitHub authorization can also be revoked from GitHub settings.
+- Only fixed error codes, declared route names, and status codes are logged. No request bodies, OAuth callback queries, tokens, or raw upstream errors are logged. Do not enable unrestricted access logging on the callback route.
 - Exact host, method, path, allowed origin, and custom request header; bounded body size, concurrency, upstream timeouts and rate limits. There is no general-purpose GitHub proxy.
 - Read responses have a short bounded in-memory cache. Passage mappings preserve links across GitHub search indexing delays. Anonymous reads use a short-lived installation token with **Issues: read** permission for this repository only when the app ID and private key are configured. That token stays in memory. Without those optional settings, reads fall back to GitHub's smaller anonymous server-IP quota; configure them before public launch.
 - Posts require an authenticated user and an explicit action. Idempotency receipts last seven days. A transport-ambiguous write fails closed and must be checked on GitHub before a reader sends it again.
@@ -44,3 +44,5 @@ npm run check
 ```
 
 Tests cover state replay, verifier binding, expiry, cancellation, repository restriction, token isolation, origin/path rejection, duplicate submissions, and ambiguous writes. UI tests cover drafts, sign-in errors, pagination, HTML escaping, and hidden readers. Real OAuth, ordinary-reader permission, native callback and store privacy review remain release gates; fixture tests do not prove those integrations.
+
+Protocol references: [GitHub refresh-token rotation](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens) and [Capacitor secure storage](https://github.com/aparajita/capacitor-secure-storage). The plugin's unencrypted web adapter is never used by Bunko.

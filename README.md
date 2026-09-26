@@ -81,6 +81,6 @@ Bunko checks for updates automatically and offers a dismissible prompt when a pu
 
 ## Conversations in Bunko
 
-Read and compose public passage comments inside Bunko, using GitHub sign-in. Drafts and private notes stay on your device until you explicitly post. A small cloud service handles authorization without requiring the owner’s computer; GitHub stores the public conversation. The interface supports English, Simplified Chinese, Traditional Chinese and Japanese. Version 1.0.5 (7) is available through Google Play internal testing and iOS/Mac TestFlight; the 1.0.4 production reviews continue.
+Read and compose public passage comments inside Bunko, using GitHub sign-in. Drafts and private notes stay on your device until you explicitly post. A small cloud service handles authorization without requiring the owner’s computer; GitHub stores the public conversation. The interface supports English, Simplified Chinese, Traditional Chinese and Japanese. Version 1.0.6 (8) adds persistent login with secure device storage and automatic token refresh, plus recovery from brief connection failures. It is distributed through Google Play internal testing and iOS/Mac TestFlight; the 1.0.4 production reviews continue.
 
 [Discussion implementation and verification](docs/github-discussions-2026-09-26.md).

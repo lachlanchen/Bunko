@@ -84,6 +84,6 @@ Mantén pulsada una palabra, ajusta los controles de selección y elige Dicciona
 
 ## Conversaciones en Bunko
 
-Lee y escribe comentarios públicos sobre pasajes dentro de Bunko, iniciando sesión con GitHub. Los borradores y las notas privadas permanecen en tu dispositivo hasta que decidas publicarlos. Un pequeño servicio en la nube gestiona la autorización sin depender del ordenador del propietario; GitHub almacena la conversación pública. La interfaz está disponible en inglés, chino simplificado, chino tradicional y japonés. La versión 1.0.5 (7) está disponible en las pruebas internas de Google Play y en TestFlight para iOS y Mac; las revisiones de producción de 1.0.4 siguen su curso.
+Lee y escribe comentarios públicos sobre pasajes dentro de Bunko, iniciando sesión con GitHub. Los borradores y las notas privadas permanecen en tu dispositivo hasta que decidas publicarlos. Un pequeño servicio en la nube gestiona la autorización sin depender del ordenador del propietario; GitHub almacena la conversación pública. La interfaz está disponible en inglés, chino simplificado, chino tradicional y japonés. La versión 1.0.6 (8) mantiene la sesión con almacenamiento seguro y renovación automática de tokens, y se recupera de cortes breves de conexión. Se distribuye mediante las pruebas internas de Google Play y TestFlight para iOS y Mac; las revisiones de producción de 1.0.4 siguen su curso.
 
 [Implementación y verificación de las conversaciones](../docs/github-discussions-2026-09-26.md).

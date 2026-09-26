@@ -84,6 +84,6 @@ Nhấn giữ một từ, điều chỉnh tay nắm chọn văn bản rồi chọ
 
 ## Trò chuyện trong Bunko
 
-Đăng nhập bằng GitHub để đọc và viết bình luận công khai về từng đoạn ngay trong Bunko. Bản nháp và ghi chú riêng ở lại trên thiết bị cho đến khi bạn chủ động đăng. Một dịch vụ đám mây nhỏ xử lý việc xác thực, không cần máy tính của chủ sở hữu hoạt động; GitHub lưu cuộc trò chuyện công khai. Giao diện hỗ trợ tiếng Anh, tiếng Trung giản thể, tiếng Trung phồn thể và tiếng Nhật. Phiên bản 1.0.5 (7) đã có trong thử nghiệm nội bộ Google Play và TestFlight cho iOS/Mac; đợt xét duyệt bản phát hành chính thức 1.0.4 vẫn tiếp tục.
+Đăng nhập bằng GitHub để đọc và viết bình luận công khai về từng đoạn ngay trong Bunko. Bản nháp và ghi chú riêng ở lại trên thiết bị cho đến khi bạn chủ động đăng. Một dịch vụ đám mây nhỏ xử lý việc xác thực, không cần máy tính của chủ sở hữu hoạt động; GitHub lưu cuộc trò chuyện công khai. Giao diện hỗ trợ tiếng Anh, tiếng Trung giản thể, tiếng Trung phồn thể và tiếng Nhật. Phiên bản 1.0.6 (8) duy trì đăng nhập bằng bộ nhớ bảo mật và tự động làm mới mã truy cập, đồng thời khôi phục khi kết nối bị gián đoạn ngắn. Bản này được phân phối qua thử nghiệm nội bộ Google Play và TestFlight cho iOS/Mac; đợt xét duyệt bản chính thức 1.0.4 vẫn tiếp tục.
 
 [Triển khai và kiểm chứng tính năng thảo luận](../docs/github-discussions-2026-09-26.md).

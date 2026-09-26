@@ -5,7 +5,7 @@ import { Discussion } from './Discussion'
 import * as api from '../lib/discussions'
 vi.mock('../lib/discussions', async importOriginal => {
   const original = await importOriginal<typeof api>()
-  return { ...original, readDiscussion: vi.fn(), postDiscussion: vi.fn(), currentUser: vi.fn(), subscribeSession: () => () => {}, signIn: vi.fn() }
+  return { ...original, readDiscussion: vi.fn(), postDiscussion: vi.fn(), currentUser: vi.fn(), subscribeSession: () => () => {}, signIn: vi.fn(), restoreSession: vi.fn(async () => {}) }
 })
 const passage = 'sample/c001.json/p1/2'
 const props = { passage, excerpt: 'Some text', ui: 'en' as const }

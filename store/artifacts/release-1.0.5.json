@@ -10,8 +10,10 @@
     "repository-restricted encrypted server tokens and one-use authorization flows"
   ],
   "web": {
-    "state": "pending Pages deployment",
-    "url": "https://lachlan.lazying.art/Bunko/"
+    "state": "deployed",
+    "url": "https://lachlan.lazying.art/Bunko/",
+    "workflow": 36219853082,
+    "source_commit": "fec262ae5ccf62871ba4efab2fca0806927ae63f"
   },
   "discussion_service": {
     "state": "active; health ready",

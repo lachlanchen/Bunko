@@ -2,6 +2,13 @@
 
 Updated 2026-09-26. Owner authorized takeover of the prior session and completion of publication on both stores, including formal review submission. The agreed price is USD 0.99 paid up front.
 
+## Persistent login follow-up — 2026-09-26
+
+- **1.0.6 (8)** is available in Play internal testing. Signed iOS and universal Mac builds are uploading to Apple; do not duplicate uploads. The receipt `artifacts/release-1.0.6.json` records their final status.
+- The owner reported a generic connection failure and requested persistent login. Secure native storage, web HttpOnly cookies, server refresh-token rotation, lost-response recovery and transient retry are implemented. Live web reload and Android process-restart restoration passed. 44 client tests and eight server tests pass.
+- Normal authenticated use keeps login active; 90 inactive days, GitHub expiry/revocation, or explicit sign-out ends it. Existing users must sign in once in the new build to create a persistent session. The precise reported device/error was not supplied; do not claim that report was reproduced exactly.
+- Apple native authorization/persistence and ordinary-reader permission still need live verification before a successor formal review. A hard kill immediately after typing can lose the newest WebView draft before its disk flush. No public test comment was posted.
+
 ## Discussions update — 2026-09-26
 
 - **1.0.5 (7)** is available in Google Play internal testing and iOS/Mac **Bunko Internal TestFlight**. Apple builds `df651fed-86df-4dfe-8675-adc8b92ced9a` (iOS) and `d9269fa2-985b-476a-a1ca-5c3004277a5e` (Mac) are VALID and IN_BETA_TESTING. All four release-note languages are set. See `artifacts/release-1.0.5.json`.

@@ -23,3 +23,11 @@ Posting is covered by mocked GitHub responses and UI fixtures; a real public wri
 Existing 1.0.4 (6) store submissions are separate from this work. They have not been withdrawn or replaced. Version **1.0.5 (7)** is available to Google Play internal testers and the Bunko Internal TestFlight group for both iOS and macOS. All four beta release-note languages are populated. See [release receipt](../store/artifacts/release-1.0.5.json). Before a successor formal review, update App Store privacy and Google Play data-safety disclosures for GitHub identifiers and public user content, and verify ordinary-reader access and the remaining Apple callback paths.
 
 See [service operations and registration](../server/README.md). Private deployment receipts and QA screenshots are in `.runtime/github-comments/` and must not be committed.
+
+## Persistent login follow-up
+
+The owner reported a generic connection failure and requested login that survives app restarts. Version **1.0.6 (8)** adds native Keychain/Keystore storage, a web HttpOnly cookie, and encrypted server-side GitHub refresh tokens. Sessions extend with authenticated use and expire after 90 inactive days; revocation and GitHub expiry still require a new sign-in. Access-token expiry no longer forces an eight-hour sign-out. Offline sign-out does not silently restore the old session.
+
+The connection work removes an unreliable popup-closed check affected by browser isolation, retries temporary transport failures, makes a lost OAuth-completion response recoverable, and preserves the comment request ID on retry. Ambiguous writes still refuse automatic reposting. The original reported device/error was not identified, so these fixes address reproduced failure cases without claiming a confirmed diagnosis of that report.
+
+Live web OAuth, reload restoration, draft preservation, cookie attributes and logout passed. Three added client tests cover popup isolation/lost responses and restored sessions; three added backend tests cover token rotation, secure cookies and inactivity expiry. Native build/testing status is recorded in the successor release receipt.

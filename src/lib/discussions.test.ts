@@ -11,7 +11,7 @@ it('works without AbortSignal.timeout on macOS 12 and sends only the declared co
     expect(await readDiscussion('sample/c001.json/p1/2')).toEqual({ issue: null, comments: [], nextPage: null })
     expect(request.mock.calls[0][0]).toBe('https://llm.lazying.art/bunko/v1/discussions/read')
     const options = request.mock.calls[0][1] as RequestInit
-    expect(options.credentials).toBe('omit')
+    expect(options.credentials).toBe('include')
     expect(options.signal).toBeInstanceOf(AbortSignal)
     expect(options.body).toBe(JSON.stringify({ passage: 'sample/c001.json/p1/2', page: 1 }))
   } finally { Object.defineProperty(AbortSignal, 'timeout', { configurable: true, value: original }) }

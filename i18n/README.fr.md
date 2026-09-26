@@ -84,6 +84,6 @@ Appuyez longuement sur un mot, ajustez les poignées de sélection, puis choisis
 
 ## Conversations dans Bunko
 
-Lisez et rédigez des commentaires publics sur les passages dans Bunko en vous connectant avec GitHub. Les brouillons et les notes privées restent sur votre appareil jusqu’à ce que vous choisissiez de les publier. Un petit service cloud gère l’autorisation sans dépendre de l’ordinateur du propriétaire ; GitHub conserve la conversation publique. L’interface propose l’anglais, le chinois simplifié, le chinois traditionnel et le japonais. La version 1.0.5 (7) est disponible en test interne sur Google Play et dans TestFlight pour iOS et Mac ; les examens de la version publique 1.0.4 se poursuivent.
+Lisez et rédigez des commentaires publics sur les passages dans Bunko en vous connectant avec GitHub. Les brouillons et les notes privées restent sur votre appareil jusqu’à ce que vous choisissiez de les publier. Un petit service cloud gère l’autorisation sans dépendre de l’ordinateur du propriétaire ; GitHub conserve la conversation publique. L’interface propose l’anglais, le chinois simplifié, le chinois traditionnel et le japonais. La version 1.0.6 (8) conserve la connexion grâce au stockage sécurisé et au renouvellement automatique des jetons, et reprend après de brèves coupures réseau. Elle est distribuée en test interne sur Google Play et dans TestFlight pour iOS et Mac ; les examens de la version publique 1.0.4 se poursuivent.
 
 [Implémentation et vérification des discussions](../docs/github-discussions-2026-09-26.md).
