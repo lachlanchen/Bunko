@@ -12,8 +12,24 @@
     "clearer connection errors in four interface languages"
   ],
   "web": {
-    "state": "awaiting Pages deployment",
-    "url": "https://lachlan.lazying.art/Bunko/"
+    "state": "live",
+    "url": "https://lachlan.lazying.art/Bunko/",
+    "workflow": 36220953865,
+    "verification": {
+      "passed": true,
+      "url": "https://lachlan.lazying.art/Bunko/",
+      "version": "1.0.6",
+      "script": "./assets/index-Duf_YFGr.js",
+      "mocked": false,
+      "checks": [
+        "deployed bundle",
+        "live anonymous discussion read",
+        "sign-in control",
+        "no connection error"
+      ]
+    },
+    "source_commit": "2e4ca95a66694d53eb2b16c8290f1ff17fe28dd8",
+    "revision": "5a4d84031d70ca5a608ce69d170fe3db44b8f6998b7e364b5fd7f2cacda24bf9"
   },
   "discussion_service": {
     "state": "active; ready",
@@ -30,16 +46,32 @@
     "apk_bytes": 2613314
   },
   "ios": {
-    "state": "upload in progress",
-    "ipa_sha256": "8bc7d9340df93d03fcece02ab37c47a23034573a73fbb37bf66d9c754489663e"
+    "state": "IN_BETA_TESTING",
+    "ipa_sha256": "8bc7d9340df93d03fcece02ab37c47a23034573a73fbb37bf66d9c754489663e",
+    "processing": "VALID",
+    "build_id": "1e33deac-cacc-4551-9865-a2981a0d50d0",
+    "group": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+    "release_note_languages": 4
   },
   "macos": {
-    "state": "upload queued behind iOS",
-    "pkg_sha256": "d1351196996971c2a085a93bfb04fa302d77f49c55789ef5bb7ac416d777148a",
+    "state": "IN_BETA_TESTING",
+    "pkg_sha256": "6bc002ca4c413a350753c6840e95481b5d9a703dd7888f4871db29f9efb0f801",
     "architectures": [
       "arm64",
       "x86_64"
-    ]
+    ],
+    "archive_version_verified": "1.0.6 (8)",
+    "superseded_upload": {
+      "id": "ce7dc512-0e2a-4a6e-8248-c43a1c868f4d",
+      "version": "1.0.6",
+      "build": 7,
+      "reason": "stale embedded build number; replaced with build 8",
+      "expired": true
+    },
+    "processing": "VALID",
+    "build_id": "407ff4ac-0078-42f4-b4fc-4d4d80de204b",
+    "group": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+    "release_note_languages": 4
   },
   "production_reviews": "1.0.4 (6); unchanged",
   "checks": {
@@ -87,5 +119,6 @@
   "formal_review_gates": [
     "Apple native and ordinary-reader verification",
     "update Apple privacy and Google Play data safety for optional GitHub identifiers and public content"
-  ]
+  ],
+  "source_commit": "20ff6649ff3583f89ae40f1ad0d14f736c25fed9"
 }

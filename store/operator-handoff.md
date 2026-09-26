@@ -4,7 +4,7 @@ Updated 2026-09-26. Owner authorized takeover of the prior session and completio
 
 ## Persistent login follow-up — 2026-09-26
 
-- **1.0.6 (8)** is available in Play internal testing. Signed iOS and universal Mac builds are uploading to Apple; do not duplicate uploads. The receipt `artifacts/release-1.0.6.json` records their final status.
+- **1.0.6 (8)** is live on the web and available in Play internal testing and iOS/Mac Bunko Internal TestFlight. Apple builds `1e33deac-cacc-4551-9865-a2981a0d50d0` (iOS) and `407ff4ac-0078-42f4-b4fc-4d4d80de204b` (Mac) are VALID and IN_BETA_TESTING. All four release-note languages are set. The mistakenly numbered Mac 1.0.6 (7) was superseded and expired; both Apple build scripts now check the archive version before export. See `artifacts/release-1.0.6.json`.
 - The owner reported a generic connection failure and requested persistent login. Secure native storage, web HttpOnly cookies, server refresh-token rotation, lost-response recovery and transient retry are implemented. Live web reload and Android process-restart restoration passed. 44 client tests and eight server tests pass.
 - Normal authenticated use keeps login active; 90 inactive days, GitHub expiry/revocation, or explicit sign-out ends it. Existing users must sign in once in the new build to create a persistent session. The precise reported device/error was not supplied; do not claim that report was reproduced exactly.
 - Apple native authorization/persistence and ordinary-reader permission still need live verification before a successor formal review. A hard kill immediately after typing can lose the newest WebView draft before its disk flush. No public test comment was posted.
