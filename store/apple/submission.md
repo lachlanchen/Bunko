@@ -1,6 +1,10 @@
-**Current: iOS 1.0.4 (6) — WAITING_FOR_REVIEW.** Submitted 2026-09-26 at 02:47:23.734 UTC, review `c2b55561-aa37-4eab-93be-da10b70098ba`, build `7f94444e-1598-4e2c-8630-8ad188f9cda1`. Automatic release after approval. The owner requested replacing the earlier 1.0.3 submission. The existing version record was renamed to 1.0.4, preserving all seven delivered screenshots and four localizations. Public version remains 1.0.1 (2).
+# Current submission — 2026-09-27
 
-See [current submission receipts](../artifacts/submission-1.0.4.json). The records below describe earlier checkpoints.
+**IOS 1.0.6 (8): Waiting for Review**, automatic release after approval. Submitted `2026-09-26T23:20:52.376Z`, review `d33d74d7-83dd-4780-bcf1-6b93c2c14205`, version `635aa670-cf34-4ab8-b46b-f9624e0859c3`, build `1e33deac-cacc-4551-9865-a2981a0d50d0`. Apple has already approved and released **1.0.4 (6)** for iOS and Mac; the successor is not yet public.
+
+Four localized descriptions/release notes, delivered screenshots, optional-discussion privacy labels, age declarations and dedicated reviewer access were updated before submission. See [submission receipts and QA limits](../artifacts/submission-1.0.6.json). No personal owner credentials were shared. Native iOS secure-session and ordinary web reader checks passed; Mac native authorization was not separately live-tested in this follow-up.
+
+The records below are historical checkpoints.
 
 ---
 

@@ -1,6 +1,18 @@
 # Bunko store handoff
 
-Updated 2026-09-26. Owner authorized takeover of the prior session and completion of publication on both stores, including formal review submission. The agreed price is USD 0.99 paid up front.
+Updated 2026-09-27. Owner authorized takeover of the prior session and completion of publication on both stores, including formal review submission. The agreed price is USD 0.99 paid up front.
+
+## Latest submission and approval checkpoint — 2026-09-27
+
+- Apple iOS and Mac **1.0.4 (6)** are approved and public. The live update feed now advertises that version for both Apple platforms; Android remains null until its production listing is verified public.
+- Latest **1.0.6 (8)** has been formally submitted on iOS and Mac, **Waiting for Review**, automatic release after approval. iOS review `d33d74d7-83dd-4780-bcf1-6b93c2c14205` (23:20:52 UTC Sep 26), Mac review `820aa2eb-f4c1-490a-964d-91db06461426` (23:21:07 UTC). See `artifacts/submission-1.0.6.json` for exact version/build IDs and current Google status.
+- Google production **1.0.6 (8)** is confirmed **Changes in review** after seven changes were sent and Restart review replaced build 6. Automated checks completed; full rollout targets 172 eligible countries, managed publishing off. There are no unsent changes.
+- Apple privacy is published for optional User ID and Other User Content, linked to identity for App Functionality, with no tracking. UGC/messaging age answers are enabled. Google data safety, IARC and four localized descriptions were updated. Dedicated ordinary reviewer credentials were supplied privately to both stores; the owner's personal credentials were not shared.
+- Real iOS simulator cloud OAuth, native Keychain, process restart, draft persistence and sign-out passed. A separate non-maintainer account passed real web OAuth, enabled composition, reload/session/draft restoration and sign-out. No public test post was made. Mac native authorization was not separately live-tested; original reader runtime tests on Intel hosts remain the available evidence. Physical iPhone/Apple silicon runtime coverage is not claimed.
+- 44 client and eight server tests, lint, type and production build passed. Eleven README approval/status updates passed the profile checker. The owner remains an installed internal tester, with latest8 available on all three internal channels; no repeat invitation was sent.
+- Shared LazyingArt login is a **successor milestone**, not included in build 8. Owner requires general signup without an EchoMind invitation and a separate configurable EchoMind usage gate. Detailed notes were delivered to active/app repos; the EchoMind owner was queued to own central identity. See `../docs/shared-account.md`. Preserve the current review while that work proceeds.
+
+Earlier entries below are historical, including superseded pending-QA/review statements.
 
 ## Persistent login follow-up — 2026-09-26
 

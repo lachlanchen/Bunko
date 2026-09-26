@@ -33,7 +33,7 @@ npm run dev
 
 ## Bunko for Mac
 
-The Mac edition includes a resizable reading window, native menus, keyboard chapter navigation, offline books, and local dictionaries. It supports macOS 12 or later with a universal Intel/Apple silicon binary. Build and test instructions are in [docs/macos.md](docs/macos.md); the current review status is recorded in [store/macos/submission.md](store/macos/submission.md).
+Version **1.0.4 (6)** is available on the Mac App Store. The Mac edition includes a resizable reading window, native menus, keyboard chapter navigation, offline books, and local dictionaries. It supports macOS 12 or later with a universal Intel/Apple silicon binary. Build and test instructions are in [docs/macos.md](docs/macos.md); the current review status is recorded in [store/macos/submission.md](store/macos/submission.md).
 
 ## Library and release
 
@@ -81,6 +81,6 @@ Bunko checks for updates automatically and offers a dismissible prompt when a pu
 
 ## Conversations in Bunko
 
-Read and compose public passage comments inside Bunko, using GitHub sign-in. Drafts and private notes stay on your device until you explicitly post. A small cloud service handles authorization without requiring the owner’s computer; GitHub stores the public conversation. The interface supports English, Simplified Chinese, Traditional Chinese and Japanese. Version 1.0.6 (8) adds persistent login with secure device storage and automatic token refresh, plus recovery from brief connection failures. It is distributed through Google Play internal testing and iOS/Mac TestFlight; the 1.0.4 production reviews continue.
+Read and compose public passage comments inside Bunko, using GitHub sign-in. Drafts and private notes stay on your device until you explicitly post. A small cloud service handles authorization without requiring the owner’s computer; GitHub stores the public conversation. The interface supports English, Simplified Chinese, Traditional Chinese and Japanese. Version 1.0.6 (8) adds persistent login with secure device storage and automatic token refresh, plus recovery from brief connection failures. Apple has released 1.0.4 (6) for iOS and Mac. Version 1.0.6 (8) is available through Google Play internal testing and iOS/Mac TestFlight; see the release records for its current production-review status.
 
 [Discussion implementation and verification](docs/github-discussions-2026-09-26.md).

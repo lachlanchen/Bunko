@@ -1,15 +1,21 @@
-# Publication status — 2026-09-26
+# Publication status — 2026-09-27
 
-The owner requested formal review of the latest tested **1.0.4 (6)** build after internal publication. All three submissions are complete:
+Latest **1.0.6 (8)** has been submitted on all three platforms:
 
-- iOS **1.0.4 (6): Waiting for Review**, submitted at 02:47:23 UTC. Public iOS remains **1.0.1 (2)**.
-- Mac **1.0.4 (6): Waiting for Review**, submitted at 02:49:20 UTC. The earlier Mac 1.0.2 review was replaced.
-- Google Play production **1.0.4 (6): Changes in review**. Google's automatic pre-review checks are running and will forward the submission when they pass. Full rollout is selected in all 172 previously configured eligible countries; managed publishing remains off.
+- **iOS: Waiting for Review**, automatic release after approval.
+- **Mac: Waiting for Review**, automatic release after approval.
+- **Google Play: Changes in review**, build 8, 100% rollout across 172 eligible countries; managed publishing off. Console confirms automated checks completed and the changes are in review.
 
-Replacing the earlier submissions restarts their review timing. Apple releases are automatic after approval. No owner login, payment or approval action is currently required. Store acceptance is still pending; do not describe these builds as publicly available before the listings resolve. Submission receipts: [`artifacts/submission-1.0.4.json`](artifacts/submission-1.0.4.json).
+Apple iOS and Mac **1.0.4 (6)** are already public. Latest8 is available through iOS/Mac internal TestFlight and Play internal testing. No new invitation is needed for the existing owner tester. Google public production availability remains pending. Exact IDs and receipts: [submission-1.0.6.json](artifacts/submission-1.0.6.json).
 
-Internal testing continues to offer **1.0.4 (6)** on Play and iOS/Mac TestFlight. The web reader is live at https://lachlan.lazying.art/Bunko/ . The 183-edition catalogue is independently downloadable. Android update migration and production web service-worker tests passed; no physical iPhone test was performed for this update. The original Mac runtime was tested on three Intel hosts; Apple silicon was compiled and signed.
+The formal submission work is complete; approval depends on the stores. No owner login or confirmation is currently required. Keep the submitted candidates intact. When a newer release becomes public, verify it and update the public version feed. The live feed currently advertises Apple 1.0.4 (6), Android null.
 
-Existing native installations must install the new binary before they can show future update prompts. Once a store release becomes public, verify availability, update `public/updates.json`, deploy Pages and verify the feed. It currently advertises only the verified public iOS 1.0.1 (2), with Android/Mac null. See [`../docs/app-updates.md`](../docs/app-updates.md).
+## Verification limits
 
-Companion packs described in BRIEF.md remain a later product milestone and are not advertised in the store listing.
+44 client and 8 server tests plus lint/type/build passed. Live signed iOS simulator OAuth/Keychain/process-restart/draft/sign-out checks passed, as did a separate ordinary web reader account. Earlier live Android persistence evidence remains valid. No public test comment was sent; write retry/receipt behavior has fixture coverage. Mac native authorization was not separately live-tested in this follow-up. Physical iPhone/Apple silicon runtime coverage is not claimed; prior Intel Mac reader tests cover 3040, 7050 and KVM.
+
+## Next product work
+
+Shared LazyingArt login is a separate successor milestone, not part of build 8. The owner requested invitation-free general registration with an optional EchoMind-only access gate, verified account linking, and comments for non-GitHub users. Coordination packets are delivered; the active EchoMind owner has the central identity request. See [shared account follow-up](../docs/shared-account.md). Do not claim this integration is live before implementation and native/provider checks.
+
+Companion packs remain a later milestone and are not advertised in the store listing.

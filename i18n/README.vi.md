@@ -68,7 +68,7 @@ Thư viện hiện có 150 tác phẩm kinh điển thuộc phạm vi công cộ
 
 ## Bunko dành cho Mac
 
-Phiên bản 1.0.2 (4) đã được gửi xét duyệt trên Mac App Store và có trong TestFlight nội bộ. Ứng dụng hỗ trợ macOS 12 trở lên, với menu gốc, phím tắt và đọc ngoại tuyến. Bản dựng hỗ trợ Intel và Apple silicon; các thử nghiệm chạy ứng dụng được thực hiện trên máy Mac Intel.
+Phiên bản 1.0.4 (6) đã có trên Mac App Store. Ứng dụng hỗ trợ macOS 12 trở lên, với menu gốc, phím tắt và đọc ngoại tuyến. Bản dựng hỗ trợ Intel và Apple silicon; các thử nghiệm chạy ứng dụng được thực hiện trên máy Mac Intel.
 
 [macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)
 
@@ -84,6 +84,6 @@ Nhấn giữ một từ, điều chỉnh tay nắm chọn văn bản rồi chọ
 
 ## Trò chuyện trong Bunko
 
-Đăng nhập bằng GitHub để đọc và viết bình luận công khai về từng đoạn ngay trong Bunko. Bản nháp và ghi chú riêng ở lại trên thiết bị cho đến khi bạn chủ động đăng. Một dịch vụ đám mây nhỏ xử lý việc xác thực, không cần máy tính của chủ sở hữu hoạt động; GitHub lưu cuộc trò chuyện công khai. Giao diện hỗ trợ tiếng Anh, tiếng Trung giản thể, tiếng Trung phồn thể và tiếng Nhật. Phiên bản 1.0.6 (8) duy trì đăng nhập bằng bộ nhớ bảo mật và tự động làm mới mã truy cập, đồng thời khôi phục khi kết nối bị gián đoạn ngắn. Bản này được phân phối qua thử nghiệm nội bộ Google Play và TestFlight cho iOS/Mac; đợt xét duyệt bản chính thức 1.0.4 vẫn tiếp tục.
+Đăng nhập bằng GitHub để đọc và viết bình luận công khai về từng đoạn ngay trong Bunko. Bản nháp và ghi chú riêng ở lại trên thiết bị cho đến khi bạn chủ động đăng. Một dịch vụ đám mây nhỏ xử lý việc xác thực, không cần máy tính của chủ sở hữu hoạt động; GitHub lưu cuộc trò chuyện công khai. Giao diện hỗ trợ tiếng Anh, tiếng Trung giản thể, tiếng Trung phồn thể và tiếng Nhật. Phiên bản 1.0.6 (8) duy trì đăng nhập bằng bộ nhớ bảo mật và tự động làm mới mã truy cập, đồng thời khôi phục khi kết nối bị gián đoạn ngắn. Apple đã phát hành 1.0.4 (6) cho iOS và Mac. Phiên bản 1.0.6 (8) có trong thử nghiệm nội bộ Google Play và TestFlight cho iOS/Mac; xem hồ sơ phát hành để biết trạng thái xét duyệt bản chính thức mới nhất.
 
 [Triển khai và kiểm chứng tính năng thảo luận](../docs/github-discussions-2026-09-26.md).

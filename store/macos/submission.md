@@ -1,6 +1,10 @@
-**Current: macOS 1.0.4 (6) — WAITING_FOR_REVIEW.** Submitted 2026-09-26 at 02:49:20.274 UTC, review `43b3b629-b7e3-4524-b100-1c97495a877f`, build `7774df2d-47aa-49a1-9dbe-32f2ecf04285`. Automatic release after approval. The owner requested replacing the earlier 1.0.2 review; review timing restarted. The same version record now says 1.0.4, with all three delivered screenshots and four localizations retained. Apple does not accept a What’s New field before the first public Mac release; features are covered by the listing, reviewer notes and TestFlight notes.
+# Current submission — 2026-09-27
 
-See [current submission receipts](../artifacts/submission-1.0.4.json). The records below describe earlier checkpoints.
+**MAC_OS 1.0.6 (8): Waiting for Review**, automatic release after approval. Submitted `2026-09-26T23:21:07.428Z`, review `820aa2eb-f4c1-490a-964d-91db06461426`, version `dc8a9e23-89c4-472e-b9c5-878cc080771a`, build `407ff4ac-0078-42f4-b4fc-4d4d80de204b`. Apple has already approved and released **1.0.4 (6)** for iOS and Mac; the successor is not yet public.
+
+Four localized descriptions/release notes, delivered screenshots, optional-discussion privacy labels, age declarations and dedicated reviewer access were updated before submission. See [submission receipts and QA limits](../artifacts/submission-1.0.6.json). No personal owner credentials were shared. Native iOS secure-session and ordinary web reader checks passed; Mac native authorization was not separately live-tested in this follow-up.
+
+The records below are historical checkpoints.
 
 ---
 

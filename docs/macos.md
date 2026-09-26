@@ -2,7 +2,7 @@
 
 The native Mac app uses AppKit and WKWebView, with the same reader as the web, iOS and Android editions. Its stable `bunko://localhost` origin serves bundled assets through `WKURLSchemeHandler`. Books, dictionary packs, notes, preferences and reading positions use the persistent WebKit data store. No HTTP server runs on the Mac. External links open the default browser.
 
-The sandbox permits outgoing network connections. It requests no camera, microphone, contacts, broad filesystem access or incoming connections. The app has no account, analytics or advertising SDK. Native menu strings are supplied in English, Simplified Chinese, Traditional Chinese and Japanese; the reader language is selected in Settings.
+The sandbox permits outgoing network connections. It requests no camera, microphone, contacts, broad filesystem access or incoming connections. Reading requires no account. Optional public discussions use GitHub sign-in; sessions are stored in Keychain and public comments use the reader’s GitHub identity. There is no analytics or advertising SDK. Native menu strings are supplied in English, Simplified Chinese, Traditional Chinese and Japanese; the reader language is selected in Settings.
 
 ## Build
 

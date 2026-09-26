@@ -1,6 +1,10 @@
-**Current: production 1.0.4 (6) — Changes in review.** Promoted the tested internal release to production and confirmed Restart review on 2026-09-26 at the owner’s request. The earlier production build 1 was replaced by build 6. The full rollout remains 100% across the existing 172 eligible countries, with managed publishing off and four localized release notes. Google is running its automatic pre-review checks; successful checks forward the changes automatically. Internal build 6 remains available.
+# Current submission — 2026-09-27
 
-See [current submission receipts](../artifacts/submission-1.0.4.json). The records below describe earlier checkpoints.
+**Production 1.0.6 (8): Changes in review.** The tested internal bundle was promoted to production at 100% across all 172 configured eligible paid-app countries. The owner requested the latest build, so **Restart review** was confirmed, replacing build 6. Console confirmed **7 changes sent for review**, then showed build 8 under **Changes in review** with no unsent changes. Managed publishing remains off for release after approval.
+
+All four descriptions/release notes were updated, along with optional GitHub data safety, the online-content/UGC rating questionnaire and dedicated reviewer access. Target audience remains 18+. The reviewer account has no maintainer privileges; credentials were supplied privately. Internal8 remains available. Public Google availability is still pending; do not advertise it as approved.
+
+See [current receipts and QA limits](../artifacts/submission-1.0.6.json). Records below are historical checkpoints.
 
 ---
 

@@ -68,7 +68,7 @@ La biblioteca reúne 150 clásicos de dominio público y 33 ediciones autorizada
 
 ## Bunko para Mac
 
-La versión 1.0.2 (4) se ha enviado a revisión en Mac App Store y está disponible en TestFlight interno. Incluye menús nativos, atajos de teclado y lectura sin conexión en macOS 12 o posterior. El binario admite Intel y Apple silicon; las pruebas de ejecución se realizaron en equipos Intel.
+La versión 1.0.4 (6) ya está disponible en Mac App Store. Incluye menús nativos, atajos de teclado y lectura sin conexión en macOS 12 o posterior. El binario admite Intel y Apple silicon; las pruebas de ejecución se realizaron en equipos Intel.
 
 [macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)
 
@@ -84,6 +84,6 @@ Mantén pulsada una palabra, ajusta los controles de selección y elige Dicciona
 
 ## Conversaciones en Bunko
 
-Lee y escribe comentarios públicos sobre pasajes dentro de Bunko, iniciando sesión con GitHub. Los borradores y las notas privadas permanecen en tu dispositivo hasta que decidas publicarlos. Un pequeño servicio en la nube gestiona la autorización sin depender del ordenador del propietario; GitHub almacena la conversación pública. La interfaz está disponible en inglés, chino simplificado, chino tradicional y japonés. La versión 1.0.6 (8) mantiene la sesión con almacenamiento seguro y renovación automática de tokens, y se recupera de cortes breves de conexión. Se distribuye mediante las pruebas internas de Google Play y TestFlight para iOS y Mac; las revisiones de producción de 1.0.4 siguen su curso.
+Lee y escribe comentarios públicos sobre pasajes dentro de Bunko, iniciando sesión con GitHub. Los borradores y las notas privadas permanecen en tu dispositivo hasta que decidas publicarlos. Un pequeño servicio en la nube gestiona la autorización sin depender del ordenador del propietario; GitHub almacena la conversación pública. La interfaz está disponible en inglés, chino simplificado, chino tradicional y japonés. La versión 1.0.6 (8) mantiene la sesión con almacenamiento seguro y renovación automática de tokens, y se recupera de cortes breves de conexión. Apple ha publicado 1.0.4 (6) para iOS y Mac. La versión 1.0.6 (8) está disponible en las pruebas internas de Google Play y TestFlight para iOS y Mac; consulta los registros de publicación para conocer el estado actual de su revisión de producción.
 
 [Implementación y verificación de las conversaciones](../docs/github-discussions-2026-09-26.md).
