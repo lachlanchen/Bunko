@@ -19,6 +19,14 @@ cd "$bunko_root"
 xcodebuild -project macos/Bunko.xcodeproj -scheme Bunko -configuration Release -destination 'generic/platform=macOS' \
   -archivePath "release/Bunko-macOS-$bunko_release.xcarchive" -derivedDataPath release/DerivedDataMacRelease -jobs "${BUNKO_BUILD_JOBS:-2}" archive \
   ARCHS='arm64 x86_64' ONLY_ACTIVE_ARCH=NO COMPILER_INDEX_STORE_ENABLE=NO "OTHER_CODE_SIGN_FLAGS=--keychain $bunko_kc"
+# Check the actual archive before exporting or uploading it.
+bunko_info="$bunko_root/release/Bunko-macOS-$bunko_release.xcarchive/Products/Applications/Bunko.app/Contents/Info.plist"
+bunko_actual_version=$(plutil -extract CFBundleShortVersionString raw -o - "$bunko_info")
+bunko_actual_build=$(plutil -extract CFBundleVersion raw -o - "$bunko_info")
+if [[ "$bunko_actual_version-$bunko_actual_build" != "$bunko_release" ]]; then
+  printf 'Archive version mismatch: expected %s, found %s-%s\n' "$bunko_release" "$bunko_actual_version" "$bunko_actual_build" >&2
+  exit 1
+fi
 xcodebuild -exportArchive -archivePath "release/Bunko-macOS-$bunko_release.xcarchive" \
   -exportOptionsPlist macos/ExportOptions.plist -exportPath "release/macos-export-$bunko_release"
 codesign --verify --deep --strict "release/Bunko-macOS-$bunko_release.xcarchive/Products/Applications/Bunko.app"

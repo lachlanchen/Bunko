@@ -14,5 +14,13 @@ cp "$HOME/.config/bunko/apple/Bunko_App_Store.mobileprovision" "$HOME/Library/Mo
 cp "$HOME/.config/bunko/apple/Bunko_App_Store.mobileprovision" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/92181e3c-3354-4f9c-b9a4-aa92cd5d19b7.mobileprovision"
 cd "$bunko_root/ios/App"
 xcodebuild -project App.xcodeproj -scheme App -configuration Release -destination generic/platform=iOS -archivePath "$bunko_root/release/Bunko-$bunko_release.xcarchive" -derivedDataPath "$bunko_root/release/DerivedData" -jobs "${BUNKO_BUILD_JOBS:-2}" archive COMPILER_INDEX_STORE_ENABLE=NO "OTHER_CODE_SIGN_FLAGS=--keychain $bunko_kc"
+# Check the actual archive before exporting or uploading it.
+bunko_info="$bunko_root/release/Bunko-$bunko_release.xcarchive/Products/Applications/App.app/Info.plist"
+bunko_actual_version=$(plutil -extract CFBundleShortVersionString raw -o - "$bunko_info")
+bunko_actual_build=$(plutil -extract CFBundleVersion raw -o - "$bunko_info")
+if [[ "$bunko_actual_version-$bunko_actual_build" != "$bunko_release" ]]; then
+  printf 'Archive version mismatch: expected %s, found %s-%s\n' "$bunko_release" "$bunko_actual_version" "$bunko_actual_build" >&2
+  exit 1
+fi
 xcodebuild -exportArchive -archivePath "$bunko_root/release/Bunko-$bunko_release.xcarchive" -exportOptionsPlist ExportOptions.plist -exportPath "$bunko_root/release/export-$bunko_release"
 shasum -a 256 "$bunko_root/release/export-$bunko_release/App.ipa"
