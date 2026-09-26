@@ -1,0 +1,278 @@
+{
+  "checked": "2026-09-26",
+  "books": 33,
+  "figures": 2696,
+  "categories": {
+    "finance": 414,
+    "learning": 49,
+    "physics": 2108,
+    "travel": 125
+  },
+  "rows": [
+    {
+      "book": "earn-build-a-business",
+      "expected": 32,
+      "figures": 32,
+      "uniqueAssets": 32,
+      "retainedPassages": 1241,
+      "figureBytes": 1309984
+    },
+    {
+      "book": "earn-entrepreneurship",
+      "expected": 73,
+      "figures": 73,
+      "uniqueAssets": 73,
+      "retainedPassages": 3140,
+      "figureBytes": 3452456
+    },
+    {
+      "book": "earn-happiness",
+      "expected": 79,
+      "figures": 79,
+      "uniqueAssets": 79,
+      "retainedPassages": 2718,
+      "figureBytes": 3210160
+    },
+    {
+      "book": "earn-millionaire-questions",
+      "expected": 52,
+      "figures": 52,
+      "uniqueAssets": 52,
+      "retainedPassages": 1708,
+      "figureBytes": 2403136
+    },
+    {
+      "book": "earn-mit-new-ventures",
+      "expected": 40,
+      "figures": 40,
+      "uniqueAssets": 40,
+      "retainedPassages": 1160,
+      "figureBytes": 1929474
+    },
+    {
+      "book": "earn-wealth-freedom",
+      "expected": 76,
+      "figures": 76,
+      "uniqueAssets": 76,
+      "retainedPassages": 5807,
+      "figureBytes": 1806614
+    },
+    {
+      "book": "earn-yale-financial-markets",
+      "expected": 60,
+      "figures": 60,
+      "uniqueAssets": 60,
+      "retainedPassages": 2088,
+      "figureBytes": 1318400
+    },
+    {
+      "book": "finance-wealth-first-principles",
+      "expected": 0,
+      "figures": 0,
+      "uniqueAssets": 0,
+      "retainedPassages": 487,
+      "figureBytes": 0
+    },
+    {
+      "book": "how-you-got-rich",
+      "expected": 2,
+      "figures": 2,
+      "uniqueAssets": 2,
+      "retainedPassages": 1164,
+      "figureBytes": 142308
+    },
+    {
+      "book": "learning-justice-sandel",
+      "expected": 14,
+      "figures": 14,
+      "uniqueAssets": 14,
+      "retainedPassages": 1551,
+      "figureBytes": 300238
+    },
+    {
+      "book": "learning-speak-and-write",
+      "expected": 35,
+      "figures": 35,
+      "uniqueAssets": 35,
+      "retainedPassages": 1820,
+      "figureBytes": 997492
+    },
+    {
+      "book": "physics-advanced-quantum-mechanics",
+      "expected": 41,
+      "figures": 41,
+      "uniqueAssets": 41,
+      "retainedPassages": 616,
+      "figureBytes": 735444
+    },
+    {
+      "book": "physics-classical-mechanics",
+      "expected": 150,
+      "figures": 150,
+      "uniqueAssets": 150,
+      "retainedPassages": 791,
+      "figureBytes": 2273406
+    },
+    {
+      "book": "physics-classical-mechanics-stanford",
+      "expected": 112,
+      "figures": 112,
+      "uniqueAssets": 112,
+      "retainedPassages": 567,
+      "figureBytes": 805758
+    },
+    {
+      "book": "physics-cosmology",
+      "expected": 64,
+      "figures": 64,
+      "uniqueAssets": 64,
+      "retainedPassages": 589,
+      "figureBytes": 1206574
+    },
+    {
+      "book": "physics-cosmology-and-black-holes",
+      "expected": 101,
+      "figures": 101,
+      "uniqueAssets": 101,
+      "retainedPassages": 652,
+      "figureBytes": 1261686
+    },
+    {
+      "book": "physics-cosmology-legacy",
+      "expected": 23,
+      "figures": 23,
+      "uniqueAssets": 23,
+      "retainedPassages": 465,
+      "figureBytes": 152676
+    },
+    {
+      "book": "physics-general-relativity",
+      "expected": 168,
+      "figures": 168,
+      "uniqueAssets": 168,
+      "retainedPassages": 776,
+      "figureBytes": 3947484
+    },
+    {
+      "book": "physics-general-relativity-2008",
+      "expected": 212,
+      "figures": 212,
+      "uniqueAssets": 212,
+      "retainedPassages": 657,
+      "figureBytes": 1426580
+    },
+    {
+      "book": "physics-higgs-boson",
+      "expected": 13,
+      "figures": 13,
+      "uniqueAssets": 13,
+      "retainedPassages": 89,
+      "figureBytes": 238098
+    },
+    {
+      "book": "physics-particle-physics-1",
+      "expected": 77,
+      "figures": 77,
+      "uniqueAssets": 77,
+      "retainedPassages": 800,
+      "figureBytes": 1155172
+    },
+    {
+      "book": "physics-particle-physics-2",
+      "expected": 79,
+      "figures": 79,
+      "uniqueAssets": 79,
+      "retainedPassages": 864,
+      "figureBytes": 895824
+    },
+    {
+      "book": "physics-particle-physics-3",
+      "expected": 44,
+      "figures": 44,
+      "uniqueAssets": 44,
+      "retainedPassages": 698,
+      "figureBytes": 291870
+    },
+    {
+      "book": "physics-quantum-entanglement-1",
+      "expected": 98,
+      "figures": 98,
+      "uniqueAssets": 98,
+      "retainedPassages": 539,
+      "figureBytes": 583868
+    },
+    {
+      "book": "physics-quantum-entanglement-3",
+      "expected": 114,
+      "figures": 114,
+      "uniqueAssets": 114,
+      "retainedPassages": 548,
+      "figureBytes": 979280
+    },
+    {
+      "book": "physics-quantum-mechanics",
+      "expected": 106,
+      "figures": 106,
+      "uniqueAssets": 106,
+      "retainedPassages": 678,
+      "figureBytes": 1584546
+    },
+    {
+      "book": "physics-quantum-mechanics-stanford",
+      "expected": 167,
+      "figures": 167,
+      "uniqueAssets": 167,
+      "retainedPassages": 671,
+      "figureBytes": 789250
+    },
+    {
+      "book": "physics-special-relativity",
+      "expected": 220,
+      "figures": 220,
+      "uniqueAssets": 220,
+      "retainedPassages": 1006,
+      "figureBytes": 3483704
+    },
+    {
+      "book": "physics-statistical-mechanics",
+      "expected": 106,
+      "figures": 106,
+      "uniqueAssets": 106,
+      "retainedPassages": 682,
+      "figureBytes": 1720276
+    },
+    {
+      "book": "physics-string-theory-and-m-theory",
+      "expected": 213,
+      "figures": 213,
+      "uniqueAssets": 213,
+      "retainedPassages": 925,
+      "figureBytes": 2459666
+    },
+    {
+      "book": "travel-hakone",
+      "expected": 49,
+      "figures": 49,
+      "uniqueAssets": 39,
+      "retainedPassages": 107,
+      "figureBytes": 4926868
+    },
+    {
+      "book": "travel-lanzhou",
+      "expected": 49,
+      "figures": 49,
+      "uniqueAssets": 35,
+      "retainedPassages": 105,
+      "figureBytes": 3602656
+    },
+    {
+      "book": "travel-xian",
+      "expected": 27,
+      "figures": 27,
+      "uniqueAssets": 25,
+      "retainedPassages": 125,
+      "figureBytes": 2758518
+    }
+  ],
+  "errors": []
+}

@@ -30,6 +30,11 @@ git push
 
 The source checkout is read only. The exporter supports complete assembled/preview files and manifest-validated legacy bilingual chunks. It stops on missing or stale text. Keep prior chapter files available for readers holding an older metadata revision. For a hosted import job, create a branch and pull request with the same bundle layout; use the workflow as the publication gate.
 
+For owner editions containing diagrams or photographs, follow the
+[figure-preservation audit and repair procedure](owner-figures-2026-09-26.md).
+It checks source figure counts, renders TeX diagrams and rejects missing images
+before publication.
+
 Direct GitHub editing also works for small metadata changes. Upload a prepared folder to `books/<id>/`, preserve the declared filenames, and merge through a pull request. Do not hand-edit `reader-index.json`: the workflow derives it from validated metadata.
 
 ## Bundle contract

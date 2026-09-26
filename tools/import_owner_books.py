@@ -4,17 +4,50 @@
 The source checkouts are read only. Run from Bunko; output goes to bunko-books.
 """
 import hashlib
+import io
 import json
 import re
 import shutil
 import subprocess
 import sys
 import tempfile
+from collections import defaultdict, deque
 from pathlib import Path
+from owner_figures import prepare_tex, resolve_image
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT.parent / 'bunko-books' / 'books'
 DATE = '2026-09-25'
+
+
+def preserve_passage_ids(blocks, previous):
+    """Inserting figures must not move existing discussion/note anchors."""
+    def signature(block):
+        value = {key: value for key, value in block.items() if key != 'id'}
+        if value.get('figure'):
+            value['figure'] = {**value['figure'], 'path': re.sub(
+                r'-[a-f0-9]{12}(?=\.webp$)', '', value['figure']['path'])}
+        return dump(value)
+    available = defaultdict(deque)
+    reserved = {block['id'] for block in previous}
+    for block in previous:
+        available[signature(block)].append(block['id'])
+    used = set()
+    for block in blocks:
+        key = signature(block)
+        if available[key]:
+            block['id'] = available[key].popleft()
+        elif not re.fullmatch(r'b\d+', block['id']) and block['id'] in reserved:
+            pass  # Explicit upstream passage IDs survive figure/caption repairs.
+        elif block['id'] in reserved or block['id'] in used:
+            prefix = 'fig' if block.get('figure') else 'p'
+            base = f'{prefix}-{digest(key)[:16]}'
+            candidate, n = base, 1
+            while candidate in reserved or candidate in used:
+                candidate = f'{base}-{n}'
+                n += 1
+            block['id'] = candidate
+        used.add(block['id'])
 
 
 def dump(value):
@@ -45,6 +78,8 @@ def make_cover(folder, source, original_design=False):
 def publish(slug, title, langs, primary, category, author, chapters, source_repo, basis, cover=None, original_cover=False, license=None):
     folder = OUT / slug
     folder.mkdir(parents=True, exist_ok=True)
+    old_meta = json.loads((folder / 'meta.json').read_text()) if (folder / 'meta.json').exists() else {}
+    old_chapters = {row['n']: row['file'] for row in old_meta.get('chapters', [])}
     rows = []
     total = 0
     paras = 0
@@ -56,13 +91,27 @@ def publish(slug, title, langs, primary, category, author, chapters, source_repo
             target.parent.mkdir(parents=True, exist_ok=True)
             from PIL import Image
             if source.suffix.lower() == '.svg':
-                import io
                 import cairosvg
                 image = Image.open(io.BytesIO(cairosvg.svg2png(url=str(source)))).convert('RGB')
             else:
                 image = Image.open(source).convert('RGB')
             image.thumbnail((1500, 1500))
-            image.save(target, 'WEBP', quality=76, method=5)
+            buffer = io.BytesIO()
+            if source.stem.startswith('diagram-'):
+                image.save(buffer, 'WEBP', lossless=True, method=5)
+            else:
+                image.save(buffer, 'WEBP', quality=76, method=5)
+            data = buffer.getvalue()
+            # A changed source must not replace an image cached by older editions.
+            if target.exists() and target.read_bytes() != data:
+                versioned = str(Path(path).with_name(f'{Path(path).stem}-{digest(data)[:12]}.webp'))
+                for block in blocks:
+                    if block.get('figure', {}).get('path') == path:
+                        block['figure']['path'] = versioned
+                target = folder / versioned
+            target.write_bytes(data)
+        if i in old_chapters:
+            preserve_passage_ids(blocks, json.loads((folder / old_chapters[i]).read_text())['p'])
         chapter = {'id': f'{slug}-c{i:03d}', 'n': i,
                    'title': {lang: [chapter_title.get(lang) or chapter_title[primary]] for lang in langs}, 'p': blocks}
         raw = dump(chapter)
@@ -149,7 +198,7 @@ def wealth_book():
     for entry in manifest['entries']:
         path = root / 'multilingual/entries' / (Path(entry['output']).stem + '.json')
         doc = json.loads(path.read_text())
-        blocks = []
+        blocks, assets = [], {}
         for block in doc['blocks']:
             unit = {'src': block['en']['markdown']}
             for lang in ('en', 'ja', 'zh'):
@@ -160,9 +209,27 @@ def wealth_book():
                 unit[lang] = line or [layer['markdown']]
                 if any('math' in part for part in rich):
                     unit.setdefault('rich', {})[lang] = rich
-            blocks.append({'id': block['id'], 'src': unit['src'], 'u': [unit],
-                           'kind': 'heading' if block['kind'] == 'Header' else 'text'})
-        chapters.append((doc['metadata']['title'], blocks, {}))
+            row = {'id': block['id'], 'src': unit['src'], 'u': [unit],
+                   'kind': 'heading' if block['kind'] == 'Header' else 'text'}
+            images = [p['value'] for p in block.get('protected', []) if p['type'] == 'image']
+            if images:
+                if len(images) != 1:
+                    raise ValueError(f'Multiple images require separate passages: {block["id"]}')
+                source = root / 'docs/assets/figures' / images[0]
+                if not source.is_file():
+                    raise FileNotFoundError(source)
+                dest = f'assets/{source.stem}.webp'
+                assets[dest] = source
+                captions = {}
+                for lang in ('en', 'ja', 'zh'):
+                    match = re.search(r'!\[([^\]]*)\]\(', block[lang]['markdown'])
+                    if not match:
+                        raise ValueError(f'Missing translated image caption: {block["id"]}/{lang}')
+                    captions[lang] = match[1]
+                    unit[lang] = ['']
+                row.update(kind='figure', figure={'path': dest, 'caption': captions})
+            blocks.append(row)
+        chapters.append((doc['metadata']['title'], blocks, assets))
     publish('how-you-got-rich', {'en': 'How You Got Rich', 'ja': '豊かさをどう築いたか', 'zh': '你是如何富起来的'},
             ['en', 'ja', 'zh'], 'en', 'finance', 'LazyingArt LLC', chapters,
             'https://github.com/lachlanchen/HowYouGotRich/tree/main/multilingual/entries',
@@ -208,8 +275,10 @@ def pandoc_rich(nodes):
     return parts
 
 
-def tex_blocks(source, figure_root=None):
-    doc = json.loads(subprocess.check_output(['pandoc', '-f', 'latex', '-t', 'json', str(source)]))
+def tex_blocks(source, figure_root=None, origin=None):
+    origin = origin or source
+    prepared = prepare_tex(source.read_text(), origin)
+    doc = json.loads(subprocess.check_output(['pandoc', '-f', 'latex', '-t', 'json'], input=prepared.encode()))
     blocks, assets = [], {}
     def add(nodes, kind='text'):
         rich = pandoc_rich(nodes)
@@ -225,19 +294,19 @@ def tex_blocks(source, figure_root=None):
             tag, value = block['t'], block.get('c')
             if tag in ('Para', 'Plain'):
                 images = [n for n in value if isinstance(n, dict) and n.get('t') == 'Image']
-                if images and figure_root:
+                if images:
                     for image in images:
-                        path = Path(image['c'][2][0]).name
-                        candidate = figure_root / path
-                        if candidate.exists():
-                            dest = f'assets/{Path(path).stem}.webp'
-                            assets[dest] = candidate
-                            caption = pandoc_text(image['c'][1])
-                            add([{'t': 'Str', 'c': caption or 'Figure'}], 'figure')
-                            blocks[-1]['figure'] = {'path': dest, 'caption': {'en': caption}}
-                            # The image and its figcaption already present this text.
-                            # Retain a passage anchor without printing the caption twice.
-                            blocks[-1]['u'][0]['en'] = ['']
+                        candidate = resolve_image(image['c'][2][0], origin, figure_root)
+                        dest = f'assets/{candidate.stem}.webp'
+                        if dest in assets and assets[dest] != candidate:
+                            raise ValueError(f'Figure filename collision: {dest}')
+                        assets[dest] = candidate
+                        caption = pandoc_text(image['c'][1])
+                        add([{'t': 'Str', 'c': caption or 'Figure'}], 'figure')
+                        blocks[-1]['figure'] = {'path': dest, 'caption': {'en': caption}}
+                        # Retain the passage anchor without printing the caption twice.
+                        blocks[-1]['u'][0]['en'] = ['']
+                    add([n for n in value if n.get('t') != 'Image'])
                 else:
                     meaningful = [n for n in value if isinstance(n, dict) and n.get('t') not in ('Space', 'SoftBreak', 'LineBreak')]
                     standalone = bool(meaningful) and all(n.get('t') == 'Math' and n['c'][0]['t'] == 'DisplayMath' for n in meaningful)
@@ -248,6 +317,11 @@ def tex_blocks(source, figure_root=None):
             elif tag in ('BulletList', 'OrderedList'):
                 for item in (value if tag == 'BulletList' else value[1]): walk(item)
     walk(doc['blocks'])
+    body = re.sub(r'(?<!\\)%[^\n]*', '', prepared)
+    expected = len(re.findall(r'\\includegraphics(?:\[[^\]]*\])?\s*\{', body))
+    found = sum(bool(block.get('figure')) for block in blocks)
+    if expected != found:
+        raise ValueError(f'{origin}: Pandoc preserved {found}/{expected} figures')
     return blocks, assets
 
 
@@ -319,16 +393,20 @@ def chapter_sources(path):
     return chapters
 
 
-def split_long_tex(source, figure_root=None):
+def split_long_tex(source, figure_root=None, legacy_boundaries=False):
     """Keep the author's chapter structure when a book uses one TeX file."""
+    # Editorial comments can mention \end{document}; they are not terminators.
     manuscript = source.read_text()
+    if not legacy_boundaries:
+        manuscript = re.sub(r'(?<!\\)%[^\n]*', '', manuscript)
     sections = re.split(r'(?=\\chapter\{)', manuscript)
     chapters = []
     with tempfile.TemporaryDirectory(prefix='bunko-tex-') as scratch:
         temp = Path(scratch) / 'chapter.tex'
         for section in sections[1:]:
+            section = re.sub(r'(?<!\\)%[^\n]*', '', section)
             temp.write_text(section.split('\\end{document}', 1)[0])
-            blocks, assets = tex_blocks(temp, figure_root)
+            blocks, assets = tex_blocks(temp, figure_root, origin=source)
             if blocks:
                 title = next((b['src'] for b in blocks if b['kind'] == 'heading'), 'Chapter')
                 chapters.append(({'en': title}, blocks, assets))
@@ -394,7 +472,7 @@ def remaining_earn():
                 root / 'docs/publications' / cover / 'cover-page-1.png', True)
     source = base / 'school-of-hard-knocks/entrepreneurship/dynamic_book/how-you-build-a-business.tex'
     publish('earn-build-a-business', {'en': 'How You Build a Business?'}, ['en'],
-            'en', 'finance', 'LazyingArt LLC', split_long_tex(source),
+            'en', 'finance', 'LazyingArt LLC', split_long_tex(source, legacy_boundaries=True),
             'https://github.com/lachlanchen/LazyEarn/tree/main/generated_course_notes/lazyearn/school-of-hard-knocks/entrepreneurship/dynamic_book',
             'Owner-curated thematic synthesis from the interview corpus; interview claims remain attributed source claims, not independently verified financial advice.',
             root / 'docs/publications/how-you-build-a-business/cover-art.png', True)
