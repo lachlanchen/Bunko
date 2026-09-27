@@ -23,6 +23,31 @@ qualified deployment of all `bunko-v1` extensions. EchoMind owns central auth,
 its migrations, provider flows and registration. Bunko owns only its adapters,
 local account mappings, comment permissions and reader experience.
 
+### Intermediate central checkpoint: `f5b099e1`
+
+Reviewed the pinned central source at
+[`f5b099e134739b0afd47e69a03450780be93f504`](https://github.com/lazyingart/EchoMind/commit/f5b099e134739b0afd47e69a03450780be93f504).
+It adds authenticated profile-scoped introspection, stored authentication and
+issuance times, additive schema 2, and transactional operator suspension and
+reactivation revocation. The central owner reports 105 tests and 35 subtests,
+including PostgreSQL races; Bunko has not independently rerun those backend
+tests or applied the migration.
+
+Discovery still advertises `adapter_contracts: []` and only scope `profile`.
+Fresh GitHub numeric-ID proof and dual-proof linking remain pending. There is
+no deployment, issuer/client provisioning or credential receipt. This is an
+intermediate implementation checkpoint, not full `bunko-v1` readiness. Bunko
+rejects this discovery even if a previous discovery had passed its checks.
+
+Old migrated credentials without provable authentication/issuance timestamps
+return `active: false`; Bunko must obtain a new authorization rather than fall
+back to the legacy profile endpoint or invent recent authentication on refresh.
+Active responses must have positive authentication time no later than issuance;
+the 30-second local clock tolerance applies only to issuance versus Bunko's clock.
+Inactive verdicts remain authoritative for old tokens after a new login succeeds.
+The corresponding Bunko tests use synthetic responses; they do not exercise a
+live suspension or establish the central database's race guarantees.
+
 ## Prepared code
 
 `server/lazyingart-adapter.mjs` is a server-only protocol module with no new
@@ -139,3 +164,8 @@ tests, 18 server tests (10 adapter and 8 existing service cases), TypeScript
 and the web/PWA build. The existing large JavaScript chunk warning remains.
 The 11-language README validation also passed. No native build, deployment,
 live central authorization or store submission was performed in this step.
+
+The `f5b099e1` follow-up adds four adapter regression cases and tightens timestamp
+validation. `npm run test:server` passes all 22 server tests (14 adapter and 8
+existing service cases); `git diff --check` passes. Client/native code is unchanged,
+so the earlier full-build evidence remains separate from this focused check.

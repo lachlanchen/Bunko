@@ -174,8 +174,8 @@ export function createLazyingArtAdapter(config = {}, { fetchImpl = fetch, now = 
     check(scopes(data.scope) === normalized && object(account))
     check(text(data.sub, 256) && data.sub.startsWith('la_') && account.subject === data.sub && account.account_status === 'active')
     check(typeof account.display_name === 'string' && account.display_name.length <= 1024 && typeof account.email_verified === 'boolean')
-    check(unix(data.iat) && unix(data.exp) && unix(data.auth_time) && data.iat <= time + 30
-      && data.auth_time <= data.iat + 30 && data.exp > time && data.exp > data.iat && data.exp - data.iat <= 600)
+    check(unix(data.iat) && unix(data.exp) && unix(data.auth_time) && data.auth_time > 0 && data.iat <= time + 30
+      && data.auth_time <= data.iat && data.exp > time && data.exp > data.iat && data.exp - data.iat <= 600)
     check(Array.isArray(data.verified_legacy_identities))
     const proofs = data.verified_legacy_identities
     check(normalized === scopes(LINK) ? proofs.length <= 1 : proofs.length === 0)

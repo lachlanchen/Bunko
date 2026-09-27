@@ -292,3 +292,76 @@ test('storage failure is sanitized, and a failed post-exchange check requires a 
   s.attempts.consume = () => { throw new Error(secret + ' sensitive storage detail') }
   await rejects(s.adapter.complete({ callbackUrl: next.callback, binding }), 'reauthorization_required')
 })
+
+test('f5b099e1 intermediate discovery cannot activate or retain full-contract readiness', async () => {
+  const s = setup()
+  // Synthetic discovery shape from the pinned central implementation; this
+  // is NOT a deployed issuer receipt or a qualified bunko-v1 response.
+  const intermediate = {
+    ...discovery(), adapter_contracts: [], scopes_supported: ['profile'],
+    account_endpoint: issuer + '/account', echomind_invitation_required: true,
+    providers: { password: true, google: false, apple: false, github: false },
+  }
+  for (const previouslyReady of [false, true]) {
+    if (previouslyReady) { s.discovery(discovery()); await s.adapter.discover() }
+    s.discovery(intermediate)
+    await rejects(s.adapter.discover(), 'contract_mismatch')
+    await rejects(s.begin(), 'not_ready')
+    await rejects(s.adapter.introspect('fixture-access'), 'not_ready')
+    await rejects(s.adapter.refreshOnce({ refreshToken: 'fixture-refresh', scope: 'profile' }), 'not_ready')
+    await rejects(s.adapter.revoke('fixture-access'), 'not_ready')
+    await rejects(s.adapter.verifyGithubLink({ accessToken: 'fixture-access', legacyGithubId: '12345678', explicitConsent: true }), 'not_ready')
+  }
+  assert.equal(s.records.size, 0)
+  assert.ok(s.requests.every(request => request.url.endsWith('/.well-known/lazyingart-account')))
+})
+
+test('migration-unknown credentials require new authorization without profile or refresh fallback', async () => {
+  const s = setup()
+  await s.adapter.discover() // Qualified synthetic contract only, not f5b099e1 discovery.
+  s.hook((url, options) => url.endsWith('/introspect') && new URLSearchParams(options.body).get('token') === 'schema1-access'
+    ? json({ active: false }) : null)
+  assert.deepEqual(await s.adapter.introspect('schema1-access'), { active: false })
+  assert.ok(!s.requests.some(request => /\/account\/(profile|token)$/.test(request.url)))
+  const flow = await s.begin()
+  const result = await s.adapter.complete({ callbackUrl: flow.callback, binding })
+  assert.equal(result.account.active, true)
+  assert.ok(result.account.authTime > 0)
+  assert.deepEqual(await s.adapter.introspect('schema1-access'), { active: false })
+  const good = s.activeResponse()
+  for (const patch of [{ auth_time: 0 }, { auth_time: good.iat + 1 }, { iat: 0, auth_time: 0 }]) {
+    s.hook(url => url.endsWith('/introspect') ? json({ ...good, ...patch }) : null)
+    await rejects(s.adapter.introspect('malformed-active-access'), 'contract_mismatch')
+  }
+})
+
+test('refresh preserves central authentication age while access issuance advances', async () => {
+  const s = setup()
+  await s.adapter.discover()
+  const initial = await s.adapter.introspect('fixture-access'), authTime = initial.authTime
+  s.advance(601000)
+  s.hook(url => url.endsWith('/introspect') ? json({ ...s.activeResponse(), auth_time: authTime }) : null)
+  const token = await s.adapter.refreshOnce({ refreshToken: 'claimed-fixture-refresh', scope: 'profile' })
+  const account = await s.adapter.introspect(token.accessToken, token.scope)
+  assert.equal(account.authTime, authTime)
+  assert.ok(account.expiresAt > initial.expiresAt)
+  assert.equal(account.githubProof, null)
+  // A recent provider proof must not make old central authentication recent.
+  s.scope(linkScope)
+  await rejects(s.adapter.verifyGithubLink({ accessToken: 'link-scoped-fixture', legacyGithubId: '12345678', explicitConsent: true }), 'fresh_link_required')
+})
+
+test('inactive old-token verdicts remain authoritative after a fresh login succeeds', async () => {
+  const s = setup()
+  await s.adapter.discover()
+  assert.equal((await s.adapter.introspect('old-access')).active, true)
+  // Model central responses after suspension, then after reactivation. This
+  // checks Bunko handling only; central transaction/race tests belong to EchoMind.
+  s.hook(url => url.endsWith('/introspect') ? json({ active: false }) : null)
+  assert.deepEqual(await s.adapter.introspect('old-access'), { active: false })
+  s.hook((url, options) => url.endsWith('/introspect') && new URLSearchParams(options.body).get('token') === 'old-access'
+    ? json({ active: false }) : null)
+  assert.equal((await s.adapter.introspect('fresh-grant-access')).active, true)
+  assert.deepEqual(await s.adapter.introspect('old-access'), { active: false })
+  assert.ok(!s.requests.some(request => request.url.endsWith('/account/profile')))
+})
