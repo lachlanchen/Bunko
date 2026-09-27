@@ -6,6 +6,19 @@ import { inspectFile } from './agent/convert.mjs'
 import { isPublicIP } from './agent/network.mjs'
 const reader = { id: 7 }, other = { id: 9 }
 const requestId = 'request_fixture_1234567890'
+test('exact arXiv identifiers bypass broad research search', async () => {
+  const { directPaper, respond } = await import('./agent/discovery.mjs')
+  assert.equal(directPaper('Find Attention Is All You Need, arXiv 1706.03762v7').pdfUrl, 'https://arxiv.org/pdf/1706.03762v7')
+  assert.equal(directPaper('Find paper 1512.03385').pdfUrl, 'https://arxiv.org/pdf/1512.03385')
+  assert.equal(directPaper('Reading size 1820.00001'), null)
+  let downloaded
+  const answer = await respond({ text: 'Find arXiv 1706.03762', messages: [] }, {}, () => {}, {
+    download: async url => { downloaded = url; return Buffer.from('%PDF-1.4\nPaper') },
+    search: async () => { throw new Error('Exact identifiers must not become search terms') },
+  })
+  assert.equal(downloaded, 'https://arxiv.org/pdf/1706.03762')
+  assert.equal(answer.papers.length, 1)
+})
 function setup(t, deps = {}) {
   const db = new DatabaseSync(':memory:')
   const agent = createDocumentAgent({ db, seal: JSON.stringify, unseal: JSON.parse, config: { enabled: true }, convert: async (_d, bytes) => ({ mmd: bytes.toString(), assets: [] }), discover: async () => ({ text: 'Found an open paper.', papers: [] }), ...deps })

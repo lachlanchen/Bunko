@@ -77,3 +77,27 @@ bundle test covers startup, equations, a table, a figure and raw-HTML escaping.
 
 QA uses an isolated fixture identity and private runtime data. This does not
 qualify production OAuth or physical iOS/Android file selection.
+
+### Additional real-paper acceptance
+
+The visible chat → PDF download → Mathpix conversion → flowing reader path was
+checked at a 390 × 844 viewport with these freely accessible arXiv papers:
+
+| Paper | Source | Preserved content |
+| --- | --- | --- |
+| Attention Is All You Need | [1706.03762](https://arxiv.org/abs/1706.03762) | All 5 figures loaded; 4 tables and rendered equations |
+| Deep Residual Learning for Image Recognition | [1512.03385](https://arxiv.org/abs/1512.03385) | All 7 figures loaded; 15 table elements and rendered equations |
+| Entanglement of Formation of an Arbitrary State of Two Qubits | [quant-ph/9709029](https://arxiv.org/abs/quant-ph/9709029) | Inline and display equations; source has no figures |
+
+Inspection found and corrected page-wide overflow from long equations, unwanted
+inline equation scrollbars, and run-together author affiliations. Wide display
+equations scroll independently; the reader's measured content and scroll widths
+are both 375 px (the remaining viewport width is its vertical scrollbar).
+Exact modern arXiv IDs now bypass keyword search; the live agent returned the
+requested PDF for `1706.03762` after the fix. An automated regression also checks
+that this path downloads and validates the PDF without calling broad search.
+
+These are layout and preservation checks, not a line-by-line OCR accuracy audit.
+Converted papers and screenshots remain private runtime evidence, outside Git
+and the public catalogue. The new icon and companion still require a successor
+native release; the existing build 8 review is unchanged.
