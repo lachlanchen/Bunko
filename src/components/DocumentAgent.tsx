@@ -24,6 +24,12 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
   const [report, setReport] = useState<AgentMessage | null>(null)
   const [reason, setReason] = useState('')
   const [notice, setNotice] = useState('')
+  const [cloudConsent, setCloudConsent] = useState(false)
+  const pendingCloud = useRef<(() => void) | null>(null)
+  const withCloudConsent = (action: () => void) => {
+    try { if (localStorage.getItem(`bunko-cloud-consent-v1:${user?.id}`) === 'yes') { action(); return } } catch { /* Ask again if storage is unavailable. */ }
+    pendingCloud.current = action; setCloudConsent(true)
+  }
   const file = useRef<HTMLInputElement>(null), composer = useRef<HTMLTextAreaElement>(null)
   const cancelAuth = useRef<(() => void) | null>(null)
   const activeUser = useRef(user?.id)
@@ -32,13 +38,13 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
   useEffect(() => { activeDocument.current = selected }, [selected])
   const doc = documents.find(d => d.id === selected)
   useBackAction(() => { if (reading) setReading(null); else onBack() }, true, 20)
-  useBackAction(() => { setConfirm(null); setReport(null) }, !!confirm || !!report, 40)
+  useBackAction(() => { setConfirm(null); setReport(null); setCloudConsent(false); pendingCloud.current = null }, !!confirm || !!report || cloudConsent, 40)
   useEffect(() => {
-    if (!reading && !confirm && !report) return
+    if (!reading && !confirm && !report && !cloudConsent) return
     const previous = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = previous }
-  }, [reading, confirm, report])
+  }, [reading, confirm, report, cloudConsent])
   const failure = useCallback((e: unknown) => {
     const value = e as Error & { detail?: string }
     setError(value.message === 'file_limit' ? t.fileLimit : e instanceof DiscussionError && e.code === 'not_configured' ? t.unavailable : value.detail || t.error)
@@ -163,17 +169,17 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
           {messages.map(m => <article className="agent-exchange" key={m.id}>
             <p className="agent-question">{m.question}</p>
             <div className="agent-answer">{m.answer ? <><small>{t.ai}</small><DocumentContent key={m.id} text={m.answer} preparing={t.preparing} failed={t.renderFailed} /></> : <p>{m.error || (m.state === 'processing' ? t.sending : t.interrupted)}</p>}
-              {m.papers.map(p => <article className="agent-paper" key={p.pdfUrl}><h3>{p.title}</h3><p>{p.authors} {p.year}</p><p>{p.summary}</p><button type="button" disabled={!!busy} onClick={() => { void importPaper(p) }}><BookOpen size={16} />{t.import}</button><a href={p.source} target="_blank" rel="noopener noreferrer">{t.source}</a></article>)}
+              {m.papers.map(p => <article className="agent-paper" key={p.pdfUrl}><h3>{p.title}</h3><p>{p.authors} {p.year}</p><p>{p.summary}</p><button type="button" disabled={!!busy} onClick={() => { withCloudConsent(() => { void importPaper(p) }) }}><BookOpen size={16} />{t.import}</button><a href={p.source} target="_blank" rel="noopener noreferrer">{t.source}</a></article>)}
               {m.answer && <button type="button" className="agent-report" onClick={() => { setReason(''); setReport(m) }}>{t.report}</button>}
             </div>
           </article>)}
         </div>
         <div className="agent-composer-area">
           {error && <p className="notice error" role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
-          <form className="agent-composer" onSubmit={e => { e.preventDefault(); void send() }}>
+          <form className="agent-composer" onSubmit={e => { e.preventDefault(); withCloudConsent(() => { void send() }) }}>
             <input ref={file} type="file" accept=".pdf,.docx,.md,.mmd,.txt,.tex,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" hidden onChange={e => { void upload(e.target.files) }} />
             <textarea ref={composer} aria-label={t.placeholder} value={draft} onChange={e => setDraft(e.target.value)} placeholder={t.placeholder} maxLength={8000} rows={3} />
-            <div><button type="button" disabled={!!busy} onClick={() => file.current?.click()} title={t.fileHint}><Paperclip size={20} />{busy === 'upload' ? t.uploading : t.attach}</button>
+            <div><button type="button" disabled={!!busy} onClick={() => withCloudConsent(() => file.current?.click())} title={t.fileHint}><Paperclip size={20} />{busy === 'upload' ? t.uploading : t.attach}</button>
               <button type="submit" className="agent-send" aria-label={t.send} disabled={!!busy || !draft.trim() || (!!doc && doc.state !== 'ready')}>{busy ? <LoaderCircle className="spinning" size={20} /> : <ArrowUp size={21} />}</button></div>
           </form>
           <p className="agent-muted agent-file-hint">{t.fileHint}</p><p className="agent-muted agent-privacy">{t.privacy}</p>
@@ -185,6 +191,14 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
       <article><DocumentContent key={reading.id} document={reading} preparing={t.preparing} failed={t.renderFailed} /></article>
       <footer><button type="button" onClick={() => { choose(reading.id); setReading(null); composer.current?.focus() }}>{t.chat}</button></footer>
     </section>}
+    {cloudConsent && <div className="agent-modal-backdrop"><section className="agent-modal" role="dialog" aria-modal="true" aria-label={t.consentTitle}>
+      <h2>{t.consentTitle}</h2><p>{t.consentBody}</p><p><a href="https://lachlan.lazying.art/Bunko/privacy.html" target="_blank" rel="noopener noreferrer">{t.privacyLink}</a></p>
+      <button type="button" onClick={() => { setCloudConsent(false); pendingCloud.current = null }}>{t.cancel}</button>
+      <button type="button" onClick={() => {
+        try { localStorage.setItem(`bunko-cloud-consent-v1:${user?.id}`, 'yes') } catch { /* Consent applies to this action only. */ }
+        setCloudConsent(false); const action = pendingCloud.current; pendingCloud.current = null; action?.()
+      }}>{t.consentAllow}</button>
+    </section></div>}
     {(confirm || report) && <div className="agent-modal-backdrop"><section className="agent-modal" role="dialog" aria-modal="true" aria-label={report ? t.report : t.deleteTitle}>
       <h2>{report ? t.report : confirm === 'all' ? t.deleteAllTitle : t.deleteTitle}</h2>
       {report ? <textarea value={reason} onChange={e => setReason(e.target.value)} maxLength={2000} aria-label={t.reportHint} placeholder={t.reportHint} /> : confirm !== 'all' && <p>{confirm?.name}</p>}

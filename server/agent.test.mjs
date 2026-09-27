@@ -60,6 +60,18 @@ test('removing a converting document prevents late results restoring it', async 
   assert.equal((await call('state')).documents.length, 0)
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM agent_sources').get().n, 0)
 })
+test('shared storage limits include originals and preserve reading/deletion under low disk', async t => {
+  let available = 1_000_000_000
+  const { agent, call } = setup(t, { config: { enabled: true, maxStoredBytes: 1000, minFreeBytes: 500 }, freeBytes: () => available })
+  const doc = await call('upload', { name: 'notes.md', data: Buffer.from('small note').toString('base64'), requestId })
+  await agent.tick()
+  await assert.rejects(call('upload', { name: 'large.md', data: Buffer.from('x'.repeat(500)).toString('base64'), requestId: 'large_request_1234567890' }), /storage is full/)
+  available = 499
+  await assert.rejects(call('upload', { name: 'notes.md', data: 'dGVzdA==', requestId: 'lowdisk_request_1234567890' }), /storage is full/)
+  assert.equal((await call('document', { documentId: doc.id })).mmd, 'small note')
+  await call('delete', { documentId: doc.id, confirm: 'DELETE' })
+  assert.equal((await call('state')).documents.length, 0)
+})
 test('daily import limits survive duplicate requests; formats and private network ranges rejected', async t => {
   const { call } = setup(t)
   for (let i = 0; i < 20; i++) await call('upload', { name: 'n.txt', data: 'dGVzdA==', requestId: `request_unique_number_${i}` })

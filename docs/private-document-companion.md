@@ -101,3 +101,13 @@ These are layout and preservation checks, not a line-by-line OCR accuracy audit.
 Converted papers and screenshots remain private runtime evidence, outside Git
 and the public catalogue. The new icon and companion still require a successor
 native release; the existing build 8 review is unchanged.
+
+## iOS 1.0.7 verification (27 September 2026)
+The native picker uploaded a DOCX through ordinary GitHub authorization to the live
+cloud service. Its figure and equation rendered successfully. The app agent found
+and imported arXiv quant-ph/9709029, rendered 243 math elements within a 402 px
+viewport and answered with passage citations. Account, documents and conversation
+returned after process restart. These checks used a private Debug simulator driver
+with the production JavaScript bundle; the driver is absent from the signed IPA.
+The shared cloud stores at most 256 MB of companion content and refuses additional
+growth before disk headroom falls below 350 MB. Deletion and reading stay available.

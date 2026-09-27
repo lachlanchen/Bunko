@@ -1,11 +1,12 @@
 import { randomUUID } from 'node:crypto'
+import { statfsSync } from 'node:fs'
 import { AppError, requireValue, hash } from './common.mjs'
 import { convertDocument, inspectFile, formats } from './convert.mjs'
 import { respond } from './discovery.mjs'
 import { providerJSON } from './network.mjs'
 
 export const agentPaths = ['state', 'upload', 'import', 'document', 'delete', 'resume', 'messages', 'send', 'report', 'clear'].map(p => `/v1/agent/${p}`)
-export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, convert = convertDocument, discover = respond, provider = providerJSON }) {
+export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, convert = convertDocument, discover = respond, provider = providerJSON, freeBytes = () => { if (!config.storageDirectory) return Infinity; const s = statfsSync(config.storageDirectory); return s.bavail * s.bsize } }) {
   db.exec(`CREATE TABLE IF NOT EXISTS agent_documents(id TEXT PRIMARY KEY, owner TEXT NOT NULL, state TEXT NOT NULL, data TEXT NOT NULL, bytes INTEGER NOT NULL, created INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS agent_sources(id TEXT PRIMARY KEY, data TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS agent_messages(id TEXT PRIMARY KEY, owner TEXT NOT NULL, document TEXT NOT NULL, state TEXT NOT NULL, data TEXT NOT NULL, created INTEGER NOT NULL);
@@ -15,6 +16,17 @@ export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, 
   db.prepare("UPDATE agent_documents SET state='interrupted' WHERE state='processing'").run()
   db.prepare("UPDATE agent_messages SET state='interrupted' WHERE state='processing'").run()
   const ownerKey = user => hash(`bunko-agent:${user.id}`)
+  // Include encrypted originals and conversations, and reserve space for queued imports.
+  // Refuse growth before exhausting the shared host; deletion and reading still work.
+  const capacity = (growth) => {
+    if (growth <= 0) return
+    const used = db.prepare(`SELECT
+      (SELECT COALESCE(SUM(bytes),0) FROM agent_documents) +
+      (SELECT COALESCE(SUM(length(data)),0) FROM agent_sources) +
+      (SELECT COALESCE(SUM(length(data)),0) FROM agent_messages) +
+      (SELECT COALESCE(SUM(length(data)),0) FROM agent_reports) AS n`).get().n
+    requireValue(used + growth <= (config.maxStoredBytes || 256_000_000) && freeBytes() >= (config.minFreeBytes || 256_000_000) + growth * 2, 'The companion storage is full. You can still read or remove existing documents. Please try importing later.', 507)
+  }
   const document = (id, owner) => {
     const row = db.prepare('SELECT * FROM agent_documents WHERE id=? AND owner=?').get(id, owner)
     requireValue(row, 'Document not found.', 404)
@@ -35,6 +47,8 @@ export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, 
     }
     const data = seal(doc)
     requireValue(Buffer.byteLength(data) <= 75_000_000, 'The converted document is too large.')
+    const previousBytes = db.prepare('SELECT bytes FROM agent_documents WHERE id=? AND owner=?').get(doc.id, doc.owner)?.bytes || 0
+    capacity(Buffer.byteLength(data) - previousBytes)
     const other = db.prepare('SELECT COALESCE(SUM(bytes),0) AS n FROM agent_documents WHERE owner=? AND id<>?').get(doc.owner, doc.id).n
     requireValue(other + Buffer.byteLength(data) <= 150_000_000, 'Your private library is full. Remove a document before importing another.')
     const changed = db.prepare('UPDATE agent_documents SET data=?, bytes=? WHERE id=? AND owner=?').run(data, Buffer.byteLength(data), doc.id, doc.owner)
@@ -93,10 +107,12 @@ export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, 
       const used = db.prepare('SELECT COALESCE(SUM(bytes),0) AS n FROM agent_documents WHERE owner=?').get(owner).n
       requireValue(used + (bytes?.length || 20_000_000) <= 150_000_000, 'Your private library is full. Remove a document first.', 429)
       const doc = { id, name, source, fingerprint, created: now() }
+      const sourceData = bytes ? seal(bytes.toString('base64')) : null
+      capacity((bytes?.length || 20_000_000) + (sourceData ? Buffer.byteLength(sourceData) : 0))
       db.exec('BEGIN')
       try {
         db.prepare('INSERT INTO agent_documents VALUES (?,?,?,?,?,?)').run(id, owner, 'queued', seal(doc), bytes?.length || 20_000_000, now())
-        if (bytes) db.prepare('INSERT INTO agent_sources VALUES (?,?)').run(id, seal(bytes.toString('base64')))
+        if (sourceData) db.prepare('INSERT INTO agent_sources VALUES (?,?)').run(id, sourceData)
         db.exec('COMMIT')
       } catch (e) { db.exec('ROLLBACK'); throw e }
       return summary(document(id, owner))
@@ -136,6 +152,7 @@ export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, 
     if (path === 'report') {
       const row = db.prepare('SELECT * FROM agent_messages WHERE id=? AND owner=?').get(input.messageId, owner)
       requireValue(row && typeof input.reason === 'string' && input.reason.trim().length >= 3 && input.reason.length <= 2000, 'Add a short reason for reporting this response.')
+      capacity(Buffer.byteLength(row.data) + 8000)
       reserve(`report:${randomUUID()}`, owner, 'reports', 1, 200, 10)
       db.prepare('INSERT INTO agent_reports VALUES (?,?,?,?)').run(randomUUID(), owner, seal({ messageId: row.id, reason: input.reason, message: unseal(row.data) }), now())
       return { ok: true }
@@ -147,6 +164,7 @@ export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, 
       const previous = db.prepare('SELECT * FROM agent_messages WHERE id=? AND owner=?').get(id, owner)
       if (previous) { const data = unseal(previous.data); requireValue(data.fingerprint === fingerprint, 'This request identifier was already used.', 409); return { id, state: previous.state, ...data } }
       requireValue(!db.prepare("SELECT id FROM agent_messages WHERE owner=? AND state='processing'").get(owner), 'A response is already in progress.', 409)
+      capacity(200_000)
       reserve(`ai:${id}`, owner, 'answers', 1, config.maxAnswersPerDay || 100, 30)
       const data = { question: input.text.trim(), fingerprint, answer: '', papers: [] }
       db.prepare('INSERT INTO agent_messages VALUES (?,?,?,?,?,?)').run(id, owner, documentId, 'processing', seal(data), now())

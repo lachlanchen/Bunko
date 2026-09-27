@@ -59,3 +59,18 @@ Earlier entries below are historical, including superseded pending-QA/review sta
 - The exact shared browser tabs, noVNC URL, Mac paths and current operations are recorded privately in `.runtime/store/handoff.md`.
 
 Do not restart the shared store browser or touch another app's tabs, keys, packages or review state. The source-only layout bug and missing iOS preferences privacy declaration were fixed before these builds.
+
+## 2026-09-27 successor 1.0.7 (9)
+The vivid icon and private document companion are packaged in iOS build 9; Apple
+validation/upload succeeded, delivery/build `96bfb05d-4add-4ee5-a173-05c90e1be93e`,
+IPA SHA-256 `afab2e4d18f8adae5bfbaefae708bf37468e89bf7eb77567724b1162f422f998`.
+The cloud companion release `d56cd5452c2179b8` is active on the existing Bunko
+host; GitHub credentials and sessions were preserved, and central auth remains off.
+A first-use disclosure names Mathpix/DeepSeek; storage growth is bounded for the
+shared host. Live simulator QA used a non-maintainer GitHub account, native DOCX
+file selection, a preserved figure/equation, arXiv Wootters PDF conversion, 243
+math elements, a cited reply and process-restart account/library restoration.
+Reader width and scroll width both 402 px. No physical iPhone test is claimed.
+Current public iOS remains 1.0.4; build8 review is still preserved pending successor
+metadata/privacy completion. Native Android and Mac version9 sources are prepared,
+but their binaries have not been built/uploaded.
