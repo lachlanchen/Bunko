@@ -88,8 +88,10 @@ AI 生成的學習文本可能有誤。書目只發布經過審核的完整版�
 
 [討論功能實作與驗證](../docs/github-discussions-2026-09-26.md).
 
-## 開發預覽
+## Mac 與 Apple Watch
 
-正在準備現有圖示的鮮亮升級，以及私有文件助手。PDF、Word（.docx）、Markdown、文字和 TeX 上傳、論文搜尋、公式與圖片顯示、文件問答已通過本機驗證。這些變更尚未包含在商店版本中。
+**1.0.8 (10)** 新增原生 Apple Watch 伴侶並更新 Mac 應用程式。在 iPhone 閱讀器中，將多語言文字選段傳送到配對手錶。最近三份選段可離線閱讀，支援段落切換與字級調整。插圖和公式保留在手機及 Mac 的完整閱讀器中。
 
-[實作與驗證](../docs/private-document-companion.md).
+新圖示與私人文件助手支援 PDF、Word（.docx）、Markdown、文字、TeX、論文搜尋與文件問答。M5 Pro Mac mini 通過十項原生閱讀檢查，包括離線重開、進度還原、公式和插圖。Watch 模擬器通過真實 iPhone 傳輸與中斷連線後重新啟動測試；尚未測試實體手錶。
+
+[macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)

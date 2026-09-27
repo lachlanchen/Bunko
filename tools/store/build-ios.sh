@@ -3,7 +3,7 @@ set -euo pipefail
 # Run on the shared Mac after syncing ios/ and the two Capacitor plugin folders.
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin
 bunko_root="${BUNKO_ROOT:-$HOME/Projects/Bunko}"
-bunko_release="${BUNKO_RELEASE:-1.0.7-9}"
+bunko_release="${BUNKO_RELEASE:-1.0.8-10}"
 bunko_kc="$HOME/Library/Keychains/landn-release.keychain-db"
 bunko_pass=$(tr -d '\r\n' < "$HOME/.config/echomind/apple/release-keychain.pass")
 security unlock-keychain -p "$bunko_pass" "$bunko_kc"
@@ -11,6 +11,10 @@ unset bunko_pass
 mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles" "$bunko_root/release"
 cp "$HOME/.config/bunko/apple/Bunko_App_Store.mobileprovision" "$HOME/Library/MobileDevice/Provisioning Profiles/92181e3c-3354-4f9c-b9a4-aa92cd5d19b7.mobileprovision"
 cp "$HOME/.config/bunko/apple/Bunko_App_Store.mobileprovision" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/92181e3c-3354-4f9c-b9a4-aa92cd5d19b7.mobileprovision"
+bunko_watch_profile="$HOME/.config/bunko/apple/Bunko_Watch_App_Store.mobileprovision"
+bunko_watch_id=$(security cms -D -i "$bunko_watch_profile" | plutil -extract UUID raw -o - -)
+cp "$bunko_watch_profile" "$HOME/Library/MobileDevice/Provisioning Profiles/$bunko_watch_id.mobileprovision"
+cp "$bunko_watch_profile" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/$bunko_watch_id.mobileprovision"
 cd "$bunko_root/ios/App"
 xcodebuild -project App.xcodeproj -scheme App -configuration Release -destination generic/platform=iOS -archivePath "$bunko_root/release/Bunko-$bunko_release.xcarchive" -derivedDataPath "$bunko_root/release/DerivedData" -jobs "${BUNKO_BUILD_JOBS:-2}" archive COMPILER_INDEX_STORE_ENABLE=NO "OTHER_CODE_SIGN_FLAGS=--keychain $bunko_kc"
 # Check the actual archive before exporting or uploading it.

@@ -33,7 +33,7 @@ npm run dev
 
 ## Bunko for Mac
 
-Version **1.0.4 (6)** is available on the Mac App Store. The Mac edition includes a resizable reading window, native menus, keyboard chapter navigation, offline books, and local dictionaries. It supports macOS 12 or later with a universal Intel/Apple silicon binary. Build and test instructions are in [docs/macos.md](docs/macos.md); the current review status is recorded in [store/macos/submission.md](store/macos/submission.md).
+The Mac edition includes a resizable reading window, native menus, keyboard chapter navigation, offline books, and local dictionaries. It supports macOS 12 or later with a universal Intel/Apple silicon binary. Build and test instructions are in [docs/macos.md](docs/macos.md); the current review status is recorded in [store/macos/submission.md](store/macos/submission.md).
 
 ## Library and release
 
@@ -85,8 +85,10 @@ Read and compose public passage comments inside Bunko, using GitHub sign-in. Dra
 
 [Discussion implementation and verification](docs/github-discussions-2026-09-26.md).
 
-## Development preview
+## Mac and Apple Watch
 
-A brighter version of the existing icon and a private document companion are being prepared. PDF, Word (.docx), Markdown, text and TeX upload, paper search, equations, figures and document Q&A have passed local checks. These changes are not yet in the store builds.
+Version **1.0.8 (10)** adds a native Apple Watch companion and updates the Mac app. From the iPhone reader, send a multilingual text excerpt to your paired watch. The latest three excerpts stay available offline, with passage navigation and adjustable text size. Figures and equations remain in the full phone and Mac reader.
 
-[Implementation and verification](docs/private-document-companion.md).
+The refreshed icon and private document companion support PDF, Word (.docx), Markdown, text and TeX, paper search and document questions. Ten native reader checks passed on an M5 Pro Mac mini, including offline reopening, reading position, equations and figures. The Watch simulator passed real iPhone transfer and disconnected restart; a physical Watch has not been tested.
+
+[macOS](docs/macos.md) · [watchOS](docs/watchos.md) · [1.0.8](store/artifacts/release-1.0.8.json)

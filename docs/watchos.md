@@ -1,0 +1,38 @@
+# Bunko for Apple Watch
+
+The native SwiftUI companion is embedded in the iOS application. Open a downloaded
+book on iPhone and tap the watch icon in the reader toolbar. The transfer starts
+at the currently visible paragraph and includes the selected reading languages.
+The latest three excerpts remain on the paired watch for offline reading.
+
+Use the Digital Crown to scroll, Previous/Next to turn between passages and the
+text-size button to adjust 14–24 point text. The watch remembers the passage in
+each excerpt. Installation and initial transfer require a paired iPhone with
+Bunko and the Watch app installed. Delivery can wait until the devices reconnect;
+the phone confirms queueing, not receipt. iPad and Mac are not Watch companions.
+
+This is a text excerpt reader. Figures, ruby layout and rendered equations remain
+in the full illustrated edition on iPhone/iPad/Mac. A transfer stops before an
+illustrated or mathematical passage rather than silently flattening it. Excerpts
+are bounded to 24 paragraphs / 15 KB each; the entire synchronized shelf stays
+under 50 KB. Oversized or malformed data is rejected on both devices. Private
+agent documents, account credentials, notes and discussion tokens are not sent.
+
+## Build and verify
+
+- `npm run check`: includes excerpt-language, position, mathematical-content and
+  UTF-8 payload bounds checks.
+- On macOS: `xcrun swiftc shared/apple/WatchReading.swift
+  tools/store/WatchModelCheck.swift -o /tmp/bunko-watch-model-check`, then run that
+  binary to check Codable/schema/duplicate/payload boundaries.
+- The `App` scheme builds and embeds `BunkoWatch`; both version and build must match.
+  Deployment target is watchOS 11.0. Signing uses the app-specific Watch profile;
+  do not change shared keychain settings.
+- Pair isolated Bunko iOS and watchOS simulators. Verify transfer of a real library
+  excerpt, navigation, text size and a disconnected cold launch. Capture native
+  screenshots at one consistent Watch size for App Store Connect.
+- Debug-only `--reading-qa` opens the first already-synchronized excerpt for native
+  screenshot inspection; it does not insert content and is excluded from Release.
+
+Release results and any coverage gaps belong in the store handoff. A successful
+build is not evidence of a physical Apple Watch test or store approval.

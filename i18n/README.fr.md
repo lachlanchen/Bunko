@@ -88,8 +88,10 @@ Lisez et rédigez des commentaires publics sur les passages dans Bunko en vous c
 
 [Implémentation et vérification des discussions](../docs/github-discussions-2026-09-26.md).
 
-## Aperçu du développement
+## Mac et Apple Watch
 
-Une version plus vive de l’icône actuelle et un assistant privé pour les documents sont en préparation. Les tests locaux ont validé l’import de PDF, Word (.docx), Markdown, texte et TeX, la recherche d’articles, les équations, les figures et les questions sur les documents. Ces changements ne figurent pas encore dans les versions des boutiques.
+La version **1.0.8 (10)** ajoute une application compagnon native pour Apple Watch et met à jour celle pour Mac. Envoyez un extrait multilingue depuis le lecteur de l’iPhone vers la montre jumelée. Les trois derniers extraits restent disponibles hors ligne, avec navigation entre paragraphes et taille du texte réglable. Les figures et équations restent dans le lecteur complet sur téléphone et Mac.
 
-[Implémentation et vérification](../docs/private-document-companion.md).
+L’icône renouvelée et l’assistant privé prennent en charge PDF, Word (.docx), Markdown, texte et TeX, la recherche d’articles et les questions sur les documents. Dix contrôles natifs ont réussi sur un Mac mini M5 Pro : réouverture hors ligne, position de lecture, équations et figures notamment. Le simulateur Watch a validé le transfert réel depuis l’application iPhone et le redémarrage déconnecté ; aucune montre physique n’a encore été testée.
+
+[macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)

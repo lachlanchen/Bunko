@@ -88,8 +88,10 @@ GitHub로 로그인하면 Bunko 안에서 구절에 대한 공개 댓글을 읽�
 
 [토론 기능 구현 및 검증](../docs/github-discussions-2026-09-26.md).
 
-## 개발 미리보기
+## Mac 및 Apple Watch
 
-기존 아이콘을 더 선명하게 다듬은 디자인과 비공개 문서 도우미를 준비하고 있습니다. PDF, Word(.docx), Markdown, 텍스트, TeX 업로드, 논문 검색, 수식과 그림 표시, 문서 질의응답이 로컬 검증을 통과했습니다. 이 변경 사항은 아직 스토어 빌드에 포함되지 않았습니다.
+**1.0.8 (10)** 에 네이티브 Apple Watch 앱을 추가하고 Mac 앱을 업데이트했습니다. iPhone 리더에서 페어링된 시계로 다국어 텍스트 발췌문을 보낼 수 있습니다. 최근 세 개를 오프라인으로 보관하며 문단 이동과 글자 크기 조절을 지원합니다. 그림과 수식은 휴대폰과 Mac의 전체 리더에서 표시합니다.
 
-[구현 및 검증](../docs/private-document-companion.md).
+새 아이콘과 비공개 문서 도우미는 PDF, Word(.docx), Markdown, 텍스트, TeX, 논문 검색과 문서 질문을 지원합니다. M5 Pro Mac mini에서 오프라인 재열기, 읽던 위치, 수식과 그림을 포함한 네이티브 검사 10개를 통과했습니다. Watch 시뮬레이터에서 실제 iPhone 앱 전송과 연결 해제 후 재시작을 검증했습니다. 실물 Watch는 아직 테스트하지 않았습니다.
+
+[macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)

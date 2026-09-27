@@ -6,7 +6,7 @@
  * gloss under its own source line, or whole paragraphs one after another.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { ChevronLeft, ChevronRight, List, MessageCircle, Settings2 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, List, MessageCircle, Settings2, Watch } from 'lucide-react'
 import type { BookMeta, Chapter, LangCode, ReadingSettings, Unit } from '../types'
 import type { UICopy, UILanguage } from '../i18n'
 import { languageName } from '../i18n'
@@ -19,6 +19,7 @@ import { passageKey } from '../lib/readingTools'
 import { ReadingPanel, type ReadingFocus } from './ReadingPanel'
 import { SelectionTools } from './SelectionTools'
 import type { ReaderSelection } from '../lib/readerSelection'
+import { supportsWatch, watchExcerpt, sendToWatch } from '../lib/watchReading'
 
 interface ReaderProps {
   meta: BookMeta
@@ -57,6 +58,9 @@ export function Reader({
     error: '',
   })
   const [progress, setProgress] = useState(0)
+  const [watchStatus, setWatchStatus] = useState('')
+  const [watchBusy, setWatchBusy] = useState(false)
+  const visibleParagraph = useRef(startParagraph)
   const [focus, setFocus] = useState<ReadingFocus | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const row = meta.chapters[chapterIndex]
@@ -73,6 +77,7 @@ export function Reader({
 
   useEffect(() => {
     if (!row) return
+    visibleParagraph.current = startParagraph
     let cancelled = false
     const controller = new AbortController()
     loadChapter(meta.id, row.file, controller.signal)
@@ -87,6 +92,8 @@ export function Reader({
       cancelled = true
       controller.abort()
     }
+  // startParagraph is read when a chapter changes, not while scrolling it.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meta.id, row])
 
   // Restore the reader's place once, when the chapter arrives. Reading then
@@ -113,10 +120,12 @@ export function Reader({
     for (let index = paragraphs.length - 1; index >= 0; index -= 1) {
       if (paragraphs[index].offsetTop <= host.scrollTop + 40) {
         onPlace(Number(paragraphs[index].dataset.para))
+        visibleParagraph.current = Number(paragraphs[index].dataset.para)
         return
       }
     }
     onPlace(0)
+    visibleParagraph.current = 0
   }, [chapter, onPlace])
 
   const title =
@@ -124,6 +133,8 @@ export function Reader({
     row?.title?.[meta.primary] ||
     `${copy.chapterList} ${row?.n ?? ''}`
   const discussLabel = { en: 'Discuss passage', 'zh-Hans': '讨论这段', 'zh-Hant': '討論這段', ja: 'この箇所を話し合う' }[ui]
+  const watchLabel = { en: 'Send excerpt to Apple Watch', 'zh-Hans': '发送选段到 Apple Watch', 'zh-Hant': '傳送選段到 Apple Watch', ja: '抜粋をApple Watchへ送る' }[ui]
+  const watchQueued = { en: 'Excerpt queued. Open Bunko on your paired Apple Watch to read it offline.', 'zh-Hans': '选段已排队。在配对的 Apple Watch 上打开 Bunko，即可离线阅读。', 'zh-Hant': '選段已排隊。在配對的 Apple Watch 上開啟 Bunko，即可離線閱讀。', ja: '抜粋を送信待ちにしました。ペアリングしたApple WatchのBunkoでオフライン閲覧できます。' }[ui]
 
   const openFocus = (paragraphId: string, unit: Unit, unitIndex: number, lang: LangCode, word?: string, reading?: string) => {
     window.getSelection()?.removeAllRanges()
@@ -150,10 +161,18 @@ export function Reader({
             <List size={11} /> {meta.titleText[meta.primary] ?? meta.id}
           </small>
         </button>
+        {supportsWatch() && <button type="button" disabled={!chapter || watchBusy} aria-label={watchLabel} onClick={async () => {
+          if (!chapter) return
+          setWatchBusy(true)
+          try { await sendToWatch(watchExcerpt(meta, chapter, shown, visibleParagraph.current)); setWatchStatus(watchQueued) }
+          catch (error) { setWatchStatus(error instanceof Error ? error.message : String(error)) }
+          finally { setWatchBusy(false) }
+        }}><Watch size={18} /></button>}
         <button type="button" onClick={onOpenSettings} aria-label={copy.settings}>
           <Settings2 size={18} />
         </button>
       </header>
+      {watchStatus && <p className="notice" role="status" onClick={() => setWatchStatus('')}>{watchStatus}</p>}
       <div className="reader-progress" aria-hidden="true">
         <i style={{ width: `${Math.round(progress * 100)}%` }} />
       </div>

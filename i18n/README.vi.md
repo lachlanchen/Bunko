@@ -88,8 +88,10 @@ Nhấn giữ một từ, điều chỉnh tay nắm chọn văn bản rồi chọ
 
 [Triển khai và kiểm chứng tính năng thảo luận](../docs/github-discussions-2026-09-26.md).
 
-## Bản xem trước đang phát triển
+## Mac và Apple Watch
 
-Chúng tôi đang chuẩn bị phiên bản biểu tượng hiện tại rực rỡ hơn và trợ lý tài liệu riêng tư. Các kiểm tra cục bộ đã xác minh việc tải lên PDF, Word (.docx), Markdown, văn bản và TeX, tìm bài nghiên cứu, hiển thị công thức và hình ảnh, cùng hỏi đáp về tài liệu. Những thay đổi này chưa có trong bản trên cửa hàng.
+Phiên bản **1.0.8 (10)** thêm ứng dụng đồng hành gốc cho Apple Watch và cập nhật ứng dụng Mac. Gửi trích đoạn văn bản đa ngôn ngữ từ trình đọc iPhone đến đồng hồ đã ghép đôi. Ba trích đoạn gần nhất được lưu ngoại tuyến, có chuyển đoạn và điều chỉnh cỡ chữ. Hình ảnh và công thức vẫn nằm trong trình đọc đầy đủ trên điện thoại và Mac.
 
-[Triển khai và kiểm chứng](../docs/private-document-companion.md).
+Biểu tượng mới và trợ lý tài liệu riêng tư hỗ trợ PDF, Word (.docx), Markdown, văn bản và TeX, tìm bài nghiên cứu và hỏi về tài liệu. Mười kiểm tra gốc đã đạt trên Mac mini M5 Pro, gồm mở lại ngoại tuyến, vị trí đọc, công thức và hình ảnh. Trình mô phỏng Watch đã kiểm chứng truyền dữ liệu thật từ ứng dụng iPhone và khởi động lại khi ngắt kết nối; chưa kiểm tra đồng hồ thật.
+
+[macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)

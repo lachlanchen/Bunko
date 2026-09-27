@@ -4,12 +4,11 @@ set -euo pipefail
 # run here on the shared Xcode host. Never print signing passwords.
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin
 bunko_root="${BUNKO_ROOT:-$HOME/Projects/Bunko}"
-bunko_release="${BUNKO_RELEASE:-1.0.7-9}"
+bunko_release="${BUNKO_RELEASE:-1.0.8-10}"
 bunko_kc="$HOME/Library/Keychains/landn-release.keychain-db"
 bunko_pass=$(tr -d '\r\n' < "$HOME/.config/echomind/apple/release-keychain.pass")
 security unlock-keychain -p "$bunko_pass" "$bunko_kc"
-security set-keychain-settings -lut 14400 "$bunko_kc"
-security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$bunko_pass" "$bunko_kc" >/dev/null
+unset bunko_pass
 mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles" "$bunko_root/release"
 bunko_profile="$HOME/.config/bunko/apple/Bunko_Mac_App_Store.provisionprofile"
 bunko_profile_id=$(security cms -D -i "$bunko_profile" | plutil -extract UUID raw -o - -)

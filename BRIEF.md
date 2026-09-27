@@ -109,3 +109,14 @@ production enablement is still gated by the central owner's readiness contract.
 The owner also requested a simpler, vibrant update to the existing icon. The
 successor keeps 文 with its ぶん reading, with electric blue and coral accents.
 Current build 8 reviews are preserved while the successor is developed/tested.
+
+## Apple platform expansion · 2026-09-28
+
+The owner requested macOS and Apple Watch support with formal production review.
+Bunko keeps its native AppKit Mac reader and adds an iPhone-paired SwiftUI Watch
+companion. An explicit reader button transfers a bounded text excerpt from the
+current paragraph, retaining selected languages. The latest three excerpts and
+Watch reading positions persist offline. Figures/equations stay in the full
+edition; no private companion documents or authentication tokens are transferred.
+WatchOS11 minimum; iOS/watch marketing version and build must match. Real native
+transport and offline QA plus signed archive validation precede review submission.

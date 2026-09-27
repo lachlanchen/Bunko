@@ -8,6 +8,8 @@
 	<dict>
 		<key>art.lazying.bunko</key>
 		<string>Bunko App Store</string>
+		<key>art.lazying.bunko.watchkitapp</key>
+		<string>Bunko Watch App Store</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Distribution</string>

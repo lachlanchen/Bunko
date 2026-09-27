@@ -2,6 +2,9 @@ import AppKit
 import WebKit
 import AuthenticationServices
 import Security
+#if DEBUG
+import Network
+#endif
 
 @main
 final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandlerWithReply, ASWebAuthenticationPresentationContextProviding {
@@ -22,6 +25,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(schemeHandler, forURLScheme: "bunko")
         config.websiteDataStore = .default()
+        #if DEBUG
+        // Test hosts can use a loopback CONNECT tunnel without changing system proxies.
+        if #available(macOS 14.0, *), CommandLine.arguments.contains("--bunko-smoke-test"),
+           let value = ProcessInfo.processInfo.environment["BUNKO_QA_PROXY_PORT"],
+           let port = UInt16(value), let endpointPort = NWEndpoint.Port(rawValue: port) {
+            config.websiteDataStore.proxyConfigurations = [ProxyConfiguration(
+                httpCONNECTProxy: .hostPort(host: "127.0.0.1", port: endpointPort))]
+        }
+        #endif
         config.userContentController.addScriptMessageHandler(self, contentWorld: .page, name: "bunkoAuth")
         let appInfo = ["version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "",
                        "build": Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""]

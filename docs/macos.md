@@ -50,8 +50,16 @@ The harness checks the catalogue, rendered cover art, Settings and Find menu com
 | 3040 | macOS 12.7.6, Intel | Nine reading/menu/offline/physics checks passed |
 | 7050 iMac | macOS 15.7.7, Intel | Ten checks passed, including loaded covers; 1280×800 store screenshots |
 | KVM Mac | macOS 15.7.9, Intel | Native reader tests passed; universal release archive/export, signatures and Apple validation passed |
+| Mac mini M5 Pro | macOS 27.0, Apple silicon | Ten native reader/menu/download/offline/equation/figure checks passed for 1.0.8 (10) |
 
-The final saved-chapter regression was rerun on both physical Macs. Apple silicon has compile/signature validation only; no Apple silicon test host was available. Curated release evidence is in [the Mac submission record](../store/macos/submission.md). Raw host logs and screenshots remain in ignored runtime storage.
+The saved-chapter regression passed on Intel and Apple silicon. The Mac mini could
+not directly reach either configured book host; its repeat test used a temporary
+loopback CONNECT proxy scoped to the Debug app through `BUNKO_QA_PROXY_PORT`.
+The real downloaded books then passed a reload with HTTP blocked. System proxy
+settings were preserved, and the temporary proxy, tunnel and app were stopped.
+This verifies the Apple silicon reader, not direct connectivity from that network.
+Curated release evidence is in [the Mac submission record](../store/macos/submission.md).
+Raw host logs and screenshots remain in ignored runtime storage.
 
 ## Shared desktop ownership
 

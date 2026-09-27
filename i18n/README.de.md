@@ -88,8 +88,10 @@ Mit der GitHub-Anmeldung kannst du öffentliche Kommentare zu Textstellen direkt
 
 [Umsetzung und Prüfung der Diskussionsfunktion](../docs/github-discussions-2026-09-26.md).
 
-## Entwicklungsvorschau
+## Mac und Apple Watch
 
-Eine kräftigere Version des bisherigen Symbols und ein privater Dokumentassistent werden vorbereitet. Lokale Prüfungen bestätigten den Upload von PDF, Word (.docx), Markdown, Text und TeX, die Artikelsuche, Formeln, Abbildungen und Fragen zu Dokumenten. Diese Änderungen sind noch nicht in den Store-Versionen enthalten.
+Version **1.0.8 (10)** ergänzt eine native Apple-Watch-Begleitapp und aktualisiert die Mac-App. Im iPhone-Leser lassen sich mehrsprachige Textauszüge an die gekoppelte Uhr senden. Die letzten drei Auszüge bleiben offline verfügbar; Absatznavigation und Schriftgröße sind einstellbar. Abbildungen und Formeln bleiben im vollständigen Leser auf Telefon und Mac.
 
-[Implementierung und Prüfung](../docs/private-document-companion.md).
+Das neue Symbol und der private Dokumentassistent unterstützen PDF, Word (.docx), Markdown, Text und TeX, Artikelsuche und Fragen zu Dokumenten. Zehn native Prüfungen bestanden auf einem M5-Pro-Mac-mini, darunter Offline-Wiederöffnung, Leseposition, Formeln und Abbildungen. Im Watch-Simulator wurden eine echte Übertragung aus der iPhone-App und ein Neustart ohne Verbindung geprüft. Eine physische Watch wurde noch nicht getestet.
+
+[macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)

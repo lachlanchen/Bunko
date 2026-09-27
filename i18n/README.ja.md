@@ -88,8 +88,10 @@ GitHub でログインして、本文の箇所ごとの公開コメントを Bun
 
 [ディスカッションの実装と検証](../docs/github-discussions-2026-09-26.md).
 
-## 開発プレビュー
+## MacとApple Watch
 
-既存のアイコンをより鮮やかにしたデザインと、非公開の文書アシスタントを準備しています。PDF、Word（.docx）、Markdown、テキスト、TeXのアップロード、論文検索、数式・図の表示、文書への質問はローカル検証に合格しました。これらの変更はまだストア版には含まれていません。
+**1.0.8 (10)** ではネイティブのApple Watchアプリを追加し、Mac版を更新しました。iPhoneのリーダーから、ペアリングした時計に多言語のテキスト抜粋を送れます。最新3件をオフライン保存し、段落の移動と文字サイズの調整が可能です。図や数式はiPhone・Macの完全版で表示します。
 
-[実装と検証](../docs/private-document-companion.md).
+新しいアイコンと非公開の文書アシスタントは、PDF、Word（.docx）、Markdown、テキスト、TeX、論文検索、文書への質問に対応します。M5 Pro Mac miniでオフライン再表示、読書位置、数式、図を含む10項目に合格。Watchシミュレータでは実際のiPhoneアプリからの転送と切断後の再起動を検証しました。実機のWatchは未検証です。
+
+[macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
