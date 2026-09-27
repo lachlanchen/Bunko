@@ -24,6 +24,13 @@ Detailed local handoffs were delivered to 31 workspaces, covering all 14 apps
 listed in App Store Connect and the active projects. Delivery is not acceptance.
 No shared service is advertised as live and no peer product runtime was changed.
 
+EchoMind's early `bunko-v1` contract is accepted for confidential client
+`bunko-server`, audience `bunko-service`, and callback
+`https://llm.lazying.art/bunko/oauth/lazyingart/callback`. A disabled, unconnected
+server adapter and synthetic contract tests are prepared. Issuer qualification,
+registration, durable session integration and live verification are still
+required; see [adapter preparation and activation gates](lazyingart-adapter.md).
+
 EchoMind's current formal checkout already contains Google/Apple federation.
 LazyArtCoin currently binds accounts to existing EchoMind user IDs. Preserve
 those IDs through additive mappings; shared identity must not merge wallets,

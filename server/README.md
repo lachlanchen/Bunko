@@ -39,10 +39,20 @@ The operator's private `.runtime/github-comments/` receipt records exact release
 ## Verification
 
 ```sh
-node --test server/service.test.mjs
+npm run test:server
 npm run check
 ```
 
 Tests cover state replay, verifier binding, expiry, cancellation, repository restriction, token isolation, origin/path rejection, duplicate submissions, and ambiguous writes. UI tests cover drafts, sign-in errors, pagination, HTML escaping, and hidden readers. Real OAuth, ordinary-reader permission, native callback and store privacy review remain release gates; fixture tests do not prove those integrations.
 
 Protocol references: [GitHub refresh-token rotation](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens) and [Capacitor secure storage](https://github.com/aparajita/capacitor-secure-storage). The plugin's unencrypted web adapter is never used by Bunko.
+
+## Shared-account preparation
+
+`lazyingart-adapter.mjs` prepares the accepted `bunko-v1` server protocol behind
+an off-by-default factory. It is not imported by this service or exposed through
+Caddy, and has no deployed issuer or credential configuration. Its fixture tests
+run with the service suite. See [the adapter contract and remaining integration
+gates](../docs/lazyingart-adapter.md) before connecting it to any live login,
+session, refresh or account-linking path. Build 8 retains its verified GitHub
+authentication and current store reviews.

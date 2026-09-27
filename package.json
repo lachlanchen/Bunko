@@ -14,7 +14,7 @@
     "check": "npm run lint && npm run test && npm run test:server && npm run build",
     "cap:sync": "npm run build:native && npx cap sync",
     "build:native": "tsc -b && vite build --mode native",
-    "test:server": "node --test server/service.test.mjs"
+    "test:server": "node --test server/*.test.mjs"
   },
   "dependencies": {
     "@aparajita/capacitor-secure-storage": "8.0.0",
