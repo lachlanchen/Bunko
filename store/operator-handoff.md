@@ -2,6 +2,23 @@
 
 Updated 2026-09-27. Owner authorized takeover of the prior session and completion of publication on both stores, including formal review submission. The agreed price is USD 0.99 paid up front.
 
+## iOS 1.0.7 (9) submitted — 2026-09-27
+
+- iOS build9 is VALID and IN_BETA_TESTING in the existing Bunko group.
+- Formal review `9fb85eb9-61b8-4944-8116-bb48b55ee9d1` is **WAITING_FOR_REVIEW**,
+  with automatic release after approval. Version record
+  `635aa670-cf34-4ab8-b46b-f9624e0859c3` selects build
+  `96bfb05d-4add-4ee5-a173-05c90e1be93e`. The former iOS build8 review was replaced.
+- Four localized descriptions/release notes and dedicated reviewer instructions
+  are saved. Existing English iPhone/iPad screenshots remain complete; other
+  locales use those fallback screenshots. Apple privacy is published for seven
+  optional data categories used for app functionality, linked to identity, with
+  no tracking. The public privacy policy describes Mathpix/DeepSeek processing.
+- Mac1.0.6(8) remains WAITING_FOR_REVIEW and Google build8 remains the submitted
+  production candidate. Neither received a new build9 binary in this milestone.
+- iOS1.0.4(6) remains the verified public version; do not update the release feed
+  until build9 is approved and publicly available. Source is pushed to main.
+
 ## Latest submission and approval checkpoint — 2026-09-27
 
 - Apple iOS and Mac **1.0.4 (6)** are approved and public. The live update feed now advertises that version for both Apple platforms; Android remains null until its production listing is verified public.
@@ -71,6 +88,6 @@ shared host. Live simulator QA used a non-maintainer GitHub account, native DOCX
 file selection, a preserved figure/equation, arXiv Wootters PDF conversion, 243
 math elements, a cited reply and process-restart account/library restoration.
 Reader width and scroll width both 402 px. No physical iPhone test is claimed.
-Current public iOS remains 1.0.4; build8 review is still preserved pending successor
-metadata/privacy completion. Native Android and Mac version9 sources are prepared,
+Current public iOS remains 1.0.4; iOS build9 has replaced the build8 review after
+metadata/privacy completion. See the latest submission checkpoint above. Native Android and Mac version9 sources are prepared,
 but their binaries have not been built/uploaded.

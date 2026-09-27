@@ -1,0 +1,36 @@
+{
+  "version": "1.0.7",
+  "build": 9,
+  "checked": "2026-09-27",
+  "source_commit": "912f98a2eab4c876688407b897a1b6fd1848aef0",
+  "ios": {
+    "build_id": "96bfb05d-4add-4ee5-a173-05c90e1be93e",
+    "processing": "VALID",
+    "testflight": "IN_BETA_TESTING",
+    "review": "WAITING_FOR_REVIEW",
+    "review_id": "9fb85eb9-61b8-4944-8116-bb48b55ee9d1",
+    "release": "AFTER_APPROVAL",
+    "ipa_sha256": "afab2e4d18f8adae5bfbaefae708bf37468e89bf7eb77567724b1162f422f998"
+  },
+  "macos": {
+    "version": "1.0.6",
+    "build": 8,
+    "review": "WAITING_FOR_REVIEW"
+  },
+  "android": {
+    "latest_uploaded_build": 8,
+    "build9_uploaded": false
+  },
+  "cloud_release": "d56cd5452c2179b8",
+  "checks": [
+    "44 frontend tests and 29 server tests",
+    "native simulator ordinary-reader OAuth",
+    "native DOCX picker and conversion",
+    "real arXiv PDF import with 243 math elements",
+    "loaded figure and contained equations",
+    "cited response",
+    "process restart restores account and library"
+  ],
+  "physical_iPhone_tested": false,
+  "central_auth_enabled": false
+}
