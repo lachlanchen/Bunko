@@ -5,11 +5,77 @@
     <link rel="icon" type="image/png" href="./favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#12111a" />
-    <meta name="description" content="Public-domain classics in English, Chinese and Japanese, with a reading above every character." />
-    <title>Bunko · 文庫</title>
+    <meta name="description" content="Read Chinese, Japanese and English classics with pinyin, furigana and parallel passages. Download chapters for offline reading. Bunko by LazyingArt." />
+    <title>Bunko — Chinese, Japanese &amp; English Classics</title>
+    <link rel="canonical" href="https://lachlan.lazying.art/Bunko/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Bunko" />
+    <meta property="og:title" content="Bunko — Chinese, Japanese &amp; English Classics" />
+    <meta property="og:description" content="Read classics with pinyin, furigana and parallel passages where available. Download chapters for offline reading." />
+    <meta property="og:url" content="https://lachlan.lazying.art/Bunko/" />
+    <meta property="og:image" content="https://lachlan.lazying.art/Bunko/icon-512.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="Bunko app icon with the character 文 and its Japanese reading" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Bunko — Chinese, Japanese &amp; English Classics" />
+    <meta name="twitter:description" content="Read classics with pinyin, furigana and parallel passages where available. Download chapters for offline reading." />
+    <meta name="twitter:image" content="https://lachlan.lazying.art/Bunko/icon-512.png" />
+    <meta name="twitter:image:alt" content="Bunko app icon with the character 文 and its Japanese reading" />
+    <style>
+      /* Initial content stays useful if scripts are disabled or fail to load.
+         React replaces it on mount; these rules never style the reader. */
+      #bunko-entry { box-sizing: border-box; max-width: 48rem; margin: 6vh auto;
+        padding: clamp(1.25rem, 5vw, 3rem); border-radius: 1.5rem;
+        background: #faf8f4; color: #242338; font: 1.125rem/1.7 system-ui, sans-serif; }
+      #bunko-entry * { box-sizing: border-box; }
+      #bunko-entry header { display: flex; align-items: center; gap: 1rem; }
+      #bunko-entry header img { flex: none; border-radius: 1rem; }
+      #bunko-entry h1 { margin: 0; font-size: 2rem; line-height: 1.2; }
+      #bunko-entry header p { margin: .25rem 0 0; color: #626075; }
+      #bunko-entry h2 { font: 600 clamp(1.6rem, 4vw, 2.4rem)/1.25 Georgia, serif;
+        margin: 1.5rem 0 1rem; }
+      #bunko-entry a { color: #3445bd; text-underline-offset: .2em; }
+      #bunko-entry .entry-app { display: inline-block; padding: .65rem 1rem;
+        border-radius: .75rem; background: #3445bd; color: white; font-weight: 650;
+        text-decoration: none; }
+      #bunko-entry a:focus-visible { outline: 3px solid #d45740; outline-offset: 4px; }
+      #bunko-entry .entry-help { font-size: 1rem; color: #626075; }
+      #bunko-entry footer { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem;
+        border-top: 1px solid #dedbe5; margin-top: 1.5rem; padding-top: 1rem; font-size: 1rem; }
+      @media (prefers-color-scheme: dark) {
+        #bunko-entry { background: #1e1d2c; color: #efedf7; }
+        #bunko-entry header p, #bunko-entry .entry-help { color: #bebaca; }
+        #bunko-entry a { color: #b7bfff; }
+        #bunko-entry .entry-app { background: #b7bfff; color: #20213c; }
+        #bunko-entry footer { border-color: #444052; }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <main id="bunko-entry">
+        <header>
+          <img src="./icon-192.png" width="64" height="64" alt="" />
+          <div><h1>Bunko</h1><p><span lang="ja">文庫</span> · <span lang="zh-Hans">文库</span> · LazyingArt</p></div>
+        </header>
+        <h2>Classics across languages</h2>
+        <p>Read classics in Chinese, Japanese and English. Explore pinyin, furigana
+          and parallel passages where the edition includes them, with adjustable
+          text and reading sizes.</p>
+        <p>Download chapters in the reader for offline reading. Your reading place
+          and private notes stay on this device.</p>
+        <p class="entry-help">The web library uses JavaScript to browse books,
+          open chapters and save downloads.</p>
+        <noscript><p class="entry-help">JavaScript is turned off. Enable it to use
+          the web reader, or continue with the Bunko app.</p></noscript>
+        <p><a class="entry-app" href="https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919">Bunko on the App Store</a></p>
+        <footer>
+          <a href="./support.html">Help &amp; support</a>
+          <a href="https://github.com/lachlanchen/Bunko">Source on GitHub</a>
+        </footer>
+      </main>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
