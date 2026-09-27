@@ -26,3 +26,20 @@ handle @bunko_callback {
         header_up X-Bunko-Client-Address {remote_host}
     }
 }
+
+# Private document companion. Every operation additionally requires an app session.
+@bunko_agent {
+    method POST OPTIONS
+    path /bunko/v1/agent/state /bunko/v1/agent/document /bunko/v1/agent/upload /bunko/v1/agent/import /bunko/v1/agent/delete /bunko/v1/agent/resume /bunko/v1/agent/messages /bunko/v1/agent/send /bunko/v1/agent/report /bunko/v1/agent/clear
+}
+handle @bunko_agent {
+    request_body {
+        max_size 27MB
+    }
+    reverse_proxy 127.0.0.1:18624 {
+        header_up Host llm.lazying.art
+        header_up -Forwarded
+        header_up -X-Forwarded-For
+        header_up X-Bunko-Client-Address {remote_host}
+    }
+}

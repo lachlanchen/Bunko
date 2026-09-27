@@ -1,3 +1,5 @@
+import { createDocumentAgent, agentPaths } from './agent/service.mjs'
+import { AppError } from './agent/common.mjs'
 import { createServer } from 'node:http'
 import { randomBytes, createHash, createCipheriv, createDecipheriv, timingSafeEqual, createSign } from 'node:crypto'
 import { DatabaseSync } from 'node:sqlite'
@@ -48,11 +50,12 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, data TEXT NOT NULL, expires INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS threads (passage TEXT PRIMARY KEY, issue INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS posts (id TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, result TEXT, expires INTEGER NOT NULL);`)
+  const agent = createDocumentAgent({ db, seal, unseal, config: config.agent || {}, now })
   const cleanup = () => {
     for (const table of ['flows', 'sessions', 'posts']) db.prepare(`DELETE FROM ${table} WHERE expires < ?`).run(now())
   }
   const limits = new Map(), cache = new Map(), locks = new Map()
-  let active = 0
+  let active = 0, uploading = 0
   function limit(id, max, duration) {
     const row = limits.get(id)
     if (row && row.until > now()) { if (row.count++ >= max) fail(429, 'rate_limited'); return }
@@ -144,12 +147,12 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     if (auth.storage === 'cookie' && res) cookie(res, value, expires)
     return { ...auth, expires, sessionId: row.id }
   }
-  async function body(req) {
+  async function body(req, maxBytes = 18000) {
     if (req.headers['content-type'] !== 'application/json') fail(415, 'json_required')
     const chunks = []; let length = 0
     for await (const chunk of req) {
       length += chunk.length
-      if (length > 18000) fail(413, 'too_large')
+      if (length > maxBytes) fail(413, 'too_large')
       chunks.push(chunk)
     }
     try { const value = JSON.parse(Buffer.concat(chunks).toString('utf8')); if (!value || Array.isArray(value) || typeof value !== 'object') fail(400, 'invalid_json'); return value } catch { fail(400, 'invalid_json') }
@@ -163,13 +166,13 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
     res.end(`<!doctype html><html lang="en"><meta name="viewport" content="width=device-width"><title>Bunko · GitHub</title><style nonce="${nonce}">body{font:18px system-ui;background:#faf7f0;color:#272942;max-width:32rem;margin:15vh auto;padding:2rem;line-height:1.7}a{color:#403d78}</style><h1>Bunko · 文庫</h1><p>${error ? 'Sign-in was not completed. Return to Bunko and try again.' : 'Signed in. Return to Bunko to continue your conversation.'}</p>${target ? `<a href="${target}">Return to Bunko</a><script nonce="${nonce}">location.replace(${JSON.stringify(target)})</script>` : `<script nonce="${nonce}">window.close()</script>`}</html>`)
   }
-  const postPaths = ['/v1/auth/start', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post'].map(p => PREFIX + p)
+  const postPaths = ['/v1/auth/start', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post', ...agentPaths].map(p => PREFIX + p)
   const server = createServer(async (req, res) => {
     res.setHeader('Cache-Control', 'no-store')
     res.setHeader('Referrer-Policy', 'no-referrer')
     res.setHeader('X-Content-Type-Options', 'nosniff')
     res.setHeader('Vary', 'Origin')
-    let counted = false
+    let counted = false, countedUpload = false
     try {
       if (req.headers.host !== base.host) fail(404, 'not_found')
       if (active >= 40) fail(503, 'busy')
@@ -225,6 +228,19 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       }
       if (req.method !== 'POST' || !postPaths.includes(path)) fail(405, 'method_denied')
       if (!origin || req.headers['x-bunko-client'] !== '1') fail(403, 'origin_required')
+      const isAgent = agentPaths.includes(path.slice(PREFIX.length))
+      if (isAgent) {
+        if (path.endsWith('/upload')) {
+          if (uploading >= 1) fail(503, 'busy')
+          uploading++; countedUpload = true
+        }
+        const auth = await session(req, res)
+        limit(`agent:${auth.user.id}`, 100, 60000)
+        const input = await body(req, path.endsWith('/upload') ? 27_000_000 : 18000)
+        // Sign-out during a large upload invalidates this operation.
+        if (!db.prepare('SELECT id FROM sessions WHERE id=?').get(auth.sessionId)) fail(401, 'sign_in_again')
+        json(res, await agent.handle(path.split('/').pop(), input, auth.user)); return
+      }
       const input = await body(req)
       if (path === `${PREFIX}/v1/auth/start`) {
         if (!config.clientId || !config.clientSecret) fail(503, 'not_configured')
@@ -331,16 +347,16 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         const route = (req.url ?? '').split('?')[0]
         console.warn(JSON.stringify({ event: 'request_failed', route: postPaths.includes(route) ? route : 'other', status: error.status ?? 503, error: error.status ? error.code : 'temporarily_unavailable' }))
       }
-      if (!res.headersSent) json(res, { error: error.status ? error.code : 'temporarily_unavailable' }, error.status ?? 503)
+      if (!res.headersSent) json(res, { error: error.status ? error.code : 'temporarily_unavailable', ...(error instanceof AppError ? { detail: error.message.slice(0, 300) } : {}) }, error.status ?? 503)
       else res.end()
-    } finally { if (counted) active-- }
+    } finally { if (counted) active--; if (countedUpload) uploading-- }
   })
-  server.requestTimeout = 15000
+  server.requestTimeout = 120000
   server.headersTimeout = 10000
   server.maxHeadersCount = 40
   server.keepAliveTimeout = 5000
   const timer = setInterval(cleanup, 60000); timer.unref()
-  server.on('close', () => { clearInterval(timer); db.close() })
+  server.on('close', () => { clearInterval(timer); agent.close(); db.close() })
   return server
 }
 

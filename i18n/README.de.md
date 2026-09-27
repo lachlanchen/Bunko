@@ -87,3 +87,9 @@ Ein Wort lange drücken, die Auswahlgriffe anpassen und dann Wörterbuch wählen
 Mit der GitHub-Anmeldung kannst du öffentliche Kommentare zu Textstellen direkt in Bunko lesen und verfassen. Entwürfe und private Notizen bleiben auf deinem Gerät, bis du sie ausdrücklich veröffentlichst. Ein kleiner Cloud-Dienst übernimmt die Autorisierung, ohne dass der Computer des Betreibers eingeschaltet sein muss; GitHub speichert das öffentliche Gespräch. Die Oberfläche unterstützt Englisch, vereinfachtes und traditionelles Chinesisch sowie Japanisch. Version 1.0.6 (8) hält die Anmeldung durch sicheren Gerätespeicher und automatische Token-Erneuerung aufrecht und erholt sich von kurzen Verbindungsstörungen. Apple hat 1.0.4 (6) für iOS und Mac veröffentlicht. Version 1.0.6 (8) ist über interne Tests bei Google Play und TestFlight für iOS/Mac verfügbar; der aktuelle Stand der Prüfung für die öffentliche Freigabe steht in den Release-Protokollen.
 
 [Umsetzung und Prüfung der Diskussionsfunktion](../docs/github-discussions-2026-09-26.md).
+
+## Entwicklungsvorschau
+
+Eine kräftigere Version des bisherigen Symbols und ein privater Dokumentassistent werden vorbereitet. Lokale Prüfungen bestätigten den Upload von PDF, Word (.docx), Markdown, Text und TeX, die Artikelsuche, Formeln, Abbildungen und Fragen zu Dokumenten. Diese Änderungen sind noch nicht in den Store-Versionen enthalten.
+
+[Implementierung und Prüfung](../docs/private-document-companion.md).

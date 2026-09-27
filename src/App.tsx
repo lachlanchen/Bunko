@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { BookOpen, Check, Download, Settings, RefreshCw, Search, Trash2, X } from 'lucide-react'
+import { Paperclip as PaperclipIcon, Sparkles, BookOpen, Check, Download, Settings, RefreshCw, Search, Trash2, X } from 'lucide-react'
 import type { BookMeta, BookRow, LangCode, Place, ReaderIndex, ReadingSettings } from './types'
 import { copies, languageName, uiLanguageNames, type UILanguage } from './i18n'
 import {
@@ -23,6 +23,8 @@ import {
   saveSettings,
   saveUI,
 } from './lib/settings'
+import { DocumentAgent } from './components/DocumentAgent'
+import { agentCopy } from './components/agentCopy'
 import { Reader } from './components/Reader'
 import { Cover } from './components/Cover'
 import { MobileStorePrompt } from './components/MobileStorePrompt'
@@ -31,7 +33,7 @@ import { Line } from './components/Line'
 import { UpdatePrompt, UpdateSettings } from './components/UpdatePrompt'
 import { useUpdates, type Updates } from './lib/updateService'
 
-type View = 'library' | 'book' | 'reader'
+type View = 'library' | 'book' | 'reader' | 'agent'
 type Filter = 'all' | 'chinese' | 'japanese' | 'world' | 'physics' | 'learning' | 'finance' | 'travel' | 'device'
 
 /** Which shelf a book belongs on, from its id and mode. */
@@ -255,6 +257,8 @@ export default function App() {
     updates={updates} canReload={canReload}
   />
 
+  if (view === 'agent') return <DocumentAgent ui={ui} onBack={() => setView('library')} />
+
   if (view === 'reader' && meta) {
     return (
       <>
@@ -415,6 +419,8 @@ export default function App() {
 
       <UpdatePrompt ui={ui} updates={updates} canReload={canReload} />
       <MobileStorePrompt copy={copy} />
+
+      <button type="button" className="companion-entry" onClick={() => setView('agent')}><Sparkles size={19} /><span><strong>{agentCopy[ui].name}</strong><small>{agentCopy[ui].hint}</small></span><PaperclipIcon /></button>
 
       <div className="search">
         <Search size={16} />

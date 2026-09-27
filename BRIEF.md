@@ -92,3 +92,20 @@ Updated 2026-09-26: Bunko detects app updates and offers an optional prompt on t
 Reuse the L & N pipeline and its hard-won lessons, which are written up in `../L-And-N/store/publishing-runbook.md`, `../L-And-N/store/operator-handoff.md` and `../Company/playbooks/new-app-publication.md`: the CDP/noVNC store browser, the App Store Connect API helper, the Mac build host `echomind-kvm-macos`, `MARKETING_VERSION` must match the version you create, and preserve active reviews unless the owner explicitly requests replacing them with a newer tested build.
 
 Updated 2026-09-26: After internal testing of 1.0.4 (6), the owner requested formal review. Earlier iOS, Mac and Play submissions were replaced so the stores review that build; this restarts review timing. Price and country availability remain unchanged.
+
+## 2026-09-27 private document companion amendment
+
+The owner requested PDF and Word upload, other useful document formats, a chat
+composer and history, paper discovery/download, and high-quality flowing mobile
+reading. This authorizes a private cloud document companion alongside the
+existing optional discussion service. Initial formats are PDF, DOCX, Markdown,
+Mathpix Markdown, UTF-8 text and TeX. PDF conversion preserves equations and
+figures through Mathpix; DOCX/TeX use a restricted converter. Temporary originals
+are removed after successful conversion. Users can remove documents and their
+associated conversations. Nothing uploads automatically or becomes public.
+The original document remains separate from AI answers. Shared-account
+production enablement is still gated by the central owner's readiness contract.
+
+The owner also requested a simpler, vibrant update to the existing icon. The
+successor keeps 文 with its ぶん reading, with electric blue and coral accents.
+Current build 8 reviews are preserved while the successor is developed/tested.

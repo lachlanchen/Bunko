@@ -11,6 +11,7 @@ const version = JSON.parse(readFileSync(new URL('./package.json', import.meta.ur
 // custom domain, and from the file:// origin a Capacitor WebView uses.
 export default defineConfig(({ mode }) => ({
   base: './',
+  server: { watch: { ignored: ['**/.runtime/**'] } },
   define: { __APP_VERSION__: JSON.stringify(version) },
   build: { target: mode === 'macos' ? 'safari15.6' : undefined },
   plugins: [
@@ -47,6 +48,7 @@ export default defineConfig(({ mode }) => ({
         ],
       },
       workbox: {
+        maximumFileSizeToCacheInBytes: 6_000_000,
         skipWaiting: false,
         clientsClaim: false,
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],

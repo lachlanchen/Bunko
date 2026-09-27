@@ -87,3 +87,9 @@ Nhấn giữ một từ, điều chỉnh tay nắm chọn văn bản rồi chọ
 Đăng nhập bằng GitHub để đọc và viết bình luận công khai về từng đoạn ngay trong Bunko. Bản nháp và ghi chú riêng ở lại trên thiết bị cho đến khi bạn chủ động đăng. Một dịch vụ đám mây nhỏ xử lý việc xác thực, không cần máy tính của chủ sở hữu hoạt động; GitHub lưu cuộc trò chuyện công khai. Giao diện hỗ trợ tiếng Anh, tiếng Trung giản thể, tiếng Trung phồn thể và tiếng Nhật. Phiên bản 1.0.6 (8) duy trì đăng nhập bằng bộ nhớ bảo mật và tự động làm mới mã truy cập, đồng thời khôi phục khi kết nối bị gián đoạn ngắn. Apple đã phát hành 1.0.4 (6) cho iOS và Mac. Phiên bản 1.0.6 (8) có trong thử nghiệm nội bộ Google Play và TestFlight cho iOS/Mac; xem hồ sơ phát hành để biết trạng thái xét duyệt bản chính thức mới nhất.
 
 [Triển khai và kiểm chứng tính năng thảo luận](../docs/github-discussions-2026-09-26.md).
+
+## Bản xem trước đang phát triển
+
+Chúng tôi đang chuẩn bị phiên bản biểu tượng hiện tại rực rỡ hơn và trợ lý tài liệu riêng tư. Các kiểm tra cục bộ đã xác minh việc tải lên PDF, Word (.docx), Markdown, văn bản và TeX, tìm bài nghiên cứu, hiển thị công thức và hình ảnh, cùng hỏi đáp về tài liệu. Những thay đổi này chưa có trong bản trên cửa hàng.
+
+[Triển khai và kiểm chứng](../docs/private-document-companion.md).

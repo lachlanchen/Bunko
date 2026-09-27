@@ -23,12 +23,12 @@ export class DiscussionError extends Error {
 export function requestId() {
   return btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(32)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
 }
-async function api<T>(path: string, data: object, signal?: AbortSignal, attempt = 0): Promise<T> {
+export async function api<T>(path: string, data: object, signal?: AbortSignal, attempt = 0): Promise<T> {
   const controller = new AbortController()
   const abort = () => controller.abort()
   if (signal?.aborted) controller.abort()
   signal?.addEventListener('abort', abort, { once: true })
-  const timeout = setTimeout(abort, path === '/v1/discussions/post' ? 60000 : 30000)
+  const timeout = setTimeout(abort, path.startsWith('/v1/agent/') ? 150000 : path === '/v1/discussions/post' ? 60000 : 30000)
   try {
     const response = await fetch(DISCUSSION_API + path, {
       method: 'POST', mode: 'cors', credentials: Capacitor.isNativePlatform() || window.__BUNKO_DESKTOP__ ? 'omit' : 'include', cache: 'no-store',
@@ -38,7 +38,7 @@ async function api<T>(path: string, data: object, signal?: AbortSignal, attempt 
     const result = await response.json().catch(() => { throw new DiscussionError('temporarily_unavailable') })
     if (!response.ok) {
       if (response.status === 401) { setSession(null); void saveSession(null).catch(() => {}) }
-      throw new DiscussionError(result.error ?? 'temporarily_unavailable')
+      throw Object.assign(new DiscussionError(result.error ?? 'temporarily_unavailable'), { detail: result.detail })
     }
     return result as T
   } catch (error) {
@@ -46,7 +46,7 @@ async function api<T>(path: string, data: object, signal?: AbortSignal, attempt 
     const failure = error instanceof DiscussionError ? error : new DiscussionError('offline')
     // A repeated post uses the same requestId; the server returns its receipt or
     // refuses an ambiguous write. It never creates a second comment on retry.
-    if (attempt < 1 && ['offline', 'temporarily_unavailable', 'github_unavailable'].includes(failure.code) && path !== '/v1/auth/start') {
+    if (attempt < 1 && ['offline', 'temporarily_unavailable', 'github_unavailable'].includes(failure.code) && path !== '/v1/auth/start' && !path.startsWith('/v1/agent/')) {
       await new Promise(resolve => setTimeout(resolve, 800))
       return api<T>(path, data, signal, attempt + 1)
     }

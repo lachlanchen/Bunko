@@ -87,3 +87,9 @@ Mantén pulsada una palabra, ajusta los controles de selección y elige Dicciona
 Lee y escribe comentarios públicos sobre pasajes dentro de Bunko, iniciando sesión con GitHub. Los borradores y las notas privadas permanecen en tu dispositivo hasta que decidas publicarlos. Un pequeño servicio en la nube gestiona la autorización sin depender del ordenador del propietario; GitHub almacena la conversación pública. La interfaz está disponible en inglés, chino simplificado, chino tradicional y japonés. La versión 1.0.6 (8) mantiene la sesión con almacenamiento seguro y renovación automática de tokens, y se recupera de cortes breves de conexión. Apple ha publicado 1.0.4 (6) para iOS y Mac. La versión 1.0.6 (8) está disponible en las pruebas internas de Google Play y TestFlight para iOS y Mac; consulta los registros de publicación para conocer el estado actual de su revisión de producción.
 
 [Implementación y verificación de las conversaciones](../docs/github-discussions-2026-09-26.md).
+
+## Vista previa de desarrollo
+
+Estamos preparando una versión más viva del icono actual y un asistente privado para documentos. Las pruebas locales verificaron la carga de PDF, Word (.docx), Markdown, texto y TeX, la búsqueda de artículos, las ecuaciones, las figuras y las preguntas sobre documentos. Estos cambios todavía no están en las versiones de las tiendas.
+
+[Implementación y verificación](../docs/private-document-companion.md).

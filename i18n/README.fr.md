@@ -87,3 +87,9 @@ Appuyez longuement sur un mot, ajustez les poignées de sélection, puis choisis
 Lisez et rédigez des commentaires publics sur les passages dans Bunko en vous connectant avec GitHub. Les brouillons et les notes privées restent sur votre appareil jusqu’à ce que vous choisissiez de les publier. Un petit service cloud gère l’autorisation sans dépendre de l’ordinateur du propriétaire ; GitHub conserve la conversation publique. L’interface propose l’anglais, le chinois simplifié, le chinois traditionnel et le japonais. La version 1.0.6 (8) conserve la connexion grâce au stockage sécurisé et au renouvellement automatique des jetons, et reprend après de brèves coupures réseau. Apple a publié la version 1.0.4 (6) pour iOS et Mac. La version 1.0.6 (8) est disponible en test interne sur Google Play et dans TestFlight pour iOS et Mac ; consultez les dossiers de publication pour connaître l’état de sa validation en production.
 
 [Implémentation et vérification des discussions](../docs/github-discussions-2026-09-26.md).
+
+## Aperçu du développement
+
+Une version plus vive de l’icône actuelle et un assistant privé pour les documents sont en préparation. Les tests locaux ont validé l’import de PDF, Word (.docx), Markdown, texte et TeX, la recherche d’articles, les équations, les figures et les questions sur les documents. Ces changements ne figurent pas encore dans les versions des boutiques.
+
+[Implémentation et vérification](../docs/private-document-companion.md).
