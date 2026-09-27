@@ -1,21 +1,33 @@
-# Publication status — 2026-09-27
+# Apple platform release — 2026-09-28
 
-Latest **1.0.6 (8)** has been submitted on all three platforms:
+**Bunko 1.0.8 (10) is Waiting for Review on iOS (including Apple Watch) and
+macOS**, with automatic release after approval. Both exact builds are VALID and
+IN_BETA_TESTING in the existing Bunko Internal group. No tester reinvitation was
+needed. The previous pending iOS1.0.7 review was replaced only after both new
+archives passed signing, Apple validation and native runtime checks.
 
-- **iOS: Waiting for Review**, automatic release after approval.
-- **Mac: Waiting for Review**, automatic release after approval.
-- **Google Play: Changes in review**, build 8, 100% rollout across 172 eligible countries; managed publishing off. Console confirms automated checks completed and the changes are in review.
+The new Watch app keeps three explicitly selected multilingual text excerpts
+for offline reading, with paragraph navigation and text size. Mac includes the
+latest icon and private document companion. Pricing and existing Apple territory
+availability are unchanged; Google Play remains build8 under its previous review.
+App Store Connect now reports Mac1.0.6 READY_FOR_DISTRIBUTION. The public update
+feed stays on the previously verified listing versions until public store checks
+confirm the newer release; review-only1.0.8 is not advertised there.
 
-Apple iOS and Mac **1.0.4 (6)** are already public. Latest8 is available through iOS/Mac internal TestFlight and Play internal testing. No new invitation is needed for the existing owner tester. Google public production availability remains pending. Exact IDs and receipts: [submission-1.0.6.json](artifacts/submission-1.0.6.json).
+47 client tests,29 server tests,lint/type/build,compiled renderer,Swift payload
+checks,real paired iPhone/Watch simulator transfer and disconnected restart passed.
+M5Pro Mac mini passed10 native reading/menu/download/offline/equation/figure checks.
+Its direct book-host connectivity failed; a temporary app-scoped proxy enabled the
+repeat, then HTTP was blocked to verify offline storage. All owned test runtimes
+and temporary tunnels are stopped. No physical Watch or new Mac OAuth test is
+claimed; earlier iOS ordinary-reader/document checks remain recorded in1.0.7.
 
-The formal submission work is complete; approval depends on the stores. No owner login or confirmation is currently required. Keep the submitted candidates intact. When a newer release becomes public, verify it and update the public version feed. The live feed currently advertises Apple 1.0.4 (6), Android null.
+Exact builds, hashes, review IDs and evidence: [release1.0.8](artifacts/release-1.0.8.json)
+and [submission receipt](artifacts/submission-1.0.8.json). Unified central auth remains
+a separate disabled adapter milestone. Earlier entries below are historical.
 
-## Verification limits
+---
 
-44 client and 8 server tests plus lint/type/build passed. Live signed iOS simulator OAuth/Keychain/process-restart/draft/sign-out checks passed, as did a separate ordinary web reader account. Earlier live Android persistence evidence remains valid. No public test comment was sent; write retry/receipt behavior has fixture coverage. Mac native authorization was not separately live-tested in this follow-up. Physical iPhone/Apple silicon runtime coverage is not claimed; prior Intel Mac reader tests cover 3040, 7050 and KVM.
+## Remaining product work
 
-## Next product work
-
-Shared LazyingArt login is a separate successor milestone, not part of build 8. The owner requested invitation-free general registration with an optional EchoMind-only access gate, verified account linking, and comments for non-GitHub users. Coordination packets are delivered; the active EchoMind owner has the central identity request. See [shared account follow-up](../docs/shared-account.md). Do not claim this integration is live before implementation and native/provider checks.
-
-Companion packs remain a later milestone and are not advertised in the store listing.
+Shared LazyingArt identity stays disabled pending central provisioning and end-to-end qualification. Store approval and public propagation are external steps; no owner sign-in is currently needed for these submitted Apple builds.

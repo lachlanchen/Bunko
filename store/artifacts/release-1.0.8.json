@@ -1,0 +1,50 @@
+{
+  "version": "1.0.8",
+  "build": 10,
+  "checked": "2026-09-28",
+  "source_commit": "f542a8ae566980565cb26f4c0f67b94245402428",
+  "ios": {
+    "build_id": "a561f6e3-1256-4943-ae30-0954299ca5a5",
+    "processing": "VALID",
+    "testflight": "IN_BETA_TESTING",
+    "review": "WAITING_FOR_REVIEW",
+    "review_id": "df08e230-c2d3-4c5f-97dc-b5a8b7949316",
+    "release": "AFTER_APPROVAL",
+    "ipa_sha256": "0e508165161f19bb6efec46938f284f61fe6556c2c39d4b15e1cba81ec143f09",
+    "watch_bundle": "art.lazying.bunko.watchkitapp",
+    "watch_minimum": "11.0"
+  },
+  "macos": {
+    "build_id": "86831728-f214-4e77-b553-59c77470e1ad",
+    "processing": "VALID",
+    "testflight": "IN_BETA_TESTING",
+    "review": "WAITING_FOR_REVIEW",
+    "review_id": "135f98bf-97e0-473a-b148-39817fe20c41",
+    "release": "AFTER_APPROVAL",
+    "pkg_sha256": "042d7441b15091360c145eee1a8bfe0ffd4ec7599430fbf281fa71d8a765e61d",
+    "minimum": "12.0",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ]
+  },
+  "android": {
+    "latest_uploaded_build": 8,
+    "changed": false
+  },
+  "checks": [
+    "47 client and 29 server tests; lint, TypeScript, production build and compiled equation/figure renderer",
+    "Swift Codable schema, duplicate IDs and UTF-8 payload limits",
+    "Real iPhone reader-to-WatchConnectivity transfer and Watch offline cold launch",
+    "10 native reader/menu/download/reading-position/offline/equation/figure checks on M5 Pro Mac mini",
+    "iOS/watch and universal Mac archive/export/signature and Apple validation",
+    "11-language README validation"
+  ],
+  "coverage_limits": [
+    "Watch runtime coverage is simulator only; no physical Watch test",
+    "Mac mini direct book-host requests timed out; runtime repeat used a temporary loopback proxy scoped to the Debug app, followed by HTTP-blocked offline test",
+    "Mac native authorization was not newly live-tested; existing iOS ordinary-reader authentication and document-upload evidence remains in release1.0.7",
+    "General LazyingArt central auth remains disabled"
+  ],
+  "runtime_cleanup": "Bunko simulator pair shut down; Mac mini app and owned QA launch agent stopped; temporary proxy/tunnel stopped; KVM archive launch agent removed"
+}

@@ -1,0 +1,25 @@
+{
+  "checked": "2026-09-28",
+  "version": "1.0.8",
+  "build": 10,
+  "platforms": {
+    "IOS": {
+      "versionId": "635aa670-cf34-4ab8-b46b-f9624e0859c3",
+      "buildId": "a561f6e3-1256-4943-ae30-0954299ca5a5",
+      "reviewId": "df08e230-c2d3-4c5f-97dc-b5a8b7949316",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-09-27T20:09:45.657Z",
+      "releaseType": "AFTER_APPROVAL"
+    },
+    "MAC_OS": {
+      "versionId": "731c37f4-b4ed-4268-bafa-e5bfda8f7284",
+      "buildId": "86831728-f214-4e77-b553-59c77470e1ad",
+      "reviewId": "135f98bf-97e0-473a-b148-39817fe20c41",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-09-27T20:10:02.462Z",
+      "releaseType": "AFTER_APPROVAL"
+    }
+  }
+}

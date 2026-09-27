@@ -1,3 +1,22 @@
+# Current Apple review — 2026-09-28
+
+**MAC_OS1.0.8 (10): Waiting for Review**, automatic release after approval.
+Review `135f98bf-97e0-473a-b148-39817fe20c41`, version `731c37f4-b4ed-4268-bafa-e5bfda8f7284`, build `86831728-f214-4e77-b553-59c77470e1ad`;
+submitted `2026-09-27T20:10:02.462Z`. The exact build is VALID and IN_BETA_TESTING.
+
+The iOS archive embeds the new native Watch companion. Both versions have four
+localized descriptions/release notes and dedicated reusable reviewer access;
+Watch and refreshed Mac screenshots were COMPLETE before submission. The existing
+privacy label covers optional cloud documents/discussions; Watch transfers only
+local text excerpts, without account credentials or private agent documents.
+
+[Release qualification and limits](../artifacts/release-1.0.8.json) ·
+[Submission receipt](../artifacts/submission-1.0.8.json).
+
+Earlier records below are historical.
+
+---
+
 # Current submission — 2026-09-27
 
 **MAC_OS 1.0.6 (8): Waiting for Review**, automatic release after approval. Submitted `2026-09-26T23:21:07.428Z`, review `820aa2eb-f4c1-490a-964d-91db06461426`, version `dc8a9e23-89c4-472e-b9c5-878cc080771a`, build `407ff4ac-0078-42f4-b4fc-4d4d80de204b`. Apple has already approved and released **1.0.4 (6)** for iOS and Mac; the successor is not yet public.
