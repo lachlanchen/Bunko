@@ -47,5 +47,6 @@
     "General LazyingArt central auth remains disabled"
   ],
   "runtime_cleanup": "Bunko simulator pair shut down; Mac mini app and owned QA launch agent stopped; temporary proxy/tunnel stopped; KVM archive launch agent removed",
-  "latest_distribution_receipt": "distribution-ios-1.0.8-20260929.json"
+  "latest_distribution_receipt": "distribution-ios-1.0.8-20260929.json",
+  "macOSPublicDistribution": "distribution-macos-1.0.8-20260930.json"
 }

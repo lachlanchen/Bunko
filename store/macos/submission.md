@@ -1,3 +1,25 @@
+# Mac production release — 2026-09-30 HKT
+
+**Bunko Mac 1.0.8 (10) is released and publicly available.** Apple released the
+approved version automatically at 2026-09-29 22:50:52 UTC. App Store Connect
+confirms READY_FOR_DISTRIBUTION, exact build
+`86831728-f214-4e77-b553-59c77470e1ad`, and completed review
+`135f98bf-97e0-473a-b148-39817fe20c41`. The public `platform=mac` App Store page
+independently confirms version 1.0.8 and that Mac release timestamp.
+
+The Mac update feed now advertises 1.0.8 (10). All 175 Apple territories remain
+configured available, including automatic availability in future territories.
+The existing US $0.99 base price is retained. No manual release request, new
+binary, review replacement, or device runtime was required.
+
+[Open Bunko for Mac](https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?platform=mac).
+The detailed receipt is [Mac distribution](../artifacts/distribution-macos-1.0.8-20260930.json).
+iOS/Watch 1.0.8 is already public; this task did not change Google Play.
+
+Earlier entries below are historical checkpoints.
+
+---
+
 # Current Apple review — 2026-09-28
 
 **MAC_OS1.0.8 (10): Waiting for Review**, automatic release after approval.

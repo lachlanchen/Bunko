@@ -68,7 +68,7 @@ AI 生成的学习文本可能有误。书目只发布经过审核的完整版�
 
 ## Mac 版 Bunko
 
-1.0.4 (6) 已在 Mac App Store 正式发布。支持 macOS 12 及以上，提供原生菜单、键盘快捷键与离线阅读。通用二进制包含 Intel 与 Apple 芯片架构；实际运行测试在 Intel Mac 上完成。
+1.0.8 (10) 已在 Mac App Store 正式发布。支持 macOS 12 及以上，提供原生菜单、键盘快捷键与离线阅读。通用二进制支持 Intel 与 Apple 芯片，两类 Mac 均有实际运行测试记录。 [Mac App Store](https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?platform=mac)
 
 [macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)
 
@@ -84,7 +84,7 @@ AI 生成的学习文本可能有误。书目只发布经过审核的完整版�
 
 ## 在 Bunko 里交流
 
-使用 GitHub 登录，即可在 Bunko 内阅读和撰写段落的公开评论。草稿和私人笔记留在本机，只有你明确选择发表时才会公开。小型云端服务处理授权，无需让所有者的电脑保持开机；公开讨论保存在 GitHub。界面支持英语、简体中文、繁体中文和日语。1.0.6 (8) 通过设备安全存储和令牌自动刷新保持登录，并可从短暂连接故障中恢复。iOS **1.0.8 (10)**（含 Apple Watch 伴侣）已于 2026 年 9 月 29 日正式发布。Mac 1.0.8 仍在审核中。Android 1.0.6 (8) 继续提供 Google Play 内部测试；正式版状态见发布记录。
+使用 GitHub 登录，即可在 Bunko 内阅读和撰写段落的公开评论。草稿和私人笔记留在本机，只有你明确选择发表时才会公开。小型云端服务处理授权，无需让所有者的电脑保持开机；公开讨论保存在 GitHub。界面支持英语、简体中文、繁体中文和日语。1.0.6 (8) 通过设备安全存储和令牌自动刷新保持登录，并可从短暂连接故障中恢复。iOS **1.0.8 (10)**（含 Apple Watch 伴侣）已于 2026 年 9 月 29 日正式发布。Mac **1.0.8 (10)** 也已于香港时间 2026 年 9 月 30 日正式发布。Android 1.0.6 (8) 继续提供 Google Play 内部测试；正式版状态见发布记录。
 
 [讨论功能实现与验证](../docs/github-discussions-2026-09-26.md).
 

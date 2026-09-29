@@ -68,7 +68,7 @@ La biblioteca reúne 150 clásicos de dominio público y 33 ediciones autorizada
 
 ## Bunko para Mac
 
-La versión 1.0.4 (6) ya está disponible en Mac App Store. Incluye menús nativos, atajos de teclado y lectura sin conexión en macOS 12 o posterior. El binario admite Intel y Apple silicon; las pruebas de ejecución se realizaron en equipos Intel.
+La versión 1.0.8 (10) está disponible en Mac App Store. Incluye menús nativos, atajos de teclado y lectura sin conexión en macOS 12 o posterior. El binario universal admite Intel y Apple silicon, con pruebas de ejecución en ambos tipos de Mac. [Mac App Store](https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?platform=mac)
 
 [macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)
 
@@ -84,7 +84,7 @@ Mantén pulsada una palabra, ajusta los controles de selección y elige Dicciona
 
 ## Conversaciones en Bunko
 
-Lee y escribe comentarios públicos sobre pasajes dentro de Bunko, iniciando sesión con GitHub. Los borradores y las notas privadas permanecen en tu dispositivo hasta que decidas publicarlos. Un pequeño servicio en la nube gestiona la autorización sin depender del ordenador del propietario; GitHub almacena la conversación pública. La interfaz está disponible en inglés, chino simplificado, chino tradicional y japonés. La versión 1.0.6 (8) mantiene la sesión con almacenamiento seguro y renovación automática de tokens, y se recupera de cortes breves de conexión. iOS **1.0.8 (10)**, incluido el complemento para Apple Watch, está disponible públicamente desde el 29 de septiembre de 2026. Mac 1.0.8 sigue en revisión. Android 1.0.6 (8) continúa disponible en las pruebas internas de Google Play; consulta su estado de producción en los registros de publicación.
+Lee y escribe comentarios públicos sobre pasajes dentro de Bunko, iniciando sesión con GitHub. Los borradores y las notas privadas permanecen en tu dispositivo hasta que decidas publicarlos. Un pequeño servicio en la nube gestiona la autorización sin depender del ordenador del propietario; GitHub almacena la conversación pública. La interfaz está disponible en inglés, chino simplificado, chino tradicional y japonés. La versión 1.0.6 (8) mantiene la sesión con almacenamiento seguro y renovación automática de tokens, y se recupera de cortes breves de conexión. iOS **1.0.8 (10)**, incluido el complemento para Apple Watch, está disponible públicamente desde el 29 de septiembre de 2026. Mac **1.0.8 (10)** también está disponible públicamente desde el 30 de septiembre de 2026, hora de Hong Kong. Android 1.0.6 (8) continúa disponible en las pruebas internas de Google Play; consulta su estado de producción en los registros de publicación.
 
 [Implementación y verificación de las conversaciones](../docs/github-discussions-2026-09-26.md).
 

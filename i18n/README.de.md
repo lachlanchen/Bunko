@@ -68,7 +68,7 @@ Die Bibliothek enthält jetzt 150 gemeinfreie Klassiker und 33 vom Autor freigeg
 
 ## Bunko für Mac
 
-Version 1.0.4 (6) ist im Mac App Store verfügbar. Sie unterstützt macOS 12 oder neuer mit nativen Menüs, Tastaturkürzeln und Offline-Lesen. Die Universaldatei enthält Intel und Apple silicon; die Laufzeittests wurden auf Intel-Macs durchgeführt.
+Version 1.0.8 (10) ist im Mac App Store verfügbar. Sie unterstützt macOS 12 oder neuer mit nativen Menüs, Tastaturkürzeln und Offline-Lesen. Die Universaldatei unterstützt Intel und Apple silicon; Laufzeittests wurden auf beiden Mac-Typen durchgeführt. [Mac App Store](https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?platform=mac)
 
 [macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)
 
@@ -84,7 +84,7 @@ Ein Wort lange drücken, die Auswahlgriffe anpassen und dann Wörterbuch wählen
 
 ## Gespräche in Bunko
 
-Mit der GitHub-Anmeldung kannst du öffentliche Kommentare zu Textstellen direkt in Bunko lesen und verfassen. Entwürfe und private Notizen bleiben auf deinem Gerät, bis du sie ausdrücklich veröffentlichst. Ein kleiner Cloud-Dienst übernimmt die Autorisierung, ohne dass der Computer des Betreibers eingeschaltet sein muss; GitHub speichert das öffentliche Gespräch. Die Oberfläche unterstützt Englisch, vereinfachtes und traditionelles Chinesisch sowie Japanisch. Version 1.0.6 (8) hält die Anmeldung durch sicheren Gerätespeicher und automatische Token-Erneuerung aufrecht und erholt sich von kurzen Verbindungsstörungen. iOS **1.0.8 (10)** einschließlich Apple Watch ist seit dem 29. September 2026 öffentlich verfügbar. Mac 1.0.8 wird noch geprüft. Android 1.0.6 (8) bleibt im internen Google-Play-Test verfügbar; der Produktionsstatus steht in den Release-Protokollen.
+Mit der GitHub-Anmeldung kannst du öffentliche Kommentare zu Textstellen direkt in Bunko lesen und verfassen. Entwürfe und private Notizen bleiben auf deinem Gerät, bis du sie ausdrücklich veröffentlichst. Ein kleiner Cloud-Dienst übernimmt die Autorisierung, ohne dass der Computer des Betreibers eingeschaltet sein muss; GitHub speichert das öffentliche Gespräch. Die Oberfläche unterstützt Englisch, vereinfachtes und traditionelles Chinesisch sowie Japanisch. Version 1.0.6 (8) hält die Anmeldung durch sicheren Gerätespeicher und automatische Token-Erneuerung aufrecht und erholt sich von kurzen Verbindungsstörungen. iOS **1.0.8 (10)** einschließlich Apple Watch ist seit dem 29. September 2026 öffentlich verfügbar. Mac **1.0.8 (10)** ist ebenfalls seit dem 30. September 2026 (Hongkonger Zeit) öffentlich verfügbar. Android 1.0.6 (8) bleibt im internen Google-Play-Test verfügbar; der Produktionsstatus steht in den Release-Protokollen.
 
 [Umsetzung und Prüfung der Diskussionsfunktion](../docs/github-discussions-2026-09-26.md).
 

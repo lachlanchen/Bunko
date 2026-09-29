@@ -51,8 +51,10 @@ channels:
     bundle_id: art.lazying.bunko
     version: 1.0.8
     build: 10
-    public_version: 1.0.6 (8), READY_FOR_DISTRIBUTION in App Store Connect
-    status: IN_REVIEW
+    public_version: 1.0.8 (10), verified on the public Mac App Store page
+    status: READY_FOR_DISTRIBUTION
+    public_released_at: '2026-09-29T22:50:52Z'
+    public_verified: '2026-09-30 HKT; platform=mac App Store page, version 1.0.8'
     submitted_at: '2026-09-27T20:10:02.462Z'
     release: automatic after approval
     version_id: 731c37f4-b4ed-4268-bafa-e5bfda8f7284

@@ -68,7 +68,7 @@ Thư viện hiện có 150 tác phẩm kinh điển thuộc phạm vi công cộ
 
 ## Bunko dành cho Mac
 
-Phiên bản 1.0.4 (6) đã có trên Mac App Store. Ứng dụng hỗ trợ macOS 12 trở lên, với menu gốc, phím tắt và đọc ngoại tuyến. Bản dựng hỗ trợ Intel và Apple silicon; các thử nghiệm chạy ứng dụng được thực hiện trên máy Mac Intel.
+Phiên bản 1.0.8 (10) đã có trên Mac App Store. Ứng dụng hỗ trợ macOS 12 trở lên, với menu gốc, phím tắt và đọc ngoại tuyến. Bản dựng hỗ trợ cả Intel và Apple silicon, với kết quả thử nghiệm chạy ứng dụng trên cả hai loại máy Mac. [Mac App Store](https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?platform=mac)
 
 [macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)
 
@@ -84,7 +84,7 @@ Nhấn giữ một từ, điều chỉnh tay nắm chọn văn bản rồi chọ
 
 ## Trò chuyện trong Bunko
 
-Đăng nhập bằng GitHub để đọc và viết bình luận công khai về từng đoạn ngay trong Bunko. Bản nháp và ghi chú riêng ở lại trên thiết bị cho đến khi bạn chủ động đăng. Một dịch vụ đám mây nhỏ xử lý việc xác thực, không cần máy tính của chủ sở hữu hoạt động; GitHub lưu cuộc trò chuyện công khai. Giao diện hỗ trợ tiếng Anh, tiếng Trung giản thể, tiếng Trung phồn thể và tiếng Nhật. Phiên bản 1.0.6 (8) duy trì đăng nhập bằng bộ nhớ bảo mật và tự động làm mới mã truy cập, đồng thời khôi phục khi kết nối bị gián đoạn ngắn. iOS **1.0.8 (10)**, gồm ứng dụng đồng hành Apple Watch, đã phát hành công khai ngày 29 tháng 9 năm 2026. Mac 1.0.8 vẫn đang được xét duyệt. Android 1.0.6 (8) tiếp tục có trong thử nghiệm nội bộ Google Play; xem hồ sơ phát hành để biết trạng thái bản chính thức.
+Đăng nhập bằng GitHub để đọc và viết bình luận công khai về từng đoạn ngay trong Bunko. Bản nháp và ghi chú riêng ở lại trên thiết bị cho đến khi bạn chủ động đăng. Một dịch vụ đám mây nhỏ xử lý việc xác thực, không cần máy tính của chủ sở hữu hoạt động; GitHub lưu cuộc trò chuyện công khai. Giao diện hỗ trợ tiếng Anh, tiếng Trung giản thể, tiếng Trung phồn thể và tiếng Nhật. Phiên bản 1.0.6 (8) duy trì đăng nhập bằng bộ nhớ bảo mật và tự động làm mới mã truy cập, đồng thời khôi phục khi kết nối bị gián đoạn ngắn. iOS **1.0.8 (10)**, gồm ứng dụng đồng hành Apple Watch, đã phát hành công khai ngày 29 tháng 9 năm 2026. Mac **1.0.8 (10)** cũng đã phát hành công khai ngày 30 tháng 9 năm 2026 theo giờ Hồng Kông. Android 1.0.6 (8) tiếp tục có trong thử nghiệm nội bộ Google Play; xem hồ sơ phát hành để biết trạng thái bản chính thức.
 
 [Triển khai và kiểm chứng tính năng thảo luận](../docs/github-discussions-2026-09-26.md).
 

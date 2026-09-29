@@ -1,0 +1,64 @@
+{
+  "checkedAt": "2026-09-29T23:23:58.910481+00:00",
+  "appId": "6815137919",
+  "bundleId": "art.lazying.bunko",
+  "macos": {
+    "id": "731c37f4-b4ed-4268-bafa-e5bfda8f7284",
+    "platform": "MAC_OS",
+    "version": "1.0.8",
+    "state": "READY_FOR_DISTRIBUTION",
+    "legacyState": "READY_FOR_SALE",
+    "releaseType": "AFTER_APPROVAL",
+    "earliestReleaseDate": null,
+    "build": {
+      "id": "86831728-f214-4e77-b553-59c77470e1ad",
+      "number": "10",
+      "processing": "VALID"
+    }
+  },
+  "review": {
+    "id": "135f98bf-97e0-473a-b148-39817fe20c41",
+    "state": "COMPLETE"
+  },
+  "releasedAt": "2026-09-29T22:50:52Z",
+  "releaseAction": "Already automatically released after approval; no manual release request or binary upload needed",
+  "availability": {
+    "checkedAt": "2026-09-29T23:22:38.833190+00:00",
+    "territories": 175,
+    "available": 175,
+    "availableInNewTerritories": true,
+    "review": {
+      "platform": "MAC_OS",
+      "submittedDate": "2026-09-27T20:10:02.462Z",
+      "state": "COMPLETE"
+    },
+    "phasedRelease": null
+  },
+  "publicPage": {
+    "url": "https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?platform=mac",
+    "httpStatus": 200,
+    "platform": "mac",
+    "latestVersion": "Version 1.0.8",
+    "releasedAt": "2026-09-29T22:50:52Z",
+    "minimumMacOS": "12.0"
+  },
+  "lookupCaveat": "The entity=macSoftware lookup returns the iOS software item for this universal app; Mac-specific public page data supplies platform-specific release evidence.",
+  "updateFeed": {
+    "schema": 1,
+    "ios": {
+      "version": "1.0.8",
+      "build": "10"
+    },
+    "android": null,
+    "macos": {
+      "version": "1.0.8",
+      "build": "10"
+    }
+  },
+  "scope": "Mac production verification, public update feed and release records; existing price/territories retained",
+  "checks": {
+    "localCheck": "npm run check passed: lint, 50 client tests, 29 server tests, renderer, TypeScript and production web build",
+    "readmeLocales": 11,
+    "readmeValidation": "passed"
+  }
+}

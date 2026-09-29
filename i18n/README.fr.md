@@ -68,7 +68,7 @@ La bibliothèque réunit 150 classiques du domaine public et 33 éditions autori
 
 ## Bunko pour Mac
 
-La version 1.0.4 (6) est disponible sur le Mac App Store. Elle propose des menus natifs, des raccourcis clavier et la lecture hors ligne sur macOS 12 ou ultérieur. Le binaire prend en charge Intel et Apple silicon ; les tests ont été effectués sur des Mac Intel.
+La version 1.0.8 (10) est disponible sur le Mac App Store. Elle propose des menus natifs, des raccourcis clavier et la lecture hors ligne sur macOS 12 ou ultérieur. Le binaire universel prend en charge Intel et Apple silicon, avec des tests d’exécution sur les deux types de Mac. [Mac App Store](https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?platform=mac)
 
 [macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)
 
@@ -84,7 +84,7 @@ Appuyez longuement sur un mot, ajustez les poignées de sélection, puis choisis
 
 ## Conversations dans Bunko
 
-Lisez et rédigez des commentaires publics sur les passages dans Bunko en vous connectant avec GitHub. Les brouillons et les notes privées restent sur votre appareil jusqu’à ce que vous choisissiez de les publier. Un petit service cloud gère l’autorisation sans dépendre de l’ordinateur du propriétaire ; GitHub conserve la conversation publique. L’interface propose l’anglais, le chinois simplifié, le chinois traditionnel et le japonais. La version 1.0.6 (8) conserve la connexion grâce au stockage sécurisé et au renouvellement automatique des jetons, et reprend après de brèves coupures réseau. iOS **1.0.8 (10)**, avec son application compagnon Apple Watch, est disponible publiquement depuis le 29 septembre 2026. Mac 1.0.8 reste en cours de validation. Android 1.0.6 (8) reste disponible en test interne sur Google Play ; consultez les dossiers de publication pour son état en production.
+Lisez et rédigez des commentaires publics sur les passages dans Bunko en vous connectant avec GitHub. Les brouillons et les notes privées restent sur votre appareil jusqu’à ce que vous choisissiez de les publier. Un petit service cloud gère l’autorisation sans dépendre de l’ordinateur du propriétaire ; GitHub conserve la conversation publique. L’interface propose l’anglais, le chinois simplifié, le chinois traditionnel et le japonais. La version 1.0.6 (8) conserve la connexion grâce au stockage sécurisé et au renouvellement automatique des jetons, et reprend après de brèves coupures réseau. iOS **1.0.8 (10)**, avec son application compagnon Apple Watch, est disponible publiquement depuis le 29 septembre 2026. Mac **1.0.8 (10)** est également disponible publiquement depuis le 30 septembre 2026, heure de Hong Kong. Android 1.0.6 (8) reste disponible en test interne sur Google Play ; consultez les dossiers de publication pour son état en production.
 
 [Implémentation et vérification des discussions](../docs/github-discussions-2026-09-26.md).
 

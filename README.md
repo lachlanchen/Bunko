@@ -33,7 +33,7 @@ npm run dev
 
 ## Bunko for Mac
 
-The Mac edition includes a resizable reading window, native menus, keyboard chapter navigation, offline books, and local dictionaries. It supports macOS 12 or later with a universal Intel/Apple silicon binary. Build and test instructions are in [docs/macos.md](docs/macos.md); the current review status is recorded in [store/macos/submission.md](store/macos/submission.md).
+**1.0.8 (10) is now available on the [Mac App Store](https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?platform=mac).** The Mac edition includes a resizable reading window, native menus, keyboard chapter navigation, offline books, and local dictionaries. It supports macOS 12 or later with a universal Intel/Apple silicon binary. Build and test instructions are in [docs/macos.md](docs/macos.md); the public release record is in [store/macos/submission.md](store/macos/submission.md).
 
 ## Library and release
 
@@ -81,7 +81,7 @@ Bunko checks for updates automatically and offers a dismissible prompt when a pu
 
 ## Conversations in Bunko
 
-Read and compose public passage comments inside Bunko, using GitHub sign-in. Drafts and private notes stay on your device until you explicitly post. A small cloud service handles authorization without requiring the owner’s computer; GitHub stores the public conversation. The interface supports English, Simplified Chinese, Traditional Chinese and Japanese. Version 1.0.6 (8) adds persistent login with secure device storage and automatic token refresh, plus recovery from brief connection failures. iOS **1.0.8 (10)**, including Apple Watch, is publicly available as of 29 September 2026. Mac 1.0.8 remains in review. Android 1.0.6 (8) remains available in Google Play internal testing; see the release records for its production status.
+Read and compose public passage comments inside Bunko, using GitHub sign-in. Drafts and private notes stay on your device until you explicitly post. A small cloud service handles authorization without requiring the owner’s computer; GitHub stores the public conversation. The interface supports English, Simplified Chinese, Traditional Chinese and Japanese. Version 1.0.6 (8) adds persistent login with secure device storage and automatic token refresh, plus recovery from brief connection failures. iOS **1.0.8 (10)**, including Apple Watch, is publicly available as of 29 September 2026. Mac **1.0.8 (10)** is also publicly available as of 30 September 2026 (Hong Kong time). Android 1.0.6 (8) remains available in Google Play internal testing; see the release records for its production status.
 
 [Discussion implementation and verification](docs/github-discussions-2026-09-26.md).
 
