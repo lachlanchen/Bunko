@@ -22,7 +22,15 @@ Added 2026-09-26 in **1.0.4 (6)**. Update prompts and Settings controls are tran
 3. Set only that platform's `version` and `build` strings in `public/updates.json`. Use `null` for a platform with no public release. Do not add a testing build to this feed. For a staged or territory-limited release, wait until the advertised rollout is available to the intended users.
 4. Run `npm run check`, commit, push, wait for the Pages deployment and fetch the live JSON with caching disabled. Record the public release evidence in `store/`.
 
-Verified state (2026-09-27): iOS and Mac **1.0.4 (6)** are public, confirmed against App Store Connect and the public listing. Android remains `null` while production is in review. Submitted/internal **1.0.6 (8)** is not advertised as public. **The feed is updated as part of release publication; it does not scrape stores or promote internal builds automatically.**
+Verified state (2026-09-29): iOS **1.0.8 (10)** is publicly released, including
+the paired Watch companion. App Store Connect confirms the exact build and
+READY_FOR_DISTRIBUTION; Apple's public lookup reports 1.0.8 in the US, Hong Kong,
+UK and Japan. The US listing resolves. The iOS feed now advertises that release.
+Mac remains on its previously public-verified feed entry **1.0.4 (6)**; Mac 1.0.8
+is still IN_REVIEW. Android remains `null`. See the
+[distribution receipt](../store/artifacts/distribution-ios-1.0.8-20260929.json).
+**The feed is updated as part of release publication; it does not scrape stores
+or promote internal builds automatically.**
 
 Store destinations are compiled into the app, never accepted from feed data. Invalid feeds, failed requests and missing native build information produce a retryable check error. Version comparison is numeric and checks build numbers only when versions match.
 

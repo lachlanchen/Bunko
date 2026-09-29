@@ -46,5 +46,6 @@
     "Mac native authorization was not newly live-tested; existing iOS ordinary-reader authentication and document-upload evidence remains in release1.0.7",
     "General LazyingArt central auth remains disabled"
   ],
-  "runtime_cleanup": "Bunko simulator pair shut down; Mac mini app and owned QA launch agent stopped; temporary proxy/tunnel stopped; KVM archive launch agent removed"
+  "runtime_cleanup": "Bunko simulator pair shut down; Mac mini app and owned QA launch agent stopped; temporary proxy/tunnel stopped; KVM archive launch agent removed",
+  "latest_distribution_receipt": "distribution-ios-1.0.8-20260929.json"
 }

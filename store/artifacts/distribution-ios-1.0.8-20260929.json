@@ -1,0 +1,141 @@
+{
+  "checkedAt": "2026-09-29T09:10:46.390967+00:00",
+  "appId": "6815137919",
+  "bundleId": "art.lazying.bunko",
+  "ios": {
+    "id": "635aa670-cf34-4ab8-b46b-f9624e0859c3",
+    "platform": "IOS",
+    "version": "1.0.8",
+    "state": "READY_FOR_SALE",
+    "versionState": "READY_FOR_DISTRIBUTION",
+    "releaseType": "AFTER_APPROVAL",
+    "earliestReleaseDate": null,
+    "build": {
+      "id": "a561f6e3-1256-4943-ae30-0954299ca5a5",
+      "version": "10",
+      "processing": "VALID"
+    }
+  },
+  "review": {
+    "id": "df08e230-c2d3-4c5f-97dc-b5a8b7949316",
+    "state": "COMPLETE"
+  },
+  "releasedAt": "2026-09-29T04:55:03Z",
+  "releaseAction": "Already automatically released; no manual request, upload or review replacement performed",
+  "availability": {
+    "territoriesConfiguredAvailable": 175,
+    "territoriesTotal": 175,
+    "availableInNewTerritories": true,
+    "publicStorefrontsVerified": [
+      "US",
+      "HK",
+      "GB",
+      "JP"
+    ]
+  },
+  "publicLookups": [
+    {
+      "checkedAt": "2026-09-29T09:11:02.789017+00:00",
+      "country": "us",
+      "url": "https://itunes.apple.com/lookup?id=6815137919&country=us",
+      "count": 1,
+      "items": [
+        {
+          "trackId": 6815137919,
+          "bundleId": "art.lazying.bunko",
+          "trackName": "Bunko: Classics with Ruby",
+          "version": "1.0.8",
+          "price": 0.99,
+          "currency": "USD",
+          "trackViewUrl": "https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?uo=4",
+          "currentVersionReleaseDate": "2026-09-29T04:55:03Z",
+          "kind": "software"
+        }
+      ]
+    },
+    {
+      "checkedAt": "2026-09-29T09:11:03.011050+00:00",
+      "country": "hk",
+      "url": "https://itunes.apple.com/lookup?id=6815137919&country=hk",
+      "count": 1,
+      "items": [
+        {
+          "trackId": 6815137919,
+          "bundleId": "art.lazying.bunko",
+          "trackName": "Bunko 文庫：經典與注音",
+          "version": "1.0.8",
+          "price": 8.0,
+          "currency": "HKD",
+          "trackViewUrl": "https://apps.apple.com/hk/app/bunko-%E6%96%87%E5%BA%AB-%E7%B6%93%E5%85%B8%E8%88%87%E6%B3%A8%E9%9F%B3/id6815137919?uo=4",
+          "currentVersionReleaseDate": "2026-09-29T04:55:03Z",
+          "kind": "software"
+        }
+      ]
+    },
+    {
+      "checkedAt": "2026-09-29T09:11:03.224974+00:00",
+      "country": "gb",
+      "url": "https://itunes.apple.com/lookup?id=6815137919&country=gb",
+      "count": 1,
+      "items": [
+        {
+          "trackId": 6815137919,
+          "bundleId": "art.lazying.bunko",
+          "trackName": "Bunko: Classics with Ruby",
+          "version": "1.0.8",
+          "price": 0.99,
+          "currency": "GBP",
+          "trackViewUrl": "https://apps.apple.com/gb/app/bunko-classics-with-ruby/id6815137919?uo=4",
+          "currentVersionReleaseDate": "2026-09-29T04:55:03Z",
+          "kind": "software"
+        }
+      ]
+    },
+    {
+      "checkedAt": "2026-09-29T09:11:03.507816+00:00",
+      "country": "jp",
+      "url": "https://itunes.apple.com/lookup?id=6815137919&country=jp",
+      "count": 1,
+      "items": [
+        {
+          "trackId": 6815137919,
+          "bundleId": "art.lazying.bunko",
+          "trackName": "Bunko 文庫：ルビで読む古典",
+          "version": "1.0.8",
+          "price": 150.0,
+          "currency": "JPY",
+          "trackViewUrl": "https://apps.apple.com/jp/app/bunko-%E6%96%87%E5%BA%AB-%E3%83%AB%E3%83%93%E3%81%A7%E8%AA%AD%E3%82%80%E5%8F%A4%E5%85%B8/id6815137919?uo=4",
+          "currentVersionReleaseDate": "2026-09-29T04:55:03Z",
+          "kind": "software"
+        }
+      ]
+    }
+  ],
+  "publicPage": {
+    "url": "https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?platform=iphone",
+    "httpStatus": 200,
+    "schemaVersions": [
+      null,
+      null,
+      null
+    ],
+    "has108": true,
+    "has104": true
+  },
+  "updateFeed": {
+    "ios": {
+      "version": "1.0.8",
+      "build": "10"
+    },
+    "macos": "unchanged: 1.0.4 (6)",
+    "android": "unchanged: null"
+  },
+  "macOS108": "IN_REVIEW; not released or resubmitted by this task",
+  "scope": "iOS distribution and public update feed; no binary changes or other app changes",
+  "phasedRelease": null,
+  "checks": {
+    "localCheck": "npm run check passed: lint, 50 client tests, 29 server tests, renderer, TypeScript and web build",
+    "readmeLocales": 11,
+    "readmeValidation": "passed"
+  }
+}

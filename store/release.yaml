@@ -29,17 +29,19 @@ channels:
   apple:
     bundle_id: art.lazying.bunko
     app_id: '6815137919'
-    status: READY_FOR_SALE
+    status: READY_FOR_DISTRIBUTION
     territories: 175
     available_in_new_territories: true
     release: automatic after approval
-    public_version: 1.0.4 (6)
-    review_submission: c2b55561-aa37-4eab-93be-da10b70098ba
-    build_id: 7f94444e-1598-4e2c-8630-8ad188f9cda1
+    public_version: 1.0.8 (10), including Apple Watch
+    public_released_at: '2026-09-29T04:55:03Z'
+    public_verified: '2026-09-29; US, Hong Kong, UK and Japan lookup plus US listing'
+    review_submission: df08e230-c2d3-4c5f-97dc-b5a8b7949316
+    build_id: a561f6e3-1256-4943-ae30-0954299ca5a5
     update_version: 1.0.8
     update_build: 10
     update_build_id: a561f6e3-1256-4943-ae30-0954299ca5a5
-    update_status: WAITING_FOR_REVIEW
+    update_status: READY_FOR_DISTRIBUTION
     update_review_submission: df08e230-c2d3-4c5f-97dc-b5a8b7949316
     testflight_latest: 1.0.8 (10), iPhone and Watch, VALID and IN_BETA_TESTING
     testflight_latest_build_id: a561f6e3-1256-4943-ae30-0954299ca5a5
@@ -50,7 +52,7 @@ channels:
     version: 1.0.8
     build: 10
     public_version: 1.0.6 (8), READY_FOR_DISTRIBUTION in App Store Connect
-    status: WAITING_FOR_REVIEW
+    status: IN_REVIEW
     submitted_at: '2026-09-27T20:10:02.462Z'
     release: automatic after approval
     version_id: 731c37f4-b4ed-4268-bafa-e5bfda8f7284

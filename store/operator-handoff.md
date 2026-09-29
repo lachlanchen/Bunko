@@ -1,3 +1,22 @@
+# iOS public distribution — 2026-09-29
+
+**Bunko iOS 1.0.8 (10), including the paired Apple Watch companion, is public.**
+Apple released it automatically at 04:55:03 UTC on September 29. App Store Connect
+reports READY_FOR_DISTRIBUTION with the exact qualified build
+`a561f6e3-1256-4943-ae30-0954299ca5a5`. Public Apple lookup confirms 1.0.8 in the
+US, Hong Kong, UK and Japan, and the US App Store page resolves. No manual
+release request or new upload was needed.
+
+The iOS update feed is advanced to 1.0.8 (10). Mac 1.0.8 remains IN_REVIEW with
+automatic release selected; its existing public feed entry is preserved. Google
+was not changed in this iOS distribution task. Eleven README language versions
+carry the new iOS status. The detailed receipt is
+[distribution-ios-1.0.8-20260929.json](artifacts/distribution-ios-1.0.8-20260929.json).
+
+The entries below are historical checkpoints.
+
+---
+
 # Apple platform release — 2026-09-28
 
 **Bunko 1.0.8 (10) is Waiting for Review on iOS (including Apple Watch) and

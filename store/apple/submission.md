@@ -1,3 +1,21 @@
+# Public distribution — 2026-09-29
+
+iOS **1.0.8 (10)** is **READY_FOR_DISTRIBUTION**, with the paired Apple Watch
+companion. Exact build `a561f6e3-1256-4943-ae30-0954299ca5a5` matches the signed
+candidate in the release manifest. Automatic release completed at
+**2026-09-29 04:55:03 UTC**; no manual release request was needed.
+
+Apple's public lookup returns 1.0.8 in the US, Hong Kong, UK and Japan; the US
+listing returns HTTP 200. US price remains USD 0.99. The iOS update feed now
+advertises 1.0.8 (10). Mac 1.0.8 is still IN_REVIEW and was not released by this task.
+
+[App Store](https://apps.apple.com/app/id6815137919) ·
+[Distribution evidence](../artifacts/distribution-ios-1.0.8-20260929.json)
+
+Earlier submission records below retain their original dates and states.
+
+---
+
 # Current Apple review — 2026-09-28
 
 **IOS1.0.8 (10): Waiting for Review**, automatic release after approval.
