@@ -1,3 +1,34 @@
+# Reader correction available in testing — 2026-09-30 HKT
+
+**Bunko 1.0.10 (16)** is VALID/IN_BETA_TESTING for iOS/paired Watch and universal
+Mac, and available to Google Play internal testers. Both Apple uploads passed
+validation, retain the existing Bunko Internal group, and have four localized
+TestFlight notes. The web reader and corrected book data are live; raw GitHub
+and jsDelivr metadata hashes match. Both repository workflows succeeded.
+
+Right swipes now work across the page, with text selection, sliders, long holds,
+vertical scrolling and horizontal content scrollers protected. Translation notes
+are folded separately. Japanese edition information is localized, and every
+Japanese line with kanji in the Bible/Quran has word readings. Publisher body
+text, notes and headings remain unchanged. See the source/ruby audit and preview
+images for exact coverage and the limits of generated pronunciation aids.
+
+66 client tests, 35 server tests, 8 importer tests, 3 ruby tests, 8 catalogue tests
+and 30 mobile-browser checks passed. Real CDP touch input verified swipe-back,
+Settings priority and scrolling. Package versions, signatures, iOS embedded
+reader assets and Mac architectures were checked. No physical gesture test is
+claimed. All owned browser/build runtimes are stopped; peer resources untouched.
+
+**Production reviews are preserved:** iOS1.0.9(14) WAITING_FOR_REVIEW,
+Mac1.0.9(14) IN_REVIEW and Google14 Changes in review (172 territories).
+Build16 supersedes build15 as the qualified next update once each review clears;
+no production16 submission or public update-feed change was made.
+
+[Release receipt](artifacts/reader-1.0.10-16.json) ·
+[Reader and book audit](../docs/reader-correction-2026-09-30.md)
+
+## Earlier test release
+
 # Language reader update in testing — 2026-09-30 HKT
 
 **Bunko 1.0.10 (15)** is VALID and IN_BETA_TESTING for iOS/paired Watch and

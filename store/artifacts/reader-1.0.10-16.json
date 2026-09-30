@@ -1,0 +1,128 @@
+{
+  "version": "1.0.10",
+  "build": 16,
+  "verifiedAt": "2026-09-30T08:59:31.395002+00:00",
+  "sourceCommit": "116a29ec70e39c143671ed69457b8244284a414f",
+  "booksCommit": "f340b3d31a5c8fc3a7496d919b23a5caed5ead8d",
+  "changes": [
+    "Right swipe across the page; protect selection, controls and scroll gestures",
+    "Japanese ruby restored; edition credits localized",
+    "Translation notes folded separately; Watch follows main passages"
+  ],
+  "apple": [
+    {
+      "platform": "MAC_OS",
+      "id": "74b65c86-e6c8-4508-96fa-e2a12db79138",
+      "processingState": "VALID",
+      "internalBuildState": "IN_BETA_TESTING",
+      "sha256": "3f789fc7a4f89d0a3734fc68d991556dd304dd13dd3a4548e1756bcb7beccf93",
+      "bytes": 8160598
+    },
+    {
+      "platform": "IOS",
+      "id": "2aa119e0-47a3-4ec9-86a5-13cdd6956d82",
+      "processingState": "VALID",
+      "internalBuildState": "IN_BETA_TESTING",
+      "sha256": "f27463c843c180114127e690e5a3226c6ab6fc34d3890a6feb9854a4c911d5d5",
+      "bytes": 10279938
+    }
+  ],
+  "android": {
+    "version": "1.0.10",
+    "build": 16,
+    "name": "1.0.10 (16) - Japanese ruby and swipe back",
+    "state": "Available to internal testers"
+  },
+  "androidArtifacts": {
+    "android/app/build/outputs/bundle/release/app-release.aab": {
+      "sha256": "688a03748505f8ef394821a3aed61d0601b8e8b6b206881290a7b1fb83b8b5ed",
+      "bytes": 5893900
+    },
+    "android/app/build/outputs/apk/release/app-release.apk": {
+      "sha256": "7cfaf9a637e68424544744a6602820cb46c0cff361638b6ae7fe87cf5757c65b",
+      "bytes": 5521317
+    }
+  },
+  "webAndLibrary": {
+    "bible": {
+      "langs": [
+        "en",
+        "zh",
+        "ja"
+      ],
+      "sha256": "54117815cfed9f0cdaf44ff1afb1cd84b214f87ed22ebc87fa9b5c5ba6c4dd4b",
+      "frontFirstLast": "verified"
+    },
+    "quran": {
+      "langs": [
+        "ar",
+        "en",
+        "zh",
+        "ja"
+      ],
+      "sha256": "315ceece89768f45c886040967df21ab8b43fa131154aa4c15d25e4b7489b8cb",
+      "frontFirstLast": "verified"
+    },
+    "web": {
+      "version": "1.0.10",
+      "revision": "fd1f56983e020f6baee90a8e18bc12ac0b038eacdba157e77a83403b203ab97e"
+    }
+  },
+  "cdnMetadata": {
+    "bible": "54117815cfed9f0cdaf44ff1afb1cd84b214f87ed22ebc87fa9b5c5ba6c4dd4b",
+    "quran": "315ceece89768f45c886040967df21ab8b43fa131154aa4c15d25e4b7489b8cb"
+  },
+  "validation": {
+    "clientTests": 66,
+    "serverTests": 35,
+    "importerTests": 8,
+    "rubyTests": 3,
+    "catalogueTests": 8,
+    "mobileBrowserChecks": 30,
+    "publisherTextAndNotes": "verified for all Bible/Quran chapters",
+    "physicalGestureTest": false,
+    "packageAssets": "iOS embedded assets equal qualified native bundle; Android signed package version checked; Mac universal signed export verified"
+  },
+  "workflows": {
+    "app": {
+      "id": 36691533013,
+      "conclusion": "success"
+    },
+    "books": {
+      "id": 36691519726,
+      "conclusion": "success"
+    }
+  },
+  "productionReviewsPreserved": [
+    {
+      "platform": "IOS",
+      "version": "1.0.9",
+      "status": "WAITING_FOR_REVIEW",
+      "id": "f2f23ae9-038d-41e5-b569-d78bab4b32f6"
+    },
+    {
+      "platform": "MAC_OS",
+      "version": "1.0.9",
+      "status": "IN_REVIEW",
+      "id": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6"
+    }
+  ],
+  "googleProduction": {
+    "version": "1.0.9",
+    "build": 14,
+    "state": "Changes in review",
+    "countries": 172,
+    "managedPublishing": false,
+    "changedByThisTask": false
+  },
+  "production16Submitted": false,
+  "cleanup": {
+    "ownedStoreDesktop": "stopped; ports 6190/9490/5990 closed",
+    "headlessQa": "stopped; port4179 closed",
+    "macArchiveAgent": "removed",
+    "completedUploadLoggerStopped": [
+      27262
+    ],
+    "peerDevicesAndDesktop": "untouched"
+  }
+}

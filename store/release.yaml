@@ -26,7 +26,7 @@ channels:
     internal_track: '4701547714770281380'
     internal_status: available to internal testers
     internal_update: 1.0.1 (2), available to internal testers
-    internal_latest: 1.0.10 (15), available to internal testers on 2026-09-30
+    internal_latest: 1.0.10 (16), available to internal testers on 2026-09-30
     reviewer_access: Dedicated Bunko demo sign-in; no owner email verification; verified
       after reload
     privacy: Optional IDs, messages, files/documents, app interactions, search history
@@ -48,8 +48,8 @@ channels:
     update_build_id: 8fef4a93-7c7e-4506-a284-42bdf30f0092
     update_status: WAITING_FOR_REVIEW
     update_review_submission: 85e827ad-943b-405f-a170-4179e4be3aa7
-    testflight_latest: 1.0.10 (15), VALID and IN_BETA_TESTING
-    testflight_latest_build_id: 733bf961-cde9-49a3-b147-d23002ed9904
+    testflight_latest: 1.0.10 (16), VALID and IN_BETA_TESTING
+    testflight_latest_build_id: 2aa119e0-47a3-4ec9-86a5-13cdd6956d82
     watch_bundle_id: art.lazying.bunko.watchkitapp
   mac_app_store:
     app_id: '6815137919'
@@ -65,8 +65,8 @@ channels:
     version_id: 731c37f4-b4ed-4268-bafa-e5bfda8f7284
     build_id: 86831728-f214-4e77-b553-59c77470e1ad
     review_submission: 135f98bf-97e0-473a-b148-39817fe20c41
-    testflight_latest: 1.0.10 (15), VALID and IN_BETA_TESTING
-    testflight_latest_build_id: d7a850ec-ebfc-4a64-8f4b-971204eb38bb
+    testflight_latest: 1.0.10 (16), VALID and IN_BETA_TESTING
+    testflight_latest_build_id: 74b65c86-e6c8-4508-96fa-e2a12db79138
     minimum_macos: '12.0'
     architectures:
     - x86_64
@@ -78,16 +78,16 @@ channels:
     update_status: IN_REVIEW
     update_review_submission: 8045577c-c3dd-4db4-8154-ee2312329060
 android:
-  version_code: 15
+  version_code: 16
   version_name: 1.0.10
   keystore: ~/.config/bunko/android/upload-keystore.jks (alias bunko-upload, mode
     600)
-  aab_sha256: 52a5c4f261a3191bf12c60e6bc879f4d01f1e8085db7607cb64b802fbd850e56
-  apk_sha256: bf4a92597f0d119d80675e360777df000ea87fc9633a801e4f5cc3525e4a22a4
+  aab_sha256: 688a03748505f8ef394821a3aed61d0601b8e8b6b206881290a7b1fb83b8b5ed
+  apk_sha256: 7cfaf9a637e68424544744a6602820cb46c0cff361638b6ae7fe87cf5757c65b
 catalogue:
   cleared: 185
   audited: docs/catalogue.md
-  payload_bytes: 2826051444
+  payload_bytes: 2833002258
 reviewer_access_candidate:
   version: 1.0.9
   ios_build: 14

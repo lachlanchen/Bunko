@@ -41,6 +41,6 @@ before the reader goes back. Touch lists support non-iterable mobile WebViews.
 [Bible preview](../evidence/reader-correction-20260930/bible-mobile.png) ·
 [Quran preview](../evidence/reader-correction-20260930/quran-mobile.png)
 
-Build 1.0.10 (16) packages these reader corrections for internal testing. Native
-distribution status is recorded separately in the store handoff. Book data
+Build 1.0.10 (16) is available in internal TestFlight for iOS/Watch and Mac,
+and in Google Play internal testing. See the [release receipt](../store/artifacts/reader-1.0.10-16.json). Book data
 refreshes through the catalogue; active production reviews are preserved.
