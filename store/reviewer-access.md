@@ -1,7 +1,7 @@
 # Reviewer access · 1.0.9 candidate
 
 Bunko’s dedicated GitHub review account can encounter GitHub’s new-device email
-verification. Disabling two-factor authentication does not prevent that check.
+verification. Disabling two-factor authentication does not prevent that check; see [GitHub’s new-device verification documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/verifying-new-devices-when-signing-in).
 The owner’s inbox cannot be part of the review procedure.
 
 ## Access supplied with the replacement build
@@ -32,12 +32,21 @@ posting apply. The unified LazyingArt adapter remains a separate qualification.
 - Real comment and reply in [discussion #3](https://github.com/lachlanchen/bunko-books/issues/3), reloaded with explicit demo attribution.
 - Real document upload/conversion, equation rendering, a model answer, and
   persistent document/chat retrieval after a fresh sign-in and reload.
+- Native Android Debug-shell checks with the production web bundle verified
+  secure-storage sign-in, cold restart, real discussion reading/posting controls,
+  sign-out and preservation of the existing downloaded book. Fresh Apple native
+  demo sign-in was not separately exercised in this update; the secure-storage
+  bridges are unchanged, and the signed archives passed Apple validation.
 - Automated coverage for incorrect credentials, rate limiting, origin/PKCE
   boundaries, password rotation/disablement, expiry, duplicate prevention,
   public attribution and isolation from ordinary readers’ documents and chats.
 
-The authenticated backend is deployed. Native 1.0.9(11) packaging/qualification
-and distribution receipts are recorded separately. The approved iOS/Watch and
+The authenticated backend and web reader are deployed. iOS/Watch and universal
+Mac **1.0.9 (11)** passed Apple validation and are **IN_BETA_TESTING** in the
+existing internal TestFlight group. Both compatible production review drafts
+contain the verified demo credentials and exact build, and remain
+**PREPARE_FOR_SUBMISSION**. Android’s signed 1.0.9 (11) APK/AAB is ready; its
+existing Google review was not changed. See the [candidate receipt](artifacts/reviewer-access-1.0.9.json). The approved iOS/Watch and
 Mac 1.0.8(10) apps do **not** contain the new demo sign-in screen.
 
 ## On rejection and resubmission

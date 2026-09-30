@@ -1,3 +1,34 @@
+# Reviewer access candidate — 2026-09-30 HKT
+
+Bunko’s web reader and backend now offer a visibly labelled **Demo account**
+login for invited testers and review teams. Dedicated credentials require no
+owner email code. Actual public GitHub commenting/replying and private demo
+companion upload/reading/chat were verified; demo content is isolated from
+ordinary readers and visibly shared among users of the demo account. Native
+Android secure persistence and cold restart passed with its Debug shell using
+the production web bundle. Automated verification:54 client/35 server tests,
+lint, TypeScript, document renderer and web/native packaging.
+
+**iOS/Watch and universal Mac1.0.9(11) are VALID and IN_BETA_TESTING** in Bunko
+Internal. Their production drafts have the exact builds and verified private
+demo credentials, but remain **PREPARE_FOR_SUBMISSION**. Existing approved
+Apple1.0.8(10) stays public. Android’s signed11 APK/AAB is prepared; no Google
+review/access change was made. No formal review was submitted or cancelled.
+
+On an actual rejection, use the [reviewer access procedure](reviewer-access.md)
+and the qualified replacement binary. Do not give an old8/10 binary the new
+demo password: it lacks the Demo account screen. Fresh Apple native demo login
+was not separately tested in this update; signed archive/Apple validation and
+live web/Android evidence are distinct. The [candidate receipt](artifacts/reviewer-access-1.0.9.json)
+records exact artifacts and verification limits. Secrets remain outside Git.
+The shared LazyingArt adapter remains unqualified and disabled.
+
+Owned QA browser6187/CDP9487 and emulator5576 are stopped; KVM archive job was
+removed. Shared desktops and other projects were preserved. Private continuation:
+`.runtime/review-demo-20260930/handoff.md`.
+
+---
+
 # Mac production release — 2026-09-30 HKT
 
 **Bunko Mac 1.0.8 (10) is released and publicly available.** Apple released the

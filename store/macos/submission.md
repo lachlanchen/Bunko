@@ -1,3 +1,16 @@
+# Reviewer access candidate — 2026-09-30
+
+Mac **1.0.9 (11)** is VALID and IN_BETA_TESTING. Its production draft
+contains the exact build, dedicated inbox-independent demo credentials and
+review instructions; it remains **PREPARE_FOR_SUBMISSION**, not submitted.
+Real public comments and replies, companion upload/reading/chat, and web/Android
+session persistence were verified. Fresh Apple native demo login was not
+separately exercised in this update. Current **1.0.8 (10)** stays public.
+
+[Reviewer procedure](../reviewer-access.md) · [Candidate receipt](../artifacts/reviewer-access-1.0.9.json).
+
+---
+
 # Mac production release — 2026-09-30 HKT
 
 **Bunko Mac 1.0.8 (10) is released and publicly available.** Apple released the

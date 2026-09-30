@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "preparedAt": "2026-09-30T00:04:23.362188+00:00",
-  "status": "candidate preparation; not submitted for production review",
+  "status": "web and backend deployed; Apple internal TestFlight available; compatible production review drafts prepared, not submitted",
   "feature": "Explicit invited demo login without owner email verification; real public comments and private demo companion namespace",
   "automated": {
     "clientTests": 54,
@@ -60,6 +60,27 @@
       "bytes": 6001594,
       "version": "1.0.9",
       "build": 11
+    },
+    "ios_ipa": {
+      "file": "App.ipa",
+      "version": "1.0.9",
+      "build": 11,
+      "includesWatch": true,
+      "sha256": "531a6ebd270102522ef90427d17bd90959200793dcd7b6bd4d667364f964de8a",
+      "appleValidation": "passed",
+      "upload": "accepted"
+    },
+    "macos_pkg": {
+      "file": "Bunko.pkg",
+      "version": "1.0.9",
+      "build": 11,
+      "architectures": [
+        "x86_64",
+        "arm64"
+      ],
+      "sha256": "b3023a9cc817a7c8b92373f996839131b7c40eaa520e81b78fae1f0bebc35e29",
+      "appleValidation": "passed",
+      "upload": "accepted"
     }
   },
   "production": {
@@ -71,5 +92,54 @@
     "Fresh Apple native demo login not yet tested; existing secure-storage bridge is unchanged.",
     "Android runtime used the Debug shell with the production web bundle; signed release APK/AAB built separately.",
     "No production review submitted by this preparation."
-  ]
+  ],
+  "completedAt": "2026-09-30T00:14:17.086245+00:00",
+  "apple": [
+    {
+      "platform": "MAC_OS",
+      "id": "87e5397b-5e0e-4b51-8791-4ff414424703",
+      "version": "1.0.9",
+      "build": "11",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING",
+      "versionId": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+      "storeState": "PREPARE_FOR_SUBMISSION",
+      "submitted": false
+    },
+    {
+      "platform": "IOS",
+      "id": "cca78d95-44ce-40c7-a0e3-4e99aff8b32d",
+      "version": "1.0.9",
+      "build": "11",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING",
+      "versionId": "f2f23ae9-038d-41e5-b569-d78bab4b32f6",
+      "storeState": "PREPARE_FOR_SUBMISSION",
+      "submitted": false
+    }
+  ],
+  "web": {
+    "passed": true,
+    "at": "2026-09-30T00:11:16.147Z",
+    "release": {
+      "version": "1.0.9",
+      "revision": "35d988f16ddfba2e54d4336feb5e6d20b9fbb2ae55d20f070779748e0558f342"
+    },
+    "network": "public deployed bundle and live backend; no request overrides",
+    "checks": [
+      "published asset revision matches qualified web bundle",
+      "fresh web demo login and shared-demo disclosure",
+      "demo document preserved across backend update",
+      "explicit sign-out",
+      "published privacy disclosure"
+    ]
+  },
+  "backend": {
+    "packageSha256": "ca06fa49c3d3b640ac1685a1f3eda00e7250890a13f5fca133db8a4fc7437e7d",
+    "status": "deployed",
+    "revocationRegression": "Old sessions remain invalid after password rotation or disable/re-enable, including dormant devices."
+  },
+  "androidDistribution": "Signed release APK/AAB ready; not uploaded to or substituted into the existing Google review.",
+  "clientSourceCommit": "bb0c6be7cfb52c2ea195435ad22d1fb2165788eb",
+  "backendSourceCommit": "f496b6221de8dff57761089d8592335d5320ef58"
 }
