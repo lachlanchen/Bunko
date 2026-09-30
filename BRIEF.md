@@ -110,6 +110,12 @@ The owner also requested a simpler, vibrant update to the existing icon. The
 successor keeps 文 with its ぶん reading, with electric blue and coral accents.
 Current build 8 reviews are preserved while the successor is developed/tested.
 
+**2026-09-30 icon amendment:** The owner prefers the original indigo colors and
+rounded cream border. Restore the original 文 / coral ぶん artwork as the active
+source for subsequent builds. Explore a more vibrant background in a separate
+preview while retaining the lettering and border; preview concepts are not a
+store release. Existing uploaded binaries retain their embedded artwork.
+
 ## Apple platform expansion · 2026-09-28
 
 The owner requested macOS and Apple Watch support with formal production review.
@@ -133,3 +139,8 @@ the UI explains this before login and while signed in. This is separate from
 public account registration and the still-unqualified shared-account adapter.
 Keep approved releases available and prepare any resubmission against the
 actual rejection. See store/reviewer-access.md.
+
+**2026-09-30 final icon selection:** The owner approved the sky-blue/cyan 文 and
+rounded border, salmon ぶん and mostly white background. Use this design for
+all Bunko platform packages. Keep the original and every intermediate concept
+for future reuse; the variant registry makes the source choice explicit.

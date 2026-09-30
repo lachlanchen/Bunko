@@ -1,0 +1,30 @@
+{
+  "active": "sky-salmon",
+  "variants": {
+    "classic": {
+      "source": "assets/brand/bunko-classic-master.png",
+      "background": "#252344",
+      "splash": "#12111a"
+    },
+    "vivid": {
+      "source": "assets/brand/bunko-vivid-master.png",
+      "background": "#252344",
+      "splash": "#12111a"
+    },
+    "jade": {
+      "source": "assets/brand/concepts/bordered-20260930/bunko-jade-preview.png",
+      "background": "#eafaf3",
+      "splash": "#f7fffb"
+    },
+    "light-gradient": {
+      "source": "assets/brand/concepts/light-gradient-20260930/bunko-light-gradient-preview.png",
+      "background": "#fffdf7",
+      "splash": "#fffdf7"
+    },
+    "sky-salmon": {
+      "source": "assets/brand/concepts/sky-salmon-20260930/bunko-sky-salmon-preview.png",
+      "background": "#ffffff",
+      "splash": "#ffffff"
+    }
+  }
+}

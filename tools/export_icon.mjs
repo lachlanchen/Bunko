@@ -6,12 +6,17 @@ import { dirname, resolve } from 'node:path'
 import { createRequire } from 'node:module'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const source = resolve(root, 'assets/brand/bunko-vivid-master.png')
+const registry = JSON.parse(await readFile(resolve(root, 'assets/brand/icon-variants.json'), 'utf8'))
+const variantId = process.argv[2] ?? registry.active
+const variant = registry.variants[variantId]
+if (!variant) throw new Error(`Unknown icon variant: ${variantId}`)
+const source = resolve(root, variant.source)
 const outputs = [
   ['assets/icon.png', 1024], ['assets/icon-foreground.png', 1024],
   ['public/icon-192.png', 192], ['public/icon-512.png', 512],
   ['public/favicon.png', 48], ['store/assets/play-icon.png', 512],
   ['ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png', 1024],
+  ['watch/BunkoWatch/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png', 1024],
 ]
 const catalog = 'macos/Bunko/Assets.xcassets/AppIcon.appiconset'
 const { images } = JSON.parse(await readFile(resolve(root, catalog, 'Contents.json'), 'utf8'))
@@ -44,20 +49,20 @@ for (const item of Object.values(templates)) {
     const dir = resolve(res, `mipmap-${item.density}`)
     const size = item.width, markSize = Math.round(size * 72 / 108)
     const mark = await sharp(source).resize(markSize, markSize).toBuffer()
-    await sharp({ create: { width: size, height: size, channels: 4, background: '#1225f4' } })
+    await sharp({ create: { width: size, height: size, channels: 4, background: variant.background } })
       .png().toFile(resolve(dir, 'ic_launcher_background.png'))
-    await sharp({ create: { width: size, height: size, channels: 4, background: '#1225f4' } })
+    await sharp({ create: { width: size, height: size, channels: 4, background: variant.background } })
       .composite([{ input: mark, gravity: 'center' }]).png().toFile(resolve(dir, 'ic_launcher_foreground.png'))
   } else if (item.kind === 'splash' || item.kind === 'splash-dark') {
     const dir = resolve(res, item.density ? `drawable-${item.density}` : 'drawable')
     await mkdir(dir, { recursive: true })
     const mark = await sharp(source).resize(Math.round(Math.min(item.width, item.height) * .3)).toBuffer()
-    await sharp({ create: { width: item.width, height: item.height, channels: 3, background: '#12111a' } })
+    await sharp({ create: { width: item.width, height: item.height, channels: 3, background: variant.splash } })
       .composite([{ input: mark, gravity: 'center' }]).png().toFile(resolve(dir, 'splash.png'))
   }
 }
 const splashMark = await sharp(source).resize(820, 820).toBuffer()
-await sharp({ create: { width: 2732, height: 2732, channels: 3, background: '#12111a' } })
+await sharp({ create: { width: 2732, height: 2732, channels: 3, background: variant.splash } })
   .composite([{ input: splashMark, gravity: 'center' }]).png().toFile(resolve(root, 'assets/splash.png'))
 const iosSplash = resolve(root, 'ios/App/App/Assets.xcassets/Splash.imageset')
 const splashImages = JSON.parse(await readFile(resolve(iosSplash, 'Contents.json'), 'utf8')).images
