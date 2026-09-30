@@ -347,22 +347,26 @@
     "build": true
   },
   "bible": {
-    "status": "hold",
-    "title": "The Holy Bible",
+    "status": "ship",
+    "title": "The Holy Bible — World English Bible",
     "author": "",
-    "source": "books/bible/work/trilingual/preview/bible.partial.json",
-    "edition": "multilingual",
+    "source": "https://ebible.org/Scriptures/engwebp_usfx.zip",
+    "edition": "original-only",
     "langs": [
-      "en",
-      "zh",
-      "ja"
+      "en"
     ],
     "primary": "en",
     "cat": "world",
-    "basis": "Identify the exact source Bible version before clearance; anonymous/ancient authorship alone does not identify this edition.",
-    "references": [],
-    "checked": "2026-09-23",
-    "build": false
+    "basis": "World English Bible, 66-book English edition; eBible.org explicitly dedicates the translation to the public domain and permits redistribution. Text preserved, with notes and cross references retained. This is not the incomplete local KJV-based export.",
+    "references": [
+      "https://ebible.org/engwebp/copyright.htm",
+      "https://ebible.org/Scriptures/engwebp_usfx.zip"
+    ],
+    "checked": "2026-09-30",
+    "build": false,
+    "kind": "publisher-scripture",
+    "publisherImport": "tools/import_scripture.py",
+    "previousSource": "books/bible/work/trilingual/preview/bible.partial.json"
   },
   "black-holes-baby-universes": {
     "status": "hold",
@@ -3804,20 +3808,28 @@
     "build": false
   },
   "quran": {
-    "status": "hold",
-    "title": "The Quran",
+    "status": "ship",
+    "title": "The Quran — Translations",
     "author": "",
-    "source": "books/quran/work/arabic-quadrilingual/preview/quran.full.json",
+    "source": "https://quranenc.com/downloads/sqlite/english_rwwad.sqlite",
     "edition": "multilingual",
     "langs": [
-      "en"
+      "en",
+      "zh",
+      "ja"
     ],
     "primary": "en",
     "cat": "world",
-    "basis": "Not cleared: modern original or publication/author term requires further verification.",
-    "references": [],
-    "checked": "2026-09-23",
-    "build": false
+    "basis": "Translations redistributed with permission under QuranEnc.com Terms and Policies. These are credited publisher translations, not public-domain or generated translations. Full translation text, markers, footnotes, translator information and versions are preserved. Matching Chinese pinyin is an optional display aid; unaudited Japanese readings from the old export are not reused.",
+    "references": [
+      "https://quranenc.com/en/home",
+      "https://quranenc.com/en/home/api"
+    ],
+    "checked": "2026-09-30",
+    "build": false,
+    "kind": "publisher-scripture",
+    "publisherImport": "tools/import_scripture.py",
+    "previousSource": "books/quran/work/arabic-quadrilingual/preview/quran.full.json"
   },
   "radical-candor": {
     "status": "hold",

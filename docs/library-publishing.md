@@ -30,6 +30,25 @@ git push
 
 The source checkout is read only. The exporter supports complete assembled/preview files and manifest-validated legacy bilingual chunks. It stops on missing or stale text. Keep prior chapter files available for readers holding an older metadata revision. For a hosted import job, create a branch and pull request with the same bundle layout; use the workflow as the publication gate.
 
+Entries with `kind: publisher-scripture` use the publisher importer instead:
+
+```sh
+python3 tools/import_scripture.py --fetch --cache .runtime/scripture-sources --out ../bunko-books
+python3 -m unittest discover -s tools -p 'test_import_scripture.py'
+python3 ../bunko-books/tools/catalogue.py --write
+```
+
+The importer preserves verse boundaries, source notes and translation credits.
+It uses the complete public-domain World English Bible (English, 66 books) and
+QuranEnc's English, Chinese and Japanese translations under that publisher's
+[republication terms](https://quranenc.com/en/home/api). It records downloaded
+checksums and translation versions in each rights file. Review future publisher
+versions before publishing, retaining the full text and notes and refreshing
+the version declarations. The older local exports remain read-only: the Bible
+export has incomplete coverage; the Quran export removed reference markers and
+notes. Neither is published as-is. Arabic is not a selectable layer in this
+Quran edition; all delivered language keys work in the existing app.
+
 For owner editions containing diagrams or photographs, follow the
 [figure-preservation audit and repair procedure](owner-figures-2026-09-26.md).
 It checks source figure counts, renders TeX diagrams and rejects missing images

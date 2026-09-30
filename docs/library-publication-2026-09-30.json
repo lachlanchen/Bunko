@@ -1,0 +1,63 @@
+{
+  "date": "2026-09-30",
+  "schema": 1,
+  "catalogueCount": 185,
+  "integrity": {
+    "bible": {
+      "verseIdentifiersComparedToPublisherVPL": 31103,
+      "chaptersComparedToPublisherVPL": 1189,
+      "matching": true,
+      "normalization": "Whitespace only; Psalm headings compared in chapter order because VPL attaches some to the preceding verse.",
+      "referenceSha256": "7d2e0b91ba43e2500fcab9c64d9db1962750deeff4e1186aed4c30220f5689be"
+    },
+    "quran": {
+      "en": {
+        "exactVerses": 6236,
+        "exactNonemptyNotes": 2215
+      },
+      "zh": {
+        "exactVerses": 6236,
+        "exactNonemptyNotes": 0
+      },
+      "ja": {
+        "exactVerses": 6236,
+        "exactNonemptyNotes": 3484
+      }
+    }
+  },
+  "sourceCheckoutModified": false,
+  "appCodeChanged": false,
+  "readerChecks": {
+    "checks": [
+      "Both books appear in the unmodified current app",
+      "Bible first chapter reads correctly",
+      "Bible fits 390px screen",
+      "Quran en layer renders",
+      "Quran zh layer renders",
+      "Quran ja layer renders",
+      "Quran translation footnotes render",
+      "Quran ruby remains available",
+      "Quran fits 390px screen",
+      "Quran last verse is reachable",
+      "Cached Quran chapter opens with both library origins unavailable",
+      "Cached Bible chapter opens with both library origins unavailable",
+      "No browser runtime errors"
+    ],
+    "errors": []
+  },
+  "importerTests": 7,
+  "catalogueTests": 7,
+  "publishedLanguages": {
+    "bible": [
+      "en"
+    ],
+    "quran": [
+      "en",
+      "zh",
+      "ja"
+    ]
+  },
+  "publication": "Standard world shelf; data-only schema-1 additions. No native build or store submission.",
+  "catalogueBytes": 2799144007,
+  "previousEntriesUnchanged": 183
+}

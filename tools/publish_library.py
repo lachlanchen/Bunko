@@ -48,6 +48,8 @@ def original_paragraph(paragraph, primary):
 
 
 def build(slug, edition, source_root, out):
+    if edition.get("kind") == "publisher-scripture":
+        raise ValueError(f"{slug}: use tools/import_scripture.py for the verified publisher edition")
     path = (source_root / edition["source"]).resolve()
     if not path.is_relative_to(source_root.resolve()):
         raise ValueError("Source escaped book root")

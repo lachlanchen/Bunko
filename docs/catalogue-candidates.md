@@ -82,7 +82,7 @@ Antiquity through 1929, which covers Homer, Virgil, Ovid, Plato, Shakespeare, th
 - [ ] `aeneid-virgil`
 - [ ] `anna-karenina`
 - [ ] `bel-ami`
-- [ ] `bible`
+- [x] `bible`
 - [ ] `brothers-karamazov`
 - [ ] `buddenbrooks`
 - [ ] `crime-and-punishment`
