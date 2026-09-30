@@ -16,3 +16,7 @@ Reader tests additionally exercise eight language layers, regional tags,
 per-script direction (including ar-Latn and az-Arab), passage tools, dictionary
 routing and Watch serialization. Native Swift model checks passed on the Mac
 build host, including more than six languages and legacy cache compatibility.
+
+## Published test packages
+
+iOS/Watch and Mac1.0.10(15) are VALID and IN_BETA_TESTING; Android15 is available internally ([Console evidence](google-internal15.png)). All packages passed signing, version checks and upload validation. [Release receipt](../../store/artifacts/languages-1.0.10-15.json) records hashes, build IDs and preserved production review states.

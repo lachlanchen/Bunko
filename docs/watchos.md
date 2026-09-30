@@ -53,3 +53,7 @@ and maximum font sizes, ruby-off rendering and page restoration were checked.
 Physical Watch hardware and Crown/tap interaction are not covered by this run.
 See [QA evidence](../evidence/watch-ruby-20260930/qa.json) and the
 [submission receipt](../store/artifacts/watch-release-1.0.9.json).
+
+## Arbitrary book languages — 1.0.10 (15)
+
+Available in TestFlight with the paired iPhone build. Excerpts accept any supported book language tag and more than six language layers, within the existing payload size bounds. Labels use the system locale. RTL lines use continuous native text to preserve shaping and direction; Chinese and Japanese ruby retain the existing layout. Re-send excerpts from the updated phone. Swift model tests cover Arabic, Hebrew, regional/script tags, eight layers and old caches; physical Watch testing is not claimed for this update.

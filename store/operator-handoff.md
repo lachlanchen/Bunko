@@ -1,3 +1,38 @@
+# Language reader update in testing — 2026-09-30 HKT
+
+**Bunko 1.0.10 (15)** is VALID and IN_BETA_TESTING for iOS/paired Watch and
+universal Mac, and **available to Google Play internal testers**. Both Apple
+packages passed validation/upload. The actual IPA phone/Watch versions and
+embedded native web bundle were checked; signed Android APK/AAB versions and
+hashes were recorded. Existing tester groups are retained.
+
+The web update is live and byte-verified. Book bundles are live: Quran has
+Arabic/English/Chinese/Japanese, Bible has English/Chinese/Japanese; complete
+publisher text, notes, numbering differences and credits are retained. The
+Japanese Bible is explicitly identified as the publisher's draft. The other
+183 catalogue entries are unchanged. Both repository workflows succeeded.
+
+Reader language layers are data-driven, including RTL/script direction, labels,
+regional tags, contents subtitles, passage tools, offline caching and Watch
+excerpts. Publisher URLs are clickable. Only en/zh/ja have offline dictionary
+packs; other languages use their own online entries. Interface locales remain
+separate from book languages. 64 client tests, 35 server tests, 8 importer tests,
+8 catalogue tests, 18 mobile-browser checks, Swift model checks, lint, TypeScript
+and renderer/build gates passed. No new physical-device test is claimed.
+
+**Production still uses the previous release lane:** iOS1.0.9(14) is
+WAITING_FOR_REVIEW; Mac1.0.9(14) is IN_REVIEW; Google production14 remains in
+review for 172 regions. These reviews were not cancelled. The public update
+feed still names approved versions only. Submit qualified1.0.10(15) as the next
+production update once each active review clears; do not mistake test availability
+for production approval.
+
+[Release receipt](artifacts/languages-1.0.10-15.json) ·
+[Language QA](../evidence/languages-20260930/README.md) ·
+[Book publishing guide](../docs/library-publishing.md)
+
+## Earlier release history
+
 # Approved icon update submitted — 2026-09-30 HKT
 
 **Bunko 1.0.9 (14)** is available in TestFlight (iPhone/iPad, paired Watch and

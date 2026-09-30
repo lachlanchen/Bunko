@@ -1,0 +1,100 @@
+{
+  "checkedAt": "2026-09-30T07:58:19.777044+00:00",
+  "sourceCommit": "50d26d9daae8db2c269a8f5f758768ddca45a311",
+  "bookCommit": "08065726a7734fe19798e4571c68d518b8525a34",
+  "packages": {
+    "version": "1.0.10",
+    "build": 15,
+    "iPhoneBundle": "art.lazying.bunko",
+    "WatchBundle": "art.lazying.bunko.watchkitapp",
+    "nativeWebExactMatch": true,
+    "iOS_SHA256": "fea6a97bb1356a3bfea402dcec5f112a29fba58fe55e30afa0456e6ef7701838",
+    "Mac_SHA256": "475d6f683b52463f18e669f756f8ba7aef9979628ff2a417ddf51e611b335af6",
+    "AndroidAAB_SHA256": "52a5c4f261a3191bf12c60e6bc879f4d01f1e8085db7607cb64b802fbd850e56",
+    "AndroidAPK_SHA256": "bf4a92597f0d119d80675e360777df000ea87fc9633a801e4f5cc3525e4a22a4"
+  },
+  "appleTesting": {
+    "MAC_OS": {
+      "id": "d7a850ec-ebfc-4a64-8f4b-971204eb38bb",
+      "version": "1.0.10",
+      "build": 15,
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    },
+    "IOS": {
+      "id": "733bf961-cde9-49a3-b147-d23002ed9904",
+      "version": "1.0.10",
+      "build": 15,
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    }
+  },
+  "googleTesting": {
+    "version": "1.0.10",
+    "build": 15,
+    "state": "AVAILABLE_TO_INTERNAL_TESTERS",
+    "notesLocales": [
+      "en-US",
+      "ja-JP",
+      "zh-CN",
+      "zh-TW"
+    ]
+  },
+  "productionReviewsPreserved": {
+    "IOS": {
+      "version": "1.0.9",
+      "state": "WAITING_FOR_REVIEW",
+      "buildID": "8fef4a93-7c7e-4506-a284-42bdf30f0092"
+    },
+    "MAC_OS": {
+      "version": "1.0.9",
+      "state": "IN_REVIEW",
+      "buildID": "69ded69c-f573-4242-aa15-7f4f7de65792"
+    },
+    "GOOGLE_PLAY": {
+      "version": "1.0.9",
+      "build": 14,
+      "state": "IN_REVIEW"
+    }
+  },
+  "web": {
+    "url": "https://lachlan.lazying.art/Bunko/",
+    "bundle": "./assets/index-CI9mrTxX.js",
+    "exactLocalBytes": true
+  },
+  "library": {
+    "bible": {
+      "languages": [
+        "en",
+        "zh",
+        "ja"
+      ],
+      "primary": "en",
+      "metadataSHA256": "5025e5e7285fc48c4612965ad16e4f8c98ba38d7c60d2e3ccbbdff2bc2459659",
+      "firstAndLastChapterHashes": "verified"
+    },
+    "quran": {
+      "languages": [
+        "ar",
+        "en",
+        "zh",
+        "ja"
+      ],
+      "primary": "ar",
+      "metadataSHA256": "0ee9fad509a023efa43adc3209267b43b18e2dfbd336116286b70f72ba9f0aec",
+      "firstAndLastChapterHashes": "verified"
+    }
+  },
+  "validation": {
+    "clientTests": 64,
+    "serverTests": 35,
+    "importTests": 8,
+    "catalogueTests": 8,
+    "browserChecks": 18,
+    "swiftModel": "passed",
+    "nativeArchives": "iOS/Watch, universal Mac, Android signed APK/AAB passed",
+    "physicalDeviceTesting": false,
+    "pagesWorkflow": 36685414321,
+    "catalogueWorkflow": 36685103063
+  }
+}
