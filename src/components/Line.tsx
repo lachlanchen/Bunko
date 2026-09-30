@@ -10,6 +10,20 @@ import { htmlLanguage, languageDirection } from '../lib/languages'
 import type { Line as LineTokens } from '../types'
 import { ROLE_NAMES, tokenParts } from '../lib/text'
 
+/** Keep publisher attribution URLs usable without interpreting book text as HTML. */
+function linkedText(text: string) {
+  const parts = []
+  let cursor = 0
+  for (const match of text.matchAll(/https?:\/\/[^\s<>"，。）」]+/g)) {
+    const url = match[0].replace(/[.,;:!?)]*$/, '')
+    parts.push(text.slice(cursor, match.index))
+    parts.push(<a key={match.index} href={url} target="_blank" rel="noopener noreferrer">{url}</a>)
+    cursor = match.index + url.length
+  }
+  parts.push(text.slice(cursor))
+  return parts
+}
+
 export function Line({
   line,
   ruby = true,
@@ -39,7 +53,7 @@ export function Line({
         }
         return (
           <span key={index} className={className} title={title}>
-            {text}
+            {linkedText(text)}
           </span>
         )
       })}

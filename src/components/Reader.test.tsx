@@ -74,3 +74,14 @@ it('renders arbitrary layers, RTL and regional language tags in both layouts and
   expect(container.querySelector('blockquote')?.getAttribute('dir')).toBe('rtl')
   vi.unstubAllGlobals()
 })
+
+it('keeps attribution URLs clickable and preserves plain text without interpreting markup', async () => {
+  const { Line } = await import('./Line')
+  const text = 'Source: https://tanzil.net. <script>literal</script> javascript:alert(1)'
+  const { container } = render(<Line line={[text]} />)
+  const link = screen.getByRole('link', { name: 'https://tanzil.net' })
+  expect(link.getAttribute('href')).toBe('https://tanzil.net')
+  expect(link.getAttribute('rel')).toBe('noopener noreferrer')
+  expect(container.textContent).toBe(text)
+  expect(container.querySelector('script')).toBeNull()
+})
