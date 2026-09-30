@@ -45,7 +45,7 @@ The live catalogue has 185 cleared editions, covering classics, translated editi
 
 ## Reading controls
 
-Long-press a word, adjust the native selection handles, then choose **Dictionary**. **Sentence** expands the selection; ordinary taps leave the page open. Swipe right from the left edge to go back. Settings includes independent main-text and ruby size controls, with a live preview. Theme and Settings fit beside the library title on narrow phones. See the [reading controls guide](docs/reading-controls.md).
+Long-press a word, adjust the native selection handles, then choose **Dictionary**. **Sentence** expands the selection; ordinary taps leave the page open. Swipe right across the page to go back; the left-edge gesture also works. Settings includes independent main-text and ruby size controls, with a live preview. Theme and Settings fit beside the library title on narrow phones. See the [reading controls guide](docs/reading-controls.md).
 
 ## Support Bunko
 

@@ -80,7 +80,7 @@ Bunko tự động kiểm tra bản cập nhật và hiển thị lời nhắc c
 
 ## Thao tác đọc
 
-Nhấn giữ một từ, điều chỉnh tay nắm chọn văn bản rồi chọn Từ điển. Nút Câu mở rộng vùng chọn ra cả câu; chạm thông thường không mở từ điển. Vuốt sang phải từ mép trái để quay lại. Cài đặt cho phép chỉnh riêng cỡ chữ chính và chú âm ruby, kèm xem trước. Nút giao diện và Cài đặt nằm cạnh tiêu đề thư viện cả trên điện thoại hẹp.
+Nhấn giữ một từ, điều chỉnh tay nắm chọn văn bản rồi chọn Từ điển. Nút Câu mở rộng vùng chọn ra cả câu; chạm thông thường không mở từ điển. Vuốt sang phải trên trang để quay lại; thao tác từ mép trái vẫn hoạt động. Cài đặt cho phép chỉnh riêng cỡ chữ chính và chú âm ruby, kèm xem trước. Nút giao diện và Cài đặt nằm cạnh tiêu đề thư viện cả trên điện thoại hẹp.
 
 [docs/reading-controls.md](../docs/reading-controls.md)
 

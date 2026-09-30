@@ -10,7 +10,7 @@ On a phone, long-press a word to select it. Drag the native handles to adjust th
 
 ## Go back
 
-Swipe right from the left edge of the screen. A reading panel or Settings sheet closes first; from the reader you return to the book, and from the book to the library. Android's system Back follows the same order. A selection, slider drag, vertical scroll, multi-touch gesture or long hold does not navigate away. Escape supports the same back action on a keyboard.
+Swipe right across the page to go back; starting at the left edge also works. Begin moving promptly and swipe at least 90 pixels (70 pixels from the edge). A reading panel or Settings sheet closes first; from the reader you return to the book, and from the book to the library. Android's system Back follows the same order. A selection, slider drag, vertical scroll, multi-touch gesture or long hold does not navigate away. Escape supports the same back action on a keyboard.
 
 ## Set readable sizes
 
@@ -26,6 +26,6 @@ The title, theme selector and Settings button share the top row down to a 320-pi
 
 ## Verification
 
-Thirty automated checks cover rendering, dictionary helpers, sentence boundaries, language separation, back-action priority, scrolling/selection exclusions and delayed touch events. Browser interaction checks cover the narrow header, independent persistent sizes, explicit lookup and back navigation. An Android API 34 emulator verifies native long-press handles, Sentence expansion, the selected lookup query, hardware Back, scrolling and edge swipe. WebKit verifies selection and explicit lookup. Signed Android, iOS and universal Mac packages are validated separately.
+Thirty automated checks cover rendering, dictionary helpers, sentence boundaries, language separation, back-action priority, scrolling/selection exclusions and delayed touch events. Browser interaction checks cover the narrow header, independent persistent sizes, explicit lookup and back navigation. An Android API 34 emulator verifies native long-press handles, Sentence expansion, the selected lookup query, hardware Back, scrolling and edge swipe. The 2026-09-30 correction additionally checks page-body swipes and touch cancellation; it preserves long-press selection and horizontal equation scrolling. WebKit verifies selection and explicit lookup. Signed Android, iOS and universal Mac packages are validated separately.
 
 Physical iPhone long-press behavior was not tested in this update; iOS checks use WebKit plus the signed Xcode archive and Apple validation. Release and review states are recorded in [the release record](../store/release.yaml).

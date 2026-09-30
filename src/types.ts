@@ -65,7 +65,7 @@ export interface Paragraph {
   id: string
   src: string
   u: Unit[]
-  kind?: 'text' | 'heading' | 'equation' | 'figure'
+  kind?: 'text' | 'heading' | 'equation' | 'figure' | 'annotation'
   figure?: { path: string; caption?: Partial<Record<LangCode, string>> }
 }
 

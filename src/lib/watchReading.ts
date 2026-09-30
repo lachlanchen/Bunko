@@ -31,6 +31,9 @@ export function watchExcerpt(meta: BookMeta, chapter: Chapter, langs: LangCode[]
   const available = chapter.p.slice(Math.max(0, start))
   const languages = [...new Set(langs)]
   excerpt: for (const paragraph of available) {
+    // The Watch excerpt follows the main passage; optional translation notes
+    // stay in the phone reader and must not become a second Japanese sentence.
+    if (paragraph.kind === 'annotation' || (paragraph.id.endsWith('-notes') && paragraph.u.every(unit => unit.annotation === true))) continue
     // Equations and figures do not have a faithful plain-text Watch rendition.
     if (paragraph.figure || paragraph.kind === 'equation' || paragraph.u.some(unit => Object.values(unit.rich ?? {}).some(parts => parts?.some(part => part.math)))) {
       reading.truncated = true

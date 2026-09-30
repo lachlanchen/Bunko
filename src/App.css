@@ -164,6 +164,10 @@
 }
 .paired-unit { display: inline; }
 .para-heading { margin-top: 2.2em; font-weight: 750; color: var(--indigo); }
+.para-annotation { margin-top: -.25em; }
+.passage-notes { font-size: .88em; border-inline-start: 2px solid var(--line); padding-inline-start: .8em; }
+.passage-notes summary { cursor: pointer; font-family: var(--sans); font-size: .9em; font-weight: 600; color: var(--ink-soft); padding: .35em 0; }
+.passage-notes[open] summary { margin-bottom: .65em; }
 .para-equation { text-align: center; }
 .math-display { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: .4em 0; -webkit-overflow-scrolling: touch; }
 .math-inline { max-width: 100%; }

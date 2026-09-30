@@ -359,7 +359,7 @@
     ],
     "primary": "en",
     "cat": "world",
-    "basis": "Complete 66-book English WEB, Chinese Union Version (traditional), and Japanese Freedom Bible (publisher draft), each explicitly public domain at eBible.org. Publisher text, combined verse ranges, notes and source numbering retained; textual variants are not fabricated. Optional matching pronunciation aids from the owner-authorized earlier edition.",
+    "basis": "Complete 66-book English WEB, Chinese Union Version (traditional), and Japanese Freedom Bible (publisher draft), each explicitly public domain at eBible.org. Publisher text, combined verse ranges, notes and source numbering retained; textual variants are not fabricated. Optional matching Chinese pronunciation aids from the owner-authorized earlier edition and Japanese word-level furigana.",
     "references": [
       "https://ebible.org/engwebp/copyright.htm",
       "https://ebible.org/cmn-cu89t/copyright.htm",
@@ -3824,7 +3824,7 @@
     ],
     "primary": "ar",
     "cat": "world",
-    "basis": "Arabic text: Tanzil Uthmani 1.1, CC BY 3.0 with verbatim reproduction terms; full text, basmalahs and source notice retained. Translations redistributed with permission under QuranEnc.com Terms and Policies. These are credited publisher translations, not public-domain or generated translations. Full translation text, markers, footnotes, translator information and versions are preserved. Matching Chinese pinyin is an optional display aid; unaudited Japanese readings from the old export are not reused.",
+    "basis": "Arabic text: Tanzil Uthmani 1.1, CC BY 3.0 with verbatim reproduction terms; full text, basmalahs and source notice retained. Translations redistributed with permission under QuranEnc.com Terms and Policies. These are credited publisher translations, not public-domain or generated translations. Full translation text, markers, footnotes, translator information and versions are preserved. Matching Chinese pinyin and Japanese word-level furigana are optional display aids; publisher base text remains unchanged.",
     "references": [
       "https://tanzil.net",
       "https://tanzil.net/docs/Text_License",

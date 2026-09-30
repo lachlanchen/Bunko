@@ -165,3 +165,5 @@ updates after platform packaging and current review declarations are checked.
 ## Language-layer correction — 2026-09-30
 
 Owner requests Arabic/English/Chinese/Japanese for the Quran, English/Chinese/Japanese for the Bible, and arbitrary book languages. Language layers use standard tags with no fixed language list or layer count. Preserve publisher text and notes, per-script direction, selected layer order, offline caching and Watch payload bounds. Interface translations and the three downloadable dictionary packs are separate concerns. Successor reader build 1.0.10 (15) is for testing while active 1.0.9 (14) store reviews continue.
+
+**2026-09-30 reader correction:** A deliberate rightward swipe across the page goes back, retaining sheet priority and excluding selection, long holds, controls, multi-touch and horizontal content scrollers. Translation notes appear in a collapsed section, separately from aligned body text. Japanese source credits must be Japanese; scripture ruby uses word context with exact base-text preservation and checks for unknown readings.

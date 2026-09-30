@@ -85,3 +85,21 @@ it('keeps attribution URLs clickable and preserves plain text without interpreti
   expect(container.textContent).toBe(text)
   expect(container.querySelector('script')).toBeNull()
 })
+
+it('folds translation notes separately and omits missing language rows in paired mode', async () => {
+  const { loadChapter } = await import('../lib/library')
+  vi.mocked(loadChapter).mockResolvedValueOnce({ ...chapter, p: [...chapter.p,
+    { id: 'p1-notes', kind: 'annotation', src: '', u: [{ src: '', annotation: true, ja: [['訳注', 'やくちゅう'], 'です。'] }] },
+  ] })
+  const props = { meta, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs: ['en', 'ja'], layout: 'paired' as const }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
+  const { container } = render(<Reader {...props} />)
+  await screen.findByText('日本語の原文')
+  const notes = container.querySelector('details')!
+  expect(notes.open).toBe(false)
+  expect(notes.querySelector('summary')?.textContent).toBe('Translation notes')
+  expect(notes.querySelectorAll('.language-label')).toHaveLength(1)
+  expect(notes.querySelector('.language-label')?.textContent).toBe('Japanese')
+  expect(notes.querySelector('ruby rt')?.textContent).toBe('やくちゅう')
+  fireEvent.click(notes.querySelector('summary')!)
+  expect(notes.open).toBe(true)
+})

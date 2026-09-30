@@ -33,18 +33,28 @@ The source checkout is read only. The exporter supports complete assembled/previ
 Entries with `kind: publisher-scripture` use the publisher importer instead:
 
 ```sh
-python3 tools/import_scripture.py --fetch --cache .runtime/scripture-sources --out ../bunko-books
+python3 tools/import_scripture.py --fetch --cache .runtime/scripture-sources --out ../bunko-books \
+  --japanese-dictionary /path/to/existing/unidic/dicdir
 python3 -m unittest discover -s tools -p 'test_import_scripture.py'
+BUNKO_UNIDIC=/path/to/existing/unidic/dicdir python3 -m unittest discover -s tools -p 'test_japanese_readings.py'
+python3 tools/validate_scripture.py --library ../bunko-books --cache .runtime/scripture-sources --report .runtime/scripture-validation.json
 python3 ../bunko-books/tools/catalogue.py --write
 ```
 
 The importer preserves source text, notes, section headings, credits and versions.
+Japanese word readings use `fugashi` and an existing UniDic dictionary; the
+build stops for unknown kanji until their readings are reviewed. No dictionary
+is bundled in the app. Existing inline pronunciations stay intact. Ruby tokens
+must flatten to the exact publisher text. The reader folds `kind: annotation`
+translation notes separately from the aligned passage, and Watch excerpts omit
+those optional notes. Edition information is localized, never copied from
+English into a Japanese language field.
 The Bible contains all 66 books in English (World English Bible), traditional
 Chinese (Chinese Union Version), and Japanese (Freedom Bible, labelled by its
 publisher as a draft). These editions are public domain at eBible.org. Combined
 Chinese verses remain together, and genuine numbering/manuscript differences
 remain visible rather than being filled with invented translations. Optional
-`--bible-ruby <sqlite>` transfers only unchanged readings from an audited earlier
+`--bible-ruby <sqlite>` transfers only unchanged Chinese readings from an audited earlier
 edition; `prepare_scripture_ruby.py` creates that cache from the read-only source.
 
 The Quran contains Arabic, English, Chinese and Japanese: all 114 surahs and

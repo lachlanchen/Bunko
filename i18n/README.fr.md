@@ -80,7 +80,7 @@ Bunko recherche automatiquement les mises à jour et propose une notification qu
 
 ## Commandes de lecture
 
-Appuyez longuement sur un mot, ajustez les poignées de sélection, puis choisissez Dictionnaire. Phrase étend la sélection ; un appui ordinaire laisse la page ouverte. Glissez vers la droite depuis le bord gauche pour revenir. Les réglages séparent la taille du texte et celle des lectures ruby, avec aperçu. Le thème et les réglages restent à côté du titre sur les petits écrans.
+Appuyez longuement sur un mot, ajustez les poignées de sélection, puis choisissez Dictionnaire. Phrase étend la sélection ; un appui ordinaire laisse la page ouverte. Glissez vers la droite sur la page pour revenir ; le geste fonctionne aussi depuis le bord gauche. Les réglages séparent la taille du texte et celle des lectures ruby, avec aperçu. Le thème et les réglages restent à côté du titre sur les petits écrans.
 
 [docs/reading-controls.md](../docs/reading-controls.md)
 

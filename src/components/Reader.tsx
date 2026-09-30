@@ -6,7 +6,7 @@ import { htmlLanguage, languageDirection, unitLine } from '../lib/languages'
  * three arrangements come from the same data: the source line alone, every
  * gloss under its own source line, or whole paragraphs one after another.
  */
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { ChevronLeft, ChevronRight, List, MessageCircle, Settings2, Watch } from 'lucide-react'
 import type { BookMeta, Chapter, LangCode, ReadingSettings, Unit } from '../types'
 import type { UICopy, UILanguage } from '../i18n'
@@ -36,6 +36,10 @@ interface ReaderProps {
   onBack: () => void
   backLabel: string
   overlayOpen?: boolean
+}
+
+function PassageNotes({ enabled, label, children }: { enabled: boolean; label: string; children: ReactNode }) {
+  return enabled ? <details className="passage-notes"><summary>{label}</summary>{children}</details> : children
 }
 
 export function Reader({
@@ -134,6 +138,7 @@ export function Reader({
     row?.title?.[meta.primary] ||
     `${copy.chapterList} ${row?.n ?? ''}`
   const discussLabel = { en: 'Discuss passage', 'zh-Hans': '讨论这段', 'zh-Hant': '討論這段', ja: 'この箇所を話し合う' }[ui]
+  const notesLabel = { en: 'Translation notes', 'zh-Hans': '译注', 'zh-Hant': '譯注', ja: '訳注' }[ui]
   const watchLabel = { en: 'Send excerpt to Apple Watch', 'zh-Hans': '发送选段到 Apple Watch', 'zh-Hant': '傳送選段到 Apple Watch', ja: '抜粋をApple Watchへ送る' }[ui]
   const watchQueued = { en: 'Excerpt queued. Open Bunko on your paired Apple Watch to read it offline.', 'zh-Hans': '选段已排队。在配对的 Apple Watch 上打开 Bunko，即可离线阅读。', 'zh-Hant': '選段已排隊。在配對的 Apple Watch 上開啟 Bunko，即可離線閱讀。', ja: '抜粋を送信待ちにしました。ペアリングしたApple WatchのBunkoでオフライン閲覧できます。' }[ui]
 
@@ -197,16 +202,17 @@ export function Reader({
             <h1 lang={htmlLanguage(chapter.title?.[shown[0]] ? shown[0] : meta.primary)} dir={languageDirection(chapter.title?.[shown[0]] ? shown[0] : meta.primary)}>
               <Line line={chapter.title?.[shown[0]] ?? chapter.title?.[meta.primary]} ruby={settings.ruby} />
             </h1>
-            {chapter.p.map((paragraph, index) => (
+            {chapter.p.map((paragraph, index) => (paragraph.figure || paragraph.u.some(unit => shown.some(lang => unitLine(unit, lang)?.length))) && (
               <div className={`para${paragraph.kind ? ` para-${paragraph.kind}` : ''}`} key={paragraph.id || index} data-para={index}>
                 {paragraph.figure && <BookFigure bookId={meta.id} figure={paragraph.figure} lang={shown[0]} primary={meta.primary} />}
+                <PassageNotes enabled={paragraph.kind === 'annotation' || (paragraph.id.endsWith('-notes') && paragraph.u.every(unit => unit.annotation === true))} label={notesLabel}>
                 {settings.layout === 'paired'
-                  ? shown.map((lang) => (
+                  ? shown.filter(lang => paragraph.u.some(unit => unitLine(unit, lang)?.length)).map((lang) => (
                       <p className={`para-line lang-${lang}`} key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>
                         <strong className="language-label">{languageName(lang, ui)}</strong>
-                        {paragraph.u.map((unit, unitIndex) => (
+                        {paragraph.u.map((unit, unitIndex) => unitLine(unit, lang)?.length ? (
                           <span key={unitIndex} className="paired-unit"><span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><RichLine unit={unit} lang={lang} ruby={settings.ruby} grammar={settings.grammar} /></span>{lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
-                        ))}
+                        ) : null)}
                       </p>
                     ))
                   : paragraph.u.map((unit, unitIndex) => (
@@ -227,6 +233,7 @@ export function Reader({
                         )}
                       </div>
                     ))}
+                </PassageNotes>
               </div>
             ))}
             <nav className="chapter-nav">

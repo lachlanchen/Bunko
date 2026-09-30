@@ -88,11 +88,11 @@ def exact_ruby(text, tokens):
     return line
 
 
-def paragraph(id_, lines, annotation=False):
+def paragraph(id_, lines, annotation=False, kind=None):
     unit = {**lines, 'src': '' if annotation else plain(lines.get('en', next(iter(lines.values()))))}
     if annotation:
         unit['annotation'] = True
-    return {'id': id_, 'src': unit['src'], 'u': [unit]}
+    return {'id': id_, 'src': unit['src'], 'u': [unit], **({'kind': kind} if kind else {})}
 
 
 def heading_text(node):
@@ -223,14 +223,19 @@ def bible(cache, ruby_database=None):
         files.append(source_file)
     ruby = sqlite3.connect(ruby_database.resolve().as_uri() + '?mode=ro', uri=True) if ruby_database else None
     intro = {
-        'en': 'The Holy Bible, 66 books in English, Chinese and Japanese. English: World English Bible (WEB). Chinese: Chinese Union Version, traditional script (CUVt). Japanese: Japanese Freedom Bible (publisher draft). All three are public-domain editions from eBible.org. Verse numbers and translation notes are retained. Combined verses stay together; differing numbering and manuscript variants can mean a passage appears in only one or two editions. These differences are not filled with invented translations. Matching readings from the earlier Bunko edition are optional pronunciation aids.',
-        'zh': '《圣经》66卷，英语、中文、日语对照。英语：世界英语圣经（WEB）；中文：繁体新标点和合本（CUVt）；日语：自由圣经（出版方标注为草稿）。三个译本均由eBible.org以公有领域版本发布。保留节号与译注，合并的经节一并显示。各译本的编号或底本异文不同，个别段落只在部分译本中出现，不以臆造译文补齐。与旧版正文一致的注音作为可关闭的阅读辅助。',
-        'ja': '聖書全66巻を英語・中国語・日本語で対照します。英語はWorld English Bible、中国語は繁体字の新標點和合本、日本語はフリーダム・バイブル（配布元による草稿）です。いずれもeBible.org配布のパブリックドメイン版です。節番号と訳注を保持し、結合された節はまとめて表示します。節番号や底本の違いにより、一部の箇所は特定の訳だけに現れます。欠落を創作訳で補うことはしません。旧版と一致する語の読みは、切り替え可能な補助表示です。',
+        'en': 'The Holy Bible, 66 books in English, Chinese and Japanese. English: World English Bible (WEB). Chinese: Chinese Union Version, traditional script (CUVt). Japanese: Japanese Freedom Bible (publisher draft). All three are public-domain editions from eBible.org. Verse numbers and translation notes are retained. Combined verses stay together; differing numbering and manuscript variants can mean a passage appears in only one or two editions. These differences are not filled with invented translations. Chinese readings retained from the earlier edition and Japanese word-level furigana are optional pronunciation aids.',
+        'zh': '《圣经》66卷，英语、中文、日语对照。英语：世界英语圣经（WEB）；中文：繁体新标点和合本（CUVt）；日语：自由圣经（出版方标注为草稿）。三个译本均由eBible.org以公有领域版本发布。保留节号与译注，合并的经节一并显示。各译本的编号或底本异文不同，个别段落只在部分译本中出现，不以臆造译文补齐。保留与旧版正文一致的中文注音，并提供日语词语级假名，两者均可关闭。',
+        'ja': '聖書全66巻を英語・中国語・日本語で対照します。英語はWorld English Bible、中国語は繁体字の新標點和合本、日本語はフリーダム・バイブル（配布元による草稿）です。いずれもeBible.org配布のパブリックドメイン版です。節番号と訳注を保持し、結合された節はまとめて表示します。節番号や底本の違いにより、一部の箇所は特定の訳だけに現れます。欠落を創作訳で補うことはしません。中国語の読みと日本語の語単位のふりがなは、切り替え可能な補助表示です。',
     }
-    credits = 'Sources: https://ebible.org/engwebp/ ; https://ebible.org/cmn-cu89t/ ; https://ebible.org/jpnm/ . World English Bible is a trademark of eBible.org and identifies the unchanged English translation. Japanese Freedom Bible is a draft: https://ebible.org/jpnm/copyright.htm . Downloads checked: ' + DATE + '.'
+    source_links = 'https://ebible.org/engwebp/ ; https://ebible.org/cmn-cu89t/ ; https://ebible.org/jpnm/ .'
+    credits = {
+        'en': 'Sources: ' + source_links + ' World English Bible is a trademark of eBible.org and identifies the unchanged English translation. Japanese Freedom Bible is a draft: https://ebible.org/jpnm/copyright.htm . Downloads checked: ' + DATE + '.',
+        'zh': '来源：' + source_links + ' World English Bible为eBible.org的商标，用于标识未改动的英语译本。日语自由圣经为出版方的草稿版本：https://ebible.org/jpnm/copyright.htm 。下载核验日期：' + DATE + '。',
+        'ja': '出典：' + source_links + ' World English BibleはeBible.orgの商標で、変更していない英語訳を示します。日本語のフリーダム・バイブルは配布元の草稿版です：https://ebible.org/jpnm/copyright.htm 。取得・確認日：' + DATE + '。',
+    }
     result = [{'id': 'bible-edition', 'n': 0, 'title': {'en': ['Edition and sources'], 'zh': ['版本与来源'], 'ja': ['版と出典']},
                'p': [paragraph('bible-edition', {l: [t] for l, t in intro.items()}),
-                     paragraph('bible-edition-credits', {l: [credits] for l in editions})]}]
+                     paragraph('bible-edition-credits', {l: [text] for l, text in credits.items()})]}]
     counts = {l: {'chapters': 0, 'verseEntries': 0, 'notes': 0, 'headings': 0} for l in editions}
     differences = []
     chapter_count = 0
@@ -253,9 +258,9 @@ def bible(cache, ruby_database=None):
                             following = next((r for r in rows[l][i + 1:] if 'verse' in r), None)
                             position = min(verse_range(following['verse'])) if following else float('inf')
                             anchor = f'bible-{code.lower()}-{number}-heading-{l}-{i}'
-                            parts = [paragraph(anchor, {l: [row['heading']]}, True)]
+                            parts = [paragraph(anchor, {l: [row['heading']]}, True, 'heading')]
                             if row.get('notes'):
-                                parts.append(paragraph(anchor + '-notes', {l: ['\n'.join(row['notes'])]}, True))
+                                parts.append(paragraph(anchor + '-notes', {l: ['\n'.join(row['notes'])]}, True, 'annotation'))
                             headings.append((position, parts))
                 headings.sort(key=lambda item: item[0])
                 for group in aligned_bible_rows(rows):
@@ -270,16 +275,18 @@ def bible(cache, ruby_database=None):
                             if ruby and l in ('zh', 'ja') and row['verse'].isdigit():
                                 old = ruby.execute('SELECT tokens FROM verses WHERE book=? AND chapter=? AND verse=?', (code, number, int(row['verse']))).fetchone()
                             tokens = json.loads(old[0]).get(l, []) if old else []
-                            if lines[l]: lines[l].append(' ')
-                            lines[l].extend([row['verse'] + '  '] + (exact_ruby(row['text'], tokens) if row['text'] else []))
+                            if row['text']:
+                                if lines[l]: lines[l].append(' ')
+                                lines[l].extend([row['verse'] + '  '] + exact_ruby(row['text'], tokens))
                             if row.get('notes'):
                                 notes.setdefault(l, []).extend(row['notes'])
+                    lines = {lang: line for lang, line in lines.items() if line}
                     partial = len(lines) != len(editions)
                     if partial:
                         differences.append({'book': code, 'chapter': number, 'verses': sorted(group['numbers']), 'languages': list(lines)})
-                    payload.append(paragraph(anchor, lines, partial))
+                    if lines: payload.append(paragraph(anchor, lines, partial))
                     if notes:
-                        payload.append(paragraph(anchor + '-notes', {l: ['\n'.join(ns)] for l, ns in notes.items()}, True))
+                        payload.append(paragraph(anchor + '-notes', {l: ['\n'.join(ns)] for l, ns in notes.items()}, True, 'annotation'))
                 for _, parts in headings: payload.extend(parts)
                 result.append({'id': f'bible-{code.lower()}-{number}', 'n': chapter_count,
                                'title': {l: [f'{names[l][code]} {number}'] for l in editions}, 'p': payload})
@@ -289,7 +296,7 @@ def bible(cache, ruby_database=None):
     if chapter_count != 1189 or any(counts[l]['verseEntries'] != expected[l] for l in editions):
         raise ValueError(f'Unexpected Bible coverage: {counts}')
     rights = {
-        'basis': 'Complete 66-book English WEB, Chinese Union Version (traditional), and Japanese Freedom Bible (publisher draft), each explicitly public domain at eBible.org. Publisher text, combined verse ranges, notes and source numbering retained; textual variants are not fabricated. Optional matching pronunciation aids from the owner-authorized earlier edition.',
+        'basis': 'Complete 66-book English WEB, Chinese Union Version (traditional), and Japanese Freedom Bible (publisher draft), each explicitly public domain at eBible.org. Publisher text, combined verse ranges, notes and source numbering retained; textual variants are not fabricated. Optional matching Chinese pronunciation aids from the owner-authorized earlier edition and Japanese word-level furigana.',
         'references': ['https://ebible.org/engwebp/copyright.htm', 'https://ebible.org/cmn-cu89t/copyright.htm', 'https://ebible.org/jpnm/copyright.htm'],
         'sourceFiles': files,
         'translations': {'en': 'World English Bible', 'zh': 'Chinese Union Version (traditional)', 'ja': 'Japanese Freedom Bible — publisher draft'},
@@ -340,6 +347,16 @@ def quran(cache, source_root):
                         ' Version ' + metadata[lang]['version'] + '.' for lang in TRANSLATIONS)
     credits += '\nPublisher and source: QuranEnc.com — https://quranenc.com/en/home . Checked: ' + DATE + '.'
     terms = ('QuranEnc.com permits downloading and republication subject to its terms: preserve the contents without modification, addition or deletion; clearly credit the publisher and source; state the version; retain translation information; notify QuranEnc.com of translation concerns; update from the latest source version; and display no inappropriate advertisements. See https://quranenc.com/en/home/api .')
+    localized_credits = {
+        'en': credits,
+        'zh': '英语：Rowwad翻译中心团队，合作机构为Rabwah宣教协会、多语种伊斯兰内容服务协会及IslamHouse.com网站。版本 ' + metadata['en']['version'] + '。\n中文：马坚译本，在Rowwad翻译中心监督下完善；原译文供意见反馈、评估和持续改进。版本 ' + metadata['zh']['version'] + '。\n日语：赛义德·佐藤译本，在Rowwad翻译中心监督下完善；原译文供意见反馈、评估和持续改进。版本 ' + metadata['ja']['version'] + '。\n出版与来源：QuranEnc.com — https://quranenc.com/zh/home 。核验日期：' + DATE + '。',
+        'ja': '英語訳：Rowwad翻訳センターのチーム。Rabwah宣教協会、多言語イスラーム・コンテンツ・サービス協会およびIslamHouse.comとの協力によります。版 ' + metadata['en']['version'] + '。\n中国語訳：ムハンマド・マキーン（馬堅）。Rowwad翻訳センターの監督のもとで改良され、原訳は意見・評価・継続的改善のために公開されています。版 ' + metadata['zh']['version'] + '。\n日本語訳：サイード佐藤。Rowwad翻訳センターの監督のもとで改良され、原訳は意見・評価・継続的改善のために公開されています。版 ' + metadata['ja']['version'] + '。\n配布元・出典：QuranEnc.com — https://quranenc.com/ja/home 。確認日：' + DATE + '。',
+    }
+    localized_terms = {
+        'en': terms,
+        'zh': 'QuranEnc.com允许按其条款下载和再发布：完整保留内容，不修改、增添或删减；明确标注出版方、来源和版本；保留译本信息；发现翻译问题时通知QuranEnc.com；更新至最新源版本；不展示不适当的广告。条款：https://quranenc.com/en/home/api 。',
+        'ja': 'QuranEnc.comの規約に基づきダウンロードと再配布が許可されています。内容を変更・追加・削除せず、配布元・出典・版を明記し、翻訳情報を保持します。翻訳上の問題はQuranEnc.comに通知し、最新版に更新し、不適切な広告を掲載しません。規約：https://quranenc.com/en/home/api 。',
+    }
     intro = {
         'en': 'Translations of the meanings of the Quran, aligned by verse. All 114 surahs and 6,236 numbered verses are included. Translation notes follow each verse. Arabic: Tanzil Uthmani text, version 1.1, https://tanzil.net . Its unnumbered opening basmalahs remain at the beginning of each applicable surah, exactly as supplied. Select Arabic, English, Chinese and Japanese independently.',
         'zh': '本版按经节对照《古兰经》的英语、中文和日语译文，收录全部114章、6,236节。译注紧随对应经节。阿拉伯语采用Tanzil Uthmani正文1.1版（https://tanzil.net），完整保留各章开头的未编号开端词。阿拉伯语、英语、中文和日语均可独立选择。',
@@ -348,9 +365,9 @@ def quran(cache, source_root):
     intro = {'ar': 'القرآن الكريم بنص تنزيل العثماني، الإصدار 1.1، مع ترجمات المعاني إلى الإنجليزية والصينية واليابانية. يشمل جميع السور الـ114 والآيات المرقمة الـ6236 مع حواشي الترجمات. المصدر: https://tanzil.net و https://quranenc.com .', **intro}
     result = [{'id': 'quran-edition', 'n': 0, 'title': {'ar': ['النسخة والمصادر'], 'en': ['Edition and sources'], 'zh': ['版本与来源'], 'ja': ['版と出典']},
                'p': [paragraph('quran-edition-intro', {l: [t] for l, t in intro.items()}),
-                     paragraph('quran-edition-credits', {l: [credits] for l in TRANSLATIONS}, True),
+                     paragraph('quran-edition-credits', {l: [text] for l, text in localized_credits.items()}, True),
                      paragraph('quran-arabic-copyright', {'en': [copyright_block]}, True),
-                     paragraph('quran-edition-terms', {l: [terms] for l in TRANSLATIONS}, True)]}]
+                     paragraph('quran-edition-terms', {l: [text] for l, text in localized_terms.items()}, True)]}]
     for number, old_chapter in enumerate(old_chapters, 1):
         verse_keys = sorted(k for k in keys if k[0] == number)
         if [v for _, v in verse_keys] != list(range(1, len(verse_keys) + 1)):
@@ -358,20 +375,18 @@ def quran(cache, source_root):
         payload = []
         for key in verse_keys:
             anchor = f'quran-{key[0]:03}-{key[1]:03}'
-            # The old Japanese export assigns isolated-kanji readings that are
-            # wrong for words such as 御名. Keep the publisher's Japanese text
-            # without those unaudited readings; retain matching Chinese pinyin.
+            # Japanese word readings are applied in one validated pass below.
             lines = {lang: [f'{key[0]}:{key[1]}  '] + exact_ruby(translations[lang][key][0], old_units[key].get(lang, []) if lang == 'zh' else [])
                      for lang in TRANSLATIONS}
             lines = {'ar': [f'{key[0]}:{key[1]}  ', arabic[key]], **lines}
             payload.append(paragraph(anchor, lines))
             notes = {lang: [translations[lang][key][1]] for lang in TRANSLATIONS if translations[lang][key][1]}
             if notes:
-                payload.append(paragraph(anchor + '-notes', notes, True))
+                payload.append(paragraph(anchor + '-notes', notes, True, 'annotation'))
         title = {l: [''.join(t['t'] for t in old_chapter['title'][l])] for l in ['ar', *TRANSLATIONS]}
         result.append({'id': f'quran-sura-{number:03}', 'n': number, 'title': title, 'p': payload, 'sourceNotice': copyright_block})
     rights = {
-        'basis': 'Arabic text: Tanzil Uthmani 1.1, CC BY 3.0 with verbatim reproduction terms; full text, basmalahs and source notice retained. Translations redistributed with permission under QuranEnc.com Terms and Policies. These are credited publisher translations, not public-domain or generated translations. Full translation text, markers, footnotes, translator information and versions are preserved. Matching Chinese pinyin is an optional display aid; unaudited Japanese readings from the old export are not reused.',
+        'basis': 'Arabic text: Tanzil Uthmani 1.1, CC BY 3.0 with verbatim reproduction terms; full text, basmalahs and source notice retained. Translations redistributed with permission under QuranEnc.com Terms and Policies. These are credited publisher translations, not public-domain or generated translations. Full translation text, markers, footnotes, translator information and versions are preserved. Matching Chinese pinyin and Japanese word-level furigana are optional display aids; publisher base text remains unchanged.',
         'references': ['https://tanzil.net', 'https://tanzil.net/docs/Text_License', 'https://quranenc.com/en/home', 'https://quranenc.com/en/home/api'],
         'translations': {lang: {k: metadata[lang][k] for k in ['key', 'title', 'description', 'version', 'last_update']} for lang in TRANSLATIONS},
         'terms': terms, 'arabicNotice': copyright_block,
@@ -428,11 +443,16 @@ def main():
     parser.add_argument('--source-root', type=Path, default=ROOT.parent / 'ZhJpBook')
     parser.add_argument('--bible-ruby', type=Path, help='Optional read-only audited verse/token SQLite database')
     parser.add_argument('--fetch', action='store_true', help='Refresh publisher downloads before importing')
+    parser.add_argument('--japanese-dictionary', type=Path, required=True, help='Existing UniDic directory; no dictionary is bundled in the app')
     args = parser.parse_args()
     if args.fetch:
         fetch(args.cache)
+    from japanese_readings import JapaneseReadings
+    readings = JapaneseReadings(args.japanese_dictionary)
     for slug, build in [('bible', lambda: bible(args.cache, args.bible_ruby)), ('quran', lambda: quran(args.cache, args.source_root))]:
         title, content, rights = build()
+        readings.annotate(title, content)
+        rights['readingAids'] = {'ja': 'Optional word-level Japanese furigana from UniDic with reviewed scripture readings. All publisher base text is unchanged.', 'source': 'https://github.com/polm/unidic-lite', 'dictionarySha256': sha((args.japanese_dictionary / 'sys.dic').read_bytes())}
         write_bundle(args.out, slug, title, content, rights, args.source_root)
 
 

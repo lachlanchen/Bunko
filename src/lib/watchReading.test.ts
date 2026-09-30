@@ -9,6 +9,11 @@ const chapter = { id: 'test', n: 1, title: { en: ['Chapter one'] }, p: [
 ] } as Chapter
 
 describe('Watch excerpt', () => {
+  it('keeps translation notes out of the main multilingual sequence', () => {
+    const withNotes: Chapter = { ...chapter, p: [chapter.p[0],
+      { id: 'a-notes', kind: 'annotation', src: '', u: [{ src: '', annotation: true, ja: ['訳注'] }] }, chapter.p[1]] }
+    expect(watchExcerpt(meta, withNotes, ['en', 'zh', 'ja'], 0).blocks).toEqual(['First\n\n第一', 'Second\n\n第二'])
+  })
   it('starts at the visible paragraph and preserves selected languages', () => {
     expect(watchExcerpt(meta, chapter, ['en', 'zh'], 1).blocks).toEqual(['Second\n\n第二'])
   })
