@@ -1,8 +1,8 @@
 # Bunko release state; test availability is separate from production approval.
 app:
   name: 'Bunko: Classics with Ruby'
-  version: 1.0.8
-  build: 10
+  version: 1.0.9
+  build: 14
   price: USD 0.99 paid up front on both stores
   data_origin: https://github.com/lachlanchen/bunko-books
   pwa: https://lachlan.lazying.art/Bunko/
@@ -38,19 +38,20 @@ channels:
     territories: 175
     available_in_new_territories: true
     release: automatic after approval
-    public_version: 1.0.8 (10), including Apple Watch
-    public_released_at: '2026-09-29T04:55:03Z'
-    public_verified: 2026-09-29; US, Hong Kong, UK and Japan lookup plus US listing
-    review_submission: df08e230-c2d3-4c5f-97dc-b5a8b7949316
-    build_id: a561f6e3-1256-4943-ae30-0954299ca5a5
+    public_version: 1.0.9 (14), including Apple Watch
+    public_released_at: '2026-09-30T23:09:04Z'
+    public_verified: 2026-10-01 HKT; US, Hong Kong, UK and Japan public lookup
+    review_submission: 85e827ad-943b-405f-a170-4179e4be3aa7
+    build_id: 8fef4a93-7c7e-4506-a284-42bdf30f0092
     update_version: 1.0.9
     update_build: 14
     update_build_id: 8fef4a93-7c7e-4506-a284-42bdf30f0092
-    update_status: WAITING_FOR_REVIEW
+    update_status: READY_FOR_DISTRIBUTION
     update_review_submission: 85e827ad-943b-405f-a170-4179e4be3aa7
     testflight_latest: 1.0.10 (16), VALID and IN_BETA_TESTING
     testflight_latest_build_id: 2aa119e0-47a3-4ec9-86a5-13cdd6956d82
     watch_bundle_id: art.lazying.bunko.watchkitapp
+    distribution_receipt: store/artifacts/distribution-ios-1.0.9-20261001.json
   mac_app_store:
     app_id: '6815137919'
     bundle_id: art.lazying.bunko
@@ -96,8 +97,8 @@ reviewer_access_candidate:
   backend: deployed with durable demo session revocation
   ios_version_id: f2f23ae9-038d-41e5-b569-d78bab4b32f6
   macos_version_id: 850f8ea8-3e03-4825-a12d-d55a7c9f2ca6
-  apple_drafts: WAITING_FOR_REVIEW; exact build14 and dedicated demo credentials verified
-    privately
+  apple_drafts: iOS1.0.9(14) released; Mac1.0.9(14) IN_REVIEW; dedicated demo credentials
+    preserved
   android: 1.0.9 (14) internal available and production CHANGES_IN_REVIEW; demo instructions
     verified privately
   submitted: true

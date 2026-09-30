@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "ios": {
-    "version": "1.0.8",
-    "build": "10"
+    "version": "1.0.9",
+    "build": "14"
   },
   "android": null,
   "macos": {

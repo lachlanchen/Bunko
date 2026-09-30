@@ -1,0 +1,78 @@
+{
+  "checkedAt": "2026-09-30T23:19:17.219071+00:00",
+  "appId": "6815137919",
+  "bundleId": "art.lazying.bunko",
+  "ios": {
+    "id": "f2f23ae9-038d-41e5-b569-d78bab4b32f6",
+    "version": "1.0.9",
+    "build": "14",
+    "buildId": "8fef4a93-7c7e-4506-a284-42bdf30f0092",
+    "state": "READY_FOR_SALE",
+    "versionState": "READY_FOR_DISTRIBUTION",
+    "releaseType": "AFTER_APPROVAL"
+  },
+  "review": {
+    "id": "85e827ad-943b-405f-a170-4179e4be3aa7",
+    "state": "COMPLETE"
+  },
+  "releasedAt": "2026-09-30T23:09:04Z",
+  "releaseAction": "Already automatically released after approval; no manual release request required.",
+  "availability": {
+    "total": 175,
+    "available": 175,
+    "availableInNewTerritories": true,
+    "phasedRelease": null
+  },
+  "publicLookups": [
+    {
+      "country": "us",
+      "version": "1.0.9",
+      "price": 0.99,
+      "currency": "USD",
+      "trackViewUrl": "https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?uo=4",
+      "currentVersionReleaseDate": "2026-09-30T23:09:04Z"
+    },
+    {
+      "country": "hk",
+      "version": "1.0.9",
+      "price": 8.0,
+      "currency": "HKD",
+      "trackViewUrl": "https://apps.apple.com/hk/app/bunko-%E6%96%87%E5%BA%AB-%E7%B6%93%E5%85%B8%E8%88%87%E6%B3%A8%E9%9F%B3/id6815137919?uo=4",
+      "currentVersionReleaseDate": "2026-09-30T23:09:04Z"
+    },
+    {
+      "country": "gb",
+      "version": "1.0.9",
+      "price": 0.99,
+      "currency": "GBP",
+      "trackViewUrl": "https://apps.apple.com/gb/app/bunko-classics-with-ruby/id6815137919?uo=4",
+      "currentVersionReleaseDate": "2026-09-30T23:09:04Z"
+    },
+    {
+      "country": "jp",
+      "version": "1.0.9",
+      "price": 150.0,
+      "currency": "JPY",
+      "trackViewUrl": "https://apps.apple.com/jp/app/bunko-%E6%96%87%E5%BA%AB-%E3%83%AB%E3%83%93%E3%81%A7%E8%AA%AD%E3%82%80%E5%8F%A4%E5%85%B8/id6815137919?uo=4",
+      "currentVersionReleaseDate": "2026-09-30T23:09:04Z"
+    }
+  ],
+  "updateFeed": {
+    "schema": 1,
+    "ios": {
+      "version": "1.0.9",
+      "build": "14"
+    },
+    "android": null,
+    "macos": {
+      "version": "1.0.8",
+      "build": "10"
+    }
+  },
+  "macos": "1.0.8 (10) remains released; 1.0.9 (14) IN_REVIEW",
+  "latestTestBuild": "1.0.10 (16), not submitted in this operation",
+  "checks": {
+    "localCheck": "npm run check passed: lint, 66 client tests, 35 server tests, renderer, TypeScript and web build",
+    "readmeValidation": "passed: English and ten translations"
+  }
+}

@@ -1,3 +1,26 @@
+# iOS/Watch public release — 2026-10-01 HKT
+
+**Bunko 1.0.9 (14)** passed review and was automatically released at
+**2026-09-30 23:09:04 UTC**. App Store Connect reports `READY_FOR_SALE` /
+`READY_FOR_DISTRIBUTION`; review `85e827ad-943b-405f-a170-4179e4be3aa7` is
+`COMPLETE`. The exact released build is `8fef4a93-7c7e-4506-a284-42bdf30f0092`.
+No manual release request or new submission was needed.
+
+The public US, Hong Kong, UK and Japan lookups all show **1.0.9**. All **175**
+Apple territories report available, future territories are enabled, and there
+is no phased release. US price remains **$0.99**. The iOS public update feed now
+names **1.0.9 (14)**, including its paired Watch companion.
+
+Mac **1.0.8 (10)** remains public; Mac **1.0.9 (14)** is still `IN_REVIEW`.
+The newer **1.0.10 (16)** remains available internally and was not submitted
+in this release confirmation. Google review was not changed or rechecked.
+No native build, browser desktop, account or backend change was needed.
+
+[App Store](https://apps.apple.com/app/id6815137919) ·
+[Release evidence](artifacts/distribution-ios-1.0.9-20261001.json)
+
+## Earlier records
+
 # Reader correction available in testing — 2026-09-30 HKT
 
 **Bunko 1.0.10 (16)** is VALID/IN_BETA_TESTING for iOS/paired Watch and universal

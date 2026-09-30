@@ -66,6 +66,8 @@ Bản trình bày học tập do AI tạo có thể có lỗi. Danh mục chỉ 
 
 Thư viện có 185 ấn bản đã được duyệt quyền, gồm tác phẩm kinh điển, ghi chú vật lý, sách học tập và tài chính, cùng cẩm nang du lịch đa ngôn ngữ. Sách có thể có một hoặc nhiều ngôn ngữ; công thức và hình ảnh vẫn hiển thị trên điện thoại.
 
+**iOS và Apple Watch 1.0.9 (14) đã phát hành.** Xác minh ngày 1 tháng 10 năm 2026: có tại 175 cửa hàng Apple, giá tại Mỹ là 0,99 USD. Mac 1.0.8 (10) vẫn có sẵn; Mac 1.0.9 (14) đang được xét duyệt.
+
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · đang chờ phát hành](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Bunko dành cho Mac

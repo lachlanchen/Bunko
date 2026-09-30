@@ -66,6 +66,8 @@ AI 生成的學習文本可能有誤。書目只發布經過審核的完整版�
 
 書庫現有185種通過權利審核的版本，包括經典、物理學伴讀筆記、學習與財經書籍，以及多語旅行指南。每本書可有一種或多種語言，公式與插圖也能在手機上閱讀。
 
+**iOS 和 Apple Watch 1.0.9 (14) 已發佈。** 2026年10月1日確認：涵蓋 Apple 的175個商店，美國售價0.99美元。Mac 1.0.8 (10) 繼續上架，Mac 1.0.9 (14) 仍在審核。
+
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 待上架](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Mac 版 Bunko

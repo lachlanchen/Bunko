@@ -66,6 +66,8 @@ AI が生成した学習用の文章には誤りがあり得ます。カタロ�
 
 書庫には権利を確認した185版を収録しています。古典、物理学の伴読ノート、学習・金融の本、多言語の旅行ガイドを含みます。単言語・多言語に対応し、数式と図もモバイルで表示します。
 
+**iOS・Apple Watch 1.0.9 (14) を公開しました。** 2026年10月1日確認：Appleの175ストアで利用でき、米国価格は0.99米ドルです。Mac 1.0.8 (10) は引き続き公開中で、Mac 1.0.9 (14) は審査中です。
+
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 公開待ち](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Mac 版 Bunko

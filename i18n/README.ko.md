@@ -66,6 +66,8 @@ AI가 생성한 학습용 번역에는 오류가 있을 수 있습니다. 목록
 
 서재에는 권리를 확인한 판본 185종이 있습니다. 고전, 물리학 해설, 학습 및 금융 도서, 다국어 여행 안내서를 포함합니다. 한 언어 또는 여러 언어로 읽을 수 있으며 수식과 그림도 모바일에서 표시됩니다.
 
+**iOS 및 Apple Watch 1.0.9 (14)가 출시되었습니다.** 2026년 10월 1일 확인: Apple 스토어 175곳에서 이용할 수 있으며 미국 가격은 0.99달러입니다. Mac 1.0.8 (10)은 계속 공개되어 있고 Mac 1.0.9 (14)는 심사 중입니다.
+
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 출시 대기 중](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Mac용 Bunko

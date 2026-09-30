@@ -66,6 +66,8 @@ Les rendus d’étude produits par IA peuvent comporter des erreurs. Seules les 
 
 La bibliothèque réunit 185 éditions autorisées : classiques, notes de physique, livres de formation et de finance, et guides de voyage multilingues. Les livres proposent une ou plusieurs langues ; les équations et illustrations restent lisibles sur mobile.
 
+**iOS et Apple Watch 1.0.9 (14) sont publiés.** Vérifié le 1er octobre 2026 : disponibles dans 175 boutiques Apple, à 0,99 USD aux États-Unis. Mac 1.0.8 (10) reste disponible ; Mac 1.0.9 (14) est encore en cours de validation.
+
 [App Store d’Apple](https://apps.apple.com/app/id6815137919) · [Google Play · publication en attente](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Bunko pour Mac

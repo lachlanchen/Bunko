@@ -66,6 +66,8 @@ Las versiones de estudio generadas por IA pueden contener errores. El catálogo 
 
 La biblioteca reúne 185 ediciones autorizadas: clásicos, notas de física, libros de aprendizaje y finanzas, y guías de viaje multilingües. Los libros pueden tener uno o varios idiomas; las ecuaciones y figuras se conservan en el lector móvil.
 
+**iOS y Apple Watch 1.0.9 (14) ya están publicados.** Verificado el 1 de octubre de 2026: disponibles en 175 tiendas de Apple, a 0,99 USD en EE. UU. Mac 1.0.8 (10) sigue disponible; Mac 1.0.9 (14) continúa en revisión.
+
 [App Store de Apple](https://apps.apple.com/app/id6815137919) · [Google Play · publicación pendiente](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Bunko para Mac
