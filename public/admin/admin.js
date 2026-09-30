@@ -51,7 +51,8 @@ $('files').addEventListener('change', async () => {
     const rights = JSON.parse(await byName.get('rights.json')?.text())
     if (meta.schema !== 1 || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(meta.id)) throw new Error('Invalid bundle schema or book id.')
     if (rights.id !== meta.id || rights.status !== 'ship' || !rights.basis || !rights.references?.length || !rights.checked) throw new Error('A completed rights.json clearance is required.')
-    if (!meta.chapters?.length || !meta.langs?.length || !meta.langs.includes(meta.primary)) throw new Error('Missing chapters or languages.')
+    const validLanguage = (lang) => typeof lang === 'string' && !['src', 'rich', 'annotation'].includes(lang) && (['wenyan', 'zh_modern', 'ja_modern'].includes(lang) || (lang.length <= 63 && /^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$/.test(lang)))
+    if (!meta.chapters?.length || !Array.isArray(meta.langs) || !meta.langs.length || !meta.langs.every(validLanguage) || new Set(meta.langs).size !== meta.langs.length || !meta.langs.includes(meta.primary)) throw new Error('Missing chapters or languages.')
     if ([...meta.langs].sort().join() !== [...rights.langs].sort().join()) throw new Error('Published languages do not match the rights record.')
     const names = ['meta.json', 'rights.json', ...meta.chapters.map((chapter) => chapter.file)]
     if (meta.cover) names.push(meta.cover)

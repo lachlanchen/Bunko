@@ -1,3 +1,4 @@
+import { htmlLanguage, languageDirection } from '../lib/languages'
 import { useEffect, useState } from 'react'
 import type { LangCode, Paragraph } from '../types'
 import { assetUrl, cacheFigure, cachedFigure } from '../lib/bookAssets'
@@ -26,5 +27,5 @@ export function BookFigure({ bookId, figure, lang, primary }: {
   }, [bookId, figure.path, remote, valid])
   if (!valid) return null
   const caption = figure.caption?.[lang] ?? figure.caption?.[primary] ?? ''
-  return <figure className="book-figure"><img loading="lazy" src={src} alt={caption} /><figcaption>{caption}</figcaption></figure>
+  return <figure className="book-figure"><img loading="lazy" src={src} alt={caption} /><figcaption lang={htmlLanguage(figure.caption?.[lang] ? lang : primary)} dir={languageDirection(figure.caption?.[lang] ? lang : primary)}>{caption}</figcaption></figure>
 }

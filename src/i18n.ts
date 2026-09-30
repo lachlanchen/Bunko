@@ -420,5 +420,6 @@ export function languageName(lang: string, ui: UILanguage): string {
     zh_modern: { en: 'Modern Chinese', 'zh-Hans': '现代中文', 'zh-Hant': '現代中文', ja: '現代中国語' },
     ja_modern: { en: 'Modern Japanese', 'zh-Hans': '现代日文', 'zh-Hant': '現代日文', ja: '現代日本語' },
   }
-  return table[lang]?.[ui] ?? lang
+  if (table[lang]?.[ui]) return table[lang][ui]
+  try { return new Intl.DisplayNames([ui], { type: 'language' }).of(lang) ?? lang } catch { return lang }
 }

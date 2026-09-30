@@ -1,0 +1,48 @@
+{
+  "bible": {
+    "languages": [
+      "en",
+      "zh",
+      "ja"
+    ],
+    "chapters": 1189,
+    "bytes": 39875655,
+    "verseEntries": {
+      "en": 31103,
+      "zh": 31021,
+      "ja": 31103
+    },
+    "notes": {
+      "en": 1571,
+      "zh": 1013,
+      "ja": 1540
+    },
+    "headings": {
+      "en": 138,
+      "zh": 2719,
+      "ja": 138
+    }
+  },
+  "quran": {
+    "languages": [
+      "ar",
+      "en",
+      "zh",
+      "ja"
+    ],
+    "chapters": 114,
+    "bytes": 11364805,
+    "verses": {
+      "ar": 6236,
+      "en": 6236,
+      "zh": 6236,
+      "ja": 6236
+    },
+    "notes": {
+      "ar": 0,
+      "en": 2215,
+      "zh": 0,
+      "ja": 3484
+    }
+  }
+}

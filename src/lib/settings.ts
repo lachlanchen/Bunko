@@ -1,3 +1,4 @@
+import { baseLanguage } from './languages'
 /**
  * Everything the reader chooses, and where they got to in each book.
  *
@@ -91,5 +92,6 @@ export function defaultLangsFor(bookLangs: LangCode[], ui: UIState['language']):
   const preference: LangCode[] =
     ui === 'ja' ? ['ja', 'ja_modern'] : ui === 'en' ? ['en'] : ['zh', 'zh_modern']
   const gloss = preference.find((lang) => bookLangs.includes(lang) && lang !== primary)
+    ?? bookLangs.find(lang => lang !== primary && baseLanguage(lang) === baseLanguage(ui))
   return gloss ? [primary, gloss] : [primary]
 }

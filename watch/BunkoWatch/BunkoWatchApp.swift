@@ -172,7 +172,7 @@ private struct WatchRubyLine: View {
     }
     var body: some View {
         Group {
-            if showRuby && line.tokens.contains(where: { $0.ruby?.isEmpty == false }) {
+            if showRuby && !line.isRightToLeft && line.tokens.contains(where: { $0.ruby?.isEmpty == false }) {
                 RubyFlowLayout {
                     ForEach(Array(pieces.enumerated()), id: \.offset) { _, token in
                         VStack(spacing: 1) {
@@ -194,6 +194,8 @@ private struct WatchRubyLine: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .ignore)
+        .environment(\.layoutDirection, line.isRightToLeft ? .rightToLeft : .leftToRight)
+        .multilineTextAlignment(.leading)
         .accessibilityLabel(line.text)
     }
 }

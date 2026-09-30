@@ -1,3 +1,4 @@
+import { baseLanguage, htmlLanguage, languageDirection } from './lib/languages'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Paperclip as PaperclipIcon, Sparkles, BookOpen, Check, Download, Settings, RefreshCw, Search, Trash2, X } from 'lucide-react'
 import type { BookMeta, BookRow, LangCode, Place, ReaderIndex, ReadingSettings } from './types'
@@ -292,7 +293,8 @@ export default function App() {
                   >
                     <span className="chapter-n">{chapter.n}</span>
                     <span className="chapter-title">
-                      {chapter.title[meta.primary] ?? Object.values(chapter.title)[0] ?? ''}
+                      <bdi lang={htmlLanguage(meta.primary)} dir={languageDirection(meta.primary)}>{chapter.title[meta.primary] ?? Object.values(chapter.title)[0] ?? ''}</bdi>
+                      {Object.entries(chapter.title).filter(([lang]) => lang !== meta.primary && baseLanguage(lang) === baseLanguage(ui)).slice(0, 1).map(([lang, title]) => <small key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>{title}</small>)}
                     </span>
                   </button>
                 </li>
@@ -322,12 +324,11 @@ export default function App() {
             <section className="book-hero">
               <Cover book={row} />
               <div>
-                <h1>{meta.titleText[meta.primary] ?? meta.id}</h1>
+                <h1 lang={htmlLanguage(meta.primary)} dir={languageDirection(meta.primary)}>{meta.titleText[meta.primary] ?? meta.id}</h1>
                 <p className="book-alt">
                   {meta.langs
                     .filter((lang) => lang !== meta.primary && meta.titleText[lang])
-                    .map((lang) => meta.titleText[lang])
-                    .join(' · ')}
+                    .map((lang) => <bdi key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>{meta.titleText[lang]}</bdi>)}
                 </p>
                 {meta.author?.name && <p className="book-author">{meta.author.name}</p>}
                 <p className="book-facts">
@@ -388,7 +389,8 @@ export default function App() {
                   >
                     <span className="chapter-n">{chapter.n}</span>
                     <span className="chapter-title">
-                      {chapter.title[meta.primary] ?? Object.values(chapter.title)[0] ?? ''}
+                      <bdi lang={htmlLanguage(meta.primary)} dir={languageDirection(meta.primary)}>{chapter.title[meta.primary] ?? Object.values(chapter.title)[0] ?? ''}</bdi>
+                      {Object.entries(chapter.title).filter(([lang]) => lang !== meta.primary && baseLanguage(lang) === baseLanguage(ui)).slice(0, 1).map(([lang, title]) => <small key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>{title}</small>)}
                     </span>
                   </button>
                 </li>
@@ -465,7 +467,7 @@ export default function App() {
         {books.map((book) => (
           <button key={book.id} data-book-id={book.id} type="button" className="card" onClick={() => void openBook(book)}>
             <Cover book={book} />
-            <strong>{book.title[book.primary] ?? book.id}</strong>
+            <strong lang={htmlLanguage(book.primary)} dir={languageDirection(book.primary)}>{book.title[book.primary] ?? book.id}</strong>
             <small>{book.author}</small>
             <em>
               {book.chapters} {copy.chapters}

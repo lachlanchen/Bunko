@@ -68,9 +68,9 @@ def build(slug, edition, source_root, out):
     if not complete(book.get("source", {})):
         raise ValueError(f"{slug}: incomplete/stale source; publication refused")
     mode = book["mode"]
-    primary = edition.get("primary", MODES[mode]["primary"])
-    langs = edition.get("langs", MODES[mode]["langs"])
-    if primary not in langs:
+    primary = edition.get("primary", MODES.get(mode, {}).get("primary"))
+    langs = edition.get("langs", MODES.get(mode, {}).get("langs", []))
+    if not langs or primary not in langs:
         raise ValueError("Primary language must be published")
     dest = out / "books" / slug
     dest.mkdir(parents=True, exist_ok=True)

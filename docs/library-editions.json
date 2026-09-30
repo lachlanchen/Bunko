@@ -348,19 +348,22 @@
   },
   "bible": {
     "status": "ship",
-    "title": "The Holy Bible — World English Bible",
+    "title": "The Holy Bible",
     "author": "",
     "source": "https://ebible.org/Scriptures/engwebp_usfx.zip",
     "edition": "original-only",
     "langs": [
-      "en"
+      "en",
+      "zh",
+      "ja"
     ],
     "primary": "en",
     "cat": "world",
-    "basis": "World English Bible, 66-book English edition; eBible.org explicitly dedicates the translation to the public domain and permits redistribution. Text preserved, with notes and cross references retained. This is not the incomplete local KJV-based export.",
+    "basis": "Complete 66-book English WEB, Chinese Union Version (traditional), and Japanese Freedom Bible (publisher draft), each explicitly public domain at eBible.org. Publisher text, combined verse ranges, notes and source numbering retained; textual variants are not fabricated. Optional matching pronunciation aids from the owner-authorized earlier edition.",
     "references": [
       "https://ebible.org/engwebp/copyright.htm",
-      "https://ebible.org/Scriptures/engwebp_usfx.zip"
+      "https://ebible.org/cmn-cu89t/copyright.htm",
+      "https://ebible.org/jpnm/copyright.htm"
     ],
     "checked": "2026-09-30",
     "build": false,
@@ -3809,19 +3812,22 @@
   },
   "quran": {
     "status": "ship",
-    "title": "The Quran — Translations",
+    "title": "The Quran",
     "author": "",
-    "source": "https://quranenc.com/downloads/sqlite/english_rwwad.sqlite",
+    "source": "https://tanzil.net/pub/download/index.php?quranType=uthmani&outType=txt-2&marks=true&sajdah=true&alef=true&tatweel=true&agree=true",
     "edition": "multilingual",
     "langs": [
+      "ar",
       "en",
       "zh",
       "ja"
     ],
-    "primary": "en",
+    "primary": "ar",
     "cat": "world",
-    "basis": "Translations redistributed with permission under QuranEnc.com Terms and Policies. These are credited publisher translations, not public-domain or generated translations. Full translation text, markers, footnotes, translator information and versions are preserved. Matching Chinese pinyin is an optional display aid; unaudited Japanese readings from the old export are not reused.",
+    "basis": "Arabic text: Tanzil Uthmani 1.1, CC BY 3.0 with verbatim reproduction terms; full text, basmalahs and source notice retained. Translations redistributed with permission under QuranEnc.com Terms and Policies. These are credited publisher translations, not public-domain or generated translations. Full translation text, markers, footnotes, translator information and versions are preserved. Matching Chinese pinyin is an optional display aid; unaudited Japanese readings from the old export are not reused.",
     "references": [
+      "https://tanzil.net",
+      "https://tanzil.net/docs/Text_License",
       "https://quranenc.com/en/home",
       "https://quranenc.com/en/home/api"
     ],

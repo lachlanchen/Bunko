@@ -1,3 +1,4 @@
+import { htmlLanguage, languageDirection } from '../lib/languages'
 /**
  * One line of text, with a reading above every character that has one.
  *
@@ -22,7 +23,7 @@ export function Line({
 }) {
   if (!line?.length) return null
   return (
-    <span className="line" lang={lang}>
+    <span className="line" lang={lang ? htmlLanguage(lang) : undefined} dir={lang ? languageDirection(lang) : undefined}>
       {line.map((token, index) => {
         const { text, reading, role } = tokenParts(token)
         if (!text) return null

@@ -4,11 +4,13 @@
 
 # Bunko 文庫
 
-*중국어·일본어·영어 고전을 글자 위의 발음과 함께 읽는 조용한 서재.*
+*본문 위에 읽기 도움을 제공하는 조용한 다국어 도서관.*
 
 [![Reader](https://img.shields.io/badge/Open-Bunko-303F68?style=for-the-badge)](https://lachlan.lazying.art/Bunko/) [![Sponsor](https://img.shields.io/badge/GitHub-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors)](https://github.com/sponsors/lachlanchen)
 
 Bunko는 공개 도메인 중국어·일본어·영어 고전을 읽는 앱입니다. 표시 언어와 화면 구성을 고르고, 글자 위의 병음이나 후리가나를 보며, 다운로드한 장을 오프라인에서 읽을 수 있습니다. 인터페이스는 영어, 중국어 간체·번체, 일본어를 지원합니다. 책 목록은 별도 [bunko-books](https://github.com/lachlanchen/bunko-books)에 있으며 이 저장소에는 책 본문을 넣지 않습니다.
+
+책은 표준 언어 태그를 사용해 원하는 수의 언어를 담을 수 있으며, 아랍어 등 오른쪽에서 왼쪽으로 쓰는 언어도 지원합니다. 표시할 언어를 선택하면 대응하는 구절을 함께 읽을 수 있습니다. 책의 언어와 인터페이스 번역은 서로 독립적입니다.
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko 리더 화면" width="300"></a></p>
 

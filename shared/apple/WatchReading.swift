@@ -10,10 +10,18 @@ struct WatchLine: Codable, Equatable {
     let tokens: [WatchToken]
     var text: String { tokens.map(\.text).joined() }
     var languageLabel: String {
-        ["en": "English", "zh": "中文", "ja": "日本語", "wenyan": "文言", "zh_modern": "现代中文", "ja_modern": "現代日本語"][lang] ?? lang
+        ["en": "English", "zh": "中文", "ja": "日本語", "wenyan": "文言", "zh_modern": "现代中文", "ja_modern": "現代日本語"][lang] ?? Locale.current.localizedString(forIdentifier: lang) ?? lang
+    }
+    var isRightToLeft: Bool {
+        if let script = Locale(identifier: lang).scriptCode {
+            return ["Arab", "Hebr", "Thaa", "Nkoo", "Adlm", "Rohg", "Syrc", "Mand", "Samr"].contains(script)
+        }
+        return Locale.characterDirection(forLanguage: lang) == .rightToLeft
     }
     var isValid: Bool {
-        ["en", "zh", "ja", "wenyan", "zh_modern", "ja_modern"].contains(lang) &&
+        lang.utf8.count <= 63 && !["src", "rich", "annotation"].contains(lang) &&
+        (lang.range(of: #"^[A-Za-z]{2,8}(-[A-Za-z0-9]{1,8})*$"#, options: .regularExpression) != nil ||
+         ["wenyan", "zh_modern", "ja_modern"].contains(lang)) &&
         !tokens.isEmpty && tokens.count <= 2048 && tokens.allSatisfy {
             !$0.text.isEmpty && $0.text.utf8.count <= 6000 && ($0.ruby?.utf8.count ?? 0) <= 512
         }
@@ -24,7 +32,7 @@ struct WatchSentence: Codable, Equatable {
     let lines: [WatchLine]
     var plainText: String { lines.map(\.text).joined(separator: "\n\n") }
     var isValid: Bool {
-        !lines.isEmpty && lines.count <= 6 && lines.allSatisfy(\.isValid) &&
+        !lines.isEmpty && lines.allSatisfy(\.isValid) &&
         Set(lines.map(\.lang)).count == lines.count
     }
 }

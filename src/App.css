@@ -144,7 +144,7 @@
 
 .para { margin: 0 0 1.5em; }
 .unit { margin: 0 0 .95em; }
-.unit-line, .para-line { margin: 0 0 .2em; line-height: 2.5; }
+.unit-line, .para-line { margin: 0 0 .2em; line-height: 2.5; text-align: start; overflow-wrap: anywhere; }
 .unit-line.lang-en, .para-line.lang-en { line-height: 1.85; }
 .layout-source .unit-line + .unit-line { display: none; }
 
@@ -158,7 +158,7 @@
   color: var(--ink-faint); margin-right: .7em; vertical-align: .15em;
 }
 .language-label {
-  display: inline-block; margin-right: .8em; padding: .2em .5em; border-radius: 5px;
+  display: inline-block; margin-inline-end: .8em; unicode-bidi: isolate; padding: .2em .5em; border-radius: 5px;
   background: var(--paper-raised); color: var(--indigo); font: 800 .6em/1.4 var(--sans);
   letter-spacing: .025em; vertical-align: .17em; white-space: nowrap;
 }
@@ -343,3 +343,11 @@ input[type='range'] { width: 100%; accent-color: var(--indigo); }
 .discussion-submit .panel-cta { margin: 0; }
 .discussion-error, .discussion-success { font-size: .8rem; line-height: 1.6; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper-raised); }
 .native-discussion button:disabled { opacity: .5; cursor: default; }
+
+/* Each book layer has its own writing direction; formulae remain mathematical LTR. */
+[data-reading], .contextual-lines span { unicode-bidi: isolate; }
+.rich-line .math-display, .rich-line .math-inline { direction: ltr; unicode-bidi: isolate; }
+.reading-panel blockquote, .contextual-lines p { text-align: start; overflow-wrap: anywhere; }
+
+.chapter-title small { display: block; color: var(--ink-soft); font-size: .8em; font-weight: 400; margin-top: .2em; }
+.book-alt bdi + bdi::before { content: " · "; }

@@ -1,3 +1,4 @@
+import { isLanguageCode } from './languages'
 /**
  * The library: what is available, what is on this device, and how to get more.
  *
@@ -68,7 +69,7 @@ export function coverUrls(book: BookRow): string[] {
 
 function validIndex(value: ReaderIndex): ReaderIndex {
   if (value.schema !== 1 || !Array.isArray(value.books) || value.count !== value.books.length ||
-      value.books.some((book) => !/^[a-z0-9-]+$/.test(book.id) || !Array.isArray(book.langs) || !book.langs.includes(book.primary))) {
+      value.books.some((book) => !/^[a-z0-9-]+$/.test(book.id) || !Array.isArray(book.langs) || !book.langs.every(isLanguageCode) || new Set(book.langs).size !== book.langs.length || !book.langs.includes(book.primary))) {
     throw new Error('Unsupported or incomplete library catalog')
   }
   return value

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { watchExcerpt } from './watchReading'
 import type { BookMeta, Chapter } from '../types'
 
-const meta = { id: 'test', primary: 'en', titleText: { en: 'A book' } } as BookMeta
+const meta = { schema: 1, id: 'test', mode: 'multilingual', langs: ['en'], primary: 'en', titleText: { en: 'A book' }, title: { en: ['A book'] }, author: {}, chapters: [], bytes: 0, paras: 0 } satisfies BookMeta
 const chapter = { id: 'test', n: 1, title: { en: ['Chapter one'] }, p: [
   { id: 'a', src: '', u: [{ src: '', en: ['First'], zh: ['第一'] }] },
   { id: 'b', src: '', u: [{ src: '', en: ['Second'], zh: ['第二'] }] },
@@ -64,4 +64,12 @@ describe('Watch excerpt', () => {
     expect(result.truncated).toBe(true)
     expect(result.blocks.length).toBeGreaterThan(0)
   })
+})
+
+it('transfers more than six language layers without losing text or order', () => {
+  const langs = ['ar', 'en', 'zh', 'ja', 'he', 'fr-CA', 'hi', 'el']
+  const p = { id: 'p1', src: '', u: [{ src: '', ...Object.fromEntries(langs.map(lang => [lang, [lang === 'ar' ? 'بِسْمِ اللَّهِ' : `Text ${lang}`]])) }] }
+  const reading = watchExcerpt(meta, { ...chapter, p: [p] }, langs, 0)
+  expect(reading.sentences?.[0].lines.map(line => line.lang)).toEqual(langs)
+  expect(reading.blocks[0]).toContain('بِسْمِ اللَّهِ')
 })

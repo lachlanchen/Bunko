@@ -4,11 +4,13 @@
 
 # Bunko 文庫
 
-*Một thư viện yên tĩnh cho sách kinh điển ba ngôn ngữ, có cách đọc phía trên chữ.*
+*Thư viện đa ngôn ngữ yên tĩnh, với cách đọc phía trên văn bản.*
 
 [![Reader](https://img.shields.io/badge/Open-Bunko-303F68?style=for-the-badge)](https://lachlan.lazying.art/Bunko/) [![Sponsor](https://img.shields.io/badge/GitHub-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors)](https://github.com/sponsors/lachlanchen)
 
 Bunko là ứng dụng đọc tác phẩm kinh điển thuộc phạm vi công cộng bằng tiếng Trung, Nhật và Anh. Bạn có thể chọn ngôn ngữ và bố cục hiển thị, xem pinyin hoặc furigana phía trên chữ, rồi đọc các chương đã tải khi ngoại tuyến. Giao diện hỗ trợ tiếng Anh, Trung giản thể, Trung phồn thể và Nhật. Danh mục sách nằm ở kho [bunko-books](https://github.com/lachlanchen/bunko-books) riêng; kho này không chứa nội dung sách.
+
+Sách có thể chứa số lượng ngôn ngữ tùy ý bằng thẻ ngôn ngữ chuẩn, gồm tiếng Ả Rập và các hệ chữ viết từ phải sang trái. Chọn những ngôn ngữ muốn xem; các đoạn tương ứng luôn đi cùng nhau. Ngôn ngữ của sách độc lập với bản dịch giao diện.
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Ảnh trình đọc Bunko" width="300"></a></p>
 

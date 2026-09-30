@@ -31,3 +31,12 @@ it('extracts Chinese definitions from the Chinese section only', async () => {
   expect(await lookupWord('道', 'wenyan')).toEqual([{ partOfSpeech: '', meaning: 'a path' }])
   expect(fetchMock).toHaveBeenCalledTimes(2)
 })
+
+it('uses the selected arbitrary language without silently looking up Chinese', async () => {
+  const fetchMock = vi.fn(async () => ({ ok: true, json: async () => ({ ar: [{ definitions: [{ definition: 'book in Arabic' }] }], zh: [{ definitions: [{ definition: 'wrong language' }] }] }) }))
+  vi.stubGlobal('fetch', fetchMock)
+  expect(dictionaryLanguage('ar')).toBe('ar')
+  expect(dictionaryLanguage('fr-CA')).toBe('fr')
+  expect(await lookupWord('كتاب', 'ar')).toEqual([{ partOfSpeech: '', meaning: 'book in Arabic' }])
+  expect(fetchMock).toHaveBeenCalledTimes(1)
+})

@@ -4,11 +4,13 @@
 
 # Bunko 文庫
 
-*مكتبة هادئة للكلاسيكيات بثلاث لغات، مع القراءات فوق النص.*
+*مكتبة هادئة متعددة اللغات، مع قراءات فوق النص.*
 
 [![Reader](https://img.shields.io/badge/Open-Bunko-303F68?style=for-the-badge)](https://lachlan.lazying.art/Bunko/) [![Sponsor](https://img.shields.io/badge/GitHub-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors)](https://github.com/sponsors/lachlanchen)
 
 Bunko قارئ لكلاسيكيات الملك العام بالصينية واليابانية والإنجليزية. اختر اللغات والتخطيط الظاهرين، واقرأ البينيين أو الفوريغانا فوق الحروف، واحتفظ بالفصول المحمّلة للقراءة دون اتصال. تتوفر الواجهة بالإنجليزية والصينية المبسطة والتقليدية واليابانية. يوجد فهرس الكتب في مستودع [bunko-books](https://github.com/lachlanchen/bunko-books) المنفصل؛ ولا يحتوي هذا المستودع على نصوص الكتب.
+
+يمكن أن تضم الكتب أي عدد من الطبقات اللغوية باستخدام رموز اللغات القياسية، بما فيها العربية والكتابات من اليمين إلى اليسار. اختر اللغات التي تريدها مع إبقاء المقاطع المتقابلة معًا. لغات الكتب مستقلة عن ترجمات الواجهة.
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="صورة قارئ Bunko" width="300"></a></p>
 

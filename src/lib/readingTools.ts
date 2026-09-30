@@ -1,3 +1,4 @@
+import { baseLanguage, unitLine } from './languages'
 import type { BookMeta, LangCode, Unit } from '../types'
 import { plainText } from './text'
 import { lookupOffline } from './offlineDictionary'
@@ -7,7 +8,7 @@ export function passageKey(meta: BookMeta, chapterFile: string, paragraphId: str
 }
 
 export function passageText(unit: Unit, lang: LangCode): string {
-  return plainText(unit[lang]).trim()
+  return plainText(unitLine(unit, lang)).trim()
 }
 
 export interface Definition { partOfSpeech: string; meaning: string; reading?: string }
@@ -17,18 +18,20 @@ interface WiktionaryEntry {
   definitions?: { definition?: string }[]
 }
 
-const section: Record<'en' | 'zh' | 'ja', string> = { en: 'en', zh: 'zh', ja: 'ja' }
+export function dictionaryLanguage(lang: LangCode): string {
+  return baseLanguage(lang)
+}
 
-export function dictionaryLanguage(lang: LangCode): 'en' | 'zh' | 'ja' {
-  if (lang === 'en') return 'en'
-  if (lang === 'ja' || lang === 'ja_modern') return 'ja'
-  return 'zh'
+export function offlineDictionaryLanguage(lang: LangCode): 'en' | 'zh' | 'ja' | null {
+  const base = dictionaryLanguage(lang)
+  return base === 'en' || base === 'zh' || base === 'ja' ? base : null
 }
 
 export async function lookupWord(word: string, lang: LangCode, signal?: AbortSignal): Promise<Definition[]> {
   const clean = word.trim().replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '')
   if (!clean) return []
-  const offline = await lookupOffline(clean, dictionaryLanguage(lang)).catch(() => null)
+  const pack = offlineDictionaryLanguage(lang)
+  const offline = pack ? await lookupOffline(clean, pack).catch(() => null) : null
   if (offline !== null) return offline
   const cacheKey = `bunko:dict:${dictionaryLanguage(lang)}:${clean.toLowerCase()}`
   try {
@@ -47,7 +50,7 @@ async function lookupRest(clean: string, lang: LangCode, signal?: AbortSignal): 
   if (response.status === 404) return []
   if (!response.ok) throw new Error(`Wiktionary ${response.status}`)
   const data = await response.json() as Record<string, WiktionaryEntry[]>
-  return (data[section[dictionaryLanguage(lang)]] ?? [])
+  return (data[dictionaryLanguage(lang)] ?? [])
     .flatMap((entry) => (entry.definitions ?? []).map((definition) => ({
       partOfSpeech: entry.partOfSpeech ?? '',
       meaning: definition.definition?.replace(/<[^>]*>/g, '').trim() ?? '',

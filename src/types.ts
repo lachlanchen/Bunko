@@ -5,7 +5,8 @@ export type Token = string | [string] | [string, string] | [string, string, stri
 
 export type Line = Token[]
 
-export type LangCode = 'en' | 'zh' | 'ja' | 'wenyan' | 'zh_modern' | 'ja_modern'
+/** BCP 47 language tag, or a legacy edition alias (wenyan/zh_modern/ja_modern). */
+export type LangCode = string
 
 export interface BookRow {
   id: string
@@ -53,7 +54,9 @@ export interface BookMeta {
   paras: number
 }
 
-export interface Unit extends Partial<Record<LangCode, Line>> {
+export interface Unit {
+  /** Language layers share the wire object with metadata; use unitLine to read one. */
+  [key: string]: unknown
   src: string
   rich?: Partial<Record<LangCode, Array<{ text?: string; math?: string; display?: boolean }>>>
 }

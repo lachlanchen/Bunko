@@ -1,7 +1,7 @@
 import unittest
 import xml.etree.ElementTree as ET
 
-from import_scripture import exact_ruby, parse_usfx_book, plain
+from import_scripture import aligned_bible_rows, verse_range, exact_ruby, parse_usfx_book, plain
 
 
 class ScriptureImportTests(unittest.TestCase):
@@ -34,6 +34,17 @@ class ScriptureImportTests(unittest.TestCase):
     def test_heading_notes_remain_separate(self):
         book = ET.fromstring('<book id="PSA"><c id="46"/><d>According to Alamoth.<f><ft>A musical term.</ft></f></d><v id="1"/>God is our refuge.<ve/></book>')
         self.assertEqual(parse_usfx_book(book)[46][0], {'heading': 'According to Alamoth.', 'notes': ['A musical term.']})
+
+    def test_combined_verses_align_without_duplication_or_fabrication(self):
+        en = [{'verse': str(n), 'text': str(n), 'notes': []} for n in range(1, 5)]
+        zh = [{'verse': '1-2', 'text': '合節', 'notes': []}, {'verse': '3', 'text': '三', 'notes': []}]
+        groups = list(aligned_bible_rows({'en': en, 'zh': zh, 'ja': en}))
+        self.assertEqual([g['numbers'] for g in groups], [{1, 2}, {3}, {4}])
+        self.assertEqual([r['verse'] for r in groups[0]['rows']['en']], ['1', '2'])
+        self.assertEqual(groups[0]['rows']['zh'], [zh[0]])
+        self.assertNotIn('zh', groups[-1]['rows'])
+        self.assertEqual(sum(len(g['rows'].get('zh', [])) for g in groups), 2)
+        with self.assertRaises(ValueError): verse_range('3-1')
 
     def test_empty_verse_blocks_publication(self):
         with self.assertRaisesRegex(ValueError, 'Empty verse'):

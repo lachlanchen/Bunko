@@ -50,3 +50,27 @@ it('waits for an explicit Dictionary action and keeps the selected substring', a
   expect((screen.getByRole('textbox', { name: 'Look up' }) as HTMLInputElement).value).toBe('English')
   vi.unstubAllGlobals()
 })
+
+it('renders arbitrary layers, RTL and regional language tags in both layouts and passage tools', async () => {
+  const { loadChapter } = await import('../lib/library')
+  const langs = ['ar', 'en', 'zh', 'ja', 'he', 'fr-CA', 'hi', 'el']
+  const texts = ['بِسْمِ اللَّهِ', 'English', '中文', '日本語', 'שלום', 'Bonjour', 'नमस्ते', 'Ελληνικά']
+  const layers = Object.fromEntries(langs.map((lang, index) => [lang, [texts[index]]]))
+  vi.mocked(loadChapter).mockResolvedValueOnce({ id: 'multi', n: 1, title: { ar: ['عنوان'] }, p: [{ id: 'p1', src: '', u: [{ src: '', ...layers }] }] })
+  vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, json: async () => ({ issue: null, comments: [], nextPage: null }) })))
+  const props = { meta: { ...meta, id: 'multi', primary: 'ar', langs }, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs, layout: 'interlinear' as const }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
+  const { container, rerender } = render(<Reader {...props} />)
+  await screen.findByText(texts[0])
+  expect(container.querySelectorAll('[data-reading]')).toHaveLength(8)
+  expect(container.querySelector('h1')?.getAttribute('dir')).toBe('rtl')
+  expect(container.querySelector('[data-lang="ar"]')?.getAttribute('dir')).toBe('rtl')
+  expect(container.querySelector('[data-lang="fr-CA"]')?.getAttribute('lang')).toBe('fr-CA')
+  rerender(<Reader {...props} settings={{ ...props.settings, layout: 'paired' }} />)
+  expect(container.querySelectorAll('[data-reading]')).toHaveLength(8)
+  fireEvent.click(screen.getByRole('button', { name: 'Discuss passage' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Dictionary' }))
+  expect(container.querySelectorAll('.contextual-lines p')).toHaveLength(8)
+  expect(container.querySelector('.offline-pack')).toBeNull()
+  expect(container.querySelector('blockquote')?.getAttribute('dir')).toBe('rtl')
+  vi.unstubAllGlobals()
+})

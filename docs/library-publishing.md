@@ -38,16 +38,32 @@ python3 -m unittest discover -s tools -p 'test_import_scripture.py'
 python3 ../bunko-books/tools/catalogue.py --write
 ```
 
-The importer preserves verse boundaries, source notes and translation credits.
-It uses the complete public-domain World English Bible (English, 66 books) and
-QuranEnc's English, Chinese and Japanese translations under that publisher's
-[republication terms](https://quranenc.com/en/home/api). It records downloaded
-checksums and translation versions in each rights file. Review future publisher
-versions before publishing, retaining the full text and notes and refreshing
-the version declarations. The older local exports remain read-only: the Bible
-export has incomplete coverage; the Quran export removed reference markers and
-notes. Neither is published as-is. Arabic is not a selectable layer in this
-Quran edition; all delivered language keys work in the existing app.
+The importer preserves source text, notes, section headings, credits and versions.
+The Bible contains all 66 books in English (World English Bible), traditional
+Chinese (Chinese Union Version), and Japanese (Freedom Bible, labelled by its
+publisher as a draft). These editions are public domain at eBible.org. Combined
+Chinese verses remain together, and genuine numbering/manuscript differences
+remain visible rather than being filled with invented translations. Optional
+`--bible-ruby <sqlite>` transfers only unchanged readings from an audited earlier
+edition; `prepare_scripture_ruby.py` creates that cache from the read-only source.
+
+The Quran contains Arabic, English, Chinese and Japanese: all 114 surahs and
+6,236 numbered verses per language. Arabic is the verbatim [Tanzil Uthmani 1.1](https://tanzil.net/docs/Text_License)
+text, including its opening basmalahs and notices. QuranEnc translations retain
+all markers and footnotes under the publisher's [republication terms](https://quranenc.com/en/home/api).
+The old local text exports are not shipped as-is: their source omissions and
+removed notes were caught by the publication audit. Source payloads remain in
+`bunko-books` only; hashes, coverage and permission evidence are in rights files.
+
+Book languages are data-driven BCP 47 tags (for example `ar`, `he`, `hi`, `fr-CA`,
+`az-Arab`), with no fixed language list or layer count. Legacy aliases remain
+supported. The reader uses per-layer language names and script direction;
+passage tools, offline storage and Watch transfer keep all selected layers.
+Watch payload byte limits still apply. Only English, Chinese and Japanese have
+downloadable offline dictionaries; other languages use their own Wiktionary
+entries when available. Interface translations are separate from book languages.
+Book corrections refresh through the catalogue. The improved RTL, language
+labels and Watch handling require the successor reader/native app build.
 
 For owner editions containing diagrams or photographs, follow the
 [figure-preservation audit and repair procedure](owner-figures-2026-09-26.md).

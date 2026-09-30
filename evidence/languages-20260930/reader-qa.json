@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "Corrected editions appear in the current reader",
+    "Bible first chapter reads correctly",
+    "Bible en layer renders",
+    "Bible zh layer renders",
+    "Bible ja layer renders",
+    "Bible fits 390px screen",
+    "Quran ar layer renders",
+    "Quran en layer renders",
+    "Quran zh layer renders",
+    "Quran ja layer renders",
+    "Arabic has independent RTL direction",
+    "Quran translation footnotes render",
+    "Quran ruby remains available",
+    "Quran fits 390px screen",
+    "Quran last verse is reachable",
+    "Cached Quran chapter opens with both library origins unavailable",
+    "Cached Bible chapter opens with both library origins unavailable",
+    "No browser runtime errors"
+  ],
+  "errors": []
+}

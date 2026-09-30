@@ -1,9 +1,9 @@
 {
   "name": "bunko",
   "private": false,
-  "version": "1.0.9",
+  "version": "1.0.10",
   "type": "module",
-  "description": "Public-domain classics in English, Chinese and Japanese, with a reading above every character",
+  "description": "Multilingual books with interlaced passages, ruby readings and offline access",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

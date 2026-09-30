@@ -1,9 +1,10 @@
+import { htmlLanguage, languageDirection, unitLanguages } from '../lib/languages'
 import { useEffect, useState } from 'react'
 import { ArrowUpRight, BookOpen, MessageCircle, NotebookPen, X } from 'lucide-react'
 import type { LangCode, Unit } from '../types'
 import type { UILanguage } from '../i18n'
 import { languageName } from '../i18n'
-import { dictionaryLanguage, lookupWord, passageText, type Definition } from '../lib/readingTools'
+import { offlineDictionaryLanguage, lookupWord, passageText, type Definition } from '../lib/readingTools'
 import { downloadDictionary, installedDictionary, removeDictionary, type DictionaryLanguage } from '../lib/offlineDictionary'
 import { useBackAction } from '../lib/backNavigation'
 import { Discussion } from './Discussion'
@@ -37,7 +38,7 @@ export function ReadingPanel({ focus, ui, onClose }: { focus: Focus; ui: UILangu
   useBackAction(onClose, true, 30)
   const t = labels[ui]
   const p = packLabels[ui]
-  const packLang = dictionaryLanguage(focus.lang)
+  const packLang = offlineDictionaryLanguage(focus.lang)
   const [tab, setTab] = useState<'dictionary' | 'discussion' | 'note'>(focus.word ? 'dictionary' : 'discussion')
   const [word, setWord] = useState(focus.word ?? '')
   const [definitions, setDefinitions] = useState<Definition[]>([])
@@ -49,9 +50,10 @@ export function ReadingPanel({ focus, ui, onClose }: { focus: Focus; ui: UILangu
   const [note, setNote] = useState(() => { try { return localStorage.getItem(noteKey) ?? '' } catch { return '' } })
   const [saved, setSaved] = useState(false)
 
-  useEffect(() => { void installedDictionary(packLang).then(setPack).catch(() => {}) }, [packLang])
+  useEffect(() => { if (packLang) void installedDictionary(packLang).then(setPack).catch(() => {}) }, [packLang])
 
   const installPack = async () => {
+    if (!packLang) return
     setPackError(false)
     setPackProgress([0, 16])
     try {
@@ -67,6 +69,7 @@ export function ReadingPanel({ focus, ui, onClose }: { focus: Focus; ui: UILangu
   }
 
   const uninstallPack = async () => {
+    if (!packLang) return
     await removeDictionary(packLang)
     setPack(null)
     setDefinitions([])
@@ -85,7 +88,7 @@ export function ReadingPanel({ focus, ui, onClose }: { focus: Focus; ui: UILangu
   const excerpt = passageText(focus.unit, focus.lang)
   const visibleDefinitions = definitions.slice().sort((left, right) => word === focus.word && focus.reading ? Number(right.reading === focus.reading) - Number(left.reading === focus.reading) : 0).slice(0, 8)
   const wiktionaryUrl = `https://en.wiktionary.org/wiki/${encodeURIComponent(word.trim())}`
-  const available = (['en', 'zh', 'ja', 'wenyan', 'zh_modern', 'ja_modern'] as LangCode[])
+  const available = unitLanguages(focus.unit)
     .filter((lang) => passageText(focus.unit, lang))
 
   return <div className="reading-panel-backdrop" onClick={onClose}>
@@ -94,7 +97,7 @@ export function ReadingPanel({ focus, ui, onClose }: { focus: Focus; ui: UILangu
         <div className="reading-panel-kicker"><BookOpen size={15} /> {languageName(focus.lang, ui)} · {focus.reading || t.contextual}</div>
         <button type="button" onClick={onClose} aria-label={t.close}><X size={20} /></button>
       </header>
-      <blockquote lang={dictionaryLanguage(focus.lang)}>{excerpt}</blockquote>
+      <blockquote lang={htmlLanguage(focus.lang)} dir={languageDirection(focus.lang)}>{excerpt}</blockquote>
       <nav className="reading-panel-tabs" aria-label="Reading tools">
         <button type="button" className={tab === 'dictionary' ? 'active' : ''} onClick={() => setTab('dictionary')}><BookOpen size={15} /> {t.dictionary}</button>
         <button type="button" className={tab === 'discussion' ? 'active' : ''} onClick={() => setTab('discussion')}><MessageCircle size={15} /> {t.discussion}</button>
@@ -103,22 +106,22 @@ export function ReadingPanel({ focus, ui, onClose }: { focus: Focus; ui: UILangu
       <div className="reading-panel-body">
         {tab === 'dictionary' && <>
           <form className="dictionary-search" onSubmit={(event) => { event.preventDefault(); setDictState('loading'); setDefinitions([]); setWord(new FormData(event.currentTarget).get('word')?.toString().trim() ?? '') }}>
-            <input name="word" key={focus.word} defaultValue={word} aria-label={t.lookup} lang={dictionaryLanguage(focus.lang)} />
+            <input name="word" key={focus.word} defaultValue={word} aria-label={t.lookup} lang={htmlLanguage(focus.lang)} dir={languageDirection(focus.lang)} />
             <button type="submit">{t.lookup}</button>
           </form>
           {visibleDefinitions.length > 0 && <div className="definition-list">{visibleDefinitions.map((entry, index) => <p key={index}><small>{[entry.reading, entry.partOfSpeech].filter(Boolean).join(' · ')}</small>{entry.meaning}</p>)}</div>}
           {dictState === 'loading' && <p className="panel-hint">…</p>}
           {dictState === 'empty' && <p className="panel-hint">{t.unavailable}</p>}
           {dictState === 'error' && <p className="panel-hint">{t.offline}</p>}
-          <div className="offline-pack">
+          {packLang && <div className="offline-pack">
             <div><strong>{packNames[packLang]}</strong><small>{pack ? `${p.ready} · ${(pack.bytes / 1_000_000).toFixed(1)} MB` : `${packSizes[packLang]} · ${p.source}`}</small></div>
             {pack ? <button type="button" onClick={() => void uninstallPack()}>{p.remove}</button> : <button type="button" disabled={Boolean(packProgress)} onClick={() => void installPack()}>{packProgress ? `${packProgress[0]}/${packProgress[1]}` : p.download}</button>}
-          </div>
+          </div>}
           {packError && <p className="panel-hint">{p.failed}</p>}
-          <a className="panel-link" href={pack?.source ?? { en: 'https://en-word.net/downloads', zh: 'https://www.mdbg.net/chinese/dictionary?page=cc-cedict', ja: 'https://www.edrdg.org/wiki/JMdict-EDICT_Dictionary_Project.html' }[packLang]} target="_blank" rel="noopener noreferrer">{p.source}: {packNames[packLang]} · {pack?.license ?? (packLang === 'en' ? 'CC BY 4.0' : 'CC BY-SA 4.0')} <ArrowUpRight size={15} /></a>
+          {packLang && <a className="panel-link" href={pack?.source ?? { en: 'https://en-word.net/downloads', zh: 'https://www.mdbg.net/chinese/dictionary?page=cc-cedict', ja: 'https://www.edrdg.org/wiki/JMdict-EDICT_Dictionary_Project.html' }[packLang]} target="_blank" rel="noopener noreferrer">{p.source}: {packNames[packLang]} · {pack?.license ?? (packLang === 'en' ? 'CC BY 4.0' : 'CC BY-SA 4.0')} <ArrowUpRight size={15} /></a>}
           <a className="panel-link" href={wiktionaryUrl} target="_blank" rel="noopener noreferrer">{t.source} <ArrowUpRight size={15} /></a>
           <h3>{t.contextual}</h3>
-          <div className="contextual-lines">{available.map((lang) => <p key={lang} lang={dictionaryLanguage(lang)}><strong>{languageName(lang, ui)}</strong><span>{passageText(focus.unit, lang)}</span></p>)}</div>
+          <div className="contextual-lines">{available.map((lang) => <p key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><strong>{languageName(lang, ui)}</strong><span>{passageText(focus.unit, lang)}</span></p>)}</div>
         </>}
         {tab === 'discussion' && <Discussion key={focus.key} passage={focus.key} excerpt={excerpt} ui={ui} />}
         {tab === 'note' && <>

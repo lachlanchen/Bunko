@@ -4,11 +4,13 @@
 
 # Bunko 文庫
 
-*Una biblioteca serena de clásicos en tres idiomas, con lecturas sobre el texto.*
+*Una biblioteca multilingüe tranquila, con lecturas sobre el texto.*
 
 [![Reader](https://img.shields.io/badge/Open-Bunko-303F68?style=for-the-badge)](https://lachlan.lazying.art/Bunko/) [![Sponsor](https://img.shields.io/badge/GitHub-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors)](https://github.com/sponsors/lachlanchen)
 
 Bunko es un lector de clásicos de dominio público en chino, japonés e inglés. Elige los idiomas y el diseño, lee pinyin o furigana sobre los caracteres y conserva los capítulos descargados para leer sin conexión. La interfaz está en inglés, chino simplificado, chino tradicional y japonés. El catálogo está en [bunko-books](https://github.com/lachlanchen/bunko-books); este repositorio no almacena los textos de los libros.
+
+Los libros pueden incluir cualquier número de idiomas mediante etiquetas estándar, incluido el árabe y otras escrituras de derecha a izquierda. Elige los idiomas que quieres ver; los pasajes correspondientes permanecen juntos. Los idiomas de los libros son independientes de las traducciones de la interfaz.
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Captura del lector Bunko" width="300"></a></p>
 

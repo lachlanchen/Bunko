@@ -4,11 +4,13 @@
 
 # Bunko 文庫
 
-*Eine ruhige Bibliothek für Klassiker in drei Sprachen, mit Lesungen über dem Text.*
+*Eine ruhige mehrsprachige Bibliothek mit Lesehilfen über dem Text.*
 
 [![Reader](https://img.shields.io/badge/Open-Bunko-303F68?style=for-the-badge)](https://lachlan.lazying.art/Bunko/) [![Sponsor](https://img.shields.io/badge/GitHub-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors)](https://github.com/sponsors/lachlanchen)
 
 Bunko ist ein Reader für gemeinfreie Klassiker auf Chinesisch, Japanisch und Englisch. Wähle sichtbare Sprachen und Layout, lies Pinyin oder Furigana über den Zeichen und öffne heruntergeladene Kapitel offline. Die Oberfläche gibt es auf Englisch, vereinfachtem und traditionellem Chinesisch sowie Japanisch. Der Katalog liegt im separaten Repository [bunko-books](https://github.com/lachlanchen/bunko-books); dieser App-Code enthält keine Buchtexte.
+
+Bücher können beliebig viele Sprachebenen mit standardisierten Sprachkennungen enthalten, einschließlich Arabisch und anderer Schriften von rechts nach links. Wähle die gewünschten Sprachen; entsprechende Textstellen bleiben zusammen. Buchsprachen und Übersetzungen der Oberfläche sind unabhängig voneinander.
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko-Reader-Bildschirm" width="300"></a></p>
 

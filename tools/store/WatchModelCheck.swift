@@ -25,8 +25,14 @@ import Foundation
   bad.sentences = [WatchSentence(lines: [ja, zh])]
   precondition(!bad.isValid)
   precondition(!WatchSentence(lines: [zh, zh]).isValid)
-  precondition(!WatchLine(lang: "unknown", tokens: zh.tokens).isValid)
+  precondition(!WatchLine(lang: "bad_tag", tokens: zh.tokens).isValid)
   precondition(!WatchLine(lang: "ja", tokens: [WatchToken(text: "a", ruby: String(repeating: "文", count: 200))]).isValid)
+  let languages = ["ar", "he", "fa", "hi", "el", "fr-CA", "es", "de"]
+  let multilingual = WatchSentence(lines: languages.map { WatchLine(lang: $0, tokens: [WatchToken(text: "Text", ruby: nil)]) })
+  precondition(multilingual.isValid)
+  precondition(WatchLine(lang: "ar", tokens: zh.tokens).isRightToLeft)
+  precondition(!WatchLine(lang: "ar-Latn", tokens: zh.tokens).isRightToLeft)
+  precondition(WatchLine(lang: "az-Arab", tokens: zh.tokens).isRightToLeft)
   print("PASS: ruby roundtrip, legacy cache, aligned text, invalid language/shape/ruby bounds; Unicode persistence, malformed data, schema, duplicate IDs and payload limits")
  }
 }

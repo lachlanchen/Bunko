@@ -4,11 +4,13 @@
 
 # Bunko 文庫
 
-*中国語・日本語・英語の古典を、文字の上の読みとともに静かに読む。*
+*本文の上に読みを添える、静かな多言語ライブラリー。*
 
 [![Reader](https://img.shields.io/badge/Open-Bunko-303F68?style=for-the-badge)](https://lachlan.lazying.art/Bunko/) [![Sponsor](https://img.shields.io/badge/GitHub-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors)](https://github.com/sponsors/lachlanchen)
 
 Bunko はパブリックドメインの中国語・日本語・英語の古典を読むアプリです。表示言語とレイアウトを選び、漢字の上のピンインやふりがなを読み、保存した章をオフラインで開けます。UI は英語・簡体字中国語・繁体字中国語・日本語に対応しています。書籍カタログは別の [bunko-books](https://github.com/lachlanchen/bunko-books) にあり、このリポジトリには書籍本文を置きません。
+
+本には標準の言語タグを使って任意の数の言語を収録でき、アラビア語などの右から左へ書く言語にも対応します。表示する言語を選ぶと、対応する箇所をまとめて読めます。本の言語と画面表示の翻訳は独立しています。
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko リーダーの画面" width="300"></a></p>
 

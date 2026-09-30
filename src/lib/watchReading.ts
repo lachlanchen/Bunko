@@ -1,3 +1,4 @@
+import { unitLine } from './languages'
 import { Capacitor, registerPlugin } from '@capacitor/core'
 import type { BookMeta, Chapter, LangCode } from '../types'
 import { plainText, tokenParts } from './text'
@@ -39,7 +40,7 @@ export function watchExcerpt(meta: BookMeta, chapter: Chapter, langs: LangCode[]
     // instead of concatenating an entire paragraph in each language first.
     for (const unit of paragraph.u) {
       const lines: WatchLine[] = languages.flatMap(lang => {
-        const tokens = (unit[lang] ?? []).map(token => {
+        const tokens = (unitLine(unit, lang) ?? []).map(token => {
           const { text, reading: ruby } = tokenParts(token)
           return ruby ? { text, ruby } : { text }
         }).filter(token => token.text)

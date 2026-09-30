@@ -1,3 +1,4 @@
+import { htmlLanguage, languageDirection, unitLine } from '../lib/languages'
 /**
  * The reading screen.
  *
@@ -193,7 +194,7 @@ export function Reader({
 
         {chapter && (
           <article>
-            <h1>
+            <h1 lang={htmlLanguage(chapter.title?.[shown[0]] ? shown[0] : meta.primary)} dir={languageDirection(chapter.title?.[shown[0]] ? shown[0] : meta.primary)}>
               <Line line={chapter.title?.[shown[0]] ?? chapter.title?.[meta.primary]} ruby={settings.ruby} />
             </h1>
             {chapter.p.map((paragraph, index) => (
@@ -201,20 +202,20 @@ export function Reader({
                 {paragraph.figure && <BookFigure bookId={meta.id} figure={paragraph.figure} lang={shown[0]} primary={meta.primary} />}
                 {settings.layout === 'paired'
                   ? shown.map((lang) => (
-                      <p className={`para-line lang-${lang}`} key={lang} lang={htmlLang(lang)}>
+                      <p className={`para-line lang-${lang}`} key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>
                         <strong className="language-label">{languageName(lang, ui)}</strong>
                         {paragraph.u.map((unit, unitIndex) => (
-                          <span key={unitIndex} className="paired-unit"><span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLang(lang)}><RichLine unit={unit} lang={lang} ruby={settings.ruby} grammar={settings.grammar} /></span>{lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
+                          <span key={unitIndex} className="paired-unit"><span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><RichLine unit={unit} lang={lang} ruby={settings.ruby} grammar={settings.grammar} /></span>{lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
                         ))}
                       </p>
                     ))
                   : paragraph.u.map((unit, unitIndex) => (
                       <div className="unit" key={unitIndex}>
                         {shown.map((lang) =>
-                          unit[lang]?.length ? (
-                            <p className={`unit-line lang-${lang}`} key={lang} lang={htmlLang(lang)}>
+                          unitLine(unit, lang)?.length ? (
+                            <p className={`unit-line lang-${lang}`} key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>
                               {shown.length > 1 && <strong className="language-label">{languageName(lang, ui)}</strong>}
-                              <span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLang(lang)}><RichLine
+                              <span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><RichLine
                                 unit={unit}
                                 lang={lang}
                                 ruby={settings.ruby}
@@ -251,12 +252,4 @@ export function Reader({
       {activeFocus && <ReadingPanel key={`${activeFocus.key}:${activeFocus.word ?? ''}:${activeFocus.lang}`} focus={activeFocus} ui={ui} onClose={() => setFocus(null)} />}
     </div>
   )
-}
-
-/** The BCP 47 tag for a book language, so the browser picks the right font and breaks lines correctly. */
-function htmlLang(lang: LangCode): string {
-  if (lang === 'ja' || lang === 'ja_modern') return 'ja'
-  if (lang === 'zh' || lang === 'zh_modern') return 'zh-Hans'
-  if (lang === 'wenyan') return 'zh-Hant'
-  return 'en'
 }

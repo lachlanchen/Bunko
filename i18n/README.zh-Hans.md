@@ -4,11 +4,13 @@
 
 # Bunko 文庫
 
-*一座安静的三语古典文库，让读音自然浮现在文字上方。*
+*安静的多语言书库，在正文上方显示注音。*
 
 [![Reader](https://img.shields.io/badge/Open-Bunko-303F68?style=for-the-badge)](https://lachlan.lazying.art/Bunko/) [![Sponsor](https://img.shields.io/badge/GitHub-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors)](https://github.com/sponsors/lachlanchen)
 
 Bunko 是阅读中文、日文与英文公版经典的应用。读者可选择显示语言与排版，在汉字上方查看拼音或假名，并离线阅读已下载的章节。界面支持英语、简体中文、繁体中文和日语。书目存放在独立的 [bunko-books](https://github.com/lachlanchen/bunko-books) 仓库；此应用仓库不收录书籍正文。
+
+书籍可使用标准语言标签包含任意数量的语言层，支持阿拉伯语等从右向左书写的文字。选择想看的语言，对应段落保持对齐。书籍语言与界面翻译彼此独立。
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko 阅读器截图" width="300"></a></p>
 
