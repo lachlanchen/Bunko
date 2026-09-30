@@ -1,0 +1,76 @@
+{
+  "verifiedAt": "2026-09-30T02:32:40.695625+00:00",
+  "version": "1.0.9",
+  "build": 12,
+  "sourceCommit": "8ae6ee0cf21e66a9ce59ad70bb1f3d0b32e012f5",
+  "testflight": [
+    {
+      "platform": "MAC_OS",
+      "id": "8a578669-9792-4334-a827-4857dc6ec38f",
+      "version": "1.0.9",
+      "build": "12",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING",
+      "versionId": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+      "storeState": "PREPARE_FOR_SUBMISSION",
+      "submitted": false
+    },
+    {
+      "platform": "IOS",
+      "id": "b8c57533-8cb9-4af8-9c14-2aad488794b8",
+      "version": "1.0.9",
+      "build": "12",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING",
+      "versionId": "f2f23ae9-038d-41e5-b569-d78bab4b32f6",
+      "storeState": "PREPARE_FOR_SUBMISSION",
+      "submitted": false
+    }
+  ],
+  "appleReview": {
+    "MAC_OS": {
+      "versionId": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+      "buildId": "8a578669-9792-4334-a827-4857dc6ec38f",
+      "reviewId": "6aa378aa-8853-4e87-a7c5-0615c0944ede",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-09-30T02:31:00.151Z",
+      "releaseType": "AFTER_APPROVAL"
+    },
+    "IOS": {
+      "versionId": "f2f23ae9-038d-41e5-b569-d78bab4b32f6",
+      "buildId": "b8c57533-8cb9-4af8-9c14-2aad488794b8",
+      "reviewId": "5c6b7700-ff15-4186-bafd-b42d9d14ff12",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-09-30T02:31:19.614Z",
+      "releaseType": "AFTER_APPROVAL"
+    }
+  },
+  "google": {
+    "internal": "AVAILABLE",
+    "productionCandidate": "1.0.9 (12)",
+    "candidateState": "READY_TO_SEND_FOR_REVIEW",
+    "existingReview": "1.0.6 (8)",
+    "storeIcon": "bunko-sky-salmon-512.png; AI provenance declared",
+    "countries": 172,
+    "rollout": 100,
+    "reviewerAccess": "Keep existing build8 credentials until review replacement; demo credentials require build11 or later"
+  },
+  "web": "Approved icon deployed and byte-verified",
+  "checks": "npm run check passed; signed Android and Apple packages; Apple archive validation and upload succeeded",
+  "artifacts": {
+    "App.ipa": {
+      "sha256": "da05660b85536f2d8a8c39e5ad6f7eb6791d5c686819a9473a0e300f3cfd9334",
+      "bytes": 10534337
+    },
+    "Bunko.pkg": {
+      "sha256": "9b8c9e9e05c6d18f2980d798acfc77ad36a3fec8854644c6e033eed0496f7e7f",
+      "bytes": 7184510
+    },
+    "app-release.aab": {
+      "sha256": "fe70fab0442084cb101ef80b7f1000194d0f8da779a400a087748a3d7e899332",
+      "bytes": 5841493
+    }
+  }
+}

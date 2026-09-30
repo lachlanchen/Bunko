@@ -1,4 +1,4 @@
-# Bunko release state; secret-free. Apple approval is separate from submission.
+# Bunko release state; Apple approval is separate from submission.
 app:
   name: 'Bunko: Classics with Ruby'
   version: 1.0.8
@@ -25,7 +25,9 @@ channels:
     internal_track: '4701547714770281380'
     internal_status: available to internal testers
     internal_update: 1.0.1 (2), available to internal testers
-    internal_latest: 1.0.6 (8), available to internal testers on 2026-09-26
+    internal_latest: 1.0.9 (12), available to internal testers on 2026-09-30
+    prepared_update: 1.0.9 (12), full rollout and new listing icon staged; review
+      replacement pending owner choice
   apple:
     bundle_id: art.lazying.bunko
     app_id: '6815137919'
@@ -35,16 +37,16 @@ channels:
     release: automatic after approval
     public_version: 1.0.8 (10), including Apple Watch
     public_released_at: '2026-09-29T04:55:03Z'
-    public_verified: '2026-09-29; US, Hong Kong, UK and Japan lookup plus US listing'
+    public_verified: 2026-09-29; US, Hong Kong, UK and Japan lookup plus US listing
     review_submission: df08e230-c2d3-4c5f-97dc-b5a8b7949316
     build_id: a561f6e3-1256-4943-ae30-0954299ca5a5
-    update_version: 1.0.8
-    update_build: 10
-    update_build_id: a561f6e3-1256-4943-ae30-0954299ca5a5
-    update_status: READY_FOR_DISTRIBUTION
-    update_review_submission: df08e230-c2d3-4c5f-97dc-b5a8b7949316
-    testflight_latest: 1.0.9 (11), iPhone and Watch, VALID and IN_BETA_TESTING
-    testflight_latest_build_id: cca78d95-44ce-40c7-a0e3-4e99aff8b32d
+    update_version: 1.0.9
+    update_build: 12
+    update_build_id: b8c57533-8cb9-4af8-9c14-2aad488794b8
+    update_status: WAITING_FOR_REVIEW
+    update_review_submission: 5c6b7700-ff15-4186-bafd-b42d9d14ff12
+    testflight_latest: 1.0.9 (12), VALID and IN_BETA_TESTING
+    testflight_latest_build_id: b8c57533-8cb9-4af8-9c14-2aad488794b8
     watch_bundle_id: art.lazying.bunko.watchkitapp
   mac_app_store:
     app_id: '6815137919'
@@ -54,19 +56,24 @@ channels:
     public_version: 1.0.8 (10), verified on the public Mac App Store page
     status: READY_FOR_DISTRIBUTION
     public_released_at: '2026-09-29T22:50:52Z'
-    public_verified: '2026-09-30 HKT; platform=mac App Store page, version 1.0.8'
+    public_verified: 2026-09-30 HKT; platform=mac App Store page, version 1.0.8
     submitted_at: '2026-09-27T20:10:02.462Z'
     release: automatic after approval
     version_id: 731c37f4-b4ed-4268-bafa-e5bfda8f7284
     build_id: 86831728-f214-4e77-b553-59c77470e1ad
     review_submission: 135f98bf-97e0-473a-b148-39817fe20c41
-    testflight_latest: 1.0.9 (11), VALID and IN_BETA_TESTING
-    testflight_latest_build_id: 87e5397b-5e0e-4b51-8791-4ff414424703
+    testflight_latest: 1.0.9 (12), VALID and IN_BETA_TESTING
+    testflight_latest_build_id: 8a578669-9792-4334-a827-4857dc6ec38f
     minimum_macos: '12.0'
     architectures:
     - x86_64
     - arm64
     price_and_availability: shared existing Apple app record
+    update_version: 1.0.9
+    update_build: 12
+    update_build_id: 8a578669-9792-4334-a827-4857dc6ec38f
+    update_status: WAITING_FOR_REVIEW
+    update_review_submission: 6aa378aa-8853-4e87-a7c5-0615c0944ede
 android:
   version_code: 8
   version_name: 1.0.6
@@ -78,15 +85,14 @@ catalogue:
   cleared: 183
   audited: docs/catalogue.md
   payload_bytes: 2774079249
-
 reviewer_access_candidate:
   version: 1.0.9
-  build: 11
+  build: 12
   web: deployed and fresh-browser login verified
   backend: deployed with durable demo session revocation
   ios_version_id: f2f23ae9-038d-41e5-b569-d78bab4b32f6
   macos_version_id: 850f8ea8-3e03-4825-a12d-d55a7c9f2ca6
-  apple_drafts: PREPARE_FOR_SUBMISSION; dedicated demo credentials verified privately
-  android: signed APK/AAB prepared; existing review unchanged
-  submitted: false
-  receipt: store/artifacts/reviewer-access-1.0.9.json
+  apple_drafts: WAITING_FOR_REVIEW; dedicated demo credentials verified privately
+  android: 1.0.9 (12) internal available; production draft staged; build8 review unchanged
+  submitted: true
+  receipt: store/artifacts/icon-release-1.0.9.json

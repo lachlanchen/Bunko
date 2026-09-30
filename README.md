@@ -98,3 +98,5 @@ The refreshed icon and private document companion support PDF, Word (.docx), Mar
 The 1.0.9 (11) candidate adds a clearly labelled Demo account for invited testers and store reviewers. Its separate password needs no email code. Real public comments and replies carry a demo attribution; demo documents and conversations are shared only among users of that account. Fresh-browser posting, document reading and chat persistence were verified. Approved Apple 1.0.8 (10) remains available; any resubmission will follow the actual rejection.
 
 [Reviewer access and verification](store/reviewer-access.md)
+
+**2026-09-30 · Bunko** — The approved sky-blue and salmon icon is live on the web. Version **1.0.9 (12)** is available in TestFlight (iPhone/iPad, Watch companion and Mac) and Google Play internal testing. Both Apple production updates are waiting for review, with automatic release after approval. The Google production update and listing icon are staged; the existing review is preserved. All earlier icon designs remain archived.

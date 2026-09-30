@@ -101,3 +101,5 @@ Biểu tượng mới và trợ lý tài liệu riêng tư hỗ trợ PDF, Word 
 Bản ứng viên 1.0.9 (11) bổ sung tài khoản trình diễn được ghi rõ dành cho người thử nghiệm được mời và nhân viên xét duyệt cửa hàng. Mật khẩu riêng không cần mã xác minh qua email. Bình luận và trả lời công khai là nội dung thật, có ghi tên tài khoản trình diễn; tài liệu và hội thoại chỉ được chia sẻ giữa những người dùng tài khoản đó. Đã kiểm tra việc đăng bài trên trình duyệt mới, đọc tài liệu và lưu hội thoại. Bản Apple 1.0.8 (10) đã được duyệt vẫn khả dụng; việc gửi lại sẽ xử lý đúng lý do bị từ chối.
 
 [Quyền truy cập xét duyệt và kết quả kiểm tra](../store/reviewer-access.md)
+
+**2026-09-30 · Bunko** — Biểu tượng xanh da trời và hồng cá hồi đã được duyệt và xuất hiện trên web. **1.0.9 (12)** có trên TestFlight (iPhone/iPad, ứng dụng đồng hành Watch và Mac) và thử nghiệm nội bộ Google Play. Hai bản cập nhật Apple đang chờ xét duyệt và sẽ tự phát hành khi được duyệt. Bản cập nhật chính thức Google và biểu tượng cửa hàng đã sẵn sàng; đợt xét duyệt hiện tại được giữ nguyên. Mọi thiết kế biểu tượng trước đây đều được lưu trữ.

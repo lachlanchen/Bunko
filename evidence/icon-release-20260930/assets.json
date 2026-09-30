@@ -1,0 +1,87 @@
+{
+  "active": "sky-salmon",
+  "source": "assets/brand/concepts/sky-salmon-20260930/bunko-sky-salmon-preview.png",
+  "verified": [
+    [
+      "assets/icon.png",
+      1024
+    ],
+    [
+      "public/icon-512.png",
+      512
+    ],
+    [
+      "public/icon-192.png",
+      192
+    ],
+    [
+      "public/favicon.png",
+      48
+    ],
+    [
+      "store/assets/play-icon.png",
+      512
+    ],
+    [
+      "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
+      1024
+    ],
+    [
+      "watch/BunkoWatch/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png",
+      1024
+    ],
+    [
+      "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_16x16@1x.png",
+      16
+    ],
+    [
+      "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png",
+      32
+    ],
+    [
+      "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_32x32@1x.png",
+      32
+    ],
+    [
+      "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png",
+      64
+    ],
+    [
+      "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_128x128@1x.png",
+      128
+    ],
+    [
+      "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png",
+      256
+    ],
+    [
+      "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_256x256@1x.png",
+      256
+    ],
+    [
+      "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png",
+      512
+    ],
+    [
+      "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_512x512@1x.png",
+      512
+    ],
+    [
+      "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png",
+      1024
+    ]
+  ],
+  "archived": [
+    "classic",
+    "vivid",
+    "jade",
+    "light-gradient",
+    "sky-salmon"
+  ],
+  "version": "1.0.9",
+  "build": 12,
+  "check": "npm run check passed (54 client / 35 server tests, renderer and web)",
+  "android": "Signed release/debug APK and AAB built; package art.lazying.bunko 1.0.9 (12)",
+  "aabSha256": "fe70fab0442084cb101ef80b7f1000194d0f8da779a400a087748a3d7e899332",
+  "web": "GitHub Pages deployment succeeded; public icon-512.png exact byte match"
+}

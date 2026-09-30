@@ -1,0 +1,43 @@
+{
+  "candidate": "1.0.9 (13)",
+  "sourceCommit": "9e91bf8",
+  "checks": {
+    "clientTests": 58,
+    "serverTests": 35,
+    "lint": true,
+    "renderer": true,
+    "webBuild": true,
+    "swiftModel": "Passed ruby roundtrip, legacy cache, schema, duplicate IDs, token/language/text agreement and payload limits",
+    "simulatorBuild": "iOS and watchOS Debug succeeded"
+  },
+  "watch": {
+    "runtime": "watchOS 26.2, Apple Watch Series 11 46mm simulator",
+    "physicalWatch": false,
+    "source": "Real bunko-books Daodejing chapter 1, from the normal iPhone reader",
+    "transport": "Reader button → Capacitor plugin → WatchConnectivity → persisted Watch shelf",
+    "transfer": {
+      "bytes": 9634,
+      "sha256": "8cab68b9b28f44c71c2be1ba3bcdec9c780285ca1d04b93256d1d8dc5d272aaf",
+      "readings": [
+        {
+          "id": "daodejing/1/0",
+          "blocks": 6,
+          "units": 6,
+          "languages": [
+            "wenyan",
+            "ja_modern",
+            "en"
+          ],
+          "rubyTokens": 124
+        }
+      ]
+    },
+    "offline": "iPhone simulator shut down; Watch app terminated and cold-launched; annotations remained readable",
+    "rendering": "Default 17/9 points and maximum 24/13 points; Chinese pinyin and Japanese furigana wrapped within screen; ruby-off mode inspected",
+    "pageRestore": "Second aligned unit restored through the persisted-position interface",
+    "controlsCoverage": "Font/ruby/page states exercised with UserDefaults launch arguments; physical Crown and tap interactions not tested",
+    "legacy": "Existing build10 plain cache remained readable before re-sending",
+    "setupRepair": "Paired simulator reported installed=false; reinstallation of the Watch simulator app restored installed/reachable=true. No production transport bypass."
+  },
+  "screenshot": "large-text.png"
+}

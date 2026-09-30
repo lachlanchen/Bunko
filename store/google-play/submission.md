@@ -1,3 +1,14 @@
+# Icon update prepared — 2026-09-30
+
+**1.0.9 (12)** is available to internal testers. Its full production rollout
+(172 paid-app eligible countries) and approved sky-blue/salmon listing icon are
+saved in Publishing overview as two unsent changes. The existing build8 review
+is preserved pending the owner’s replacement decision. Before replacing it,
+qualify Google’s data safety for the document companion and switch the reviewer
+access fields to the separate Bunko demo account compatible with build12. Do not
+put demo credentials into the older build8 review: it has no demo sign-in UI.
+The generated icon is labelled as AI artwork, inherited by localized listings.
+
 # Current submission — 2026-09-27
 
 **Production 1.0.6 (8): Changes in review.** The tested internal bundle was promoted to production at 100% across all 172 configured eligible paid-app countries. The owner requested the latest build, so **Restart review** was confirmed, replacing build 6. Console confirmed **7 changes sent for review**, then showed build 8 under **Changes in review** with no unsent changes. Managed publishing remains off for release after approval.

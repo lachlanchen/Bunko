@@ -101,3 +101,5 @@ Das neue Symbol und der private Dokumentassistent unterstützen PDF, Word (.docx
 Der Kandidat 1.0.9 (11) bietet ein deutlich gekennzeichnetes Demokonto für eingeladene Tester und die Prüfung durch die Stores. Sein eigenes Passwort benötigt keinen E-Mail-Code. Echte öffentliche Kommentare und Antworten werden als Demobeiträge gekennzeichnet; Dokumente und Gespräche werden nur unter Nutzern dieses Kontos geteilt. Beiträge in einem frischen Browser, das Lesen von Dokumenten und gespeicherte Gespräche wurden geprüft. Die freigegebene Apple-Version 1.0.8 (10) bleibt verfügbar; eine erneute Einreichung richtet sich nach dem konkreten Ablehnungsgrund.
 
 [Prüfzugang und Nachweise](../store/reviewer-access.md)
+
+**2026-09-30 · Bunko** — Das freigegebene himmelblaue und lachsfarbene Symbol ist im Web aktiv. **1.0.9 (12)** ist über TestFlight (iPhone/iPad, Watch-Begleitapp und Mac) sowie im internen Google-Play-Test verfügbar. Beide Apple-Updates warten auf Prüfung und werden nach Freigabe automatisch veröffentlicht. Das Google-Produktionsupdate und das Store-Symbol sind vorbereitet; die laufende Prüfung bleibt erhalten. Alle früheren Symbole sind archiviert.
