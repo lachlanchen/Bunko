@@ -4,7 +4,7 @@ import { Browser } from '@capacitor/browser'
 import { savedSession, saveSession } from './discussionStorage'
 
 export const DISCUSSION_API = 'https://llm.lazying.art/bunko'
-export interface DiscussionUser { id: number; login: string }
+export interface DiscussionUser { id: number; login: string; kind?: 'demo' }
 export interface DiscussionComment { id: number; body: string; user: DiscussionUser; html_url?: string; created_at?: string }
 export interface DiscussionIssue extends DiscussionComment { number: number; locked: boolean }
 export interface DiscussionThread { issue: DiscussionIssue | null; comments: DiscussionComment[]; nextPage: number | null }
@@ -46,7 +46,7 @@ export async function api<T>(path: string, data: object, signal?: AbortSignal, a
     const failure = error instanceof DiscussionError ? error : new DiscussionError('offline')
     // A repeated post uses the same requestId; the server returns its receipt or
     // refuses an ambiguous write. It never creates a second comment on retry.
-    if (attempt < 1 && ['offline', 'temporarily_unavailable', 'github_unavailable'].includes(failure.code) && path !== '/v1/auth/start' && !path.startsWith('/v1/agent/')) {
+    if (attempt < 1 && ['offline', 'temporarily_unavailable', 'github_unavailable'].includes(failure.code) && !['/v1/auth/start', '/v1/auth/demo'].includes(path) && !path.startsWith('/v1/agent/')) {
       await new Promise(resolve => setTimeout(resolve, 800))
       return api<T>(path, data, signal, attempt + 1)
     }
@@ -87,33 +87,42 @@ export async function signOut() {
 
 // Native sessions use Keychain/Keystore; web sessions use an HttpOnly cookie.
 // GitHub credentials and refresh tokens never leave the cloud service.
-export function signIn() {
+function beginSignIn(demo?: { username: string; password: string }) {
   generation++
   const revision = generation
   const native = Capacitor.isNativePlatform(), desktop = !!window.__BUNKO_DESKTOP__
-  const popup = !native && !desktop ? window.open('about:blank', 'bunko-github', 'popup,width=520,height=700') : null
+  const popup = !demo && !native && !desktop ? window.open('about:blank', 'bunko-github', 'popup,width=520,height=700') : null
   if (popup) popup.opener = null
   const controller = new AbortController()
-  let stop = false, browserClosed = false
-  const cancel = () => { stop = true; controller.abort(); popup?.close(); if (native) void Browser.close().catch(() => {}); if (desktop) void window.webkit?.messageHandlers.bunkoAuth.postMessage({ cancel: true }) }
+  let stop = false, browserClosed = false, completed = false
+  const cancel = () => {
+    if (completed) return
+    stop = true; controller.abort(); popup?.close()
+    if (generation === revision) rememberSignOut(true)
+    if (!demo && native) void Browser.close().catch(() => {})
+    if (!demo && desktop) void window.webkit?.messageHandlers.bunkoAuth.postMessage({ cancel: true })
+  }
   const promise = (async () => {
-    if (!native && !desktop && !popup) throw new DiscussionError('popup_blocked')
+    if (!demo && !native && !desktop && !popup) throw new DiscussionError('popup_blocked')
     const verifier = requestId()
     const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier)))
     const challenge = btoa(String.fromCharCode(...digest)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-    const flow = await api<{ flow: string; url: string }>('/v1/auth/start', { challenge, platform: native || desktop ? 'native' : 'web', storage: native || desktop ? 'secure' : 'cookie' }, controller.signal)
-    const url = new URL(flow.url)
-    if (url.origin !== 'https://github.com' || url.pathname !== '/login/oauth/authorize') throw new DiscussionError('invalid_flow')
+    const flow = await api<{ flow: string; url: string }>(demo ? '/v1/auth/demo' : '/v1/auth/start', { challenge, platform: native || desktop ? 'native' : 'web', storage: native || desktop ? 'secure' : 'cookie', ...demo }, controller.signal)
+    if (stop || generation !== revision) throw new DiscussionError('authorization_cancelled')
+    if (!demo) {
+      const url = new URL(flow.url)
+      if (url.origin !== 'https://github.com' || url.pathname !== '/login/oauth/authorize') throw new DiscussionError('invalid_flow')
+    }
     let listener: Awaited<ReturnType<typeof App.addListener>> | undefined
     let finished: Awaited<ReturnType<typeof Browser.addListener>> | undefined
     try {
-      if (native) {
+      if (!demo && native) {
         listener = await App.addListener('appUrlOpen', event => {
           try { const callback = new URL(event.url); if (callback.protocol === 'art.lazying.bunko:' && callback.host === 'oauth' && callback.pathname === '/complete' && callback.searchParams.get('flow') === flow.flow) void Browser.close().catch(() => {}) } catch { /* Ignore unrelated app links. */ }
         })
         finished = await Browser.addListener('browserFinished', () => { browserClosed = true })
         await Browser.open({ url: flow.url, toolbarColor: '#272942' })
-      } else if (desktop) {
+      } else if (!demo && desktop) {
         const bridge = window.webkit?.messageHandlers.bunkoAuth
         if (!bridge) throw new DiscussionError('update_required')
         void bridge.postMessage({ url: flow.url }).catch(() => { browserClosed = true })
@@ -130,7 +139,11 @@ export function signIn() {
         if ('user' in result) {
           if (stop || generation !== revision) throw new DiscussionError('authorization_cancelled')
           try { await saveSession(result.token ?? null) } catch { throw new DiscussionError('secure_storage_failed') }
-          rememberSignOut(false); setSession(result); return result.user
+          if (stop || generation !== revision) {
+            if (generation === revision) await saveSession(null)
+            throw new DiscussionError('authorization_cancelled')
+          }
+          completed = true; rememberSignOut(false); setSession(result); return result.user
         }
         // GitHub's COOP policy can make a live popup appear closed. Only an
         // explicit native browser cancellation or Bunko's Cancel ends the flow.
@@ -139,6 +152,8 @@ export function signIn() {
       }
       throw new DiscussionError(stop ? 'authorization_cancelled' : 'flow_expired')
     } finally { await listener?.remove(); await finished?.remove() }
-  })().finally(() => { popup?.close(); if (native) void Browser.close().catch(() => {}) })
+  })().finally(() => { popup?.close(); if (!demo && native) void Browser.close().catch(() => {}) })
   return { promise, cancel }
 }
+export const signIn = () => beginSignIn()
+export const signInDemo = (username: string, password: string) => beginSignIn({ username, password })

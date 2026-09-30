@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { ArrowUpRight, LogIn, Send } from 'lucide-react'
 import type { UILanguage } from '../i18n'
+import { DemoAccount, DemoNotice } from './DemoAccount'
 import { discussionNewUrl } from '../lib/readingTools'
 import { currentUser, DiscussionError, postDiscussion, readDiscussion, requestId, restoreSession, signIn, signOut, subscribeSession, type DiscussionThread } from '../lib/discussions'
 
@@ -26,6 +27,7 @@ export function Discussion({ passage, excerpt, ui }: { passage: string; excerpt:
   const [thread, setThread] = useState<DiscussionThread>({ issue: null, comments: [], nextPage: null })
   const [hidden, setHidden] = useState(() => stored('bunko:hidden-readers').split(',').filter(Boolean))
   const [loading, setLoading] = useState(true), [busy, setBusy] = useState(false), [signing, setSigning] = useState(false)
+  const [demoBusy, setDemoBusy] = useState(false)
   const [error, setError] = useState(''), [posted, setPosted] = useState(false)
   const auth = useRef<ReturnType<typeof signIn> | null>(null)
   const posting = useRef(false)
@@ -87,10 +89,10 @@ export function Discussion({ passage, excerpt, ui }: { passage: string; excerpt:
     {thread.nextPage && <button type="button" className="discussion-more" disabled={loading} onClick={() => void load(true)}>{t.more}</button>}
     {hidden.length > 0 && <button type="button" className="discussion-more" onClick={() => { setHidden([]); save('bunko:hidden-readers', '') }}>{t.hidden}: {hidden.length} · {t.restore}</button>}
     <div className="discussion-compose">
-      {user ? <div className="discussion-account"><strong><LogIn size={16} /> @{user.login}</strong><button type="button" disabled={busy} onClick={() => { void signOut().catch(() => {}) }}>{t.logout}</button></div> : <button className="panel-cta github-signin" type="button" disabled={signing} onClick={() => void login()}><LogIn size={17} /> {t.login}</button>}
+      {user ? <div className="discussion-account"><strong><LogIn size={16} /> {user.kind === 'demo' ? user.login : `@${user.login}`}</strong><button type="button" disabled={busy} onClick={() => { void signOut().catch(() => {}) }}>{t.logout}</button></div> : <><button className="panel-cta github-signin" type="button" disabled={signing || demoBusy} onClick={() => void login()}><LogIn size={17} /> {t.login}</button><DemoAccount ui={ui} disabled={signing} onBusy={setDemoBusy} /></>}
       {signing && <div className="panel-hint" role="status">{t.signing} <button type="button" onClick={() => auth.current?.cancel()}>{t.cancel}</button></div>}
       <textarea aria-label={t.placeholder} placeholder={t.placeholder} value={draft} maxLength={5000} rows={4} disabled={busy} onChange={event => { setDraft(event.target.value); save(draftKey, event.target.value); setPosted(false) }} />
-      <p className="panel-hint discussion-privacy">{t.public}</p>
+      {user?.kind === 'demo' ? <DemoNotice ui={ui} /> : <p className="panel-hint discussion-privacy">{t.public}</p>}
       <div className="discussion-submit"><small>{draft.length}/5000</small><button type="button" className="panel-cta" disabled={!user || !draft.trim() || busy || !!thread.issue?.locked || error === 'post_uncertain'} onClick={() => void post()}><Send size={15} /> {busy ? t.posting : t.post}</button></div>
       {thread.issue?.locked && <p className="panel-hint">{t.locked}</p>}
       {user && <small className="panel-hint">{t.session}</small>}

@@ -95,3 +95,9 @@ Phiên bản **1.0.8 (10)** thêm ứng dụng đồng hành gốc cho Apple Wat
 Biểu tượng mới và trợ lý tài liệu riêng tư hỗ trợ PDF, Word (.docx), Markdown, văn bản và TeX, tìm bài nghiên cứu và hỏi về tài liệu. Mười kiểm tra gốc đã đạt trên Mac mini M5 Pro, gồm mở lại ngoại tuyến, vị trí đọc, công thức và hình ảnh. Trình mô phỏng Watch đã kiểm chứng truyền dữ liệu thật từ ứng dụng iPhone và khởi động lại khi ngắt kết nối; chưa kiểm tra đồng hồ thật.
 
 [macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
+
+## Bản ứng viên có quyền truy cập xét duyệt
+
+Bản ứng viên 1.0.9 (11) bổ sung tài khoản trình diễn được ghi rõ dành cho người thử nghiệm được mời và nhân viên xét duyệt cửa hàng. Mật khẩu riêng không cần mã xác minh qua email. Bình luận và trả lời công khai là nội dung thật, có ghi tên tài khoản trình diễn; tài liệu và hội thoại chỉ được chia sẻ giữa những người dùng tài khoản đó. Đã kiểm tra việc đăng bài trên trình duyệt mới, đọc tài liệu và lưu hội thoại. Bản Apple 1.0.8 (10) đã được duyệt vẫn khả dụng; việc gửi lại sẽ xử lý đúng lý do bị từ chối.
+
+[Quyền truy cập xét duyệt và kết quả kiểm tra](../store/reviewer-access.md)

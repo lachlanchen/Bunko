@@ -92,3 +92,9 @@ Version **1.0.8 (10)** adds a native Apple Watch companion and updates the Mac a
 The refreshed icon and private document companion support PDF, Word (.docx), Markdown, text and TeX, paper search and document questions. Ten native reader checks passed on an M5 Pro Mac mini, including offline reopening, reading position, equations and figures. The Watch simulator passed real iPhone transfer and disconnected restart; a physical Watch has not been tested.
 
 [macOS](docs/macos.md) · [watchOS](docs/watchos.md) · [1.0.8](store/artifacts/release-1.0.8.json)
+
+## Reviewer access candidate
+
+The 1.0.9 (11) candidate adds a clearly labelled Demo account for invited testers and store reviewers. Its separate password needs no email code. Real public comments and replies carry a demo attribution; demo documents and conversations are shared only among users of that account. Fresh-browser posting, document reading and chat persistence were verified. Approved Apple 1.0.8 (10) remains available; any resubmission will follow the actual rejection.
+
+[Reviewer access and verification](store/reviewer-access.md)

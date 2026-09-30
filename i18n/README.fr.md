@@ -95,3 +95,9 @@ La version **1.0.8 (10)** ajoute une application compagnon native pour Apple Wat
 L’icône renouvelée et l’assistant privé prennent en charge PDF, Word (.docx), Markdown, texte et TeX, la recherche d’articles et les questions sur les documents. Dix contrôles natifs ont réussi sur un Mac mini M5 Pro : réouverture hors ligne, position de lecture, équations et figures notamment. Le simulateur Watch a validé le transfert réel depuis l’application iPhone et le redémarrage déconnecté ; aucune montre physique n’a encore été testée.
 
 [macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
+
+## Version candidate pour l’accès de vérification
+
+La version candidate 1.0.9 (11) ajoute un compte de démonstration clairement indiqué pour les testeurs invités et les équipes de vérification des boutiques. Son mot de passe distinct ne nécessite aucun code par courriel. Les commentaires et réponses publics sont réels et portent une attribution de démonstration ; les documents et conversations sont partagés uniquement entre utilisateurs de ce compte. La publication dans un nouveau navigateur, la lecture et la conservation des échanges ont été vérifiées. La version Apple 1.0.8 (10), approuvée, reste disponible ; toute nouvelle soumission répondra au motif de refus réel.
+
+[Accès de vérification et résultats](../store/reviewer-access.md)

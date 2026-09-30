@@ -1,0 +1,9 @@
+.demo-account { margin: 12px 0 18px; text-align: left; font-size: 15px; line-height: 1.5; }
+.demo-account summary { cursor: pointer; padding: 10px 0; font-weight: 600; }
+.demo-account form { display: grid; gap: 12px; min-width: 0; padding: 4px 0 12px; }
+.demo-account p { margin: 0; }
+.demo-account label { display: grid; gap: 6px; font-weight: 600; }
+.demo-account input { box-sizing: border-box; width: 100%; min-width: 0; padding: 12px; border: 1px solid currentColor; border-radius: 8px; font: inherit; font-size: 16px; color: inherit; background: transparent; }
+.demo-account form > div { display: flex; flex-wrap: wrap; gap: 12px; }
+.demo-account button { min-height: 44px; padding: 8px 14px; }
+.demo-notice { border-left: 3px solid #b56b35; padding: 8px 12px; font-size: 14px; line-height: 1.6; text-align: left; }

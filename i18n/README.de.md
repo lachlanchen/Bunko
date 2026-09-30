@@ -95,3 +95,9 @@ Version **1.0.8 (10)** ergänzt eine native Apple-Watch-Begleitapp und aktualisi
 Das neue Symbol und der private Dokumentassistent unterstützen PDF, Word (.docx), Markdown, Text und TeX, Artikelsuche und Fragen zu Dokumenten. Zehn native Prüfungen bestanden auf einem M5-Pro-Mac-mini, darunter Offline-Wiederöffnung, Leseposition, Formeln und Abbildungen. Im Watch-Simulator wurden eine echte Übertragung aus der iPhone-App und ein Neustart ohne Verbindung geprüft. Eine physische Watch wurde noch nicht getestet.
 
 [macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
+
+## Prüfzugang im Veröffentlichungskandidaten
+
+Der Kandidat 1.0.9 (11) bietet ein deutlich gekennzeichnetes Demokonto für eingeladene Tester und die Prüfung durch die Stores. Sein eigenes Passwort benötigt keinen E-Mail-Code. Echte öffentliche Kommentare und Antworten werden als Demobeiträge gekennzeichnet; Dokumente und Gespräche werden nur unter Nutzern dieses Kontos geteilt. Beiträge in einem frischen Browser, das Lesen von Dokumenten und gespeicherte Gespräche wurden geprüft. Die freigegebene Apple-Version 1.0.8 (10) bleibt verfügbar; eine erneute Einreichung richtet sich nach dem konkreten Ablehnungsgrund.
+
+[Prüfzugang und Nachweise](../store/reviewer-access.md)

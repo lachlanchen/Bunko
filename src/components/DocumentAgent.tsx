@@ -6,6 +6,7 @@ import { useBackAction } from '../lib/backNavigation'
 import type { UILanguage } from '../i18n'
 import { agentCopy } from './agentCopy'
 import { DocumentContent } from './DocumentContent'
+import { DemoAccount, DemoNotice } from './DemoAccount'
 import './documentAgent.css'
 
 export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => void }) {
@@ -20,6 +21,7 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
   const [error, setError] = useState('')
   const [fontSize, setFontSize] = useState(20)
   const [auth, setAuth] = useState(false)
+  const [demoBusy, setDemoBusy] = useState(false)
   const [confirm, setConfirm] = useState<PrivateDocument | 'all' | null>(null)
   const [report, setReport] = useState<AgentMessage | null>(null)
   const [reason, setReason] = useState('')
@@ -135,10 +137,12 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
       <div><strong>Bunko</strong><span>{t.name}</span></div>
       {user && <button type="button" className="agent-account" disabled={!!busy} onClick={() => { void signOut().catch(failure); setDocuments([]); setMessages([]); setReading(null); setSelected('') }}>{user.login} · {t.signOut}</button>}
     </header>
+    {user?.kind === 'demo' && <DemoNotice ui={ui} />}
     {!user ? <section className="agent-welcome">
       <BookOpen size={36} /><h1>{t.intro}</h1><p>{t.hint}</p><p className="agent-muted">{t.privacy}</p>
-      <button type="button" className="primary" onClick={login} disabled={auth}>{auth ? t.signingIn : t.signIn}</button>
+      <button type="button" className="primary" onClick={login} disabled={auth || demoBusy}>{auth ? t.signingIn : t.signIn}</button>
       {auth && <button type="button" onClick={() => cancelAuth.current?.()}>{t.cancel}</button>}
+      <DemoAccount ui={ui} disabled={auth} onBusy={setDemoBusy} />
       {error && <p role="alert">{error}</p>}
     </section> : <div className="agent-layout">
       <aside className="agent-library">

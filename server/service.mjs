@@ -1,5 +1,6 @@
 import { createDocumentAgent, agentPaths } from './agent/service.mjs'
 import { AppError } from './agent/common.mjs'
+import { createDemoAuth } from './demo-auth.mjs'
 import { createServer } from 'node:http'
 import { randomBytes, createHash, createCipheriv, createDecipheriv, timingSafeEqual, createSign } from 'node:crypto'
 import { DatabaseSync } from 'node:sqlite'
@@ -34,6 +35,8 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
   const origins = new Set(config.origins ?? ['https://lachlan.lazying.art', 'https://lachlanchen.github.io', 'capacitor://localhost', 'https://localhost', 'bunko://localhost', 'null'])
   const key = Buffer.from(config.encryptionKey, 'base64')
   if (key.length !== 32) throw new Error('Expected 32-byte encryption key')
+  const demo = createDemoAuth(config.demoAccount)
+  if (demo.enabled && (!config.appId || !config.appPrivateKey)) throw new Error('Demo discussions require the repository GitHub App')
   const seal = value => {
     const iv = randomBytes(12), cipher = createCipheriv('aes-256-gcm', key, iv)
     const encrypted = Buffer.concat([cipher.update(JSON.stringify(value)), cipher.final()])
@@ -55,7 +58,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     for (const table of ['flows', 'sessions', 'posts']) db.prepare(`DELETE FROM ${table} WHERE expires < ?`).run(now())
   }
   const limits = new Map(), cache = new Map(), locks = new Map()
-  let active = 0, uploading = 0
+  let active = 0, uploading = 0, verifying = 0
   function limit(id, max, duration) {
     const row = limits.get(id)
     if (row && row.until > now()) { if (row.count++ >= max) fail(429, 'rate_limited'); return }
@@ -71,12 +74,13 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     if (!response.ok) fail(response.status === 401 ? 401 : response.status === 403 || response.status === 429 ? 429 : response.status === 422 ? 422 : 502, response.status === 401 ? 'sign_in_again' : response.status === 403 || response.status === 429 ? 'github_limited' : 'github_unavailable')
     return response.json()
   }
-  let readAccess = null, readAccessPending = null
-  async function publicReadToken() {
+  const installationAccess = new Map(), installationPending = new Map()
+  async function installationToken(permission = 'read') {
     if (!config.appId || !config.appPrivateKey) return undefined
-    if (readAccess?.expires > now()) return readAccess.token
-    if (readAccessPending) return readAccessPending
-    readAccessPending = (async () => {
+    const cached = installationAccess.get(permission)
+    if (cached?.expires > now()) return cached.token
+    if (installationPending.has(permission)) return installationPending.get(permission)
+    const pending = (async () => {
       const encoded = value => Buffer.from(JSON.stringify(value)).toString('base64url')
       const seconds = Math.floor(now() / 1000)
       const payload = `${encoded({ alg: 'RS256', typ: 'JWT' })}.${encoded({ iat: seconds - 60, exp: seconds + 540, iss: String(config.appId) })}`
@@ -84,14 +88,16 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       const jwt = `${payload}.${signer.sign(config.appPrivateKey, 'base64url')}`
       const installation = await github(`/repos/${REPO}/installation`, jwt)
       if (!Number.isSafeInteger(installation.id)) fail(502, 'github_unavailable')
-      const result = await github(`/app/installations/${installation.id}/access_tokens`, jwt, { repository_ids: [REPO_ID], permissions: { issues: 'read' } })
+      const result = await github(`/app/installations/${installation.id}/access_tokens`, jwt, { repository_ids: [REPO_ID], permissions: { issues: permission } })
       const expires = Date.parse(result.expires_at) - 60000
       if (typeof result.token !== 'string' || !Number.isFinite(expires) || expires <= now()) fail(502, 'github_unavailable')
-      readAccess = { token: result.token, expires }
+      installationAccess.set(permission, { token: result.token, expires })
       return result.token
-    })().finally(() => { readAccessPending = null })
-    return readAccessPending
+    })().finally(() => { installationPending.delete(permission) })
+    installationPending.set(permission, pending)
+    return pending
   }
+  const publicReadToken = () => installationToken('read')
   async function findThread(key, token) {
     const saved = db.prepare('SELECT issue FROM threads WHERE passage=?').get(key)
     if (saved) {
@@ -123,6 +129,13 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     const latest = db.prepare('SELECT * FROM sessions WHERE id=? AND expires>?').get(row.id, now())
     if (!latest) fail(401, 'sign_in_again')
     let auth = unseal(latest.data)
+    if (auth.provider === 'demo') {
+      if (!demo.current(auth.demoVersion)) { db.prepare('DELETE FROM sessions WHERE id=?').run(row.id); fail(401, 'sign_in_again') }
+      const expires = now() + PERSISTENT_MS
+      db.prepare('UPDATE sessions SET expires=? WHERE id=?').run(expires, row.id)
+      if (auth.storage === 'cookie' && res) cookie(res, value, expires)
+      return { ...auth, expires, sessionId: row.id }
+    }
     if (refresh && (auth.accessExpires ?? auth.expires) <= now() + 60000) {
       if (!auth.refreshToken || auth.refreshExpires <= now()) { db.prepare('DELETE FROM sessions WHERE id=?').run(row.id); fail(401, 'sign_in_again') }
       const pending = (async () => {
@@ -166,7 +179,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
     res.end(`<!doctype html><html lang="en"><meta name="viewport" content="width=device-width"><title>Bunko · GitHub</title><style nonce="${nonce}">body{font:18px system-ui;background:#faf7f0;color:#272942;max-width:32rem;margin:15vh auto;padding:2rem;line-height:1.7}a{color:#403d78}</style><h1>Bunko · 文庫</h1><p>${error ? 'Sign-in was not completed. Return to Bunko and try again.' : 'Signed in. Return to Bunko to continue your conversation.'}</p>${target ? `<a href="${target}">Return to Bunko</a><script nonce="${nonce}">location.replace(${JSON.stringify(target)})</script>` : `<script nonce="${nonce}">window.close()</script>`}</html>`)
   }
-  const postPaths = ['/v1/auth/start', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post', ...agentPaths].map(p => PREFIX + p)
+  const postPaths = ['/v1/auth/start', '/v1/auth/demo', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post', ...agentPaths].map(p => PREFIX + p)
   const server = createServer(async (req, res) => {
     res.setHeader('Cache-Control', 'no-store')
     res.setHeader('Referrer-Policy', 'no-referrer')
@@ -242,6 +255,26 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         json(res, await agent.handle(path.split('/').pop(), input, auth.user)); return
       }
       const input = await body(req)
+      if (path === `${PREFIX}/v1/auth/demo`) {
+        if (!demo.enabled) fail(503, 'demo_unavailable')
+        limit(`demo:${ip}`, 8, 900000)
+        limit('demo:global', 100, 900000)
+        if (!validOpaque(input.challenge) || !['web', 'native'].includes(input.platform)) fail(400, 'invalid_flow')
+        if (!['cookie', 'secure'].includes(input.storage)) fail(400, 'invalid_flow')
+        if (input.storage === 'cookie' && (origin !== 'https://lachlan.lazying.art' || input.platform !== 'web')) fail(400, 'invalid_flow')
+        if (input.storage === 'secure' && input.platform !== 'native') fail(400, 'invalid_flow')
+        if (verifying >= 2) fail(503, 'busy')
+        let verified
+        verifying++
+        try { verified = await demo.verify(input.username, input.password) } finally { verifying-- }
+        if (!verified) fail(401, 'invalid_demo_credentials')
+        const id = opaque(), expires = now() + PERSISTENT_MS
+        // Use the same bound completion and secure session storage as OAuth.
+        // The password response alone never creates a cookie or app session.
+        const auth = { provider: 'demo', demoVersion: demo.version, user: demo.user, storage: input.storage, expires }
+        db.prepare('INSERT INTO flows VALUES (?,NULL,?,?)').run(id, seal({ challenge: input.challenge, storage: input.storage, demoVersion: demo.version, auth }), now() + FLOW_MS)
+        json(res, { flow: id }); return
+      }
       if (path === `${PREFIX}/v1/auth/start`) {
         if (!config.clientId || !config.clientSecret) fail(503, 'not_configured')
         limit(`start:${ip}`, 10, 600000)
@@ -260,6 +293,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         if (!row) fail(410, 'flow_expired')
         const flow = unseal(row.data)
         if (!same(flow.challenge, hash(input.verifier))) fail(403, 'invalid_verifier')
+        if (flow.demoVersion && !demo.current(flow.demoVersion)) fail(401, 'sign_in_again')
         if (flow.completed) {
           if (!db.prepare('SELECT id FROM sessions WHERE id=? AND expires>?').get(hash(flow.completed.token), now())) fail(410, 'flow_expired')
           if (flow.storage === 'cookie') cookie(res, flow.completed.token, flow.completed.expires)
@@ -272,7 +306,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         db.prepare('INSERT INTO sessions VALUES (?,?,?)').run(hash(token), seal(flow.auth), expires)
         const completed = { token, user: flow.auth.user, expires }
         // A lost completion response can be recovered with the same bound verifier.
-        db.prepare('UPDATE flows SET data=?, expires=? WHERE id=?').run(seal({ challenge: flow.challenge, storage: flow.storage, completed }), now() + 60000, row.id)
+        db.prepare('UPDATE flows SET data=?, expires=? WHERE id=?').run(seal({ challenge: flow.challenge, storage: flow.storage, demoVersion: flow.demoVersion, completed }), now() + 60000, row.id)
         if (flow.storage === 'cookie') cookie(res, token, expires)
         json(res, { ...completed, ...(flow.storage === 'cookie' ? { token: undefined } : {}) }); return
       }
@@ -295,7 +329,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       }
       const auth = await session(req, res)
       if (path === `${PREFIX}/v1/session`) {
-        try { await github('/user', auth.token) } catch (error) {
+        try { if (auth.provider !== 'demo') await github('/user', auth.token) } catch (error) {
           if (error.status === 401) { db.prepare('DELETE FROM sessions WHERE id=?').run(auth.sessionId); cookie(res, '') }
           throw error
         }
@@ -317,15 +351,19 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         try {
           const issue = await findThread(key, await publicReadToken())
           if (issue?.locked) fail(423, 'thread_locked')
+          const token = auth.provider === 'demo' ? await installationToken('write') : auth.token
+          // This remains a real public post, visibly attributed to the demo
+          // account. Never impersonate the owner or a GitHub reviewer identity.
+          const commentBody = (auth.provider === 'demo' ? '**Bunko demo account** · Posted through Bunko\n\n' : '') + input.body.trim()
           const marker = `\n<!-- bunko-post:${id} -->`
           db.prepare('INSERT INTO posts VALUES (?,?,NULL,?)').run(id, fingerprint, now() + 7 * 86400000)
           let result
           try {
             if (issue) {
-              const comment = await github(`/repos/${REPO}/issues/${issue.number}/comments`, auth.token, { body: input.body.trim() + marker })
+              const comment = await github(`/repos/${REPO}/issues/${issue.number}/comments`, token, { body: commentBody + marker })
               result = { issue: safeIssue(issue), comment: safeComment(comment) }
             } else {
-              const created = await github(`/repos/${REPO}/issues`, auth.token, { title: title(key), body: `> ${input.excerpt.replace(/\n/g, '\n> ')}\n\nPassage: ${key}\n\n${input.body.trim()}${marker}`, labels: ['passage'] })
+              const created = await github(`/repos/${REPO}/issues`, token, { title: title(key), body: `> ${input.excerpt.replace(/\n/g, '\n> ')}\n\nPassage: ${key}\n\n${commentBody}${marker}`, labels: ['passage'] })
               db.prepare('INSERT OR REPLACE INTO threads VALUES (?,?)').run(key, created.number)
               result = { issue: safeIssue(created), comment: null }
             }

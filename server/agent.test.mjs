@@ -60,6 +60,21 @@ test('removing a converting document prevents late results restoring it', async 
   assert.equal((await call('state')).documents.length, 0)
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM agent_sources').get().n, 0)
 })
+test('demo documents and conversations cannot access an ordinary GitHub reader’s data', async t => {
+  const { agent, call } = setup(t)
+  const demo = { id: -1, login: 'Bunko demo', kind: 'demo' }
+  const own = await call('upload', { name: 'owner.md', data: Buffer.from('private owner text').toString('base64'), requestId })
+  const example = await call('upload', { name: 'demo.md', data: Buffer.from('non-sensitive test text').toString('base64'), requestId }, demo)
+  await agent.tick()
+  assert.equal((await call('state', {}, demo)).documents.length, 1)
+  await assert.rejects(call('document', { documentId: own.id }, demo), /not found/)
+  await assert.rejects(call('document', { documentId: example.id }), /not found/)
+  await call('send', { text: 'Private question', requestId })
+  assert.equal((await call('messages', {}, demo)).messages.length, 0)
+  await call('clear', { confirm: 'DELETE' }, demo)
+  assert.equal((await call('state')).documents.length, 1)
+  assert.equal((await call('messages')).messages.length, 1)
+})
 test('shared storage limits include originals and preserve reading/deletion under low disk', async t => {
   let available = 1_000_000_000
   const { agent, call } = setup(t, { config: { enabled: true, maxStoredBytes: 1000, minFreeBytes: 500 }, freeBytes: () => available })

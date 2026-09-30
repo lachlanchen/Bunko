@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "preparedAt": "2026-09-30T00:04:23.362188+00:00",
+  "status": "candidate preparation; not submitted for production review",
+  "feature": "Explicit invited demo login without owner email verification; real public comments and private demo companion namespace",
+  "automated": {
+    "clientTests": 54,
+    "serverTests": 35,
+    "lint": true,
+    "types": true,
+    "renderer": true,
+    "webBuild": true
+  },
+  "live": {
+    "web": [
+      "fresh browser password sign-in without GitHub or email",
+      "separate empty demo document library",
+      "HttpOnly session restores after reload",
+      "real public GitHub comment posted from demo UI",
+      "real public reply posted from demo UI",
+      "both posts reload once with demo attribution",
+      "sign-out removes posting permission",
+      "second clean demo sign-in succeeds directly inside discussion"
+    ],
+    "companion": [
+      "demo upload and conversion verified in previous UI step",
+      "demo upload and conversion through real companion service",
+      "flowing document reader opens",
+      "real model response remains available in the demo account",
+      "uploaded document and conversation persist after reload; demo notice retained"
+    ],
+    "android": {
+      "passed": true,
+      "at": "2026-09-30T00:03:35.839Z",
+      "build": "1.0.9 (11)",
+      "platform": "Android API34 emulator",
+      "configuration": "Debug shell with same production web bundle; release APK/AAB separately signed",
+      "checks": [
+        "native upgrade preserved downloaded Daodejing",
+        "real native demo login uses opaque session without browser or OTP; no credential in localStorage",
+        "native client accesses only demo document and saved real model conversation",
+        "native discussion reads real public reply and enables explicit posting",
+        "cold app restart restores demo from Android secure storage",
+        "native sign-out clears demo session"
+      ]
+    },
+    "publicDiscussion": "https://github.com/lachlanchen/bunko-books/issues/3"
+  },
+  "artifacts": {
+    "android_apk": {
+      "file": "app-release.apk",
+      "sha256": "b1c1b74600a119cccb9988d518ba5861481cc14dffba067e6bee639db0f79ea5",
+      "bytes": 5628369,
+      "version": "1.0.9",
+      "build": 11
+    },
+    "android_aab": {
+      "file": "app-release.aab",
+      "sha256": "a08eba3dae1906b27bf2e18da6223bd048c30c8c1ea05de7b64300e87891e910",
+      "bytes": 6001594,
+      "version": "1.0.9",
+      "build": 11
+    }
+  },
+  "production": {
+    "ios": "1.0.8 (10) remains READY_FOR_SALE",
+    "macos": "1.0.8 (10) remains READY_FOR_SALE",
+    "google": "Existing review not changed"
+  },
+  "limitations": [
+    "Fresh Apple native demo login not yet tested; existing secure-storage bridge is unchanged.",
+    "Android runtime used the Debug shell with the production web bundle; signed release APK/AAB built separately.",
+    "No production review submitted by this preparation."
+  ]
+}

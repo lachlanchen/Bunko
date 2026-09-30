@@ -120,3 +120,16 @@ Watch reading positions persist offline. Figures/equations stay in the full
 edition; no private companion documents or authentication tokens are transferred.
 WatchOS11 minimum; iOS/watch marketing version and build must match. Real native
 transport and offline QA plus signed archive validation precede review submission.
+
+## Reviewer access amendment · 2026-09-30
+
+The owner requested reviewer access without verification codes sent to their
+inbox and explicitly required the test account to post comments. The 1.0.9
+candidate adds visible, password-protected Demo account sign-in for invited
+testers and store review. It uses a separate identity and private document
+namespace, with clearly attributed real public posts through a repository-only
+GitHub App. Demo data is shared among people holding those demo credentials;
+the UI explains this before login and while signed in. This is separate from
+public account registration and the still-unqualified shared-account adapter.
+Keep approved releases available and prepare any resubmission against the
+actual rejection. See store/reviewer-access.md.

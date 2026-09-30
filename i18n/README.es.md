@@ -95,3 +95,9 @@ La versión **1.0.8 (10)** añade un complemento nativo para Apple Watch y actua
 El icono renovado y el asistente privado admiten PDF, Word (.docx), Markdown, texto y TeX, búsqueda de artículos y preguntas sobre documentos. Se superaron diez comprobaciones nativas en un Mac mini M5 Pro, incluida la reapertura sin conexión, la posición de lectura, las ecuaciones y las figuras. El simulador de Watch superó la transferencia real desde la app del iPhone y el reinicio desconectado; no se ha probado un reloj físico.
 
 [macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
+
+## Versión candidata para acceso de revisión
+
+La candidata 1.0.9 (11) incorpora una cuenta de demostración claramente identificada para probadores invitados y revisores de las tiendas. Su contraseña independiente no requiere códigos por correo. Los comentarios y respuestas públicos son reales y llevan una atribución de demostración; los documentos y conversaciones se comparten solo entre quienes usan esa cuenta. Se verificaron la publicación desde un navegador nuevo, la lectura y la persistencia del chat. Apple 1.0.8 (10), ya aprobada, sigue disponible; cualquier reenvío atenderá al rechazo concreto.
+
+[Acceso de revisión y verificación](../store/reviewer-access.md)

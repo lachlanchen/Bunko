@@ -55,3 +55,57 @@ it('restores the web cookie without putting a credential in browser storage', as
   expect(api.currentUser()?.login).toBe('web-reader')
   expect(localStorage.length).toBe(0); expect(state.saved).toBeNull()
 })
+it('demo signs in without a browser or GitHub and restores from native secure storage', async () => {
+  state.native = true
+  const open = vi.spyOn(window, 'open')
+  const user = { id: -1, login: 'Bunko demo', kind: 'demo' }
+  const request = vi.fn<typeof fetch>(async (url, init) => {
+    const body = JSON.parse(String(init?.body))
+    if (String(url).endsWith('/auth/demo')) {
+      expect(body).toMatchObject({ username: 'fixture-review', password: 'fixture-password', platform: 'native', storage: 'secure' })
+      expect(body.challenge).toHaveLength(43)
+      return Response.json({ flow: 'f'.repeat(43) })
+    }
+    if (String(url).endsWith('/auth/complete')) return Response.json({ user, token: 'd'.repeat(43), expires: Date.now() + 86400000 })
+    return Response.json({ user, expires: Date.now() + 86400000 })
+  })
+  vi.stubGlobal('fetch', request)
+  let api = await import('./discussions')
+  const attempt = api.signInDemo('fixture-review', 'fixture-password')
+  expect(await attempt.promise).toEqual(user)
+  attempt.cancel() // Component unmount following successful sign-in is harmless.
+  expect(api.currentUser()).toEqual(user)
+  expect(open).not.toHaveBeenCalled()
+  expect(state.saved).toBe('d'.repeat(43))
+  expect(localStorage.length).toBe(0)
+  vi.resetModules(); api = await import('./discussions')
+  await api.restoreSession()
+  expect(api.currentUser()).toEqual(user)
+  expect(request.mock.calls.every(([url]) => String(url).startsWith('https://llm.lazying.art/bunko/'))).toBe(true)
+})
+it('cancelled demo login cannot resurrect a session from a late password response', async () => {
+  let release!: (value: Response) => void
+  const pending = new Promise<Response>(resolve => { release = resolve })
+  const request = vi.fn<typeof fetch>(() => pending)
+  vi.stubGlobal('fetch', request)
+  const api = await import('./discussions')
+  const attempt = api.signInDemo('fixture-review', 'fixture-password')
+  const result = attempt.promise.catch(e => e)
+  await vi.waitFor(() => expect(request).toHaveBeenCalledTimes(1))
+  attempt.cancel()
+  release(Response.json({ flow: 'f'.repeat(43) }))
+  expect((await result).code).toBe('authorization_cancelled')
+  expect(api.currentUser()).toBeNull()
+  expect(state.saved).toBeNull()
+  expect(request).toHaveBeenCalledTimes(1)
+})
+it('demo password failures are not retried automatically or stored', async () => {
+  const request = vi.fn<typeof fetch>(async () => Response.json({ error: 'invalid_demo_credentials' }, { status: 401 }))
+  vi.stubGlobal('fetch', request)
+  const api = await import('./discussions')
+  await expect(api.signInDemo('fixture-review', 'wrong').promise).rejects.toMatchObject({ code: 'invalid_demo_credentials' })
+  expect(request).toHaveBeenCalledTimes(1)
+  expect(api.currentUser()).toBeNull()
+  expect(localStorage.length).toBe(0)
+  expect(state.saved).toBeNull()
+})
