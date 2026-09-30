@@ -53,6 +53,19 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, data TEXT NOT NULL, expires INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS threads (passage TEXT PRIMARY KEY, issue INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS posts (id TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, result TEXT, expires INTEGER NOT NULL);`)
+  // Revocation is durable even if a disabled account is later re-enabled with
+  // the same password. Do not wait for each old device to make a request.
+  db.exec('BEGIN IMMEDIATE')
+  try {
+    for (const table of ['sessions', 'flows']) {
+      for (const row of db.prepare(`SELECT id,data FROM ${table}`).all()) {
+        let value
+        try { value = unseal(row.data) } catch { continue }
+        if ((value.provider === 'demo' || value.demoVersion) && !demo.current(value.demoVersion)) db.prepare(`DELETE FROM ${table} WHERE id=?`).run(row.id)
+      }
+    }
+    db.exec('COMMIT')
+  } catch (error) { db.exec('ROLLBACK'); db.close(); throw error }
   const agent = createDocumentAgent({ db, seal, unseal, config: config.agent || {}, now })
   const cleanup = () => {
     for (const table of ['flows', 'sessions', 'posts']) db.prepare(`DELETE FROM ${table} WHERE expires < ?`).run(now())
