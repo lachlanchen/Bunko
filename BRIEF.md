@@ -144,3 +144,13 @@ actual rejection. See store/reviewer-access.md.
 rounded border, salmon ぶん and mostly white background. Use this design for
 all Bunko platform packages. Keep the original and every intermediate concept
 for future reuse; the variant registry makes the source choice explicit.
+
+## Watch reading amendment · 2026-09-30
+
+The owner requested Chinese pinyin, Japanese furigana and sentence-level
+multilingual interlacing on Apple Watch, with testing before replacing the iOS
+review submission. Transfer the book’s aligned units and original ruby tokens,
+show bold language labels, and retain independent text/ruby size controls. Keep
+older excerpt caches readable and prompt re-sending to add ruby. Bound the same
+WatchConnectivity shelf; figures/equations remain in the full reader. An already
+qualified Mac review need not restart for a Watch-only change.

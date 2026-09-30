@@ -1,12 +1,18 @@
 import { Capacitor, registerPlugin } from '@capacitor/core'
 import type { BookMeta, Chapter, LangCode } from '../types'
-import { plainText } from './text'
+import { plainText, tokenParts } from './text'
+
+export interface WatchToken { text: string; ruby?: string }
+export interface WatchLine { lang: LangCode; tokens: WatchToken[] }
+export interface WatchSentence { lines: WatchLine[] }
 
 export interface WatchReading {
   id: string
   title: string
   subtitle: string
+  /** Plain fallback for older Watch installations. One aligned unit per block. */
   blocks: string[]
+  sentences?: WatchSentence[]
   truncated: boolean
 }
 
@@ -19,21 +25,37 @@ export function watchExcerpt(meta: BookMeta, chapter: Chapter, langs: LangCode[]
     id: `${meta.id}/${chapter.n}/${start}`,
     title: (meta.titleText[meta.primary] ?? meta.id).slice(0, 150),
     subtitle: (plainText(chapter.title[langs[0]] ?? chapter.title[meta.primary]) || `Chapter ${chapter.n}`).slice(0, 150),
-    blocks: [], truncated: false,
+    blocks: [], sentences: [], truncated: false,
   }
   const available = chapter.p.slice(Math.max(0, start))
-  for (const paragraph of available) {
+  const languages = [...new Set(langs)]
+  excerpt: for (const paragraph of available) {
     // Equations and figures do not have a faithful plain-text Watch rendition.
     if (paragraph.figure || paragraph.kind === 'equation' || paragraph.u.some(unit => Object.values(unit.rich ?? {}).some(parts => parts?.some(part => part.math)))) {
       reading.truncated = true
       break
     }
-    const text = langs.map(lang => paragraph.u.map(unit => plainText(unit[lang])).filter(Boolean).join(' ')).filter(Boolean).join('\n\n').trim()
-    if (!text) continue
-    if (reading.blocks.length >= 24 || new TextEncoder().encode(text).length > 6000) { reading.truncated = true; break }
-    reading.blocks.push(text)
-    if (new TextEncoder().encode(JSON.stringify(reading)).length > 14500) {
-      reading.blocks.pop(); reading.truncated = true; break
+    // Book units are already aligned across languages. Preserve that alignment
+    // instead of concatenating an entire paragraph in each language first.
+    for (const unit of paragraph.u) {
+      const lines: WatchLine[] = languages.flatMap(lang => {
+        const tokens = (unit[lang] ?? []).map(token => {
+          const { text, reading: ruby } = tokenParts(token)
+          return ruby ? { text, ruby } : { text }
+        }).filter(token => token.text)
+        return tokens.length ? [{ lang, tokens }] : []
+      })
+      const text = lines.map(line => line.tokens.map(token => token.text).join('')).join('\n\n')
+      if (!text.trim()) continue
+      if (reading.blocks.length >= 24 || new TextEncoder().encode(text).length > 6000) {
+        reading.truncated = true; break excerpt
+      }
+      reading.blocks.push(text)
+      reading.sentences!.push({ lines })
+      if (new TextEncoder().encode(JSON.stringify(reading)).length > 14500) {
+        reading.blocks.pop(); reading.sentences!.pop()
+        reading.truncated = true; break excerpt
+      }
     }
   }
   return reading

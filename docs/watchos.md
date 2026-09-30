@@ -5,16 +5,23 @@ book on iPhone and tap the watch icon in the reader toolbar. The transfer starts
 at the currently visible paragraph and includes the selected reading languages.
 The latest three excerpts remain on the paired watch for offline reading.
 
-Use the Digital Crown to scroll, Previous/Next to turn between passages and the
-text-size button to adjust 14–24 point text. The watch remembers the passage in
+Use the Digital Crown to scroll, Previous/Next to turn between aligned sentence units and the
+text-size button to adjust 14–24 point text, toggle ruby, and independently set
+7–13 point readings. Each language has a bold label; Chinese pinyin and Japanese
+furigana stay above their original tokens. The watch remembers the sentence in
 each excerpt. Installation and initial transfer require a paired iPhone with
 Bunko and the Watch app installed. Delivery can wait until the devices reconnect;
 the phone confirms queueing, not receipt. iPad and Mac are not Watch companions.
 
-This is a text excerpt reader. Figures, ruby layout and rendered equations remain
+Existing excerpts remain readable after updating. Send them again from the
+iPhone to obtain ruby and sentence alignment. Older Watch installations can
+still read the plain-text fallback from the updated phone. Sentence boundaries
+follow the book’s authoritative alignment; missing translations are not invented.
+
+This is a text excerpt reader. Figures and rendered equations remain
 in the full illustrated edition on iPhone/iPad/Mac. A transfer stops before an
 illustrated or mathematical passage rather than silently flattening it. Excerpts
-are bounded to 24 paragraphs / 15 KB each; the entire synchronized shelf stays
+are bounded to 24 aligned units / 15 KB each; the entire synchronized shelf stays
 under 50 KB. Oversized or malformed data is rejected on both devices. Private
 agent documents, account credentials, notes and discussion tokens are not sent.
 
