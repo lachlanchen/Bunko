@@ -103,3 +103,5 @@ Der Kandidat 1.0.9 (11) bietet ein deutlich gekennzeichnetes Demokonto für eing
 [Prüfzugang und Nachweise](../store/reviewer-access.md)
 
 **2026-09-30 · Bunko** — Das freigegebene himmelblaue und lachsfarbene Symbol ist im Web aktiv. **1.0.9 (12)** ist über TestFlight (iPhone/iPad, Watch-Begleitapp und Mac) sowie im internen Google-Play-Test verfügbar. Beide Apple-Updates warten auf Prüfung und werden nach Freigabe automatisch veröffentlicht. Das Google-Produktionsupdate und das Store-Symbol sind vorbereitet; die laufende Prüfung bleibt erhalten. Alle früheren Symbole sind archiviert.
+
+**Watch-Update — 1.0.9 (13):** Mehrsprachige Auszüge werden satzweise mit chinesischem Pinyin und japanischem Furigana angezeigt; Text und Lesungen haben getrennte Schriftgrößen. In TestFlight verfügbar und für die automatische Veröffentlichung nach Apple-Freigabe eingereicht. Ältere Auszüge bitte aus der aktualisierten iPhone-App erneut senden. Echte Übertragung zwischen gekoppelten Simulatoren und Offline-Neustart wurden geprüft; kein Test auf einer physischen Watch. Mac und Android bleiben im internen Test bei Build12.

@@ -1,3 +1,16 @@
+# iOS/Watch 1.0.9 (13) submitted — 2026-09-30
+
+Build 13 is VALID and IN_BETA_TESTING. Review
+`86b5ae07-b98f-42b2-98ea-979c13076e55` is WAITING_FOR_REVIEW, submitted
+03:13:31 UTC with AFTER_APPROVAL release. It replaces build 12 with owner
+authorization after Watch ruby, sentence alignment and offline qualification.
+The new Watch screenshot is COMPLETE and the existing demo credentials are
+preserved. Mac 12’s separate review is unchanged. See the
+[receipt](../artifacts/watch-release-1.0.9.json) and
+[QA report](../../evidence/watch-ruby-20260930/qa.json).
+
+## Earlier release history
+
 # Reviewer access candidate — 2026-09-30
 
 iOS/Watch **1.0.9 (11)** is VALID and IN_BETA_TESTING. Its production draft

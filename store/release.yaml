@@ -41,12 +41,12 @@ channels:
     review_submission: df08e230-c2d3-4c5f-97dc-b5a8b7949316
     build_id: a561f6e3-1256-4943-ae30-0954299ca5a5
     update_version: 1.0.9
-    update_build: 12
-    update_build_id: b8c57533-8cb9-4af8-9c14-2aad488794b8
+    update_build: 13
+    update_build_id: 5cc8cb76-af02-4fc4-acaf-2e9194007b23
     update_status: WAITING_FOR_REVIEW
-    update_review_submission: 5c6b7700-ff15-4186-bafd-b42d9d14ff12
-    testflight_latest: 1.0.9 (12), VALID and IN_BETA_TESTING
-    testflight_latest_build_id: b8c57533-8cb9-4af8-9c14-2aad488794b8
+    update_review_submission: 86b5ae07-b98f-42b2-98ea-979c13076e55
+    testflight_latest: 1.0.9 (13), VALID and IN_BETA_TESTING
+    testflight_latest_build_id: 5cc8cb76-af02-4fc4-acaf-2e9194007b23
     watch_bundle_id: art.lazying.bunko.watchkitapp
   mac_app_store:
     app_id: '6815137919'
@@ -87,7 +87,8 @@ catalogue:
   payload_bytes: 2774079249
 reviewer_access_candidate:
   version: 1.0.9
-  build: 12
+  ios_build: 13
+  macos_build: 12
   web: deployed and fresh-browser login verified
   backend: deployed with durable demo session revocation
   ios_version_id: f2f23ae9-038d-41e5-b569-d78bab4b32f6
@@ -96,3 +97,4 @@ reviewer_access_candidate:
   android: 1.0.9 (12) internal available; production draft staged; build8 review unchanged
   submitted: true
   receipt: store/artifacts/icon-release-1.0.9.json
+  watch_update_receipt: store/artifacts/watch-release-1.0.9.json

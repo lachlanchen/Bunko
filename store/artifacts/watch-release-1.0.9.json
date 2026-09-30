@@ -1,0 +1,45 @@
+{
+  "verifiedAt": "2026-09-30T03:14:50.660878+00:00",
+  "version": "1.0.9",
+  "build": 13,
+  "sourceCommit": "9e91bf8",
+  "testflight": {
+    "platform": "IOS",
+    "version": "1.0.9",
+    "build": 13,
+    "id": "5cc8cb76-af02-4fc4-acaf-2e9194007b23",
+    "processing": "VALID",
+    "internal": "IN_BETA_TESTING"
+  },
+  "appleReview": {
+    "versionId": "f2f23ae9-038d-41e5-b569-d78bab4b32f6",
+    "buildId": "5cc8cb76-af02-4fc4-acaf-2e9194007b23",
+    "reviewId": "86b5ae07-b98f-42b2-98ea-979c13076e55",
+    "reviewState": "WAITING_FOR_REVIEW",
+    "versionState": "WAITING_FOR_REVIEW",
+    "submittedAt": "2026-09-30T03:13:31.825Z",
+    "releaseType": "AFTER_APPROVAL"
+  },
+  "replacedReview": {
+    "build": 12,
+    "id": "5c6b7700-ff15-4186-bafd-b42d9d14ff12",
+    "reason": "Owner-authorized replacement after Watch ruby and sentence-alignment qualification"
+  },
+  "macReviewPreserved": {
+    "build": 12,
+    "reviewId": "6aa378aa-8853-4e87-a7c5-0615c0944ede",
+    "state": "WAITING_FOR_REVIEW"
+  },
+  "googleInternal": "1.0.9 (12), unchanged by this Watch-only update",
+  "qa": "evidence/watch-ruby-20260930/qa.json",
+  "artifact": {
+    "file": "App.ipa",
+    "bytes": 10884787,
+    "sha256": "19dfb20b002f2a5be1abdab3bc2d8149da31eebf9f6a4d9bcd135800a63298c2",
+    "archiveValidation": "SUCCESS",
+    "upload": "SUCCESS"
+  },
+  "reviewerAccess": "Existing dedicated demo credentials preserved; no owner inbox code required",
+  "screenshots": "Updated Watch ruby screenshot COMPLETE before submission",
+  "publicRelease": "1.0.8 (10) remains approved; update feed not advanced to unapproved build13"
+}

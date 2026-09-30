@@ -1,3 +1,37 @@
+# Watch ruby update submitted — 2026-09-30 HKT
+
+**iOS/Watch 1.0.9 (13) is VALID, IN_BETA_TESTING and WAITING_FOR_REVIEW.**
+Apple review `86b5ae07-b98f-42b2-98ea-979c13076e55` was submitted at
+03:13:31 UTC for automatic release after approval. The owner authorized replacing
+build 12 after qualification. Mac 1.0.9 (12) remains in its existing review;
+Android 1.0.9 (12) remains available internally, with its production draft staged.
+Approved Apple 1.0.8 (10) remains available, and the public update feed is unchanged.
+
+Watch excerpts now preserve original Chinese pinyin and Japanese furigana and
+interlace the selected languages by the book’s aligned sentence units. Bold
+language labels, independent main/ruby sizes, a ruby switch and legacy-cache
+compatibility are included. Re-send older excerpts from the updated iPhone app
+to add readings. Figure/equation passages stay in the full reader.
+
+58 client and 35 server tests, lint, TypeScript, renderer and web build passed.
+Swift model checks and the native paired-simulator build passed. A real reader
+button transfer delivered six Daodejing units with 124 ruby tokens; Watch cache
+and rendering survived a cold launch with the phone simulator shut down.
+Default/maximum font sizes, ruby-off state and second-unit restoration were
+inspected. Physical Watch/Crown/tap coverage is not claimed. The simulator’s
+stale installation registration was repaired by reinstalling only its Watch app.
+The signed release binaries contain no private QA driver. New Watch screenshot
+upload completed before submission. Existing dedicated demo credentials remain
+in App Store Connect and need no owner email verification code.
+
+See [release receipt](artifacts/watch-release-1.0.9.json),
+[QA evidence](../evidence/watch-ruby-20260930/qa.json) and
+[Watch behavior](../docs/watchos.md). Sources and screenshots are committed;
+packages, private API receipts and test drivers remain ignored. Both Bunko
+simulators and archive/upload processes are stopped; peer devices are preserved.
+
+## Earlier release history
+
 # Reviewer access candidate — 2026-09-30 HKT
 
 Bunko’s web reader and backend now offer a visibly labelled **Demo account**
@@ -12,7 +46,7 @@ lint, TypeScript, document renderer and web/native packaging.
 **iOS/Watch and universal Mac1.0.9(11) are VALID and IN_BETA_TESTING** in Bunko
 Internal. Their production drafts have the exact builds and verified private
 demo credentials, but remain **PREPARE_FOR_SUBMISSION**. Existing approved
-Apple1.0.8(10) stays public. Android’s signed11 APK/AAB is prepared; no Google
+Apple 1.0.8 (10) stays public. Android’s signed11 APK/AAB is prepared; no Google
 review/access change was made. No formal review was submitted or cancelled.
 
 On an actual rejection, use the [reviewer access procedure](reviewer-access.md)

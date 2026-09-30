@@ -103,3 +103,5 @@ La candidata 1.0.9 (11) incorpora una cuenta de demostración claramente identif
 [Acceso de revisión y verificación](../store/reviewer-access.md)
 
 **2026-09-30 · Bunko** — El icono aprobado azul cielo y salmón ya está en la web. **1.0.9 (12)** está disponible en TestFlight (iPhone/iPad, aplicación complementaria Watch y Mac) y en pruebas internas de Google Play. Ambas actualizaciones de Apple esperan revisión y se publicarán automáticamente tras su aprobación. La actualización de producción de Google y su icono están preparadas; se conserva la revisión actual. Todos los diseños anteriores están archivados.
+
+**Actualización Watch — 1.0.9 (13):** extractos multilingües alineados por oración, con pinyin chino, furigana japonés y tamaños independientes para texto y lecturas. Disponible en TestFlight; la versión iOS/Watch se envió a revisión para su publicación automática tras la aprobación de Apple. Reenvía los extractos antiguos desde la app de iPhone actualizada. Se verificaron la transferencia real entre simuladores enlazados y el inicio sin conexión; no se probó un Watch físico. Mac y Android siguen en el build12 para pruebas internas.

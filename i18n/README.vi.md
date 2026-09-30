@@ -103,3 +103,5 @@ Bản ứng viên 1.0.9 (11) bổ sung tài khoản trình diễn được ghi r
 [Quyền truy cập xét duyệt và kết quả kiểm tra](../store/reviewer-access.md)
 
 **2026-09-30 · Bunko** — Biểu tượng xanh da trời và hồng cá hồi đã được duyệt và xuất hiện trên web. **1.0.9 (12)** có trên TestFlight (iPhone/iPad, ứng dụng đồng hành Watch và Mac) và thử nghiệm nội bộ Google Play. Hai bản cập nhật Apple đang chờ xét duyệt và sẽ tự phát hành khi được duyệt. Bản cập nhật chính thức Google và biểu tượng cửa hàng đã sẵn sàng; đợt xét duyệt hiện tại được giữ nguyên. Mọi thiết kế biểu tượng trước đây đều được lưu trữ.
+
+**Cập nhật Watch — 1.0.9 (13):** đoạn trích đa ngôn ngữ được đối chiếu từng câu, có pinyin tiếng Trung và furigana tiếng Nhật; cỡ chữ chính và phiên âm chỉnh riêng. Đã có trên TestFlight và đã gửi bản iOS/Watch xét duyệt để tự động phát hành sau khi Apple chấp thuận. Hãy gửi lại đoạn trích cũ từ ứng dụng iPhone đã cập nhật. Đã xác minh truyền dữ liệu thật giữa hai trình mô phỏng ghép đôi và khởi động lại ngoại tuyến; chưa kiểm thử Watch vật lý. Mac và Android vẫn dùng bản dựng12 cho thử nghiệm nội bộ.

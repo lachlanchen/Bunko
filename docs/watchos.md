@@ -43,3 +43,13 @@ agent documents, account credentials, notes and discussion tokens are not sent.
 
 Release results and any coverage gaps belong in the store handoff. A successful
 build is not evidence of a physical Apple Watch test or store approval.
+
+## Build 13 verification · 2026-09-30
+
+Version 1.0.9 (13) is available in TestFlight and submitted to Apple review for
+automatic release after approval. Native paired-simulator transfer preserved
+six real Daodejing units and 124 ruby annotations. Offline cold launch, default
+and maximum font sizes, ruby-off rendering and page restoration were checked.
+Physical Watch hardware and Crown/tap interaction are not covered by this run.
+See [QA evidence](../evidence/watch-ruby-20260930/qa.json) and the
+[submission receipt](../store/artifacts/watch-release-1.0.9.json).
