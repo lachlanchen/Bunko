@@ -154,3 +154,10 @@ show bold language labels, and retain independent text/ruby size controls. Keep
 older excerpt caches readable and prompt re-sending to add ruby. Bound the same
 WatchConnectivity shelf; figures/equations remain in the full reader. An already
 qualified Mac review need not restart for a Watch-only change.
+
+**2026-09-30 icon refinement approved:** Use the white-bottom-right variant:
+subtle cyan toward the upper-left, clean white toward the bottom-right, and
+stronger upper-left 文 strokes. Preserve the salmon ぶん and rounded border.
+The owner approved applying, pushing and submitting this variant. Archive all
+prior icon masters. Qualified build14 replaces the queued Apple and Google
+updates after platform packaging and current review declarations are checked.

@@ -1,5 +1,5 @@
 {
-  "active": "sky-salmon",
+  "active": "white-bottom-right",
   "variants": {
     "classic": {
       "source": "assets/brand/bunko-classic-master.png",
@@ -23,6 +23,11 @@
     },
     "sky-salmon": {
       "source": "assets/brand/concepts/sky-salmon-20260930/bunko-sky-salmon-preview.png",
+      "background": "#ffffff",
+      "splash": "#ffffff"
+    },
+    "white-bottom-right": {
+      "source": "assets/brand/concepts/white-bottom-right-20260930/bunko-white-bottom-right-preview.png",
       "background": "#ffffff",
       "splash": "#ffffff"
     }
