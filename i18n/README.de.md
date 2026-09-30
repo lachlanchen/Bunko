@@ -84,7 +84,7 @@ Ein Wort lange drücken, die Auswahlgriffe anpassen und dann Wörterbuch wählen
 
 ## Gespräche in Bunko
 
-Mit der GitHub-Anmeldung kannst du öffentliche Kommentare zu Textstellen direkt in Bunko lesen und verfassen. Entwürfe und private Notizen bleiben auf deinem Gerät, bis du sie ausdrücklich veröffentlichst. Ein kleiner Cloud-Dienst übernimmt die Autorisierung, ohne dass der Computer des Betreibers eingeschaltet sein muss; GitHub speichert das öffentliche Gespräch. Die Oberfläche unterstützt Englisch, vereinfachtes und traditionelles Chinesisch sowie Japanisch. Version 1.0.6 (8) hält die Anmeldung durch sicheren Gerätespeicher und automatische Token-Erneuerung aufrecht und erholt sich von kurzen Verbindungsstörungen. iOS **1.0.8 (10)** einschließlich Apple Watch ist seit dem 29. September 2026 öffentlich verfügbar. Mac **1.0.8 (10)** ist ebenfalls seit dem 30. September 2026 (Hongkonger Zeit) öffentlich verfügbar. Android 1.0.6 (8) bleibt im internen Google-Play-Test verfügbar; der Produktionsstatus steht in den Release-Protokollen.
+Mit der GitHub-Anmeldung kannst du öffentliche Kommentare zu Textstellen direkt in Bunko lesen und verfassen. Entwürfe und private Notizen bleiben auf deinem Gerät, bis du sie ausdrücklich veröffentlichst. Ein kleiner Cloud-Dienst übernimmt die Autorisierung, ohne dass der Computer des Betreibers eingeschaltet sein muss; GitHub speichert das öffentliche Gespräch. Die Oberfläche unterstützt Englisch, vereinfachtes und traditionelles Chinesisch sowie Japanisch. Version 1.0.6 (8) hält die Anmeldung durch sicheren Gerätespeicher und automatische Token-Erneuerung aufrecht und erholt sich von kurzen Verbindungsstörungen. iOS **1.0.8 (10)** einschließlich Apple Watch ist seit dem 29. September 2026 öffentlich verfügbar. Mac **1.0.8 (10)** ist ebenfalls seit dem 30. September 2026 (Hongkonger Zeit) öffentlich verfügbar. Android 1.0.9 (14) bleibt im internen Google-Play-Test verfügbar; der Produktionsstatus steht in den Release-Protokollen.
 
 [Umsetzung und Prüfung der Diskussionsfunktion](../docs/github-discussions-2026-09-26.md).
 
@@ -96,14 +96,12 @@ Das neue Symbol und der private Dokumentassistent unterstützen PDF, Word (.docx
 
 [macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
 
-## Prüfzugang im Veröffentlichungskandidaten
+## Tests und Prüfung
 
-Der Kandidat 1.0.9 (11) bietet ein deutlich gekennzeichnetes Demokonto für eingeladene Tester und die Prüfung durch die Stores. Sein eigenes Passwort benötigt keinen E-Mail-Code. Echte öffentliche Kommentare und Antworten werden als Demobeiträge gekennzeichnet; Dokumente und Gespräche werden nur unter Nutzern dieses Kontos geteilt. Beiträge in einem frischen Browser, das Lesen von Dokumenten und gespeicherte Gespräche wurden geprüft. Die freigegebene Apple-Version 1.0.8 (10) bleibt verfügbar; eine erneute Einreichung richtet sich nach dem konkreten Ablehnungsgrund.
+**2026-09-30 · 1.0.9 (14)** verwendet das freigegebene Symbol mit mehr Weiß unten rechts und deutlicheren blauen Strichen oben links im Zeichen 文. Frühere Entwürfe bleiben archiviert. Das Websymbol ist veröffentlicht; Build 14 ist in TestFlight für iPhone/iPad, die Watch-Begleitapp und Mac sowie im internen Google-Play-Test verfügbar.
 
-[Prüfzugang und Nachweise](../store/reviewer-access.md)
+Build 14 wurde bei Apple und Google zur automatischen Veröffentlichung nach Freigabe eingereicht. Die Freigabe steht noch aus; Apple 1.0.8 (10) bleibt die öffentliche Version. Googles Prüfanleitung verwendet jetzt das separate Bunko-Demokonto mit echten Kommentaren und Dokumentgesprächen, ohne E-Mail-Code des Eigentümers. Die Datenschutzerklärungen für den Dokumentassistenten wurden aktualisiert.
 
-**2026-09-30 · Bunko** — Das freigegebene himmelblaue und lachsfarbene Symbol ist im Web aktiv. **1.0.9 (12)** ist über TestFlight (iPhone/iPad, Watch-Begleitapp und Mac) sowie im internen Google-Play-Test verfügbar. Beide Apple-Updates warten auf Prüfung und werden nach Freigabe automatisch veröffentlicht. Das Google-Produktionsupdate und das Store-Symbol sind vorbereitet; die laufende Prüfung bleibt erhalten. Alle früheren Symbole sind archiviert.
+Watch-Auszüge behalten chinesisches Pinyin, japanisches Furigana und die satzweise Sprachanordnung mit getrennten Größen für Text und Lesungen. Ältere Auszüge bitte aus der aktualisierten iPhone-App erneut senden. Die Prüfungen der Übertragung zwischen gekoppelten Simulatoren und des Offline-Neustarts aus Build 13 gelten für dieses reine Symbolupdate weiter; eine physische Watch wurde nicht getestet. Alle 58 Client- und 35 Servertests bestanden.
 
-**Watch-Update — 1.0.9 (13):** Mehrsprachige Auszüge werden satzweise mit chinesischem Pinyin und japanischem Furigana angezeigt; Text und Lesungen haben getrennte Schriftgrößen. In TestFlight verfügbar und für die automatische Veröffentlichung nach Apple-Freigabe eingereicht. Ältere Auszüge bitte aus der aktualisierten iPhone-App erneut senden. Echte Übertragung zwischen gekoppelten Simulatoren und Offline-Neustart wurden geprüft; kein Test auf einer physischen Watch. Mac und Android bleiben im internen Test bei Build12.
-
-**2026-09-30 · Bunko 14** — Das freigegebene verfeinerte Symbol ist die Vorlage für alle Plattformen: mehr Weiß unten rechts und deutlichere blaue Striche oben links im Zeichen 文. Alle früheren Entwürfe bleiben archiviert. Build14 enthält diese Verfeinerung.
+[Release-Nachweis](../store/artifacts/icon-release-1.0.9-14.json) · [Prüfzugang](../store/reviewer-access.md) · [Watch-Prüfung](../evidence/watch-ruby-20260930/qa.json)

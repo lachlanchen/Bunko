@@ -1,3 +1,38 @@
+# Approved icon update submitted — 2026-09-30 HKT
+
+**Bunko 1.0.9 (14)** is available in TestFlight (iPhone/iPad, paired Watch and
+universal Mac) and Google Play internal testing. Both Apple updates are
+**WAITING_FOR_REVIEW**, with **AFTER_APPROVAL** release. Google production14
+is under **Changes in review**, full rollout to all **172** eligible paid-app
+countries, managed publishing off. The Console confirmed **13 changes sent for
+review**; its running-check banner later cleared, with no unsent changes. Submission activity explicitly confirms submission 4 is In review.
+The owner authorized replacement of the earlier queued Apple and Google builds.
+Apple 1.0.8 (10) remains public; `public/updates.json` still advertises approved
+releases only.
+
+The approved icon has a white bottom-right gradient and stronger blue upper-left
+文 strokes. It is embedded in all platform packages and live on the web (public
+512px asset byte-verified). Every previous master remains archived. Google’s new
+listing icon has its AI provenance declared; all four descriptions now include
+the private document companion. Its data safety covers optional IDs, messages,
+files/documents, service interactions, search history and other user content.
+Dedicated Bunko demo credentials and instructions were verified privately after
+reload; reviewers can post real comments and use documents without an owner
+email verification code. No credentials are included in tracked evidence.
+
+58 client and 35 server tests, lint, TypeScript, renderer and web build passed.
+Signed Android APK/AAB, iOS/Watch and universal Mac archives passed packaging;
+both Apple packages passed validation and upload. Fifteen opaque icon exports
+match the approved master. Watch13 native paired-simulator/ruby/offline QA carries
+forward because this update changes the icon and build number only. No new
+physical Watch or Apple-native demo-login test is claimed.
+
+[Exact release receipt](artifacts/icon-release-1.0.9-14.json) ·
+[Icon and Google evidence](../evidence/icon-release14-20260930/README.md) ·
+[Reviewer procedure](reviewer-access.md)
+
+## Earlier release history
+
 # Watch ruby update submitted — 2026-09-30 HKT
 
 **iOS/Watch 1.0.9 (13) is VALID, IN_BETA_TESTING and WAITING_FOR_REVIEW.**

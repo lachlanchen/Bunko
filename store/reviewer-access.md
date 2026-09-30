@@ -42,12 +42,14 @@ posting apply. The unified LazyingArt adapter remains a separate qualification.
   public attribution and isolation from ordinary readers’ documents and chats.
 
 The authenticated backend and web reader are deployed. iOS/Watch and universal
-Mac **1.0.9 (11)** passed Apple validation and are **IN_BETA_TESTING** in the
-existing internal TestFlight group. Both compatible production review drafts
-contain the verified demo credentials and exact build, and remain
-**PREPARE_FOR_SUBMISSION**. Android’s signed 1.0.9 (11) APK/AAB is ready; its
-existing Google review was not changed. See the [candidate receipt](artifacts/reviewer-access-1.0.9.json). The approved iOS/Watch and
-Mac 1.0.8(10) apps do **not** contain the new demo sign-in screen.
+Mac **1.0.9 (14)** are **VALID**, **IN_BETA_TESTING** and **WAITING_FOR_REVIEW**,
+with the verified dedicated demo credentials in both private review records.
+Android **1.0.9 (14)** is available internally and its production release is
+**Changes in review**. Google’s demo username, password and instructions were
+verified after reloading the saved form, following withdrawal of the incompatible
+build8 review. Both stores are configured for release after approval. See the
+[build14 receipt](artifacts/icon-release-1.0.9-14.json). The currently public
+Apple 1.0.8 (10) apps do **not** contain the new demo sign-in screen.
 
 ## On rejection and resubmission
 
@@ -61,7 +63,7 @@ submitted build, then submit once and verify the store’s resulting state.
 
 Do not put the new password into an old build’s review instructions: that build
 has no demo sign-in. Do not cancel an unrelated active review or claim a future
-resubmission happened. No production submission is made by this preparation.
+resubmission happened. Build14 was submitted with owner authorization after qualification; later updates must record their actual store state.
 
 ## Operator handling
 

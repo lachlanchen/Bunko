@@ -81,7 +81,7 @@ Bunko checks for updates automatically and offers a dismissible prompt when a pu
 
 ## Conversations in Bunko
 
-Read and compose public passage comments inside Bunko, using GitHub sign-in. Drafts and private notes stay on your device until you explicitly post. A small cloud service handles authorization without requiring the owner’s computer; GitHub stores the public conversation. The interface supports English, Simplified Chinese, Traditional Chinese and Japanese. Version 1.0.6 (8) adds persistent login with secure device storage and automatic token refresh, plus recovery from brief connection failures. iOS **1.0.8 (10)**, including Apple Watch, is publicly available as of 29 September 2026. Mac **1.0.8 (10)** is also publicly available as of 30 September 2026 (Hong Kong time). Android 1.0.6 (8) remains available in Google Play internal testing; see the release records for its production status.
+Read and compose public passage comments inside Bunko, using GitHub sign-in. Drafts and private notes stay on your device until you explicitly post. A small cloud service handles authorization without requiring the owner’s computer; GitHub stores the public conversation. The interface supports English, Simplified Chinese, Traditional Chinese and Japanese. Version 1.0.6 (8) adds persistent login with secure device storage and automatic token refresh, plus recovery from brief connection failures. iOS **1.0.8 (10)**, including Apple Watch, is publicly available as of 29 September 2026. Mac **1.0.8 (10)** is also publicly available as of 30 September 2026 (Hong Kong time). Android 1.0.9 (14) remains available in Google Play internal testing; see the release records for its production status.
 
 [Discussion implementation and verification](docs/github-discussions-2026-09-26.md).
 
@@ -93,14 +93,12 @@ The refreshed icon and private document companion support PDF, Word (.docx), Mar
 
 [macOS](docs/macos.md) · [watchOS](docs/watchos.md) · [1.0.8](store/artifacts/release-1.0.8.json)
 
-## Reviewer access candidate
+## Testing and review
 
-The 1.0.9 (11) candidate adds a clearly labelled Demo account for invited testers and store reviewers. Its separate password needs no email code. Real public comments and replies carry a demo attribution; demo documents and conversations are shared only among users of that account. Fresh-browser posting, document reading and chat persistence were verified. Approved Apple 1.0.8 (10) remains available; any resubmission will follow the actual rejection.
+**2026-09-30 · 1.0.9 (14)** uses the approved icon with more white at the bottom-right and clearer blue upper-left strokes of 文. Earlier designs remain archived. The web icon is live; build 14 is available in TestFlight for iPhone/iPad, the Watch companion and Mac, and in Google Play internal testing.
 
-[Reviewer access and verification](store/reviewer-access.md)
+Build 14 has been submitted to Apple and Google for automatic release after approval. Approval is pending; Apple 1.0.8 (10) remains the public release. Google’s reviewer instructions now use Bunko’s separate demo account, with real comments and document conversations and no owner email code. Document-companion privacy declarations were updated.
 
-**2026-09-30 · Bunko** — The approved sky-blue and salmon icon is live on the web. Version **1.0.9 (12)** is available in TestFlight (iPhone/iPad, Watch companion and Mac) and Google Play internal testing. Both Apple production updates are waiting for review, with automatic release after approval. The Google production update and listing icon are staged; the existing review is preserved. All earlier icon designs remain archived.
+Watch excerpts retain Chinese pinyin, Japanese furigana and sentence-level language alignment, with separate text/ruby sizes. Re-send older excerpts from the updated iPhone app. The paired-simulator transfer and offline restart checks from build 13 still apply to this icon-only update; no physical Watch test is claimed. All 58 client and 35 server tests passed.
 
-**Watch update — 1.0.9 (13):** Chinese pinyin and Japanese furigana now accompany sentence-aligned multilingual excerpts, with separate text/ruby sizes. Available in TestFlight; the iOS/Watch update is submitted for automatic release after Apple approval. Re-send older excerpts from the updated iPhone app. Verified with a real paired-simulator transfer and offline cold launch; physical Watch testing is not claimed. Mac and Android remain on build 12 for internal testing.
-
-**2026-09-30 · Bunko 14** — The approved icon refinement is the active master for all platforms: more white at the bottom-right and clearer blue upper-left strokes of 文. All earlier icon designs remain archived. Build 14 packages this refinement.
+[Release receipt](store/artifacts/icon-release-1.0.9-14.json) · [Reviewer access](store/reviewer-access.md) · [Watch QA](evidence/watch-ruby-20260930/qa.json)

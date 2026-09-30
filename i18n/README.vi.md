@@ -84,7 +84,7 @@ Nhấn giữ một từ, điều chỉnh tay nắm chọn văn bản rồi chọ
 
 ## Trò chuyện trong Bunko
 
-Đăng nhập bằng GitHub để đọc và viết bình luận công khai về từng đoạn ngay trong Bunko. Bản nháp và ghi chú riêng ở lại trên thiết bị cho đến khi bạn chủ động đăng. Một dịch vụ đám mây nhỏ xử lý việc xác thực, không cần máy tính của chủ sở hữu hoạt động; GitHub lưu cuộc trò chuyện công khai. Giao diện hỗ trợ tiếng Anh, tiếng Trung giản thể, tiếng Trung phồn thể và tiếng Nhật. Phiên bản 1.0.6 (8) duy trì đăng nhập bằng bộ nhớ bảo mật và tự động làm mới mã truy cập, đồng thời khôi phục khi kết nối bị gián đoạn ngắn. iOS **1.0.8 (10)**, gồm ứng dụng đồng hành Apple Watch, đã phát hành công khai ngày 29 tháng 9 năm 2026. Mac **1.0.8 (10)** cũng đã phát hành công khai ngày 30 tháng 9 năm 2026 theo giờ Hồng Kông. Android 1.0.6 (8) tiếp tục có trong thử nghiệm nội bộ Google Play; xem hồ sơ phát hành để biết trạng thái bản chính thức.
+Đăng nhập bằng GitHub để đọc và viết bình luận công khai về từng đoạn ngay trong Bunko. Bản nháp và ghi chú riêng ở lại trên thiết bị cho đến khi bạn chủ động đăng. Một dịch vụ đám mây nhỏ xử lý việc xác thực, không cần máy tính của chủ sở hữu hoạt động; GitHub lưu cuộc trò chuyện công khai. Giao diện hỗ trợ tiếng Anh, tiếng Trung giản thể, tiếng Trung phồn thể và tiếng Nhật. Phiên bản 1.0.6 (8) duy trì đăng nhập bằng bộ nhớ bảo mật và tự động làm mới mã truy cập, đồng thời khôi phục khi kết nối bị gián đoạn ngắn. iOS **1.0.8 (10)**, gồm ứng dụng đồng hành Apple Watch, đã phát hành công khai ngày 29 tháng 9 năm 2026. Mac **1.0.8 (10)** cũng đã phát hành công khai ngày 30 tháng 9 năm 2026 theo giờ Hồng Kông. Android 1.0.9 (14) tiếp tục có trong thử nghiệm nội bộ Google Play; xem hồ sơ phát hành để biết trạng thái bản chính thức.
 
 [Triển khai và kiểm chứng tính năng thảo luận](../docs/github-discussions-2026-09-26.md).
 
@@ -96,14 +96,12 @@ Biểu tượng mới và trợ lý tài liệu riêng tư hỗ trợ PDF, Word 
 
 [macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
 
-## Bản ứng viên có quyền truy cập xét duyệt
+## Thử nghiệm và xét duyệt
 
-Bản ứng viên 1.0.9 (11) bổ sung tài khoản trình diễn được ghi rõ dành cho người thử nghiệm được mời và nhân viên xét duyệt cửa hàng. Mật khẩu riêng không cần mã xác minh qua email. Bình luận và trả lời công khai là nội dung thật, có ghi tên tài khoản trình diễn; tài liệu và hội thoại chỉ được chia sẻ giữa những người dùng tài khoản đó. Đã kiểm tra việc đăng bài trên trình duyệt mới, đọc tài liệu và lưu hội thoại. Bản Apple 1.0.8 (10) đã được duyệt vẫn khả dụng; việc gửi lại sẽ xử lý đúng lý do bị từ chối.
+**2026-09-30 · 1.0.9 (14)** dùng biểu tượng đã duyệt, trắng hơn ở góc dưới bên phải và rõ nét xanh hơn ở phía trên bên trái chữ 文. Mọi thiết kế trước đều được lưu giữ. Biểu tượng web đã phát hành; bản dựng 14 có trên TestFlight cho iPhone/iPad, ứng dụng đồng hành Watch và Mac, cùng thử nghiệm nội bộ Google Play.
 
-[Quyền truy cập xét duyệt và kết quả kiểm tra](../store/reviewer-access.md)
+Bản dựng 14 đã gửi Apple và Google để tự động phát hành sau khi được chấp thuận. Hiện vẫn chờ duyệt; bản công khai trên Apple là 1.0.8 (10). Hướng dẫn xét duyệt Google nay dùng tài khoản demo Bunko riêng, hỗ trợ bình luận và trò chuyện tài liệu thật mà không cần mã email của chủ sở hữu. Khai báo quyền riêng tư của trợ lý tài liệu cũng đã cập nhật.
 
-**2026-09-30 · Bunko** — Biểu tượng xanh da trời và hồng cá hồi đã được duyệt và xuất hiện trên web. **1.0.9 (12)** có trên TestFlight (iPhone/iPad, ứng dụng đồng hành Watch và Mac) và thử nghiệm nội bộ Google Play. Hai bản cập nhật Apple đang chờ xét duyệt và sẽ tự phát hành khi được duyệt. Bản cập nhật chính thức Google và biểu tượng cửa hàng đã sẵn sàng; đợt xét duyệt hiện tại được giữ nguyên. Mọi thiết kế biểu tượng trước đây đều được lưu trữ.
+Đoạn trích Watch giữ pinyin tiếng Trung, furigana tiếng Nhật và đối chiếu đa ngôn ngữ theo câu, với cỡ chữ chính và phiên âm riêng. Hãy gửi lại đoạn cũ từ ứng dụng iPhone đã cập nhật. Kiểm tra truyền giữa hai trình mô phỏng ghép đôi và khởi động lại ngoại tuyến của bản dựng 13 vẫn áp dụng cho lần chỉ đổi biểu tượng này; chưa kiểm thử Watch vật lý. Cả 58 kiểm thử phía ứng dụng và 35 kiểm thử máy chủ đều đạt.
 
-**Cập nhật Watch — 1.0.9 (13):** đoạn trích đa ngôn ngữ được đối chiếu từng câu, có pinyin tiếng Trung và furigana tiếng Nhật; cỡ chữ chính và phiên âm chỉnh riêng. Đã có trên TestFlight và đã gửi bản iOS/Watch xét duyệt để tự động phát hành sau khi Apple chấp thuận. Hãy gửi lại đoạn trích cũ từ ứng dụng iPhone đã cập nhật. Đã xác minh truyền dữ liệu thật giữa hai trình mô phỏng ghép đôi và khởi động lại ngoại tuyến; chưa kiểm thử Watch vật lý. Mac và Android vẫn dùng bản dựng12 cho thử nghiệm nội bộ.
-
-**2026-09-30 · Bunko 14** — Biểu tượng tinh chỉnh đã duyệt là bản gốc cho mọi nền tảng: góc dưới bên phải trắng hơn, nét xanh phía trên bên trái của chữ 文 rõ hơn. Mọi thiết kế trước đều được lưu giữ. Bản dựng14 bao gồm thay đổi này.
+[Hồ sơ phát hành](../store/artifacts/icon-release-1.0.9-14.json) · [Quyền truy cập xét duyệt](../store/reviewer-access.md) · [Kiểm thử Watch](../evidence/watch-ruby-20260930/qa.json)

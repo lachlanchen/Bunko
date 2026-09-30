@@ -1,0 +1,96 @@
+{
+  "active": "white-bottom-right",
+  "master": "assets/brand/concepts/white-bottom-right-20260930/bunko-white-bottom-right-preview.png",
+  "checked": [
+    {
+      "path": "public/icon-192.png",
+      "size": 192,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "public/icon-512.png",
+      "size": 512,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "store/assets/play-icon.png",
+      "size": 512,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
+      "size": 1024,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "watch/BunkoWatch/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png",
+      "size": 1024,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_16x16@1x.png",
+      "size": 16,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png",
+      "size": 32,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_32x32@1x.png",
+      "size": 32,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png",
+      "size": 64,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_128x128@1x.png",
+      "size": 128,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png",
+      "size": 256,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_256x256@1x.png",
+      "size": 256,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png",
+      "size": 512,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_512x512@1x.png",
+      "size": 512,
+      "opaque": true,
+      "matchesMaster": true
+    },
+    {
+      "path": "macos/Bunko/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png",
+      "size": 1024,
+      "opaque": true,
+      "matchesMaster": true
+    }
+  ]
+}

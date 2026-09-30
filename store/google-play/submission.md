@@ -1,3 +1,29 @@
+# Production 1.0.9 (14) submitted — 2026-09-30
+
+**Changes in review**, full rollout to **172** eligible paid-app countries;
+managed publishing is off for publication after approval. Internal14 is
+**Available to internal testers**. The owner authorized replacing build8’s old
+review. The Console confirmed **13 changes sent for review**. Its automated
+running-check banner later cleared; no unsent changes remain.
+
+The new approved icon is uploaded with AI provenance and inherited by localized
+listings. All four descriptions and release notes match build14. Data safety now
+covers optional user IDs, in-app messages, files/documents, service interactions,
+search history and other user content; encryption and deletion links are retained.
+Provider processing and explicitly initiated/consented transfers follow the
+[documented Google sharing exceptions](https://support.google.com/googleplay/android-developer/answer/10787469?hl=en-AE).
+
+Reviewer instructions and credentials now use the separate **Bunko demo account**
+available in this binary. Saved values were checked privately after reloading.
+No owner email code, GitHub consent or OTP is needed. The account has real public
+comment/reply and private document-companion access. Credentials were changed
+only after the incompatible build8 review was withdrawn.
+
+[Release receipt](../artifacts/icon-release-1.0.9-14.json) ·
+[Console evidence](../../evidence/icon-release14-20260930/README.md).
+
+## Earlier release history
+
 # Icon update prepared — 2026-09-30
 
 **1.0.9 (12)** is available to internal testers. Its full production rollout
@@ -11,7 +37,7 @@ The generated icon is labelled as AI artwork, inherited by localized listings.
 
 # Current submission — 2026-09-27
 
-**Production 1.0.6 (8): Changes in review.** The tested internal bundle was promoted to production at 100% across all 172 configured eligible paid-app countries. The owner requested the latest build, so **Restart review** was confirmed, replacing build 6. Console confirmed **7 changes sent for review**, then showed build 8 under **Changes in review** with no unsent changes. Managed publishing remains off for release after approval.
+**Production 1.0.6 (8): Changes in review.** The tested internal bundle was promoted to production at 100% across all 172 configured eligible paid-app countries. The owner requested the latest build, so **Restart review** was confirmed, replacing build 6. Console confirmed **7 changes sent for review**, then showed build 8 under **Changes in review** with no unsent changes. Submission activity explicitly confirms submission 4 is In review. Managed publishing remains off for release after approval.
 
 All four descriptions/release notes were updated, along with optional GitHub data safety, the online-content/UGC rating questionnaire and dedicated reviewer access. Target audience remains 18+. The reviewer account has no maintainer privileges; credentials were supplied privately. Internal8 remains available. Public Google availability is still pending; do not advertise it as approved.
 

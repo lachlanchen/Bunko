@@ -1,0 +1,120 @@
+{
+  "verifiedAt": "2026-09-30T03:54:56.107241+00:00",
+  "version": "1.0.9",
+  "build": 14,
+  "sourceCommit": "d3651f0fa7f43e625d75552bea1957114a4a74aa",
+  "icon": {
+    "variant": "white-bottom-right",
+    "master": "assets/brand/concepts/white-bottom-right-20260930/bunko-white-bottom-right-preview.png",
+    "previousMastersRetained": true,
+    "exports": "evidence/icon-release14-20260930/assets.json"
+  },
+  "testflight": {
+    "MAC_OS": {
+      "id": "69ded69c-f573-4242-aa15-7f4f7de65792",
+      "version": "1.0.9",
+      "build": 14,
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    },
+    "IOS": {
+      "id": "8fef4a93-7c7e-4506-a284-42bdf30f0092",
+      "version": "1.0.9",
+      "build": 14,
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    }
+  },
+  "appleReview": {
+    "IOS": {
+      "versionId": "f2f23ae9-038d-41e5-b569-d78bab4b32f6",
+      "buildId": "8fef4a93-7c7e-4506-a284-42bdf30f0092",
+      "reviewId": "85e827ad-943b-405f-a170-4179e4be3aa7",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-09-30T03:36:53.483Z",
+      "releaseType": "AFTER_APPROVAL"
+    },
+    "MAC_OS": {
+      "versionId": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+      "buildId": "69ded69c-f573-4242-aa15-7f4f7de65792",
+      "reviewId": "8045577c-c3dd-4db4-8154-ee2312329060",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-09-30T03:37:10.38Z",
+      "releaseType": "AFTER_APPROVAL"
+    }
+  },
+  "google": {
+    "verifiedAt": "2026-09-30T03:53:24.273Z",
+    "version": "1.0.9",
+    "build": 14,
+    "internal": "AVAILABLE",
+    "production": "CHANGES_IN_REVIEW",
+    "changesSent": 13,
+    "unsentChanges": false,
+    "automatedChecksRunning": false,
+    "managedPublishing": false,
+    "countries": 172,
+    "rollout": 100,
+    "demoReviewerAccessVerified": true,
+    "listingIcon": "bunko-white-bottom-right-512.png",
+    "storeLanguages": [
+      "en-US",
+      "zh-CN",
+      "zh-TW",
+      "ja-JP"
+    ],
+    "submissionId": 4,
+    "submissionStatus": "In review",
+    "submittedDisplayed": "Sep 30, 2026, 11:48 AM (Hong Kong)",
+    "activityVerified": true
+  },
+  "web": {
+    "url": "https://lachlan.lazying.art/Bunko/",
+    "deployed": true,
+    "iconByteVerified": true,
+    "icon512Sha256": "fd59d77b84b8dad3f3558fd119505224fbc4fb268ebe5c799390eae388713a2f",
+    "pagesRun": "https://github.com/lachlanchen/Bunko/actions/runs/36664725803"
+  },
+  "checks": {
+    "clientTests": 58,
+    "serverTests": 35,
+    "lint": true,
+    "typecheck": true,
+    "renderer": true,
+    "webBuild": true,
+    "nativeSync": true,
+    "androidSignedBuild": true,
+    "iosWatchArchiveExportValidationUpload": true,
+    "universalMacArchiveExportValidationUpload": true,
+    "opaqueIconExportsCompared": 15,
+    "watchFunctionalEvidence": "evidence/watch-ruby-20260930/qa.json",
+    "limits": "Icon-only successor to qualified Watch13. No new physical Watch or Apple-native demo-login test is claimed."
+  },
+  "reviewerAccess": {
+    "applePrivateFieldsVerified": true,
+    "googlePrivateFieldsVerifiedAfterReload": true,
+    "ownerEmailCodeRequired": false,
+    "realCommentsAndDocumentCompanion": true
+  },
+  "artifacts": {
+    "App.ipa": {
+      "sha256": "06573651abc217efc2c134c890c3df277a4b18cae49d34978e07aeb1e1053c38",
+      "bytes": 11156029
+    },
+    "Bunko.pkg": {
+      "sha256": "a06a4a37af28c19ac5bf44ac319cc0dd29c2aee6b9e57cd95909964615ae2e58",
+      "bytes": 7478555
+    },
+    "app-release.aab": {
+      "sha256": "871be2c4e3d2e5997e7dc1c51c98a5dbc6978b65a2bee4feb82c549e7456c9fc",
+      "bytes": 5892259
+    },
+    "app-release.apk": {
+      "sha256": "d972e19d18c0f368add6d55a28bfb7dd25dd5099098039e1e87ce13f4ba2045d",
+      "bytes": 5519681
+    }
+  },
+  "publicRelease": "Apple 1.0.8 (10) remains public; build14 requires store approval. Public update feed preserved."
+}

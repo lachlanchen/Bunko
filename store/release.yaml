@@ -13,21 +13,24 @@ channels:
   google_play:
     app_id: '4972575539744983205'
     package: art.lazying.bunko
-    created: 2026-09-23 as a PAID app, before any upload, because Play can never convert
-      a published free app to paid
+    created: 2026-09-23 as a PAID app, before any upload, because Play can never convert a published
+      free app to paid
     status: IN_REVIEW
-    production: 1.0.6 (8), full rollout after approval
+    production: 1.0.9 (14), full rollout after approval
     countries: 172
-    country_selection: all paid-app eligible regions; China, Cuba, Iran, Sudan and
-      Rest of World are not targetable for paid apps
+    country_selection: all paid-app eligible regions; China, Cuba, Iran, Sudan and Rest of World
+      are not targetable for paid apps
     managed_publishing: false
-    pre_review_checks: completed; Console confirms changes are now in review
+    pre_review_checks: Running-check banner cleared; build14 remains under Changes in review,
+      with no unsent changes
     internal_track: '4701547714770281380'
     internal_status: available to internal testers
     internal_update: 1.0.1 (2), available to internal testers
-    internal_latest: 1.0.9 (12), available to internal testers on 2026-09-30
-    prepared_update: 1.0.9 (12), full rollout and new listing icon staged; review
-      replacement pending owner choice
+    internal_latest: 1.0.9 (14), available to internal testers on 2026-09-30
+    reviewer_access: Dedicated Bunko demo sign-in; no owner email verification; verified after
+      reload
+    privacy: Optional IDs, messages, files/documents, app interactions, search history and other
+      user content declared
   apple:
     bundle_id: art.lazying.bunko
     app_id: '6815137919'
@@ -41,12 +44,12 @@ channels:
     review_submission: df08e230-c2d3-4c5f-97dc-b5a8b7949316
     build_id: a561f6e3-1256-4943-ae30-0954299ca5a5
     update_version: 1.0.9
-    update_build: 13
-    update_build_id: 5cc8cb76-af02-4fc4-acaf-2e9194007b23
+    update_build: 14
+    update_build_id: 8fef4a93-7c7e-4506-a284-42bdf30f0092
     update_status: WAITING_FOR_REVIEW
-    update_review_submission: 86b5ae07-b98f-42b2-98ea-979c13076e55
-    testflight_latest: 1.0.9 (13), VALID and IN_BETA_TESTING
-    testflight_latest_build_id: 5cc8cb76-af02-4fc4-acaf-2e9194007b23
+    update_review_submission: 85e827ad-943b-405f-a170-4179e4be3aa7
+    testflight_latest: 1.0.9 (14), VALID and IN_BETA_TESTING
+    testflight_latest_build_id: 8fef4a93-7c7e-4506-a284-42bdf30f0092
     watch_bundle_id: art.lazying.bunko.watchkitapp
   mac_app_store:
     app_id: '6815137919'
@@ -62,39 +65,39 @@ channels:
     version_id: 731c37f4-b4ed-4268-bafa-e5bfda8f7284
     build_id: 86831728-f214-4e77-b553-59c77470e1ad
     review_submission: 135f98bf-97e0-473a-b148-39817fe20c41
-    testflight_latest: 1.0.9 (12), VALID and IN_BETA_TESTING
-    testflight_latest_build_id: 8a578669-9792-4334-a827-4857dc6ec38f
+    testflight_latest: 1.0.9 (14), VALID and IN_BETA_TESTING
+    testflight_latest_build_id: 69ded69c-f573-4242-aa15-7f4f7de65792
     minimum_macos: '12.0'
     architectures:
     - x86_64
     - arm64
     price_and_availability: shared existing Apple app record
     update_version: 1.0.9
-    update_build: 12
-    update_build_id: 8a578669-9792-4334-a827-4857dc6ec38f
+    update_build: 14
+    update_build_id: 69ded69c-f573-4242-aa15-7f4f7de65792
     update_status: WAITING_FOR_REVIEW
-    update_review_submission: 6aa378aa-8853-4e87-a7c5-0615c0944ede
+    update_review_submission: 8045577c-c3dd-4db4-8154-ee2312329060
 android:
-  version_code: 8
-  version_name: 1.0.6
-  keystore: ~/.config/bunko/android/upload-keystore.jks (alias bunko-upload, mode
-    600)
-  aab_sha256: 324ef0a6cb2498383571f67189020185f2f5e3816b4b91405ca1b486500e2455
-  apk_sha256: 1ca54fd4a796e4d8cf41bbab1fee5644231005ad1644c89611b85c1ff7fa0bd1
+  version_code: 14
+  version_name: 1.0.9
+  keystore: ~/.config/bunko/android/upload-keystore.jks (alias bunko-upload, mode 600)
+  aab_sha256: 871be2c4e3d2e5997e7dc1c51c98a5dbc6978b65a2bee4feb82c549e7456c9fc
+  apk_sha256: d972e19d18c0f368add6d55a28bfb7dd25dd5099098039e1e87ce13f4ba2045d
 catalogue:
   cleared: 183
   audited: docs/catalogue.md
   payload_bytes: 2774079249
 reviewer_access_candidate:
   version: 1.0.9
-  ios_build: 13
-  macos_build: 12
+  ios_build: 14
+  macos_build: 14
   web: deployed and fresh-browser login verified
   backend: deployed with durable demo session revocation
   ios_version_id: f2f23ae9-038d-41e5-b569-d78bab4b32f6
   macos_version_id: 850f8ea8-3e03-4825-a12d-d55a7c9f2ca6
-  apple_drafts: WAITING_FOR_REVIEW; dedicated demo credentials verified privately
-  android: 1.0.9 (12) internal available; production draft staged; build8 review unchanged
+  apple_drafts: WAITING_FOR_REVIEW; exact build14 and dedicated demo credentials verified privately
+  android: 1.0.9 (14) internal available and production CHANGES_IN_REVIEW; demo instructions verified
+    privately
   submitted: true
-  receipt: store/artifacts/icon-release-1.0.9.json
+  receipt: store/artifacts/icon-release-1.0.9-14.json
   watch_update_receipt: store/artifacts/watch-release-1.0.9.json

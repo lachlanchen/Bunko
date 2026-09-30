@@ -1,3 +1,17 @@
+# Universal Mac 1.0.9 (14) submitted — 2026-09-30
+
+The approved white-bottom-right icon build is **VALID**, **IN_BETA_TESTING** and
+**WAITING_FOR_REVIEW**. Review `8045577c-c3dd-4db4-8154-ee2312329060` was submitted at
+`2026-09-30T03:37:10.38Z` for **AFTER_APPROVAL** release. Exact build:
+`69ded69c-f573-4242-aa15-7f4f7de65792`. The owner authorized replacing the previous queued review.
+Dedicated demo sign-in credentials were verified privately; existing screenshots
+remain complete, including the Watch ruby screenshot. Public 1.0.8 (10) remains
+available while review is pending.
+
+[Release receipt](../artifacts/icon-release-1.0.9-14.json).
+
+## Earlier release history
+
 # Reviewer access candidate — 2026-09-30
 
 Mac **1.0.9 (11)** is VALID and IN_BETA_TESTING. Its production draft
