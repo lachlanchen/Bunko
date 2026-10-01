@@ -68,6 +68,8 @@ La biblioteca reúne 185 ediciones autorizadas: clásicos, notas de física, lib
 
 **iOS y Apple Watch 1.0.9 (14) ya están publicados.** Verificado el 1 de octubre de 2026: disponibles en 175 tiendas de Apple, a 0,99 USD en EE. UU. Mac 1.0.8 (10) sigue disponible; Mac 1.0.9 (14) continúa en revisión.
 
+La web y la PWA instalada ofrecen enlaces opcionales a la tienda según el dispositivo. Puedes seguir leyendo aquí; los botones se activan solo tras verificar la disponibilidad pública.
+
 [App Store de Apple](https://apps.apple.com/app/id6815137919) · [Google Play · publicación pendiente](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Bunko para Mac

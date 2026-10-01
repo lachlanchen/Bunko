@@ -68,6 +68,8 @@ Thư viện có 185 ấn bản đã được duyệt quyền, gồm tác phẩm 
 
 **iOS và Apple Watch 1.0.9 (14) đã phát hành.** Xác minh ngày 1 tháng 10 năm 2026: có tại 175 cửa hàng Apple, giá tại Mỹ là 0,99 USD. Mac 1.0.8 (10) vẫn có sẵn; Mac 1.0.9 (14) đang được xét duyệt.
 
+Trang web và PWA đã cài đặt có liên kết cửa hàng tùy chọn phù hợp với thiết bị. Bạn có thể tiếp tục đọc tại đây; nút cửa hàng chỉ được bật sau khi xác minh ứng dụng đã phát hành công khai.
+
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · đang chờ phát hành](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Bunko dành cho Mac

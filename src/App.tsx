@@ -28,7 +28,7 @@ import { DocumentAgent } from './components/DocumentAgent'
 import { agentCopy } from './components/agentCopy'
 import { Reader } from './components/Reader'
 import { Cover } from './components/Cover'
-import { MobileStorePrompt } from './components/MobileStorePrompt'
+import { MobileStorePrompt, StoreLinks } from './components/MobileStorePrompt'
 import { useBackAction, useBackNavigation } from './lib/backNavigation'
 import { Line } from './components/Line'
 import { UpdatePrompt, UpdateSettings } from './components/UpdatePrompt'
@@ -672,6 +672,7 @@ function SettingsSheet({
       )}
 
       <UpdateSettings ui={ui} updates={updates} canReload={canReload} />
+      <StoreLinks copy={copy} />
       <section>
         <h3>{copy.about}</h3>
         <p className="hint">{copy.aboutBody}</p>

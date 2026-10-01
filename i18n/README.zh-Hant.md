@@ -68,6 +68,8 @@ AI 生成的學習文本可能有誤。書目只發布經過審核的完整版�
 
 **iOS 和 Apple Watch 1.0.9 (14) 已發佈。** 2026年10月1日確認：涵蓋 Apple 的175個商店，美國售價0.99美元。Mac 1.0.8 (10) 繼續上架，Mac 1.0.9 (14) 仍在審核。
 
+網頁版和已安裝的 PWA 提供適合目前裝置的可選商店連結，也可以繼續在這裡閱讀。只有確認正式上架後，才會啟用對應的商店按鈕。
+
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 待上架](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Mac 版 Bunko

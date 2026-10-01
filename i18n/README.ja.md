@@ -68,6 +68,8 @@ AI が生成した学習用の文章には誤りがあり得ます。カタロ�
 
 **iOS・Apple Watch 1.0.9 (14) を公開しました。** 2026年10月1日確認：Appleの175ストアで利用でき、米国価格は0.99米ドルです。Mac 1.0.8 (10) は引き続き公開中で、Mac 1.0.9 (14) は審査中です。
 
+ウェブ版とインストール済みPWAでは、端末に合ったストアへのリンクを任意で利用できます。そのまま読み続けることもでき、ストアボタンは一般公開を確認してから有効になります。
+
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 公開待ち](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Mac 版 Bunko

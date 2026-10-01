@@ -68,6 +68,8 @@ Die Bibliothek enthält 185 freigegebene Ausgaben: Klassiker, Physik-Begleittext
 
 **iOS und Apple Watch 1.0.9 (14) sind veröffentlicht.** Am 1. Oktober 2026 bestätigt: in 175 Apple Stores verfügbar, US-Preis 0,99 USD. Mac 1.0.8 (10) bleibt verfügbar; Mac 1.0.9 (14) wird noch geprüft.
 
+Web und installierte PWA bieten optionale, zum Gerät passende Store-Links. Hier weiterlesen bleibt möglich; Store-Schaltflächen werden erst nach bestätigter öffentlicher Verfügbarkeit aktiviert.
+
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · Veröffentlichung ausstehend](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Bunko für Mac

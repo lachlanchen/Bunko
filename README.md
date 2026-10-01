@@ -77,6 +77,8 @@ The library contains 185 cleared editions, including classics, physics companion
 
 **iOS and Apple Watch 1.0.9 (14) are released.** Verified on 1 October 2026: available in 175 Apple storefronts, US$0.99. Mac 1.0.8 (10) remains public; Mac 1.0.9 (14) is still in review.
 
+Web and installed PWA readers offer optional, device-aware store links. You can keep reading here; store buttons are enabled only after public availability is verified.
+
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · publication pending](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## App updates

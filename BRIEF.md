@@ -167,3 +167,11 @@ updates after platform packaging and current review declarations are checked.
 Owner requests Arabic/English/Chinese/Japanese for the Quran, English/Chinese/Japanese for the Bible, and arbitrary book languages. Language layers use standard tags with no fixed language list or layer count. Preserve publisher text and notes, per-script direction, selected layer order, offline caching and Watch payload bounds. Interface translations and the three downloadable dictionary packs are separate concerns. Successor reader build 1.0.10 (15) is for testing while active 1.0.9 (14) store reviews continue.
 
 **2026-09-30 reader correction:** A deliberate rightward swipe across the page goes back, retaining sheet priority and excluding selection, long holds, controls, multi-touch and horizontal content scrollers. Translation notes appear in a collapsed section, separately from aligned body text. Japanese source credits must be Japanese; scripture ruby uses word context with exact base-text preservation and checks for unknown readings.
+
+## Web/PWA store access · 2026-10-01
+
+The owner requested Apple and Google store routing from the PWA. Provide gentle,
+dismissible device-aware suggestions and permanent store links in web Settings
+(Bunko) or Profile (OnlyIdeas). Installed PWAs retain this choice. Reading stays
+available; opening a store is explicit. Enable each destination only after its
+public platform release is verified. See `docs/pwa-store-links.md`.

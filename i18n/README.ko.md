@@ -68,6 +68,8 @@ AI가 생성한 학습용 번역에는 오류가 있을 수 있습니다. 목록
 
 **iOS 및 Apple Watch 1.0.9 (14)가 출시되었습니다.** 2026년 10월 1일 확인: Apple 스토어 175곳에서 이용할 수 있으며 미국 가격은 0.99달러입니다. Mac 1.0.8 (10)은 계속 공개되어 있고 Mac 1.0.9 (14)는 심사 중입니다.
 
+웹과 설치된 PWA에서 기기에 맞는 스토어 링크를 선택할 수 있습니다. 여기에서 계속 읽을 수 있으며, 스토어 버튼은 정식 공개를 확인한 뒤 활성화됩니다.
+
 [Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 출시 대기 중](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Mac용 Bunko

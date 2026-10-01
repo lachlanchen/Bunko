@@ -68,6 +68,8 @@ Bunko مشروع من LazyingArt. إذا أفاد قراءتك أو بحثك، �
 
 **تم إصدار iOS وApple Watch 1.0.9 (14).** تم التحقق في 1 أكتوبر 2026: متاح في 175 متجرًا من متاجر Apple، بسعر ‎0.99 دولار أمريكي في الولايات المتحدة. يبقى Mac 1.0.8 (10) متاحًا للجمهور؛ ولا يزال Mac 1.0.9 (14) قيد المراجعة.
 
+يوفر قارئ الويب وPWA المثبّت روابط اختيارية للمتجر تناسب جهازك. يمكنك متابعة القراءة هنا؛ ولا تُفعّل أزرار المتجر إلا بعد التحقق من الإتاحة العامة.
+
 [متجر Apple](https://apps.apple.com/app/id6815137919) · [Google Play · النشر قيد الانتظار](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Bunko على Mac
