@@ -1,3 +1,4 @@
+import { fetchBook } from './bookTransport'
 import { gunzipSync } from 'fflate'
 import { sha256 } from '@noble/hashes/sha2.js'
 import type { Definition } from './readingTools'
@@ -9,10 +10,6 @@ interface Pack { name: string; license: string; source: string; entries: number;
 interface Manifest { schema: number; version: string; languages: Record<DictionaryLanguage, Pack> }
 interface Installed { version: string; entries: number; bytes: number; source: string; name: string; license: string }
 
-const ROOTS = [
-  'https://raw.githubusercontent.com/lachlanchen/bunko-books/main/dictionaries',
-  'https://cdn.jsdelivr.net/gh/lachlanchen/bunko-books@main/dictionaries',
-]
 const DB_NAME = 'bunko-dictionaries'
 const STORE = 'packs'
 let dbPromise: Promise<IDBDatabase> | null = null
@@ -65,18 +62,7 @@ async function deletePrefix(prefix: string): Promise<void> {
 }
 
 async function fetchFile(file: string, signal?: AbortSignal): Promise<ArrayBuffer> {
-  let lastError: unknown
-  for (const root of ROOTS) {
-    try {
-      const response = await fetch(`${root}/${file}`, { signal })
-      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`)
-      return response.arrayBuffer()
-    } catch (error) {
-      if (signal?.aborted) throw error
-      lastError = error
-    }
-  }
-  throw lastError instanceof Error ? lastError : new Error('Dictionary download failed')
+  return (await fetchBook(`dictionaries/${file}`, signal)).arrayBuffer()
 }
 
 async function manifest(signal?: AbortSignal): Promise<Manifest> {

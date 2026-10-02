@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const book = { id: 'shiji', mode: 'wenyan_ja_zh', langs: ['wenyan', 'zh', 'ja'], primary: 'wenyan', title: { wenyan: '史記' }, author: '司馬遷', chapters: 1, paras: 1, bytes: 100, sha256: 'v1' }
 const index = (rows = [book]) => ({ schema: 1, books: rows, count: rows.length, bytes: 100 })
-const response = (data: unknown) => ({ ok: true, json: async () => data })
+const response = (data: unknown) => Response.json(data)
 
 beforeEach(() => vi.resetModules())
 afterEach(() => vi.unstubAllGlobals())
@@ -20,7 +20,7 @@ describe('catalog updates without app builds', () => {
     unsubscribe()
   })
 
-  it('keeps the offline catalog when both origins fail', async () => {
+  it('keeps the offline catalog when all origins fail', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(response(index())).mockRejectedValue(new Error('offline')))
     const { loadIndex } = await import('./library')
     await loadIndex()
@@ -47,7 +47,7 @@ describe('catalog updates without app builds', () => {
     const data = { ...row, langs: [...row.langs] }
     expect(coverUrls({ ...data, cover: 'https://attacker.test/image.png' })).toEqual([])
     expect(coverUrls({ ...data, cover: 'books/shiji/cover-abcd.svg' })).toEqual([])
-    expect(coverUrls({ ...data, cover: 'books/shiji/cover-abcd.webp' })).toHaveLength(2)
+    expect(coverUrls({ ...data, cover: 'books/shiji/cover-abcd.webp' })).toHaveLength(3)
   })
 
   it('opens the previous downloaded edition offline after a catalog update', async () => {

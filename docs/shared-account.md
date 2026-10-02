@@ -1,5 +1,31 @@
 # Shared LazyingArt account follow-up
 
+## Future subscription relationship · 2026-10-03
+
+The owner asked us to retain this as a design question for later consideration,
+while continuing the current app-specific subscriptions and book-delivery work.
+One LazyingArt account should work across EchoMind, AiMemo, OnlyIdeas and Bunko.
+Shared identity does not itself grant another app's subscription or merge data.
+
+Options to evaluate after the individual products work:
+
+- A shared OnlyIdeas/Bunko cloud plan with an explicit combined allowance.
+- Separate plans with a verified subscriber discount in the other app.
+- A future LazyingArt bundle, with clear app coverage and one management page.
+
+Prefer one Profile page showing the signed-in account, each app's benefits,
+usage, renewal date and the provider that manages that purchase. Show an existing
+benefit before offering another purchase. Preserve store ownership and restore
+behavior; require verified linking, never an email-only entitlement merge.
+Decide shared versus separate quotas, existing-subscriber treatment, refunds,
+revocation, taxes and current store rules before choosing a commercial model.
+
+No bundle, discount, cross-app entitlement or price migration is approved by this
+note. Bunko's currently approved plans cover only its cloud conversion and AI
+features at US$2.99 / 14.99 / 29.99 monthly. Its books, dictionaries and offline
+reading remain included with the app purchase. GitHub stays its default sign-in
+until the shared-account adapter is qualified.
+
 Updated 2026-09-27. This is planned work for a successor Bunko release.
 The submitted 1.0.6 (8) candidate still uses optional GitHub sign-in.
 

@@ -2,30 +2,16 @@ import { isLanguageCode } from './languages'
 /**
  * The library: what is available, what is on this device, and how to get more.
  *
- * Everything the app reads comes from one public GitHub repository, so there is
- * no server of ours to keep alive and no account to hold. A book is fetched
+ * Book payloads come from one public GitHub repository, with CDN and owned
+ * cache fallbacks. Reading does not require an account. A book is fetched
  * once, stored in IndexedDB, and read from there forever after, which is what
  * makes the reader work on a plane.
  */
 import type { BookMeta, BookRow, Chapter, ReaderIndex } from '../types'
 import { cacheFigure, removeFigures } from './bookAssets'
 
+import { BOOK_ORIGINS, fetchBook } from './bookTransport'
 const REPO = 'lachlanchen/bunko-books'
-const BRANCH = 'main'
-
-/**
- * Where the books come from, in the order they are tried.
- *
- * raw.githubusercontent leads because it serves the current commit within
- * seconds, while jsDelivr caches a branch reference for hours: publishing a
- * correction and watching readers keep the old file is worse than the extra
- * bandwidth. jsDelivr stays as the fallback, which also covers the networks
- * where raw.githubusercontent is unreachable.
- */
-const ORIGINS = [
-  `https://raw.githubusercontent.com/${REPO}/${BRANCH}`,
-  `https://cdn.jsdelivr.net/gh/${REPO}@${BRANCH}`,
-]
 
 const DB_NAME = 'bunko'
 const DB_VERSION = 1
@@ -64,7 +50,7 @@ export function subscribeIndex(listener: (index: ReaderIndex) => void): () => vo
 export function coverUrls(book: BookRow): string[] {
   // Catalog data cannot point the reader at arbitrary hosts or executable SVGs.
   if (!book.cover || !/^books\/[a-z0-9-]+\/cover-[a-f0-9]+\.(webp|png|jpg)$/.test(book.cover)) return []
-  return ORIGINS.map((origin) => `${origin}/${book.cover}`)
+  return BOOK_ORIGINS.map((origin) => `${origin}/${book.cover}`)
 }
 
 function validIndex(value: ReaderIndex): ReaderIndex {
@@ -142,26 +128,7 @@ async function cacheDeletePrefix(prefix: string): Promise<void> {
 }
 
 async function fetchJson<T>(path: string, signal?: AbortSignal): Promise<T> {
-  let lastError: unknown = new Error('no origin tried')
-  for (const origin of ORIGINS) {
-    const controller = new AbortController()
-    const abort = () => controller.abort()
-    if (signal?.aborted) throw new Error('Download cancelled')
-    signal?.addEventListener('abort', abort, { once: true })
-    const timer = setTimeout(abort, 15000)
-    try {
-      const response = await fetch(`${origin}/${path}`, { signal: controller.signal, cache: path === 'reader-index.json' || path.endsWith('/meta.json') ? 'no-cache' : 'default' })
-      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`)
-      return (await response.json()) as T
-    } catch (error) {
-      if (signal?.aborted) throw error
-      lastError = error
-    } finally {
-      clearTimeout(timer)
-      signal?.removeEventListener('abort', abort)
-    }
-  }
-  throw lastError instanceof Error ? lastError : new Error(String(lastError))
+  return (await fetchBook(path, signal)).json() as Promise<T>
 }
 
 /** The catalogue. Cached, but refreshed from the network whenever we are online. */

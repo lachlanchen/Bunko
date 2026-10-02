@@ -1,6 +1,7 @@
 import { createDocumentAgent, agentPaths } from './agent/service.mjs'
 import { AppError } from './agent/common.mjs'
 import { createDemoAuth } from './demo-auth.mjs'
+import { createBookMirror } from './book-mirror.mjs'
 import { createServer } from 'node:http'
 import { randomBytes, createHash, createCipheriv, createDecipheriv, timingSafeEqual, createSign } from 'node:crypto'
 import { DatabaseSync } from 'node:sqlite'
@@ -67,6 +68,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     db.exec('COMMIT')
   } catch (error) { db.exec('ROLLBACK'); db.close(); throw error }
   const agent = createDocumentAgent({ db, seal, unseal, config: config.agent || {}, now })
+  const bookMirror = config.bookMirror?.enabled === true ? createBookMirror({ database: config.bookMirror.database, maxBytes: config.bookMirror.maxBytes, fetchImpl, now }) : null
   const cleanup = () => {
     for (const table of ['flows', 'sessions', 'posts']) db.prepare(`DELETE FROM ${table} WHERE expires < ?`).run(now())
   }
@@ -205,6 +207,13 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       active++; counted = true
       const raw = req.url ?? '', path = raw.split('?')[0]
       if (path !== `${PREFIX}/oauth/callback` && raw !== path) fail(404, 'not_found')
+      if (bookMirror && path.startsWith(`${PREFIX}/books-cache/`)) {
+        res.setHeader('Access-Control-Allow-Origin', '*')
+        if (!['GET', 'HEAD'].includes(req.method)) fail(405, 'method_denied')
+        const ip = req.headers['x-bunko-client-address'] ?? req.socket.remoteAddress
+        limit(`books:${ip}`, 600, 60000)
+        await bookMirror.respond(req, res, path.slice(`${PREFIX}/books-cache/`.length)); return
+      }
       if (!postPaths.includes(path) && ![`${PREFIX}/healthz`, `${PREFIX}/oauth/callback`].includes(path)) fail(404, 'not_found')
       const origin = req.headers.origin
       if (origin && !origins.has(origin)) fail(403, 'origin_denied')
@@ -407,7 +416,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
   server.maxHeadersCount = 40
   server.keepAliveTimeout = 5000
   const timer = setInterval(cleanup, 60000); timer.unref()
-  server.on('close', () => { clearInterval(timer); agent.close(); db.close() })
+  server.on('close', () => { clearInterval(timer); agent.close(); db.close(); void bookMirror?.close() })
   return server
 }
 

@@ -1,5 +1,23 @@
 # Bunko — product brief
 
+## Cloud subscriptions and book mirrors · 2026-10-03
+
+The owner explicitly approved optional cloud-feature subscriptions at
+US$2.99 / 14.99 / 29.99 monthly, using the OnlyIdeas tier levels. These cover
+private PDF conversion and AI companion usage. Books, dictionaries and offline
+reading remain included with the existing US$0.99 app purchase. This supersedes
+the original no-billing scope only for these optional cloud features. Qualify
+app-specific providers, account binding, restore, cancellation, quotas and real
+sandbox transactions before offering general paid access. Preserve existing
+readers and their data; do not migrate another app's products or entitlements.
+
+The owner requested bandwidth-efficient regional fallback for book downloads:
+GitHub remains primary, existing public CDN fallback is retained, and an owned
+cloud cache is the final fallback (reuse Bunko's existing server). Cover chapters, figures, covers and
+dictionary downloads. Use local caching, bounded failure recovery and cache
+revalidation; avoid racing duplicate full downloads or making ordinary reading
+depend on the owned server. GitHub remains the default discussion sign-in.
+
 Written 2026-09-22 by the L & N session from the owner's request. This is the contract for the reader app. The app code lives in this repository (`../Bunko`); the book data and its pipeline stay in `../ZhJpBook`. Refine it in place and date every change.
 
 **2026-09-25 scope amendment:** The owner requested their own books from LazyTravel, HowYouGotRich, LazyEarn, LazyLearn and the independent Leonard Susskind companion-note project. Bunko now accepts public-domain classics **and rights-cleared owner editions**. Each bundle is still separately reviewed and documented in `bunko-books/rights.json`; source repositories are read only during import. Books may have one, two, three or more language layers. Figures and TeX equations are preserved for mobile reading. The original public-domain-only points below describe the first catalogue, not the expanded catalogue.
