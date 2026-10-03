@@ -1,0 +1,56 @@
+{
+  "app": "Bunko",
+  "checkedAt": "2026-10-03T05:47:37.655Z",
+  "google": {
+    "policyStatus": "No issues found",
+    "productionVersion": "1.0.10",
+    "productionBuild": 17,
+    "productionStatus": "Available on Google Play",
+    "displayedReleaseTime": "2026-10-03 11:17 HKT",
+    "actionedDeclarations": 10,
+    "pendingReview": false,
+    "unsentChanges": false,
+    "savedPrivacyURL": "https://llm.lazying.art/bunko/privacy.html",
+    "saveEnabled": false
+  },
+  "policyChecks": {
+    "at": "2026-10-03T05:40:42.433484+00:00",
+    "checks": [
+      {
+        "url": "https://llm.lazying.art/bunko/privacy.html",
+        "status": 200,
+        "finalUrl": "https://llm.lazying.art/bunko/privacy.html",
+        "contentType": "text/html; charset=utf-8",
+        "sha256": "05ff99e91a0353bde95f19f12925e8d298b66171d9733d98093fab6f46d5a24d",
+        "matchesSource": true,
+        "namesBunko": true,
+        "hasNoForm": true,
+        "hasNoScript": true
+      },
+      {
+        "url": "https://lachlan.lazying.art/Bunko/privacy.html",
+        "status": 200,
+        "finalUrl": "https://lachlan.lazying.art/Bunko/privacy.html",
+        "contentType": "text/html; charset=utf-8",
+        "sha256": "05ff99e91a0353bde95f19f12925e8d298b66171d9733d98093fab6f46d5a24d",
+        "matchesSource": true,
+        "namesBunko": true,
+        "hasNoForm": true,
+        "hasNoScript": true
+      }
+    ]
+  },
+  "earlierRejection": {
+    "build": 16,
+    "issue": "Invalid privacy policy URL",
+    "replacementBuild": 17,
+    "repairReceipt": "android-1.0.10-17-20261003.json"
+  },
+  "changesThisCheck": {
+    "storeMutation": false,
+    "newBinary": false,
+    "resubmission": false,
+    "reason": "Corrected build17 already approved/public; fresh Console has no outstanding issue"
+  },
+  "evidence": "Private .runtime/privacy-recheck-20261003/ screenshots, console text and HTTP receipts"
+}

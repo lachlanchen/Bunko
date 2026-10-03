@@ -1,3 +1,20 @@
+# Privacy rejection resolved — fresh check · 3 October 2026, 05:47 UTC
+
+The owner reported a privacy rejection again. Fresh Google Console readback shows
+**No issues found**, all 10 declarations Actioned, no pending review/unsent changes,
+and **1.0.10 (17) Available on Google Play** (released at 11:17 HKT). The earlier
+build16 privacy URL rejection has been superseded by the approved build17 repair.
+
+Saved privacy URL is exactly `https://llm.lazying.art/bunko/privacy.html`.
+Both that page and its GitHub Pages copy return 200 without redirects, forms or
+JavaScript and match the tracked policy byte-for-byte. The clarified Demo account
+instructions are now Actioned. No new build, store edit, appeal or duplicate
+submission was needed. The isolated store desktop was stopped after verification.
+
+[Fresh privacy receipt](artifacts/privacy-recheck-20261003.json).
+
+## Earlier same-day records
+
 # Android17 public and reviewer access verified · 3 October 2026 HKT
 
 Google production **1.0.10 (17)** is **Available on Google Play**, released at

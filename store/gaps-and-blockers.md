@@ -3,8 +3,9 @@
 Android build 16 was rejected for an invalid privacy-policy URL. Build 17 and
 an independently hosted static policy passed review and became public at
 11:17 HKT on 3 October, with 100% rollout across 172 countries. Build 17 is also
-available internally. The dedicated Demo credentials were reverified and clearer
-sign-in recovery instructions are separately in review. Apple iOS/Watch
+available internally. The dedicated Demo credentials were reverified. At 05:47 UTC,
+Google shows No issues found, all 10 declarations Actioned, and no pending or
+unsent changes; the corrected privacy URL is saved. Apple iOS/Watch
 and Mac build 16 remain WAITING_FOR_REVIEW at the last readback. See
 [the current handoff](operator-handoff.md) and
 [Android 17 distribution receipt](artifacts/distribution-android-1.0.10-20261003.json).

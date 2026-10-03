@@ -116,3 +116,8 @@ for ordinary GitHub sign-in remain in place.
 Private evidence: `.runtime/google-recheck-20261003/reviewer-readback.json`,
 `reviewer-instructions.txt`, `demo-fresh.json` and the associated UI screenshots.
 No credentials are included in this repository.
+
+**05:47 UTC follow-up:** Google's sign-in details are now Actioned. Publishing
+overview has no pending review or unsent changes. Production17 remains available,
+and Policy status shows No issues found. No further credentials or binary change
+was needed for this verification.

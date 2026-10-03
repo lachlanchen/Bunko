@@ -19,7 +19,8 @@ channels:
     production: 1.0.10 (17), public at 100 percent
     released_at: 2026-10-03 11:17 HKT
     distribution_receipt: store/artifacts/distribution-android-1.0.10-20261003.json
-    reviewer_instructions_update: Clearer Demo sign-in recovery instructions submitted; IN_REVIEW
+    reviewer_instructions_update: Actioned; no pending review or unsent changes at 2026-10-03 05:47 UTC
+    policy_status: No issues found, verified 2026-10-03 05:47 UTC
     privacy_url: https://llm.lazying.art/bunko/privacy.html
     countries: 172
     country_selection: all paid-app eligible regions; China, Cuba, Iran, Sudan and
