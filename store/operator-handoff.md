@@ -9,7 +9,9 @@ original Pages policy remains available. Both copies must be kept in sync.
 
 **Android 1.0.10 (17)** was sent for production review with the corrected URL,
 100% rollout, all 172 existing eligible countries, and managed publishing off.
-Google automated checks are pending. Public Android remains build 14. This update
+Google automated checks completed; Console explicitly confirms the changes are
+now in review. Build 17 is also available to internal testers
+(internal release 12). Public Android remains build 14. This update
 includes the latest regional book fallback and a permanent Settings privacy link.
 Native cloud plans remain informational; purchases and quotas are disabled.
 

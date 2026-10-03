@@ -2,7 +2,8 @@
 
 Android build 16 was rejected for an invalid privacy-policy URL. Build 17 and
 an independently hosted static policy were sent for review after native checks;
-automated Google checks are pending. Public Android remains 14. Apple iOS/Watch
+automated Google checks completed and Console confirms the changes are in review.
+Build 17 is available internally. Public Android remains 14. Apple iOS/Watch
 and Mac build 16 remain WAITING_FOR_REVIEW. See
 [the current handoff](operator-handoff.md) and
 [Android 17 receipt](artifacts/android-1.0.10-17-20261003.json).

@@ -15,7 +15,7 @@ channels:
     package: art.lazying.bunko
     created: 2026-09-23 as a PAID app, before any upload, because Play can never convert
       a published free app to paid
-    status: SUBMITTED_QUICK_CHECKS_PENDING
+    status: IN_REVIEW
     production: 1.0.9 (14), public at 100 percent
     update: 1.0.10 (17), production release 7 submitted on 2026-10-03
     privacy_url: https://llm.lazying.art/bunko/privacy.html
@@ -23,11 +23,11 @@ channels:
     country_selection: all paid-app eligible regions; China, Cuba, Iran, Sudan and
       Rest of World are not targetable for paid apps
     managed_publishing: false
-    pre_review_checks: Running for build17 and the corrected privacy URL
+    pre_review_checks: Completed; Console confirms build17 and the corrected privacy URL are in review
     internal_track: '4701547714770281380'
     internal_status: available to internal testers
     internal_update: 1.0.1 (2), available to internal testers
-    internal_latest: 1.0.10 (16), available to internal testers on 2026-09-30
+    internal_latest: 1.0.10 (17), available to internal testers on 2026-10-03
     reviewer_access: Dedicated Bunko demo sign-in; no owner email verification; verified
       after reload
     privacy: Optional IDs, messages, files/documents, app interactions, search history

@@ -17,14 +17,21 @@
   "google": {
     "release": 7,
     "track": "production",
-    "status": "Submitted; automated quick checks pending",
+    "status": "IN_REVIEW",
     "countries": 172,
     "rolloutPercent": 100,
     "managedPublishing": false,
     "previousPublicBuild": 14,
     "supersedesRejectedBuild": 16,
     "rejection": "Invalid privacy policy URL",
-    "privacyURL": "https://llm.lazying.art/bunko/privacy.html"
+    "privacyURL": "https://llm.lazying.art/bunko/privacy.html",
+    "internal": {
+      "status": "Available to internal testers",
+      "release": 12,
+      "build": 17,
+      "displayedReleaseTime": "3 October 2026, 11:03 HKT"
+    },
+    "quickChecks": "Complete; Console explicitly confirms Your changes are now in review"
   },
   "validation": {
     "clientTests": 81,
@@ -92,5 +99,12 @@
     "No physical Android device or mainland latency claim.",
     "Native cloud purchases and general subscription sales remain disabled.",
     "Apple build16 reviews unchanged; this build17 is Android only."
-  ]
+  ],
+  "sourceCommit": "37f5766686f3d067f405c8576b6620e0e23258a6",
+  "web": {
+    "pagesRun": 37091630352,
+    "status": "success",
+    "bothPrivacyCopiesMatchTrackedFile": true
+  },
+  "verifiedAt": "2026-10-03T03:05:09.939308+00:00"
 }
