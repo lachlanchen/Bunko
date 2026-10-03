@@ -1,12 +1,13 @@
 # Current review checkpoint · 3 October 2026
 
 Android build 16 was rejected for an invalid privacy-policy URL. Build 17 and
-an independently hosted static policy were sent for review after native checks;
-automated Google checks completed and Console confirms the changes are in review.
-Build 17 is available internally. Public Android remains 14. Apple iOS/Watch
-and Mac build 16 remain WAITING_FOR_REVIEW. See
+an independently hosted static policy passed review and became public at
+11:17 HKT on 3 October, with 100% rollout across 172 countries. Build 17 is also
+available internally. The dedicated Demo credentials were reverified and clearer
+sign-in recovery instructions are separately in review. Apple iOS/Watch
+and Mac build 16 remain WAITING_FOR_REVIEW at the last readback. See
 [the current handoff](operator-handoff.md) and
-[Android 17 receipt](artifacts/android-1.0.10-17-20261003.json).
+[Android 17 distribution receipt](artifacts/distribution-android-1.0.10-20261003.json).
 
 Cloud purchases remain disabled until app-specific native billing, provider
 configuration and real sandbox lifecycle qualification are complete.

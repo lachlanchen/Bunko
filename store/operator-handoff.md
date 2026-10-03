@@ -1,3 +1,29 @@
+# Android17 public and reviewer access verified · 3 October 2026 HKT
+
+Google production **1.0.10 (17)** is **Available on Google Play**, released at
+11:17 HKT, 100% rollout across the existing 172 countries. The privacy correction
+and regional download fallback are now public. `public/updates.json` now names
+Android17; the Apple entries remain the last verified public versions.
+
+The owner reported GitHub verification codes for the review account. The saved
+Play credentials were privately compared with the separate **Bunko Demo account**
+and match. Clarified instructions now name build17 and explain closing an
+accidentally opened GitHub browser and returning to **Reading companion > Demo
+account > Sign in to demo**. Full-access remains selected. These instructions
+were saved, reloaded, verified and separately sent for review; that metadata-only
+change is IN_REVIEW. The public binary is unchanged.
+
+Fresh live browser Demo sign-in, reload persistence and sign-out passed without
+GitHub navigation. Existing Android17 secure-storage/comment-access qualification
+and September30 real public comment/reply evidence remain applicable; no new
+public test comment was posted. Credentials stay outside Git. No shared Mac
+desktop was used. The isolated store desktop is stopped after evidence capture.
+
+[Distribution receipt](artifacts/distribution-android-1.0.10-20261003.json) ·
+[Reviewer instructions](reviewer-access.md)
+
+## Earlier same-day records
+
 # Android privacy repair and build 17 · 3 October 2026 HKT
 
 Google rejected build 16 today because its configured GitHub Pages privacy URL

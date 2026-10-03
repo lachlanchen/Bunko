@@ -90,3 +90,29 @@ Instructions start with Reading companion > Demo account and explicitly exclude
 the GitHub sign-in button. A fresh production browser signed in without GitHub
 navigation and retained the session after reload. The historical build14 states
 above remain dated evidence, not the current release status.
+
+## Android reviewer clarification · 3 October 2026, 03:19 UTC
+
+Google production **1.0.10 (17)** became public at 11:17 HKT while this check
+was running. The single saved sign-in entry
+is **Bunko Demo account — no GitHub or email code**. Its username/password were
+compared privately with the dedicated Demo credential file after a page reload;
+both match, and the full-access declaration remains selected. The instructions
+now explicitly name build17 (also supported by builds14/16) and add this recovery:
+if GitHub asks for a verification code, close that browser and return to
+**Reading companion > Demo account > Sign in to demo**. These credentials belong
+in Bunko's in-app form. They are not a GitHub account password.
+
+A new isolated browser session signed into the live Demo service and retained
+the session after reload, without navigating to GitHub. It was signed out after
+verification. Native Android17 login, secure-storage restart, discussion access
+and enabled posting were verified earlier the same day; see the
+[Android17 receipt](artifacts/android-1.0.10-17-20261003.json). The real public
+comment/reply qualification remains the dated September30 evidence above. This
+clarification changes reviewer instructions only; Google lists that follow-up
+as IN_REVIEW. No replacement binary was submitted, and GitHub's security checks
+for ordinary GitHub sign-in remain in place.
+
+Private evidence: `.runtime/google-recheck-20261003/reviewer-readback.json`,
+`reviewer-instructions.txt`, `demo-fresh.json` and the associated UI screenshots.
+No credentials are included in this repository.

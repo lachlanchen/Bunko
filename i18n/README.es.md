@@ -16,11 +16,11 @@ Los libros pueden incluir cualquier número de idiomas mediante etiquetas están
 
 ## Estado actual · 3 de octubre de 2026
 
-Android 1.0.10 (17) se envió a revisión de Google tras corregir la URL de privacidad rechazada. Añade un enlace directo en Ajustes y descargas más fiables. Android e iOS/Watch 1.0.9 (14) y Mac 1.0.8 (10) son públicos. Apple iOS/Watch y Mac 1.0.10 (16) siguen esperando revisión. Los revisores usan una cuenta demo de Bunko independiente, sin códigos de correo de GitHub.
+Android 1.0.10 (17) ya está disponible en Google Play con un despliegue del 100 % en 172 países, tras corregir la URL de privacidad. Añade un enlace directo en Ajustes y descargas más fiables. iOS/Watch 1.0.9 (14) y Mac 1.0.8 (10) son públicos; Apple iOS/Watch y Mac 1.0.10 (16) siguen esperando revisión. Los revisores usan una cuenta demo de Bunko independiente, sin códigos de correo de GitHub. También se enviaron instrucciones más claras para volver al acceso demo.
 
 Se preparan planes opcionales de nube para convertir PDF y obtener respuestas de IA por 2,99 / 14,99 / 29,99 USD al mes. La página de planes está disponible, pero las compras están desactivadas. Los libros, diccionarios y la lectura sin conexión siguen incluidos en la compra de la aplicación. Las descargas prueban GitHub, después el CDN público y, como último recurso, nuestra caché de capacidad limitada.
 
-[Registro del envío](../store/artifacts/android-1.0.10-17-20261003.json) · [Planes de nube](../docs/cloud-subscriptions.md)
+[Registro de publicación](../store/artifacts/distribution-android-1.0.10-20261003.json) · [Planes de nube](../docs/cloud-subscriptions.md)
 
 ## Contenido del repositorio
 

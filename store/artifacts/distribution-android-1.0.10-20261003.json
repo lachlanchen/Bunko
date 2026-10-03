@@ -1,0 +1,30 @@
+{
+  "app": "Bunko",
+  "platform": "Android",
+  "verifiedAt": "2026-10-03T03:24:13.075391+00:00",
+  "version": "1.0.10",
+  "build": 17,
+  "google": {
+    "status": "Available on Google Play",
+    "productionRelease": 7,
+    "rolloutPercent": 100,
+    "countries": 172,
+    "displayedReleaseTime": "Oct 3, 2026, 11:17 AM HKT",
+    "managedPublishing": false
+  },
+  "sourceCommit": "37f5766686f3d067f405c8576b6620e0e23258a6",
+  "aabSHA256": "dbeba2e8b3bfe84ff4b24f5e5d417069f434654a3b236d479cf8ad573131968a",
+  "qualificationReceipt": "android-1.0.10-17-20261003.json",
+  "reviewerAccess": {
+    "method": "Bunko Demo account, password sign-in in the app",
+    "savedCredentialsPrivatelyVerified": true,
+    "freshLiveBrowserLoginWithoutGitHub": true,
+    "reloadPersistence": true,
+    "recoveryInstructionsSubmitted": "IN_REVIEW",
+    "newBinarySubmitted": false
+  },
+  "limitations": [
+    "A new authenticated browser check is not a new physical Android test. Prior native emulator qualification is in the linked build receipt.",
+    "General cloud subscription sales remain disabled."
+  ]
+}
