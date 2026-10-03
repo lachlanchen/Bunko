@@ -14,6 +14,14 @@ Les livres peuvent contenir autant de langues que nécessaire, identifiées par 
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Capture du lecteur Bunko" width="300"></a></p>
 
+## État actuel · 3 octobre 2026
+
+iOS/Watch et Android 1.0.9 (14) sont publiés ; Mac 1.0.8 (10) reste disponible. La nouvelle version 1.0.10 (16), avec l’icône approuvée, a été soumise à Apple et Google pour publication automatique après validation. Les équipes de vérification utilisent le compte de démonstration Bunko distinct, sans code envoyé par GitHub.
+
+Des offres cloud facultatives pour la conversion PDF et les réponses IA sont prévues à 2,99 / 14,99 / 29,99 USD par mois. La page des offres est disponible, mais les achats sont désactivés. Livres, dictionnaires et lecture hors ligne restent inclus dans l’achat de l’application. Les téléchargements essaient GitHub, puis le CDN public et, en dernier recours, notre cache à capacité limitée.
+
+[Preuve de soumission](../store/artifacts/submission-1.0.10-16-20261003.json) · [Offres cloud](../docs/cloud-subscriptions.md)
+
 ## Dans ce dépôt
 
 | Chemin | Description |
@@ -66,11 +74,10 @@ Les rendus d’étude produits par IA peuvent comporter des erreurs. Seules les 
 
 La bibliothèque réunit 185 éditions autorisées : classiques, notes de physique, livres de formation et de finance, et guides de voyage multilingues. Les livres proposent une ou plusieurs langues ; les équations et illustrations restent lisibles sur mobile.
 
-**iOS et Apple Watch 1.0.9 (14) sont publiés.** Vérifié le 1er octobre 2026 : disponibles dans 175 boutiques Apple, à 0,99 USD aux États-Unis. Mac 1.0.8 (10) reste disponible ; Mac 1.0.9 (14) est encore en cours de validation.
 
 Le site et la PWA installée proposent des liens facultatifs vers les boutiques adaptées à votre appareil. Vous pouvez continuer à lire ici ; les boutons sont activés après vérification de la disponibilité publique.
 
-[App Store d’Apple](https://apps.apple.com/app/id6815137919) · [Google Play · publication en attente](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+[App Store d’Apple](https://apps.apple.com/app/id6815137919) · [Google Play](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Bunko pour Mac
 

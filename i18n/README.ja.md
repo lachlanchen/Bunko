@@ -14,6 +14,14 @@ Bunko はパブリックドメインの中国語・日本語・英語の古典�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko リーダーの画面" width="300"></a></p>
 
+## 現在の状況 · 2026年10月3日
+
+iOS/Watch と Android の 1.0.9 (14) は公開済みで、Mac は 1.0.8 (10) を引き続き提供しています。承認済みアイコンを含む新版 1.0.10 (16) を Apple と Google に提出しました。審査承認後に自動公開されます。審査には独立した Bunko デモアカウントを使い、GitHub のメール確認コードは不要です。
+
+PDF 変換と AI の回答向けに、月額 US$2.99 / $14.99 / $29.99 の任意のクラウドプランを準備しています。プラン画面は利用できますが、購入は無効です。本・辞書・オフライン読書は引き続きアプリ購入に含まれます。本は GitHub、公開 CDN、容量を制限した自社キャッシュの順に取得します。
+
+[提出記録](../store/artifacts/submission-1.0.10-16-20261003.json) · [クラウドプラン](../docs/cloud-subscriptions.md)
+
 ## リポジトリの内容
 
 | パス | 説明 |
@@ -66,11 +74,10 @@ AI が生成した学習用の文章には誤りがあり得ます。カタロ�
 
 書庫には権利を確認した185版を収録しています。古典、物理学の伴読ノート、学習・金融の本、多言語の旅行ガイドを含みます。単言語・多言語に対応し、数式と図もモバイルで表示します。
 
-**iOS・Apple Watch 1.0.9 (14) を公開しました。** 2026年10月1日確認：Appleの175ストアで利用でき、米国価格は0.99米ドルです。Mac 1.0.8 (10) は引き続き公開中で、Mac 1.0.9 (14) は審査中です。
 
 ウェブ版とインストール済みPWAでは、端末に合ったストアへのリンクを任意で利用できます。そのまま読み続けることもでき、ストアボタンは一般公開を確認してから有効になります。
 
-[Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 公開待ち](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+[Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Mac 版 Bunko
 

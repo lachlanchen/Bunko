@@ -25,6 +25,8 @@ import {
   saveUI,
 } from './lib/settings'
 import { DocumentAgent } from './components/DocumentAgent'
+import { CloudPlans } from './components/CloudPlans'
+import { cloudCopy } from './components/cloudCopy'
 import { agentCopy } from './components/agentCopy'
 import { Reader } from './components/Reader'
 import { Cover } from './components/Cover'
@@ -34,7 +36,7 @@ import { Line } from './components/Line'
 import { UpdatePrompt, UpdateSettings } from './components/UpdatePrompt'
 import { useUpdates, type Updates } from './lib/updateService'
 
-type View = 'library' | 'book' | 'reader' | 'agent'
+type View = 'library' | 'book' | 'reader' | 'agent' | 'cloud'
 type Filter = 'all' | 'chinese' | 'japanese' | 'world' | 'physics' | 'learning' | 'finance' | 'travel' | 'device'
 
 /** Which shelf a book belongs on, from its id and mode. */
@@ -256,9 +258,11 @@ export default function App() {
     onChange={update} onClose={() => setShowSettings(false)} storage={storage}
     request={request} setRequest={setRequest}
     updates={updates} canReload={canReload}
+    onCloud={() => { setShowSettings(false); setView('cloud') }}
   />
 
-  if (view === 'agent') return <DocumentAgent ui={ui} onBack={() => setView('library')} />
+  if (view === 'agent') return <DocumentAgent ui={ui} onBack={() => setView('library')} onCloud={() => setView('cloud')} />
+  if (view === 'cloud') return <CloudPlans ui={ui} onBack={() => setView('library')} />
 
   if (view === 'reader' && meta) {
     return (
@@ -510,6 +514,7 @@ function Sheet({
 }
 
 function SettingsSheet({
+  onCloud,
   updates,
   canReload,
   copy,
@@ -523,6 +528,7 @@ function SettingsSheet({
   request,
   setRequest,
 }: {
+  onCloud: () => void
   updates: Updates
   canReload: boolean
   copy: import('./i18n').UICopy
@@ -539,6 +545,7 @@ function SettingsSheet({
   const langs = bookLangs ?? []
   return (
     <Sheet title={copy.settings} onClose={onClose} closeLabel={copy.close}>
+      <section><button type="button" className="cloud-entry" onClick={onCloud}><Sparkles size={18} />{cloudCopy[ui].title}</button></section>
       {langs.length > 0 && (
         <section>
           <h3>{copy.show}</h3>

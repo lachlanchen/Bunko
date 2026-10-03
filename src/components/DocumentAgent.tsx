@@ -7,9 +7,10 @@ import type { UILanguage } from '../i18n'
 import { agentCopy } from './agentCopy'
 import { DocumentContent } from './DocumentContent'
 import { DemoAccount, DemoNotice } from './DemoAccount'
+import { cloudCopy } from './cloudCopy'
 import './documentAgent.css'
 
-export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => void }) {
+export function DocumentAgent({ ui, onBack, onCloud }: { ui: UILanguage; onBack: () => void; onCloud: () => void }) {
   const t = agentCopy[ui]
   const user = useSyncExternalStore(subscribeSession, currentUser, () => null)
   const [documents, setDocuments] = useState<PrivateDocument[]>([])
@@ -135,6 +136,7 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
     <header className="agent-header">
       <button type="button" onClick={onBack} aria-label={t.back}><ArrowLeft size={20} /></button>
       <div><strong>Bunko</strong><span>{t.name}</span></div>
+      <button type="button" onClick={onCloud}>{cloudCopy[ui].title}</button>
       {user && <button type="button" className="agent-account" disabled={!!busy} onClick={() => { void signOut().catch(failure); setDocuments([]); setMessages([]); setReading(null); setSelected('') }}>{user.login} · {t.signOut}</button>}
     </header>
     {user?.kind === 'demo' && <DemoNotice ui={ui} />}

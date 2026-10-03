@@ -15,6 +15,7 @@ let generation = 0
 const subscribers = new Set<() => void>()
 export const subscribeSession = (callback: () => void) => { subscribers.add(callback); return () => { subscribers.delete(callback) } }
 export const currentUser = () => session?.user ?? null
+export const sessionRevision = () => generation
 function setSession(value: Session | null) { session = value; subscribers.forEach(callback => callback()) }
 export class DiscussionError extends Error {
   code: string
@@ -23,7 +24,8 @@ export class DiscussionError extends Error {
 export function requestId() {
   return btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(32)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
 }
-export async function api<T>(path: string, data: object, signal?: AbortSignal, attempt = 0): Promise<T> {
+export async function api<T>(path: string, data: object, signal?: AbortSignal, attempt = 0, revision = generation): Promise<T> {
+  if (revision !== generation) throw new DiscussionError('authorization_cancelled')
   const controller = new AbortController()
   const abort = () => controller.abort()
   if (signal?.aborted) controller.abort()
@@ -36,19 +38,20 @@ export async function api<T>(path: string, data: object, signal?: AbortSignal, a
       body: JSON.stringify(data), signal: controller.signal,
     })
     const result = await response.json().catch(() => { throw new DiscussionError('temporarily_unavailable') })
+    if (revision !== generation) throw new DiscussionError('authorization_cancelled')
     if (!response.ok) {
-      if (response.status === 401) { setSession(null); void saveSession(null).catch(() => {}) }
+      if (response.status === 401) { generation++; setSession(null); void saveSession(null).catch(() => {}) }
       throw Object.assign(new DiscussionError(result.error ?? 'temporarily_unavailable'), { detail: result.detail })
     }
     return result as T
   } catch (error) {
-    if (signal?.aborted) throw error
+    if (signal?.aborted || revision !== generation) throw error
     const failure = error instanceof DiscussionError ? error : new DiscussionError('offline')
     // A repeated post uses the same requestId; the server returns its receipt or
     // refuses an ambiguous write. It never creates a second comment on retry.
-    if (attempt < 1 && ['offline', 'temporarily_unavailable', 'github_unavailable'].includes(failure.code) && !['/v1/auth/start', '/v1/auth/demo'].includes(path) && !path.startsWith('/v1/agent/')) {
+    if (attempt < 1 && ['offline', 'temporarily_unavailable', 'github_unavailable'].includes(failure.code) && !['/v1/auth/start', '/v1/auth/demo'].includes(path) && !path.startsWith('/v1/agent/') && !path.startsWith('/v1/cloud/')) {
       await new Promise(resolve => setTimeout(resolve, 800))
-      return api<T>(path, data, signal, attempt + 1)
+      return api<T>(path, data, signal, attempt + 1, revision)
     }
     throw failure
   } finally { clearTimeout(timeout); signal?.removeEventListener('abort', abort) }
@@ -82,7 +85,8 @@ export function postDiscussion(passage: string, excerpt: string, body: string, i
 }
 export async function signOut() {
   generation++; rememberSignOut(true)
-  try { await api('/v1/logout', {}) } finally { setSession(null); await saveSession(null) }
+  const revision = generation
+  try { await api('/v1/logout', {}) } finally { if (generation === revision) { setSession(null); await saveSession(null) } }
 }
 
 // Native sessions use Keychain/Keystore; web sessions use an HttpOnly cookie.

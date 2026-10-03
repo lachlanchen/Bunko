@@ -14,6 +14,14 @@ Books may contain any number of language layers using standard language tags, in
 
 <p align="center"><a href="store/assets/play-phone-01.png"><img src="store/assets/play-phone-01.png" alt="Bunko reader screenshot" width="300"></a></p>
 
+## Current status · 3 October 2026
+
+iOS/Watch and Android 1.0.9 (14) are public; Mac 1.0.8 (10) remains public. The newer 1.0.10 (16), including the approved icon, is submitted to Apple and Google for automatic release after approval. Reviewers use the separate Bunko Demo account without a GitHub email code.
+
+Optional cloud plans for PDF conversion and AI replies are being prepared at US$2.99 / $14.99 / $29.99 monthly. The plans page is available with purchases disabled. Books, dictionaries and offline reading remain included. Book downloads use GitHub first, then the public CDN, then our bounded cache as a final fallback.
+
+[Submission receipt](store/artifacts/submission-1.0.10-16-20261003.json) · [Cloud plans](docs/cloud-subscriptions.md)
+
 ## Inside the repository
 
 | Path | Description |
@@ -75,11 +83,10 @@ Study renderings and companion notes can be AI-assisted and may contain errors. 
 
 The library contains 185 cleared editions, including classics, physics companion notes, learning and finance books, and multilingual travel guides. Books may offer one or several languages; equations and figures remain readable on mobile.
 
-**iOS and Apple Watch 1.0.9 (14) are released.** Verified on 1 October 2026: available in 175 Apple storefronts, US$0.99. Mac 1.0.8 (10) remains public; Mac 1.0.9 (14) is still in review.
 
 Web and installed PWA readers offer optional, device-aware store links. You can keep reading here; store buttons are enabled only after public availability is verified.
 
-[Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · publication pending](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+[Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## App updates
 

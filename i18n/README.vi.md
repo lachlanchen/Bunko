@@ -14,6 +14,14 @@ Sách có thể chứa số lượng ngôn ngữ tùy ý bằng thẻ ngôn ng�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Ảnh trình đọc Bunko" width="300"></a></p>
 
+## Tình trạng hiện tại · 3 tháng 10 năm 2026
+
+iOS/Watch và Android 1.0.9 (14) đã phát hành; Mac 1.0.8 (10) vẫn được cung cấp. Bản mới 1.0.10 (16), gồm biểu tượng đã được duyệt, đã gửi Apple và Google để tự động phát hành sau khi được phê duyệt. Người xét duyệt dùng tài khoản Bunko Demo riêng, không cần mã xác minh email GitHub.
+
+Các gói đám mây tùy chọn cho chuyển đổi PDF và câu trả lời AI đang được chuẩn bị với mức 2,99 / 14,99 / 29,99 USD mỗi tháng. Trang gói đã có nhưng chức năng mua chưa bật. Sách, từ điển và đọc ngoại tuyến vẫn nằm trong giá mua ứng dụng. Tải sách ưu tiên GitHub, tiếp theo là CDN công cộng, rồi mới đến bộ nhớ đệm riêng có giới hạn dung lượng.
+
+[Biên nhận gửi duyệt](../store/artifacts/submission-1.0.10-16-20261003.json) · [Gói đám mây](../docs/cloud-subscriptions.md)
+
 ## Trong kho mã
 
 | Đường dẫn | Mô tả |
@@ -66,11 +74,10 @@ Bản trình bày học tập do AI tạo có thể có lỗi. Danh mục chỉ 
 
 Thư viện có 185 ấn bản đã được duyệt quyền, gồm tác phẩm kinh điển, ghi chú vật lý, sách học tập và tài chính, cùng cẩm nang du lịch đa ngôn ngữ. Sách có thể có một hoặc nhiều ngôn ngữ; công thức và hình ảnh vẫn hiển thị trên điện thoại.
 
-**iOS và Apple Watch 1.0.9 (14) đã phát hành.** Xác minh ngày 1 tháng 10 năm 2026: có tại 175 cửa hàng Apple, giá tại Mỹ là 0,99 USD. Mac 1.0.8 (10) vẫn có sẵn; Mac 1.0.9 (14) đang được xét duyệt.
 
 Trang web và PWA đã cài đặt có liên kết cửa hàng tùy chọn phù hợp với thiết bị. Bạn có thể tiếp tục đọc tại đây; nút cửa hàng chỉ được bật sau khi xác minh ứng dụng đã phát hành công khai.
 
-[Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · đang chờ phát hành](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+[Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Bunko dành cho Mac
 

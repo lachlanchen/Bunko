@@ -14,6 +14,14 @@ Bunko 是閱讀中文、日文與英文公版經典的應用程式。讀者可�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko 閱讀器截圖" width="300"></a></p>
 
+## 目前狀態 · 2026年10月3日
+
+iOS/Watch 和 Android 1.0.9 (14) 已正式發佈，Mac 1.0.8 (10) 繼續上架。包含已確認圖示的新版 1.0.10 (16) 已提交 Apple 和 Google，審查通過後自動發佈。審查人員使用獨立的 Bunko 示範帳戶，無需 GitHub 信箱驗證碼。
+
+用於 PDF 轉換和 AI 回答的可選雲端方案正在準備中，預計月費為 2.99 / 14.99 / 29.99 美元。方案頁面已提供，購買功能尚未啟用。圖書、詞典和離線閱讀仍包含在應用程式購買中。圖書下載優先使用 GitHub，其次使用公共 CDN，最後才使用有容量限制的自有快取。
+
+[提交記錄](../store/artifacts/submission-1.0.10-16-20261003.json) · [雲端方案](../docs/cloud-subscriptions.md)
+
 ## 儲存庫內容
 
 | 路徑 | 說明 |
@@ -66,11 +74,10 @@ AI 生成的學習文本可能有誤。書目只發布經過審核的完整版�
 
 書庫現有185種通過權利審核的版本，包括經典、物理學伴讀筆記、學習與財經書籍，以及多語旅行指南。每本書可有一種或多種語言，公式與插圖也能在手機上閱讀。
 
-**iOS 和 Apple Watch 1.0.9 (14) 已發佈。** 2026年10月1日確認：涵蓋 Apple 的175個商店，美國售價0.99美元。Mac 1.0.8 (10) 繼續上架，Mac 1.0.9 (14) 仍在審核。
 
 網頁版和已安裝的 PWA 提供適合目前裝置的可選商店連結，也可以繼續在這裡閱讀。只有確認正式上架後，才會啟用對應的商店按鈕。
 
-[Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 待上架](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+[Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Mac 版 Bunko
 

@@ -1,10 +1,27 @@
 # Optional cloud plans
 
-Implementation status, 3 October 2026: server foundation under qualification.
+Implementation status, 3 October 2026: disabled server catalog deployed; web UI
+qualified and prepared for publication.
 The production service has not enabled Bunko subscriptions. Native purchase
 controls, product registration and app-specific store transaction tests remain
 release gates. This document describes the implemented server contract, not a
 claim that plans are available to buy.
+
+Settings and the document companion now have a Cloud plans entry in all four
+interface languages. The page shows the included reading features, planned
+prices, available usage, renewal/cancellation information and account sign-in.
+Web Checkout/restore/management require fresh server permission. Native apps
+never use Stripe as a fallback; their store bridges are still to be added.
+Account changes discard pending responses, and cloud writes do not retry
+automatically after an unknown network result. The server retains its explicit
+idempotent recovery path for a deliberate retry.
+
+Current source check: 81 client and 58 server tests, lint, renderer and production
+build passed. A browser fixture verified all three disabled plan cards at 390px
+without horizontal overflow and a 1280px dark layout. This is staged UI evidence,
+not a payment receipt. The live catalog now returns all three plans with sales,
+providers and quotas disabled; existing sessions, comments, documents, chats and
+the book cache were preserved. Private evidence: `.runtime/cloud-plans-20261003/`.
 
 ## Scope
 

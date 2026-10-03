@@ -14,6 +14,14 @@ Bunko는 공개 도메인 중국어·일본어·영어 고전을 읽는 앱입�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko 리더 화면" width="300"></a></p>
 
+## 현재 상태 · 2026년 10월 3일
+
+iOS/Watch와 Android 1.0.9 (14)는 정식 출시되었으며 Mac 1.0.8 (10)도 계속 제공됩니다. 승인된 아이콘을 포함한 새 버전 1.0.10 (16)을 Apple과 Google에 심사 제출했으며 승인 후 자동 출시됩니다. 심사자는 별도의 Bunko 데모 계정을 사용하므로 GitHub 이메일 인증 코드가 필요 없습니다.
+
+PDF 변환과 AI 답변을 위한 선택형 클라우드 요금제를 월 US$2.99 / $14.99 / $29.99 수준으로 준비하고 있습니다. 요금제 화면은 제공되지만 구매는 비활성화되어 있습니다. 책, 사전, 오프라인 읽기는 앱 구매에 계속 포함됩니다. 책은 GitHub, 공개 CDN, 용량이 제한된 자체 캐시 순서로 다운로드합니다.
+
+[심사 제출 기록](../store/artifacts/submission-1.0.10-16-20261003.json) · [클라우드 요금제](../docs/cloud-subscriptions.md)
+
 ## 저장소 구성
 
 | 경로 | 설명 |
@@ -66,11 +74,10 @@ AI가 생성한 학습용 번역에는 오류가 있을 수 있습니다. 목록
 
 서재에는 권리를 확인한 판본 185종이 있습니다. 고전, 물리학 해설, 학습 및 금융 도서, 다국어 여행 안내서를 포함합니다. 한 언어 또는 여러 언어로 읽을 수 있으며 수식과 그림도 모바일에서 표시됩니다.
 
-**iOS 및 Apple Watch 1.0.9 (14)가 출시되었습니다.** 2026년 10월 1일 확인: Apple 스토어 175곳에서 이용할 수 있으며 미국 가격은 0.99달러입니다. Mac 1.0.8 (10)은 계속 공개되어 있고 Mac 1.0.9 (14)는 심사 중입니다.
 
 웹과 설치된 PWA에서 기기에 맞는 스토어 링크를 선택할 수 있습니다. 여기에서 계속 읽을 수 있으며, 스토어 버튼은 정식 공개를 확인한 뒤 활성화됩니다.
 
-[Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play · 출시 대기 중](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
+[Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
 
 ## Mac용 Bunko
 
