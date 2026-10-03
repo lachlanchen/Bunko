@@ -16,11 +16,11 @@ Books may contain any number of language layers using standard language tags, in
 
 ## Current status · 3 October 2026
 
-iOS/Watch and Android 1.0.9 (14) are public; Mac 1.0.8 (10) remains public. The newer 1.0.10 (16), including the approved icon, is submitted to Apple and Google for automatic release after approval. Reviewers use the separate Bunko Demo account without a GitHub email code.
+Android 1.0.10 (17) has been sent to Google for review after fixing the rejected privacy-policy URL. It adds a direct Settings privacy link and resilient book downloads. Android and iOS/Watch 1.0.9 (14) are public; Mac 1.0.8 (10) is public. Apple iOS/Watch and Mac 1.0.10 (16) remain waiting for review. Reviewers use the separate Bunko Demo account without GitHub email codes.
 
 Optional cloud plans for PDF conversion and AI replies are being prepared at US$2.99 / $14.99 / $29.99 monthly. The plans page is available with purchases disabled. Books, dictionaries and offline reading remain included. Book downloads use GitHub first, then the public CDN, then our bounded cache as a final fallback.
 
-[Submission receipt](store/artifacts/submission-1.0.10-16-20261003.json) · [Cloud plans](docs/cloud-subscriptions.md)
+[Submission receipt](store/artifacts/android-1.0.10-17-20261003.json) · [Cloud plans](docs/cloud-subscriptions.md)
 
 ## Inside the repository
 

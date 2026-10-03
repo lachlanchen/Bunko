@@ -16,11 +16,11 @@ Bunko 是閱讀中文、日文與英文公版經典的應用程式。讀者可�
 
 ## 目前狀態 · 2026年10月3日
 
-iOS/Watch 和 Android 1.0.9 (14) 已正式發佈，Mac 1.0.8 (10) 繼續上架。包含已確認圖示的新版 1.0.10 (16) 已提交 Apple 和 Google，審查通過後自動發佈。審查人員使用獨立的 Bunko 示範帳戶，無需 GitHub 信箱驗證碼。
+Android 1.0.10 (17) 已修正遭拒的隱私政策網址並送交 Google 審核，新增設定中的隱私直達連結及更可靠的圖書下載。Android 與 iOS/Watch 1.0.9 (14)、Mac 1.0.8 (10) 已發布。Apple iOS/Watch 和 Mac 1.0.10 (16) 仍在等待審核。審核人員使用獨立 Bunko 示範帳戶，無需 GitHub 信箱驗證碼。
 
 用於 PDF 轉換和 AI 回答的可選雲端方案正在準備中，預計月費為 2.99 / 14.99 / 29.99 美元。方案頁面已提供，購買功能尚未啟用。圖書、詞典和離線閱讀仍包含在應用程式購買中。圖書下載優先使用 GitHub，其次使用公共 CDN，最後才使用有容量限制的自有快取。
 
-[提交記錄](../store/artifacts/submission-1.0.10-16-20261003.json) · [雲端方案](../docs/cloud-subscriptions.md)
+[提交記錄](../store/artifacts/android-1.0.10-17-20261003.json) · [雲端方案](../docs/cloud-subscriptions.md)
 
 ## 儲存庫內容
 

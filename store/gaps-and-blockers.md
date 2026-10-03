@@ -1,3 +1,17 @@
+# Current review checkpoint · 3 October 2026
+
+Android build 16 was rejected for an invalid privacy-policy URL. Build 17 and
+an independently hosted static policy were sent for review after native checks;
+automated Google checks are pending. Public Android remains 14. Apple iOS/Watch
+and Mac build 16 remain WAITING_FOR_REVIEW. See
+[the current handoff](operator-handoff.md) and
+[Android 17 receipt](artifacts/android-1.0.10-17-20261003.json).
+
+Cloud purchases remain disabled until app-specific native billing, provider
+configuration and real sandbox lifecycle qualification are complete.
+
+## Historical distribution record
+
 # iOS/Watch public release — 2026-10-01 HKT
 
 **Bunko 1.0.9 (14)** passed review and was automatically released at

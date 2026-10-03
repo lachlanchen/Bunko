@@ -1,0 +1,96 @@
+{
+  "app": "Bunko",
+  "platform": "Android",
+  "version": "1.0.10",
+  "build": 17,
+  "sourceBase": "7870452ae143a6498cb6c19ea3f17d425f1954fb",
+  "sourceChanges": {
+    "android/app/build.gradle": "fa40e086c39fe9192662988ad0f6f8b5b4b5ef198e6724bb21ed8ea7fbf4147e",
+    "public/privacy.html": "05ff99e91a0353bde95f19f12925e8d298b66171d9733d98093fab6f46d5a24d",
+    "server/bunko.caddy": "5af6c91afe2a5f03772bf75b04371e0b3c8a6c6089232f2b104089547f23fba3",
+    "src/App.tsx": "650d4749bda9c156df678ecf460e02113faf2d30738566d69504bd5249b4b08c",
+    "src/components/CloudPlans.tsx": "1a92f6661688db22d588c77cbaf967ebb8ff164cb789ed777c461c3f3a0567a8",
+    "src/components/DocumentAgent.tsx": "5e30de0243563e5c0a35510baa68899967e5c41f43c3ff6ffe0921c34b2c7054"
+  },
+  "aabSHA256": "dbeba2e8b3bfe84ff4b24f5e5d417069f434654a3b236d479cf8ad573131968a",
+  "apkSHA256": "c186b3942922c14f1541eff7d3ce1895f66a6f3d3adf2c31a1e5590ea0b5cc20",
+  "google": {
+    "release": 7,
+    "track": "production",
+    "status": "Submitted; automated quick checks pending",
+    "countries": 172,
+    "rolloutPercent": 100,
+    "managedPublishing": false,
+    "previousPublicBuild": 14,
+    "supersedesRejectedBuild": 16,
+    "rejection": "Invalid privacy policy URL",
+    "privacyURL": "https://llm.lazying.art/bunko/privacy.html"
+  },
+  "validation": {
+    "clientTests": 81,
+    "serverTests": 58,
+    "renderer": true,
+    "typescriptBuild": true,
+    "androidLint": true,
+    "signedAPKAndAAB": true,
+    "nativeUI": {
+      "passed": true,
+      "at": "2026-10-03T02:43:43.248Z",
+      "build": "1.0.10 (17)",
+      "platform": "Android API34 emulator",
+      "configuration": "Debug shell with same production web bundle; release APK/AAB separately signed",
+      "checks": [
+        "existing downloaded books remain available after native upgrade",
+        "Settings exposes public privacy link without sign-in",
+        "real native demo login uses opaque session without browser or OTP; no credential in localStorage",
+        "native client accesses only demo document and saved real model conversation",
+        "native discussion reads real public reply and enables explicit posting",
+        "cold app restart restores demo from Android secure storage",
+        "native sign-out clears demo session",
+        "native cloud plans cannot start Stripe or unqualified purchases"
+      ]
+    },
+    "nativeMirror": {
+      "at": "2026-10-03T02:44:32.202Z",
+      "native": true,
+      "build": 17,
+      "chapterCharacters": 16422,
+      "figures": 1,
+      "primaryAndCDNBlocked": true,
+      "allBookOriginsBlockedCacheRead": true,
+      "responses": [
+        {
+          "path": "/bunko/books-cache/books/physics-advanced-quantum-mechanics/meta.json",
+          "status": 200
+        },
+        {
+          "path": "/bunko/books-cache/books/physics-advanced-quantum-mechanics/cover-57f591f745dd.webp",
+          "status": 200
+        },
+        {
+          "path": "/bunko/books-cache/books/physics-advanced-quantum-mechanics/c0001-729d3f304630.json",
+          "status": 200
+        },
+        {
+          "path": "/bunko/books-cache/books/physics-advanced-quantum-mechanics/assets/diagram-5adc690dd25900f5003c.webp",
+          "status": 200
+        }
+      ]
+    },
+    "publicPrivacy": {
+      "at": "2026-10-03T02:41:27.587Z",
+      "status": 200,
+      "noRedirect": true,
+      "noJavaScript": true,
+      "noLogin": true,
+      "mobileFits": true,
+      "url": "https://llm.lazying.art/bunko/privacy.html"
+    }
+  },
+  "limitations": [
+    "Android UI checks use the debug shell with the same bundled production web assets; release APK and AAB are separately signed.",
+    "No physical Android device or mainland latency claim.",
+    "Native cloud purchases and general subscription sales remain disabled.",
+    "Apple build16 reviews unchanged; this build17 is Android only."
+  ]
+}

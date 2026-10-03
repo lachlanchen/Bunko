@@ -688,6 +688,7 @@ function SettingsSheet({
       <section>
         <h3>{copy.about}</h3>
         <p className="hint">{copy.aboutBody}</p>
+        <p><a href="https://llm.lazying.art/bunko/privacy.html" target="_blank" rel="noopener noreferrer">{agentCopy[ui].privacyLink}</a></p>
         <h3>{copy.rights}</h3>
         <p className="hint">{copy.rightsBody}</p>
         <h3>{copy.dictionarySources}</h3>

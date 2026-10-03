@@ -85,6 +85,6 @@ function CloudPlanAccount({ ui, onBack }: { ui: UILanguage; onBack: () => void }
       {catalog?.subscriptions.some(item => item.platform === 'apple') && <a href="https://apps.apple.com/account/subscriptions" target="_blank" rel="noopener noreferrer">{t.manage} · Apple</a>}
       {catalog?.subscriptions.some(item => item.platform === 'google') && <a href="https://play.google.com/store/account/subscriptions" target="_blank" rel="noopener noreferrer">{t.manage} · Google Play</a>}
     </section>
-    <footer><p>{t.renewal}</p><a href="https://lachlan.lazying.art/Bunko/privacy.html" target="_blank" rel="noopener noreferrer">{t.privacy}</a><a href="https://lachlan.lazying.art/Bunko/terms.html" target="_blank" rel="noopener noreferrer">{t.terms}</a></footer>
+    <footer><p>{t.renewal}</p><a href="https://llm.lazying.art/bunko/privacy.html" target="_blank" rel="noopener noreferrer">{t.privacy}</a><a href="https://llm.lazying.art/bunko/terms.html" target="_blank" rel="noopener noreferrer">{t.terms}</a></footer>
   </main>
 }

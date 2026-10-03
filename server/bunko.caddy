@@ -1,4 +1,17 @@
 # Import only inside the existing https://llm.lazying.art site.
+# Public static legal pages: no account, JavaScript, app process or GitHub required.
+@bunko_legal {
+    method GET HEAD
+    path /bunko/privacy.html /bunko/terms.html
+}
+handle @bunko_legal {
+    root * /opt/bunko-legal/current
+    uri strip_prefix /bunko
+    header Cache-Control "public, max-age=300"
+    header X-Content-Type-Options nosniff
+    header Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'"
+    file_server
+}
 @bunko_books {
     method GET HEAD
     path /bunko/books-cache/*

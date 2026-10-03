@@ -15,14 +15,15 @@ channels:
     package: art.lazying.bunko
     created: 2026-09-23 as a PAID app, before any upload, because Play can never convert
       a published free app to paid
-    status: IN_REVIEW
-    production: 1.0.9 (14), full rollout after approval
+    status: SUBMITTED_QUICK_CHECKS_PENDING
+    production: 1.0.9 (14), public at 100 percent
+    update: 1.0.10 (17), production release 7 submitted on 2026-10-03
+    privacy_url: https://llm.lazying.art/bunko/privacy.html
     countries: 172
     country_selection: all paid-app eligible regions; China, Cuba, Iran, Sudan and
       Rest of World are not targetable for paid apps
     managed_publishing: false
-    pre_review_checks: Running-check banner cleared; build14 remains under Changes
-      in review, with no unsent changes
+    pre_review_checks: Running for build17 and the corrected privacy URL
     internal_track: '4701547714770281380'
     internal_status: available to internal testers
     internal_update: 1.0.1 (2), available to internal testers
@@ -43,11 +44,11 @@ channels:
     public_verified: 2026-10-01 HKT; US, Hong Kong, UK and Japan public lookup
     review_submission: 85e827ad-943b-405f-a170-4179e4be3aa7
     build_id: 8fef4a93-7c7e-4506-a284-42bdf30f0092
-    update_version: 1.0.9
-    update_build: 14
-    update_build_id: 8fef4a93-7c7e-4506-a284-42bdf30f0092
-    update_status: READY_FOR_DISTRIBUTION
-    update_review_submission: 85e827ad-943b-405f-a170-4179e4be3aa7
+    update_version: 1.0.10
+    update_build: 16
+    update_build_id: 2aa119e0-47a3-4ec9-86a5-13cdd6956d82
+    update_status: WAITING_FOR_REVIEW
+    update_review_submission: 7f54d416-7bdb-4e73-ab87-81996435b821
     testflight_latest: 1.0.10 (16), VALID and IN_BETA_TESTING
     testflight_latest_build_id: 2aa119e0-47a3-4ec9-86a5-13cdd6956d82
     watch_bundle_id: art.lazying.bunko.watchkitapp
@@ -73,18 +74,18 @@ channels:
     - x86_64
     - arm64
     price_and_availability: shared existing Apple app record
-    update_version: 1.0.9
-    update_build: 14
-    update_build_id: 69ded69c-f573-4242-aa15-7f4f7de65792
-    update_status: IN_REVIEW
-    update_review_submission: 8045577c-c3dd-4db4-8154-ee2312329060
+    update_version: 1.0.10
+    update_build: 16
+    update_build_id: 74b65c86-e6c8-4508-96fa-e2a12db79138
+    update_status: WAITING_FOR_REVIEW
+    update_review_submission: f4483d0a-f9bc-494b-a0d7-7788930a3a4b
 android:
-  version_code: 16
+  version_code: 17
   version_name: 1.0.10
   keystore: ~/.config/bunko/android/upload-keystore.jks (alias bunko-upload, mode
     600)
-  aab_sha256: 688a03748505f8ef394821a3aed61d0601b8e8b6b206881290a7b1fb83b8b5ed
-  apk_sha256: 7cfaf9a637e68424544744a6602820cb46c0cff361638b6ae7fe87cf5757c65b
+  aab_sha256: dbeba2e8b3bfe84ff4b24f5e5d417069f434654a3b236d479cf8ad573131968a
+  apk_sha256: c186b3942922c14f1541eff7d3ce1895f66a6f3d3adf2c31a1e5590ea0b5cc20
 catalogue:
   cleared: 185
   audited: docs/catalogue.md

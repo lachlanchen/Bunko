@@ -16,11 +16,11 @@ Sách có thể chứa số lượng ngôn ngữ tùy ý bằng thẻ ngôn ng�
 
 ## Tình trạng hiện tại · 3 tháng 10 năm 2026
 
-iOS/Watch và Android 1.0.9 (14) đã phát hành; Mac 1.0.8 (10) vẫn được cung cấp. Bản mới 1.0.10 (16), gồm biểu tượng đã được duyệt, đã gửi Apple và Google để tự động phát hành sau khi được phê duyệt. Người xét duyệt dùng tài khoản Bunko Demo riêng, không cần mã xác minh email GitHub.
+Android 1.0.10 (17) đã gửi Google xét duyệt sau khi sửa URL chính sách riêng tư bị từ chối. Bản này thêm liên kết trực tiếp trong Cài đặt và tải sách ổn định hơn. Android và iOS/Watch 1.0.9 (14), Mac 1.0.8 (10) đã phát hành. Apple iOS/Watch và Mac 1.0.10 (16) đang chờ xét duyệt. Người xét duyệt dùng tài khoản demo Bunko riêng, không cần mã email GitHub.
 
 Các gói đám mây tùy chọn cho chuyển đổi PDF và câu trả lời AI đang được chuẩn bị với mức 2,99 / 14,99 / 29,99 USD mỗi tháng. Trang gói đã có nhưng chức năng mua chưa bật. Sách, từ điển và đọc ngoại tuyến vẫn nằm trong giá mua ứng dụng. Tải sách ưu tiên GitHub, tiếp theo là CDN công cộng, rồi mới đến bộ nhớ đệm riêng có giới hạn dung lượng.
 
-[Biên nhận gửi duyệt](../store/artifacts/submission-1.0.10-16-20261003.json) · [Gói đám mây](../docs/cloud-subscriptions.md)
+[Biên nhận gửi duyệt](../store/artifacts/android-1.0.10-17-20261003.json) · [Gói đám mây](../docs/cloud-subscriptions.md)
 
 ## Trong kho mã
 

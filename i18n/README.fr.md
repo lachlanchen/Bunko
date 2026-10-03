@@ -16,11 +16,11 @@ Les livres peuvent contenir autant de langues que nécessaire, identifiées par 
 
 ## État actuel · 3 octobre 2026
 
-iOS/Watch et Android 1.0.9 (14) sont publiés ; Mac 1.0.8 (10) reste disponible. La nouvelle version 1.0.10 (16), avec l’icône approuvée, a été soumise à Apple et Google pour publication automatique après validation. Les équipes de vérification utilisent le compte de démonstration Bunko distinct, sans code envoyé par GitHub.
+Android 1.0.10 (17) a été envoyé à Google après correction de l’URL de confidentialité rejetée. Il ajoute un lien direct dans les réglages et des téléchargements plus fiables. Android et iOS/Watch 1.0.9 (14), ainsi que Mac 1.0.8 (10), sont publics. Apple iOS/Watch et Mac 1.0.10 (16) attendent l’examen. Les évaluateurs utilisent le compte démo Bunko distinct, sans code GitHub par courriel.
 
 Des offres cloud facultatives pour la conversion PDF et les réponses IA sont prévues à 2,99 / 14,99 / 29,99 USD par mois. La page des offres est disponible, mais les achats sont désactivés. Livres, dictionnaires et lecture hors ligne restent inclus dans l’achat de l’application. Les téléchargements essaient GitHub, puis le CDN public et, en dernier recours, notre cache à capacité limitée.
 
-[Preuve de soumission](../store/artifacts/submission-1.0.10-16-20261003.json) · [Offres cloud](../docs/cloud-subscriptions.md)
+[Preuve de soumission](../store/artifacts/android-1.0.10-17-20261003.json) · [Offres cloud](../docs/cloud-subscriptions.md)
 
 ## Dans ce dépôt
 

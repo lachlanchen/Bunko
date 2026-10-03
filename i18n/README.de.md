@@ -16,11 +16,11 @@ Bücher können beliebig viele Sprachebenen mit standardisierten Sprachkennungen
 
 ## Aktueller Stand · 3. Oktober 2026
 
-iOS/Watch und Android 1.0.9 (14) sind veröffentlicht; für Mac bleibt 1.0.8 (10) verfügbar. Die neue Version 1.0.10 (16) mit dem freigegebenen Symbol wurde bei Apple und Google eingereicht und wird nach Genehmigung automatisch veröffentlicht. Prüfer verwenden das separate Bunko-Demokonto ohne GitHub-E-Mail-Code.
+Android 1.0.10 (17) wurde nach Korrektur der beanstandeten Datenschutz-URL bei Google eingereicht. Es ergänzt einen direkten Link in den Einstellungen und zuverlässigere Buchdownloads. Android und iOS/Watch 1.0.9 (14) sowie Mac 1.0.8 (10) sind öffentlich. Apple iOS/Watch und Mac 1.0.10 (16) warten auf Prüfung. Prüfer verwenden das separate Bunko-Demokonto ohne GitHub-E-Mail-Code.
 
 Optionale Cloud-Tarife für PDF-Konvertierung und KI-Antworten sind für monatlich 2,99 / 14,99 / 29,99 US-Dollar geplant. Die Tarifseite ist verfügbar, Käufe sind deaktiviert. Bücher, Wörterbücher und Offline-Lesen bleiben im App-Kauf enthalten. Downloads versuchen zuerst GitHub, dann das öffentliche CDN und zuletzt unseren begrenzten Cache.
 
-[Einreichungsnachweis](../store/artifacts/submission-1.0.10-16-20261003.json) · [Cloud-Tarife](../docs/cloud-subscriptions.md)
+[Einreichungsnachweis](../store/artifacts/android-1.0.10-17-20261003.json) · [Cloud-Tarife](../docs/cloud-subscriptions.md)
 
 ## In diesem Repository
 

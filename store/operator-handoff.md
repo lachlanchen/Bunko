@@ -1,3 +1,36 @@
+# Android privacy repair and build 17 · 3 October 2026 HKT
+
+Google rejected build 16 today because its configured GitHub Pages privacy URL
+was reported invalid. The page returned 200 in our checks; the reviewer failure
+was not reproduced. A plain, app-specific HTML policy is now also served directly
+by our existing cloud host, independently of GitHub and the application process:
+https://llm.lazying.art/bunko/privacy.html . It needs no login or JavaScript. The
+original Pages policy remains available. Both copies must be kept in sync.
+
+**Android 1.0.10 (17)** was sent for production review with the corrected URL,
+100% rollout, all 172 existing eligible countries, and managed publishing off.
+Google automated checks are pending. Public Android remains build 14. This update
+includes the latest regional book fallback and a permanent Settings privacy link.
+Native cloud plans remain informational; purchases and quotas are disabled.
+
+81 client tests, 58 server tests, renderer/build and Android lint passed. The
+signed APK/AAB were built. On the dedicated headless API34 emulator, the debug
+shell using the production web assets verified OTP-free Demo login, comment
+reading and enabled posting, secure-session cold restart and sign-out. The real
+advanced-quantum-mechanics chapter (16,422 characters) and its figure loaded with
+GitHub/CDN blocked, then reopened with all book origins blocked. No new public
+test comment or paid transaction was created.
+
+Apple iOS/Watch and Mac build 16 remain WAITING_FOR_REVIEW, independently read
+back today. Public iOS/Watch is 14 and Mac is 10. OnlyIdeas Google 25 is already
+public at 100%; its later build 26 changes only Apple code.
+
+[Android receipt](artifacts/android-1.0.10-17-20261003.json). Runtime evidence,
+immutable legal package/checksums and exact rollback are private under
+`.runtime/google-recheck-20261003/`. No shared Mac desktop was controlled.
+
+## Earlier same-day submission
+
 # Latest reader submitted — 3 October 2026 HKT
 
 Bunko **1.0.10 (16)** is **WAITING_FOR_REVIEW** on iOS/paired Watch and
