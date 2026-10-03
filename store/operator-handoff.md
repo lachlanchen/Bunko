@@ -1,3 +1,29 @@
+# Latest reader submitted — 3 October 2026 HKT
+
+Bunko **1.0.10 (16)** is **WAITING_FOR_REVIEW** on iOS/paired Watch and
+universal Mac, with automatic release after approval. The owner requested the
+latest icon/reader build, so the older Mac build14 review was withdrawn and
+replaced. Both submissions use the qualified build16 artifacts; no rebuild.
+Google **1.0.10 (16)** now shows **Changes in review**, full rollout to 172
+eligible paid-app countries, managed publishing off. Quick checks completed; the Console confirms that the changes are now in
+review.
+
+Dedicated **Bunko Demo account** credentials were verified privately in both
+stores. Google's instructions explicitly say not to use GitHub login. A fresh
+browser verified real demo sign-in, reload persistence and sign-out without
+opening GitHub. Prior comment/document qualification remains in
+[reviewer access](reviewer-access.md). No owner email code is needed for this path.
+
+The current public versions remain iOS/Watch14, Android14 and Mac10 until their
+successors clear review. The public update feed names released builds only.
+Optional cloud subscriptions and the new mirror client are not in build16.
+Mac desktop automation remains disconnected at the owner's request; testing and
+build work must use headless SSH or an isolated, coordinated test desktop.
+
+[Submission receipt](artifacts/submission-1.0.10-16-20261003.json)
+
+## Previous records
+
 # iOS/Watch public release — 2026-10-01 HKT
 
 **Bunko 1.0.9 (14)** passed review and was automatically released at

@@ -4,7 +4,10 @@
     "version": "1.0.9",
     "build": "14"
   },
-  "android": null,
+  "android": {
+    "version": "1.0.9",
+    "build": "14"
+  },
   "macos": {
     "version": "1.0.8",
     "build": "10"

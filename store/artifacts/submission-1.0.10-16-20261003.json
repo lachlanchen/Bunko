@@ -1,0 +1,61 @@
+{
+  "verifiedAt": "2026-10-03T01:56:06.132527+00:00",
+  "version": "1.0.10",
+  "build": 16,
+  "artifactReceipt": "reader-1.0.10-16.json",
+  "apple": {
+    "MAC_OS": {
+      "versionId": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+      "buildId": "74b65c86-e6c8-4508-96fa-e2a12db79138",
+      "reviewId": "f4483d0a-f9bc-494b-a0d7-7788930a3a4b",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-10-03T01:39:49.587Z",
+      "releaseType": "AFTER_APPROVAL"
+    },
+    "IOS": {
+      "versionId": "2917e845-3d48-486d-b74a-c0acd968e270",
+      "buildId": "2aa119e0-47a3-4ec9-86a5-13cdd6956d82",
+      "reviewId": "7f54d416-7bdb-4e73-ab87-81996435b821",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-10-03T01:40:06.676Z",
+      "releaseType": "AFTER_APPROVAL"
+    }
+  },
+  "google": {
+    "version": "1.0.10",
+    "build": 16,
+    "state": "Changes in review",
+    "automatedChecks": "completed; Console confirms Your changes are now in review",
+    "rolloutPercent": 100,
+    "countries": 172,
+    "managedPublishing": false,
+    "reviewAccess": "Dedicated Bunko Demo account; private credentials and full-access instructions verified after reload; no GitHub/email code"
+  },
+  "publicAtCheck": {
+    "ios": {
+      "version": "1.0.9",
+      "build": 14
+    },
+    "macos": {
+      "version": "1.0.8",
+      "build": 10
+    },
+    "android": {
+      "version": "1.0.9",
+      "build": 14
+    }
+  },
+  "freshValidation": {
+    "at": "2026-10-03T01:35:43.141Z",
+    "freshBrowserDemo": true,
+    "noGithubNavigation": true,
+    "reloadPersistence": true
+  },
+  "excludedFeatures": [
+    "Cloud subscriptions staged in current source are absent from build16",
+    "New GitHub/CDN/owned mirror client is not in build16"
+  ],
+  "ownerDesktop": "No Mac GUI control; UU disconnected; isolated Linux store browser only"
+}

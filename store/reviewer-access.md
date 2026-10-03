@@ -1,4 +1,4 @@
-# Reviewer access · 1.0.9 candidate
+# Reviewer access · Bunko Demo account
 
 Bunko’s dedicated GitHub review account can encounter GitHub’s new-device email
 verification. Disabling two-factor authentication does not prevent that check; see [GitHub’s new-device verification documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/verifying-new-devices-when-signing-in).
@@ -79,3 +79,14 @@ The service uses GitHub installation tokens scoped to Issues in **only**
 token. No owner GitHub credential is used to impersonate a commenter. Public
 posts can be reported on GitHub; maintainers can moderate or remove demo posts
 on request. Demo companion data can be deleted from the app.
+
+## Reverified for build16 · 3 October 2026
+
+Apple iOS/Watch and Mac build16 were submitted as WAITING_FOR_REVIEW with the
+same dedicated Demo account. Google build16 is Changes in review. The saved
+Google username/password and full-access assertion were checked after reload;
+its single entry is now titled “Bunko Demo account — no GitHub or email code”.
+Instructions start with Reading companion > Demo account and explicitly exclude
+the GitHub sign-in button. A fresh production browser signed in without GitHub
+navigation and retained the session after reload. The historical build14 states
+above remain dated evidence, not the current release status.
