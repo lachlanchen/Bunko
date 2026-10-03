@@ -55,7 +55,7 @@ export default function App() {
   const [indexError, setIndexError] = useState('')
   const [refreshing, setRefreshing] = useState(false)
   const [bookError, setBookError] = useState('')
-  const [view, setView] = useState<View>('library')
+  const [view, setView] = useState<View>(() => ['success', 'cancel', 'return'].includes(new URLSearchParams(window.location.search).get('billing') ?? '') ? 'cloud' : 'library')
   const [filter, setFilter] = useState<Filter>('all')
   const [query, setQuery] = useState('')
   const [meta, setMeta] = useState<BookMeta | null>(null)
@@ -262,7 +262,12 @@ export default function App() {
   />
 
   if (view === 'agent') return <DocumentAgent ui={ui} onBack={() => setView('library')} onCloud={() => setView('cloud')} />
-  if (view === 'cloud') return <CloudPlans ui={ui} onBack={() => setView('library')} />
+  if (view === 'cloud') return <CloudPlans ui={ui} onBack={() => {
+    const url = new URL(window.location.href)
+    url.searchParams.delete('billing')
+    window.history.replaceState(null, '', url)
+    setView('library')
+  }} />
 
   if (view === 'reader' && meta) {
     return (

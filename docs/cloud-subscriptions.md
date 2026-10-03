@@ -1,7 +1,6 @@
 # Optional cloud plans
 
-Implementation status, 3 October 2026: disabled server catalog deployed; web UI
-qualified and prepared for publication.
+Implementation status, 3 October 2026: disabled server catalog and web UI live.
 The production service has not enabled Bunko subscriptions. Native purchase
 controls, product registration and app-specific store transaction tests remain
 release gates. This document describes the implemented server contract, not a
@@ -19,9 +18,14 @@ idempotent recovery path for a deliberate retry.
 Current source check: 81 client and 58 server tests, lint, renderer and production
 build passed. A browser fixture verified all three disabled plan cards at 390px
 without horizontal overflow and a 1280px dark layout. This is staged UI evidence,
-not a payment receipt. The live catalog now returns all three plans with sales,
+not a payment receipt. A fresh signed-out mobile browser and an authenticated
+Demo session both loaded the live page; sign-in, reload persistence and sign-out
+passed without GitHub navigation. The live catalog returns all three plans with sales,
 providers and quotas disabled; existing sessions, comments, documents, chats and
 the book cache were preserved. Private evidence: `.runtime/cloud-plans-20261003/`.
+
+Checkout and management return links reopen Cloud plans and refresh the server
+catalog. URL parameters alone never grant access or claim a successful purchase.
 
 ## Scope
 
