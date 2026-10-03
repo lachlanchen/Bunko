@@ -6,7 +6,7 @@ import { respond } from './discovery.mjs'
 import { providerJSON } from './network.mjs'
 
 export const agentPaths = ['state', 'upload', 'import', 'document', 'delete', 'resume', 'messages', 'send', 'report', 'clear'].map(p => `/v1/agent/${p}`)
-export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, convert = convertDocument, discover = respond, provider = providerJSON, freeBytes = () => { if (!config.storageDirectory) return Infinity; const s = statfsSync(config.storageDirectory); return s.bavail * s.bsize } }) {
+export function createDocumentAgent({ db, seal, unseal, config, cloud, now = Date.now, convert = convertDocument, discover = respond, provider = providerJSON, freeBytes = () => { if (!config.storageDirectory) return Infinity; const s = statfsSync(config.storageDirectory); return s.bavail * s.bsize } }) {
   db.exec(`CREATE TABLE IF NOT EXISTS agent_documents(id TEXT PRIMARY KEY, owner TEXT NOT NULL, state TEXT NOT NULL, data TEXT NOT NULL, bytes INTEGER NOT NULL, created INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS agent_sources(id TEXT PRIMARY KEY, data TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS agent_messages(id TEXT PRIMARY KEY, owner TEXT NOT NULL, document TEXT NOT NULL, state TEXT NOT NULL, data TEXT NOT NULL, created INTEGER NOT NULL);
@@ -16,6 +16,8 @@ export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, 
   db.prepare("UPDATE agent_documents SET state='interrupted' WHERE state='processing'").run()
   db.prepare("UPDATE agent_messages SET state='interrupted' WHERE state='processing'").run()
   const ownerKey = user => hash(`bunko-agent:${user.id}`)
+  const atomic = fn => cloud ? cloud.atomic(fn) : fn()
+  const metered = owner => cloud?.usage(owner).enabled === true
   // Include encrypted originals and conversations, and reserve space for queued imports.
   // Refuse growth before exhausting the shared host; deletion and reading still work.
   const capacity = (growth) => {
@@ -41,9 +43,10 @@ export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, 
     db.prepare('INSERT INTO agent_usage VALUES (?,?,?,?,?)').run(id, owner, kind, amount, now())
   }
   const save = (doc, submitted = false) => {
+    try { return atomic(() => {
     if (submitted) {
-      try { reserve(`pdf:${doc.id}`, doc.owner, 'pages', doc.pages, config.maxPagesPerDay || 100, config.maxUserPagesPerDay || 60) }
-      catch (e) { delete doc.submittedAt; throw e }
+      reserve(`pdf:${doc.id}`, doc.owner, 'pages', doc.pages, config.maxPagesPerDay || 100, metered(doc.owner) ? Infinity : config.maxUserPagesPerDay || 60)
+      cloud?.reserve(doc.owner, `pdf:${doc.id}`, 'pages', doc.pages)
     }
     const data = seal(doc)
     requireValue(Buffer.byteLength(data) <= 75_000_000, 'The converted document is too large.')
@@ -53,6 +56,12 @@ export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, 
     requireValue(other + Buffer.byteLength(data) <= 150_000_000, 'Your private library is full. Remove a document before importing another.')
     const changed = db.prepare('UPDATE agent_documents SET data=?, bytes=? WHERE id=? AND owner=?').run(data, Buffer.byteLength(data), doc.id, doc.owner)
     requireValue(changed.changes, 'Document removed.', 410)
+    }) } catch (error) {
+      // save(submitted=true) runs before contacting Mathpix. An allowance or
+      // storage rejection must remain retryable without a false provider receipt.
+      if (submitted) delete doc.submittedAt
+      throw error
+    }
   }
   let busy = false, stopped = false
   async function tick() {
@@ -70,8 +79,10 @@ export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, 
       requireValue(typeof output.mmd === 'string' && output.mmd.trim() && Buffer.byteLength(output.mmd) <= 2_000_000, 'The document has no usable text or exceeds 2 MB of text.')
       save({ ...doc, ...output, error: '' })
       db.prepare("UPDATE agent_documents SET state='ready' WHERE id=?").run(row.id)
+      cloud?.finish(`pdf:${row.id}`, 'used')
       db.prepare('DELETE FROM agent_sources WHERE id=?').run(row.id)
     } catch (e) {
+      if (!stopped) cloud?.finish(`pdf:${row.id}`, doc.submittedAt ? 'uncertain' : 'released')
       if (!stopped && db.prepare('SELECT id FROM agent_documents WHERE id=?').get(row.id)) {
         // Diagnostics are curated; parser/provider exceptions may contain private text or credentials.
         doc.error = e instanceof AppError ? e.message : 'The document could not be converted. Check the file or try a PDF export.'
@@ -85,7 +96,7 @@ export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, 
   async function handle(path, input, user) {
     requireValue(config.enabled === true, 'The document companion is not available yet.', 503)
     const owner = ownerKey(user)
-    if (path === 'state') return { formats, maxBytes: 20_000_000, maxPages: config.maxPages || 30, documents: db.prepare('SELECT id FROM agent_documents WHERE owner=? ORDER BY created DESC').all(owner).map(r => summary(document(r.id, owner))) }
+    if (path === 'state') return { formats, maxBytes: 20_000_000, maxPages: config.maxPages || 30, quota: cloud?.usage(owner), documents: db.prepare('SELECT id FROM agent_documents WHERE owner=? ORDER BY created DESC').all(owner).map(r => summary(document(r.id, owner))) }
     if (path === 'upload' || path === 'import') {
       const id = requestKey(owner, input.requestId)
       const existing = db.prepare('SELECT id FROM agent_documents WHERE id=? AND owner=?').get(id, owner)
@@ -165,9 +176,12 @@ export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, 
       if (previous) { const data = unseal(previous.data); requireValue(data.fingerprint === fingerprint, 'This request identifier was already used.', 409); return { id, state: previous.state, ...data } }
       requireValue(!db.prepare("SELECT id FROM agent_messages WHERE owner=? AND state='processing'").get(owner), 'A response is already in progress.', 409)
       capacity(200_000)
-      reserve(`ai:${id}`, owner, 'answers', 1, config.maxAnswersPerDay || 100, 30)
       const data = { question: input.text.trim(), fingerprint, answer: '', papers: [] }
-      db.prepare('INSERT INTO agent_messages VALUES (?,?,?,?,?,?)').run(id, owner, documentId, 'processing', seal(data), now())
+      atomic(() => {
+        reserve(`ai:${id}`, owner, 'answers', 1, config.maxAnswersPerDay || 100, metered(owner) ? Infinity : 30)
+        cloud?.reserve(owner, `ai:${id}`, 'answers', 1)
+        db.prepare('INSERT INTO agent_messages VALUES (?,?,?,?,?,?)').run(id, owner, documentId, 'processing', seal(data), now())
+      })
       try {
         let result
         if (doc) {
@@ -191,8 +205,10 @@ export function createDocumentAgent({ db, seal, unseal, config, now = Date.now, 
         data.answer = result.text; data.papers = result.papers || []
         const updated = db.prepare("UPDATE agent_messages SET state='completed',data=? WHERE id=? AND owner=?").run(seal(data), id, owner)
         requireValue(updated.changes, 'Conversation removed.', 410)
+        cloud?.finish(`ai:${id}`, 'used')
         return { id, state: 'completed', ...data }
       } catch (e) {
+        if (!stopped) cloud?.finish(`ai:${id}`, 'released')
         data.error = e instanceof AppError ? e.message : 'The assistant could not connect. Please try again later.'
         db.prepare("UPDATE agent_messages SET state='failed',data=? WHERE id=? AND owner=?").run(seal(data), id, owner)
         return { id, state: 'failed', ...data }

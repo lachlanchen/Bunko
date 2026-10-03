@@ -2,6 +2,8 @@ import { createDocumentAgent, agentPaths } from './agent/service.mjs'
 import { AppError } from './agent/common.mjs'
 import { createDemoAuth } from './demo-auth.mjs'
 import { createBookMirror } from './book-mirror.mjs'
+import { createCloudLedger, cloudOwner } from './cloud-ledger.mjs'
+import { createCloudBilling } from './cloud-billing.mjs'
 import { createServer } from 'node:http'
 import { randomBytes, createHash, createCipheriv, createDecipheriv, timingSafeEqual, createSign } from 'node:crypto'
 import { DatabaseSync } from 'node:sqlite'
@@ -67,7 +69,9 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     }
     db.exec('COMMIT')
   } catch (error) { db.exec('ROLLBACK'); db.close(); throw error }
-  const agent = createDocumentAgent({ db, seal, unseal, config: config.agent || {}, now })
+  const cloudLedger = createCloudLedger(db, config.billing || {}, now)
+  const cloudBilling = createCloudBilling(cloudLedger, config.billing || {}, { seal, unseal })
+  const agent = createDocumentAgent({ db, seal, unseal, config: config.agent || {}, cloud: cloudLedger, now })
   const bookMirror = config.bookMirror?.enabled === true ? createBookMirror({ database: config.bookMirror.database, maxBytes: config.bookMirror.maxBytes, fetchImpl, now }) : null
   const cleanup = () => {
     for (const table of ['flows', 'sessions', 'posts']) db.prepare(`DELETE FROM ${table} WHERE expires < ?`).run(now())
@@ -175,7 +179,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     if (auth.storage === 'cookie' && res) cookie(res, value, expires)
     return { ...auth, expires, sessionId: row.id }
   }
-  async function body(req, maxBytes = 18000) {
+  async function body(req, maxBytes = 18000, retainRaw = false) {
     if (req.headers['content-type'] !== 'application/json') fail(415, 'json_required')
     const chunks = []; let length = 0
     for await (const chunk of req) {
@@ -183,7 +187,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       if (length > maxBytes) fail(413, 'too_large')
       chunks.push(chunk)
     }
-    try { const value = JSON.parse(Buffer.concat(chunks).toString('utf8')); if (!value || Array.isArray(value) || typeof value !== 'object') fail(400, 'invalid_json'); return value } catch { fail(400, 'invalid_json') }
+    try { const raw = Buffer.concat(chunks), value = JSON.parse(raw.toString('utf8')); if (!value || Array.isArray(value) || typeof value !== 'object') fail(400, 'invalid_json'); return retainRaw ? { value, raw } : value } catch { fail(400, 'invalid_json') }
   }
   function json(res, value, status = 200) { res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8' }); res.end(JSON.stringify(value)) }
   function callbackPage(res, platform, id, error = false) {
@@ -194,7 +198,9 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
     res.end(`<!doctype html><html lang="en"><meta name="viewport" content="width=device-width"><title>Bunko · GitHub</title><style nonce="${nonce}">body{font:18px system-ui;background:#faf7f0;color:#272942;max-width:32rem;margin:15vh auto;padding:2rem;line-height:1.7}a{color:#403d78}</style><h1>Bunko · 文庫</h1><p>${error ? 'Sign-in was not completed. Return to Bunko and try again.' : 'Signed in. Return to Bunko to continue your conversation.'}</p>${target ? `<a href="${target}">Return to Bunko</a><script nonce="${nonce}">location.replace(${JSON.stringify(target)})</script>` : `<script nonce="${nonce}">window.close()</script>`}</html>`)
   }
-  const postPaths = ['/v1/auth/start', '/v1/auth/demo', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post', ...agentPaths].map(p => PREFIX + p)
+  const cloudPaths = ['catalog', 'purchase', 'checkout', 'portal', 'restore'].map(p => `${PREFIX}/v1/cloud/${p}`)
+  const notificationPaths = ['apple', 'google', 'stripe'].map(p => `${PREFIX}/v1/cloud/notifications/${p}`)
+  const postPaths = ['/v1/auth/start', '/v1/auth/demo', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post', ...agentPaths].map(p => PREFIX + p).concat(cloudPaths)
   const server = createServer(async (req, res) => {
     res.setHeader('Cache-Control', 'no-store')
     res.setHeader('Referrer-Policy', 'no-referrer')
@@ -213,6 +219,12 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         const ip = req.headers['x-bunko-client-address'] ?? req.socket.remoteAddress
         limit(`books:${ip}`, 600, 60000)
         await bookMirror.respond(req, res, path.slice(`${PREFIX}/books-cache/`.length)); return
+      }
+      if (notificationPaths.includes(path)) {
+        if (req.method !== 'POST') fail(405, 'method_denied')
+        limit(`billing-hook:${req.headers['x-bunko-client-address'] ?? req.socket.remoteAddress}`, 120, 60000)
+        const input = await body(req, 200000, true)
+        json(res, await cloudBilling.notification(path.split('/').pop(), req, input.value, input.raw)); return
       }
       if (!postPaths.includes(path) && ![`${PREFIX}/healthz`, `${PREFIX}/oauth/callback`].includes(path)) fail(404, 'not_found')
       const origin = req.headers.origin
@@ -263,6 +275,17 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       }
       if (req.method !== 'POST' || !postPaths.includes(path)) fail(405, 'method_denied')
       if (!origin || req.headers['x-bunko-client'] !== '1') fail(403, 'origin_required')
+      if (cloudPaths.includes(path)) {
+        const action = path.split('/').pop()
+        let auth
+        try { auth = await session(req, res) } catch (error) { if (action !== 'catalog' || error.status !== 401) throw error }
+        const input = await body(req, action === 'purchase' ? 120000 : 18000)
+        if (auth && !db.prepare('SELECT id FROM sessions WHERE id=?').get(auth.sessionId)) fail(401, 'sign_in_again')
+        const owner = auth ? cloudOwner(auth.user) : null
+        if (action === 'catalog') { json(res, cloudBilling.catalog(owner)); return }
+        limit(`billing:${owner}`, 20, 60000)
+        json(res, action === 'purchase' ? await cloudBilling.purchase(input.platform, input, owner) : await cloudBilling.web(action, input, owner)); return
+      }
       const isAgent = agentPaths.includes(path.slice(PREFIX.length))
       if (isAgent) {
         if (path.endsWith('/upload')) {
@@ -416,7 +439,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
   server.maxHeadersCount = 40
   server.keepAliveTimeout = 5000
   const timer = setInterval(cleanup, 60000); timer.unref()
-  server.on('close', () => { clearInterval(timer); agent.close(); db.close(); void bookMirror?.close() })
+  server.on('close', () => { clearInterval(timer); agent.close(); cloudBilling.stop(); db.close(); void bookMirror?.close() })
   return server
 }
 

@@ -58,3 +58,21 @@ handle @bunko_agent {
         header_up X-Bunko-Client-Address {remote_host}
     }
 }
+
+# Optional cloud plans. Purchases require an app session; provider notifications
+# have independently verified signatures/identities and never accept app tokens.
+@bunko_cloud {
+    method POST OPTIONS
+    path /bunko/v1/cloud/catalog /bunko/v1/cloud/purchase /bunko/v1/cloud/checkout /bunko/v1/cloud/portal /bunko/v1/cloud/restore /bunko/v1/cloud/notifications/apple /bunko/v1/cloud/notifications/google /bunko/v1/cloud/notifications/stripe
+}
+handle @bunko_cloud {
+    request_body {
+        max_size 200KB
+    }
+    reverse_proxy 127.0.0.1:18624 {
+        header_up Host llm.lazying.art
+        header_up -Forwarded
+        header_up -X-Forwarded-For
+        header_up X-Bunko-Client-Address {remote_host}
+    }
+}

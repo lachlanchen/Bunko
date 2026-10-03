@@ -4,8 +4,73 @@ import { DatabaseSync } from 'node:sqlite'
 import { createDocumentAgent } from './agent/service.mjs'
 import { inspectFile } from './agent/convert.mjs'
 import { isPublicIP } from './agent/network.mjs'
+import { createCloudLedger, cloudOwner } from './cloud-ledger.mjs'
 const reader = { id: 7 }, other = { id: 9 }
 const requestId = 'request_fixture_1234567890'
+test('cloud conversion retries reuse the provider job and allowance reservation', async t => {
+  const db = new DatabaseSync(':memory:'), owner = cloudOwner(reader)
+  const cloud = createCloudLedger(db, { enabled: true, quotasEnabled: true })
+  let submissions = 0, fail = true
+  const agent = createDocumentAgent({ db, cloud, seal: JSON.stringify, unseal: JSON.parse,
+    config: { enabled: true }, convert: async (doc, _bytes, _config, save) => {
+      if (!doc.pdfId) {
+        doc.pages = 20; doc.submittedAt = Date.now(); save(doc, true)
+        submissions++; doc.pdfId = 'existing-provider-job'; save(doc)
+      }
+      if (fail) throw Error('provider still working')
+      return { mmd: 'Converted paper', assets: [] }
+    } })
+  t.after(() => { agent.close(); db.close() })
+  const doc = await agent.handle('upload', { name: 'paper.pdf', data: Buffer.from('%PDF-1.4 test').toString('base64'), requestId }, reader)
+  await agent.tick()
+  assert.equal(cloud.usage(owner).remainingPages, 10)
+  assert.equal((await agent.handle('document', { documentId: doc.id }, reader)).resumable, true)
+  fail = false
+  await agent.handle('resume', { documentId: doc.id }, reader); await agent.tick()
+  assert.equal(submissions, 1)
+  assert.equal(cloud.usage(owner).usedPages, 20)
+  assert.equal((await agent.handle('document', { documentId: doc.id }, reader)).state, 'ready')
+})
+
+test('quota refusal leaves conversion retryable without contacting Mathpix or spending daily allowance', async t => {
+  const db = new DatabaseSync(':memory:'), owner = cloudOwner(reader)
+  const cloud = createCloudLedger(db, { enabled: true, quotasEnabled: true })
+  cloud.reserve(owner, 'previous-conversion', 'pages', 20)
+  let submissions = 0
+  const agent = createDocumentAgent({ db, cloud, seal: JSON.stringify, unseal: JSON.parse,
+    config: { enabled: true }, convert: async (doc, _bytes, _config, save) => {
+      doc.pages = 20; doc.submittedAt = Date.now(); save(doc, true)
+      submissions++; return { mmd: 'Converted paper', assets: [] }
+    } })
+  t.after(() => { agent.close(); db.close() })
+  const doc = await agent.handle('upload', { name: 'paper.pdf', data: Buffer.from('%PDF-1.4 test').toString('base64'), requestId }, reader)
+  await agent.tick()
+  const failed = await agent.handle('document', { documentId: doc.id }, reader)
+  assert.equal(failed.state, 'failed'); assert.equal(failed.resumable, true)
+  assert.match(failed.error, /allowance/); assert.equal(submissions, 0)
+  assert.equal(db.prepare("SELECT COUNT(*) n FROM agent_usage WHERE kind='pages'").get().n, 0)
+  cloud.finish('previous-conversion', 'released')
+  await agent.handle('resume', { documentId: doc.id }, reader); await agent.tick()
+  assert.equal(submissions, 1)
+  assert.equal(cloud.usage(owner).usedPages, 20)
+})
+
+test('failed AI replies release cloud quota; replay and deletion cannot refill successful usage', async t => {
+  const db = new DatabaseSync(':memory:'), owner = cloudOwner(reader)
+  const cloud = createCloudLedger(db, { enabled: true, quotasEnabled: true })
+  let fail = true
+  const agent = createDocumentAgent({ db, cloud, seal: JSON.stringify, unseal: JSON.parse,
+    config: { enabled: true }, discover: async () => { if (fail) throw Error('offline'); return { text: 'A useful answer.' } } })
+  t.after(() => { agent.close(); db.close() })
+  const first = await agent.handle('send', { text: 'Find a paper', requestId }, reader)
+  assert.equal(first.state, 'failed'); assert.equal(cloud.usage(owner).usedAgentTurns, 0)
+  fail = false
+  const input = { text: 'Find a paper', requestId: 'another_request_1234567890' }
+  await agent.handle('send', input, reader); await agent.handle('send', input, reader)
+  assert.equal(cloud.usage(owner).usedAgentTurns, 1)
+  await agent.handle('clear', { confirm: 'DELETE' }, reader)
+  assert.equal(cloud.usage(owner).usedAgentTurns, 1)
+})
 test('exact arXiv identifiers bypass broad research search', async () => {
   const { directPaper, respond } = await import('./agent/discovery.mjs')
   assert.equal(directPaper('Find Attention Is All You Need, arXiv 1706.03762v7').pdfUrl, 'https://arxiv.org/pdf/1706.03762v7')

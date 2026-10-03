@@ -52,6 +52,22 @@ async function setup(t, custom) {
   return { request, start, login, advance: ms => { time += ms }, writes: () => writes, tokenRequest: () => tokenRequest }
 }
 
+test('cloud catalog stays closed by default, purchases require sign-in, and webhooks cannot enable billing', async t => {
+  const s = await setup(t)
+  const guest = await s.request('/v1/cloud/catalog', {})
+  assert.equal(guest.status, 200)
+  assert.equal(guest.body.signInRequired, true)
+  assert.equal(guest.body.newPurchaseEnabled, false)
+  assert.equal((await s.request('/v1/cloud/purchase', { platform: 'apple', signedTransaction: 'forged' })).status, 401)
+  const token = await s.login()
+  const reader = await s.request('/v1/cloud/catalog', {}, token)
+  assert.equal(reader.body.enabled, false)
+  assert.equal(reader.body.signInRequired, false)
+  assert.equal((await s.request('/v1/cloud/purchase', { platform: 'apple', signedTransaction: 'forged' }, token)).status, 503)
+  assert.equal((await s.request('/v1/cloud/catalog', {}, token, { Origin: 'https://untrusted.invalid' })).status, 403)
+  assert.equal((await s.request('/v1/cloud/notifications/apple', { signedPayload: 'forged' })).status, 503)
+})
+
 test('PKCE, state replay, verifier binding, token isolation, and recoverable completion', async t => {
   const s = await setup(t), flow = await s.start('native')
   assert.equal(new URL(flow.url).searchParams.get('code_challenge_method'), 'S256')

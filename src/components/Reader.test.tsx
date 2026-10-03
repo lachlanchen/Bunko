@@ -9,7 +9,7 @@ import type { BookMeta, Chapter, LangCode } from '../types'
 const chapter: Chapter = { id: 'sample', n: 1, title: { ja: ['第一章'] }, p: [{ id: 'p1', src: 'ja', u: [{ src: 'ja', ja: ['日本語の原文'], en: ['English translation'] }] }] }
 vi.mock('../lib/library', () => ({ loadChapter: vi.fn(async () => chapter) }))
 beforeAll(() => { HTMLElement.prototype.scrollTo = vi.fn() })
-afterEach(cleanup)
+afterEach(() => { cleanup(); window.getSelection()?.removeAllRanges(); vi.unstubAllGlobals() })
 const meta: BookMeta = { schema: 1, id: 'sample', mode: 'trilingual_standard', primary: 'ja', langs: ['ja', 'en'], title: {}, titleText: { ja: '作品' }, author: {}, chapters: [{ n: 1, file: 'c001.json', bytes: 1, paras: 1, title: { ja: '第一章' } }], bytes: 1, paras: 1 }
 it('shows only the original in source mode and restores selected translations in interlinear mode', async () => {
   const props = { meta, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs: ['en', 'ja'] as const }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
@@ -42,6 +42,9 @@ it('waits for an explicit Dictionary action and keeps the selected substring', a
   const node = text.firstChild!
   const range = document.createRange()
   range.setStart(node, 0); range.setEnd(node, 7)
+  // Native selection replaces the caret left by the preceding tap. addRange
+  // alone can leave that existing range in jsdom's single-range Selection.
+  window.getSelection()?.removeAllRanges()
   window.getSelection()?.addRange(range)
   fireEvent(document, new Event('selectionchange'))
   expect(container.querySelector('.selection-preview strong')?.textContent).toBe('English')
