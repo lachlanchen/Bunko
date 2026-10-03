@@ -1,0 +1,110 @@
+{
+  "checkedAt": "2026-10-03T21:00:49.992395+00:00",
+  "appId": "6815137919",
+  "bundleId": "art.lazying.bunko",
+  "ios": {
+    "id": "2917e845-3d48-486d-b74a-c0acd968e270",
+    "platform": "IOS",
+    "versionString": "1.0.10",
+    "appStoreState": "READY_FOR_SALE",
+    "appVersionState": "READY_FOR_DISTRIBUTION",
+    "releaseType": "AFTER_APPROVAL",
+    "earliestReleaseDate": null,
+    "build": "16",
+    "buildId": "2aa119e0-47a3-4ec9-86a5-13cdd6956d82"
+  },
+  "iosReview": {
+    "id": "7f54d416-7bdb-4e73-ab87-81996435b821",
+    "attributes": {
+      "platform": "IOS",
+      "submittedDate": "2026-10-03T01:40:06.676Z",
+      "state": "COMPLETE"
+    }
+  },
+  "iosReleasedAt": "2026-10-03T19:07:58Z",
+  "iosPublicLookups": [
+    {
+      "version": "1.0.10",
+      "price": 0.99,
+      "currency": "USD",
+      "currentVersionReleaseDate": "2026-10-03T19:07:58Z",
+      "trackViewUrl": "https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?uo=4",
+      "country": "us"
+    },
+    {
+      "version": "1.0.10",
+      "price": 8.0,
+      "currency": "HKD",
+      "currentVersionReleaseDate": "2026-10-03T19:07:58Z",
+      "trackViewUrl": "https://apps.apple.com/hk/app/bunko-%E6%96%87%E5%BA%AB-%E7%B6%93%E5%85%B8%E8%88%87%E6%B3%A8%E9%9F%B3/id6815137919?uo=4",
+      "country": "hk"
+    }
+  ],
+  "iosPublicPage": {
+    "url": "https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919",
+    "version": "Version 1.0.10",
+    "releaseNotes": "Improved right-swipe navigation and multilingual reading. Japanese ruby and edition credits are corrected, translation notes are easier to browse, and the refined sky-blue/cyan and salmon icon is included. Dedicated demo sign-in supports real comments without email verification codes."
+  },
+  "macos": {
+    "id": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+    "platform": "MAC_OS",
+    "versionString": "1.0.10",
+    "appStoreState": "IN_REVIEW",
+    "appVersionState": "IN_REVIEW",
+    "releaseType": "AFTER_APPROVAL",
+    "earliestReleaseDate": null,
+    "build": "16",
+    "buildId": "74b65c86-e6c8-4508-96fa-e2a12db79138"
+  },
+  "macosReview": {
+    "id": "f4483d0a-f9bc-494b-a0d7-7788930a3a4b",
+    "attributes": {
+      "platform": "MAC_OS",
+      "submittedDate": "2026-10-03T01:39:49.587Z",
+      "state": "IN_REVIEW"
+    }
+  },
+  "macosPublicPage": {
+    "url": "https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?platform=mac",
+    "finalUrl": "https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?platform=mac",
+    "httpStatus": 200,
+    "platform": "mac",
+    "version": "Version 1.0.8",
+    "date": "Tue Sep 29 2026 22:50:52 GMT+0000 (Coordinated Universal Time)"
+  },
+  "availability": {
+    "checkedAt": "2026-10-03T21:00:49.992395+00:00",
+    "total": 175,
+    "available": 175,
+    "availableInNewTerritories": true,
+    "iosPhasedRelease": null
+  },
+  "releaseAction": "Read-only store verification. iOS/Watch16 already released automatically. Mac16 remains IN_REVIEW with AFTER_APPROVAL selected; no release request, review replacement or binary upload made.",
+  "updateFeed": {
+    "schema": 1,
+    "ios": {
+      "version": "1.0.10",
+      "build": "16"
+    },
+    "android": {
+      "version": "1.0.10",
+      "build": "17"
+    },
+    "macos": {
+      "version": "1.0.8",
+      "build": "10"
+    }
+  },
+  "artifactReceipt": "reader-1.0.10-16.json",
+  "submissionReceipt": "submission-1.0.10-16-20261003.json",
+  "scope": "Publish the verified iOS update feed and synchronize release records. No pricing, billing, authentication, data or device changes.",
+  "excludedFeatures": [
+    "Cloud subscriptions and the new owned book-mirror client are absent from Apple build16."
+  ],
+  "platformCaveat": "The universal app lookup returns the iOS release. Mac status is independently verified using the platform=mac public page and MAC_OS App Store Connect version/build/review.",
+  "validation": {
+    "updateFeedTests": "6 passed: npm test -- src/lib/updates.test.ts",
+    "readmes": "English + 10 translations passed profile README checks",
+    "diff": "git diff --check passed"
+  }
+}

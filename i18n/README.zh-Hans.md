@@ -14,13 +14,13 @@ Bunko 是阅读中文、日文与英文公版经典的应用。读者可选择�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko 阅读器截图" width="300"></a></p>
 
-## 当前状态 · 2026年10月3日
+## 当前状态 · 2026年10月4日
 
-Android 1.0.10 (17) 修正隐私政策网址后已在 Google Play 正式发布，覆盖 172 个国家，发布比例为 100%。本次新增设置中的隐私直达链接和更可靠的图书下载。iOS/Watch 1.0.9 (14)、Mac 1.0.8 (10) 已发布；Apple iOS/Watch 和 Mac 1.0.10 (16) 仍在等待审核。审核人员使用独立 Bunko 演示账户，无需 GitHub 邮箱验证码；更明确的演示登录返回步骤也已提交。
+iOS/Watch 1.0.10 (16) 已正式发布，包含确认的新图标和多语言阅读修复。Mac 1.0.10 (16) 仍在审核中，通过后将自动发布；Mac 商店当前仍为 1.0.8 (10)。Android 1.0.10 (17) 修正隐私政策后已在 172 个国家发布，新增设置中的隐私链接和更可靠的图书下载。审核人员使用独立 Bunko 演示账户，无需 GitHub 邮箱验证码；Google 已接受更新后的登录说明。
 
 用于 PDF 转换和 AI 回答的可选云端方案正在准备中，预计月费为 2.99 / 14.99 / 29.99 美元。方案页面已提供，购买功能尚未启用。图书、词典和离线阅读仍包含在应用购买中。图书下载优先使用 GitHub，其次使用公共 CDN，最后才使用有容量限制的自有缓存。
 
-[发布记录](../store/artifacts/distribution-android-1.0.10-20261003.json) · [云端方案](../docs/cloud-subscriptions.md)
+[发布记录](../store/artifacts/distribution-apple-20261004.json) · [云端方案](../docs/cloud-subscriptions.md)
 
 ## 仓库内容
 
@@ -109,7 +109,7 @@ AI 生成的学习文本可能有误。书目只发布经过审核的完整版�
 
 [macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
 
-## 测试与审核
+## 测试历史 · 2026年9月30日
 
 **2026-09-30 · 1.0.9 (14)** 使用已确认的图标：右下方更洁白，文的左上方蓝色笔画更清晰。早期设计均保留归档。网页图标已上线；版本 14 已提供 iPhone/iPad、Watch 配套应用和 Mac 的 TestFlight，以及 Google Play 内部测试。
 

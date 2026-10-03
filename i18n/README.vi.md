@@ -14,13 +14,13 @@ Sách có thể chứa số lượng ngôn ngữ tùy ý bằng thẻ ngôn ng�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Ảnh trình đọc Bunko" width="300"></a></p>
 
-## Tình trạng hiện tại · 3 tháng 10 năm 2026
+## Tình trạng hiện tại · 4 tháng 10 năm 2026
 
-Android 1.0.10 (17) đã có trên Google Play với tỷ lệ phát hành 100% tại 172 quốc gia sau khi sửa URL chính sách riêng tư. Bản này thêm liên kết trực tiếp trong Cài đặt và tải sách ổn định hơn. iOS/Watch 1.0.9 (14), Mac 1.0.8 (10) đã phát hành; Apple iOS/Watch và Mac 1.0.10 (16) đang chờ xét duyệt. Người xét duyệt dùng tài khoản demo Bunko riêng, không cần mã email GitHub. Hướng dẫn rõ hơn về cách quay lại đăng nhập demo cũng đã được gửi.
+iOS/Watch 1.0.10 (16) đã phát hành với biểu tượng được duyệt và các bản sửa lỗi đọc đa ngôn ngữ. Mac 1.0.10 (16) vẫn đang được xét duyệt và sẽ tự động phát hành sau khi được chấp thuận; bản Mac công khai vẫn là 1.0.8 (10). Android 1.0.10 (17) đã có tại 172 quốc gia sau khi sửa chính sách riêng tư, bổ sung liên kết trong Cài đặt và tải sách ổn định hơn. Người xét duyệt dùng tài khoản demo Bunko riêng, không cần mã email GitHub; Google đã chấp thuận hướng dẫn đăng nhập rõ ràng hơn.
 
 Các gói đám mây tùy chọn cho chuyển đổi PDF và câu trả lời AI đang được chuẩn bị với mức 2,99 / 14,99 / 29,99 USD mỗi tháng. Trang gói đã có nhưng chức năng mua chưa bật. Sách, từ điển và đọc ngoại tuyến vẫn nằm trong giá mua ứng dụng. Tải sách ưu tiên GitHub, tiếp theo là CDN công cộng, rồi mới đến bộ nhớ đệm riêng có giới hạn dung lượng.
 
-[Hồ sơ phát hành](../store/artifacts/distribution-android-1.0.10-20261003.json) · [Gói đám mây](../docs/cloud-subscriptions.md)
+[Hồ sơ phát hành](../store/artifacts/distribution-apple-20261004.json) · [Gói đám mây](../docs/cloud-subscriptions.md)
 
 ## Trong kho mã
 
@@ -109,7 +109,7 @@ Biểu tượng mới và trợ lý tài liệu riêng tư hỗ trợ PDF, Word 
 
 [macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
 
-## Thử nghiệm và xét duyệt
+## Lịch sử kiểm thử · 30 tháng 9 năm 2026
 
 **2026-09-30 · 1.0.9 (14)** dùng biểu tượng đã duyệt, trắng hơn ở góc dưới bên phải và rõ nét xanh hơn ở phía trên bên trái chữ 文. Mọi thiết kế trước đều được lưu giữ. Biểu tượng web đã phát hành; bản dựng 14 có trên TestFlight cho iPhone/iPad, ứng dụng đồng hành Watch và Mac, cùng thử nghiệm nội bộ Google Play.
 

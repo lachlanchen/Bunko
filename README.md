@@ -14,13 +14,13 @@ Books may contain any number of language layers using standard language tags, in
 
 <p align="center"><a href="store/assets/play-phone-01.png"><img src="store/assets/play-phone-01.png" alt="Bunko reader screenshot" width="300"></a></p>
 
-## Current status · 3 October 2026
+## Current status · 4 October 2026
 
-Android 1.0.10 (17) is now available on Google Play at 100% rollout across 172 countries after the privacy-policy URL correction. It adds a direct Settings privacy link and resilient book downloads. iOS/Watch 1.0.9 (14) and Mac 1.0.8 (10) are public; Apple iOS/Watch and Mac 1.0.10 (16) remain waiting for review. Reviewers use the separate Bunko Demo account without GitHub email codes; clearer sign-in recovery instructions have also been submitted.
+iOS/Watch 1.0.10 (16) is now public with the approved icon and multilingual reader fixes. Mac 1.0.10 (16) is still in review and will release automatically after approval; the public Mac listing remains 1.0.8 (10). Android 1.0.10 (17) is public in 172 countries after the privacy-policy correction, with a Settings privacy link and resilient book downloads. Reviewers use the separate Bunko Demo account without GitHub email codes; Google has accepted the clarified instructions.
 
 Optional cloud plans for PDF conversion and AI replies are being prepared at US$2.99 / $14.99 / $29.99 monthly. The plans page is available with purchases disabled. Books, dictionaries and offline reading remain included. Book downloads use GitHub first, then the public CDN, then our bounded cache as a final fallback.
 
-[Release receipt](store/artifacts/distribution-android-1.0.10-20261003.json) · [Cloud plans](docs/cloud-subscriptions.md)
+[Release receipt](store/artifacts/distribution-apple-20261004.json) · [Cloud plans](docs/cloud-subscriptions.md)
 
 ## Inside the repository
 
@@ -106,7 +106,7 @@ The refreshed icon and private document companion support PDF, Word (.docx), Mar
 
 [macOS](docs/macos.md) · [watchOS](docs/watchos.md) · [1.0.8](store/artifacts/release-1.0.8.json)
 
-## Testing and review
+## Testing history · 30 September 2026
 
 **2026-09-30 · 1.0.9 (14)** uses the approved icon with more white at the bottom-right and clearer blue upper-left strokes of 文. Earlier designs remain archived. The web icon is live; build 14 is available in TestFlight for iPhone/iPad, the Watch companion and Mac, and in Google Play internal testing.
 

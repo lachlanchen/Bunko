@@ -14,13 +14,13 @@ Bunko는 공개 도메인 중국어·일본어·영어 고전을 읽는 앱입�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko 리더 화면" width="300"></a></p>
 
-## 현재 상태 · 2026년 10월 3일
+## 현재 상태 · 2026년 10월 4일
 
-개인정보 처리방침 URL을 수정한 Android 1.0.10 (17)이 Google Play에서 172개 국가에 100% 배포되었습니다. 설정의 직접 링크와 안정적인 도서 다운로드가 추가되었습니다. iOS/Watch 1.0.9 (14), Mac 1.0.8 (10)은 공개되어 있으며 Apple iOS/Watch 및 Mac 1.0.10 (16)은 심사 대기 중입니다. 심사자는 GitHub 이메일 코드가 필요 없는 별도의 Bunko 데모 계정을 사용합니다. 데모 로그인으로 돌아가는 방법을 명확히 한 안내도 제출했습니다.
+iOS/Watch 1.0.10 (16)이 승인된 아이콘과 다국어 읽기 수정 사항을 포함해 정식 출시되었습니다. Mac 1.0.10 (16)은 심사 중이며 승인 후 자동 출시됩니다. 현재 Mac 공개 버전은 1.0.8 (10)입니다. Android 1.0.10 (17)은 개인정보 처리방침 수정 후 172개국에 출시되었으며 설정의 개인정보 링크와 안정적인 도서 다운로드를 제공합니다. 심사자는 GitHub 이메일 인증 코드가 필요 없는 별도 Bunko 데모 계정을 사용하며, Google은 보완된 로그인 안내도 승인했습니다.
 
 PDF 변환과 AI 답변을 위한 선택형 클라우드 요금제를 월 US$2.99 / $14.99 / $29.99 수준으로 준비하고 있습니다. 요금제 화면은 제공되지만 구매는 비활성화되어 있습니다. 책, 사전, 오프라인 읽기는 앱 구매에 계속 포함됩니다. 책은 GitHub, 공개 CDN, 용량이 제한된 자체 캐시 순서로 다운로드합니다.
 
-[출시 기록](../store/artifacts/distribution-android-1.0.10-20261003.json) · [클라우드 요금제](../docs/cloud-subscriptions.md)
+[출시 기록](../store/artifacts/distribution-apple-20261004.json) · [클라우드 요금제](../docs/cloud-subscriptions.md)
 
 ## 저장소 구성
 
@@ -109,7 +109,7 @@ GitHub로 로그인하면 Bunko 안에서 구절에 대한 공개 댓글을 읽�
 
 [macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
 
-## 테스트 및 심사
+## 테스트 기록 · 2026년 9월 30일
 
 **2026-09-30 · 1.0.9 (14)** 는 오른쪽 아래를 더 하얗게 하고 文의 왼쪽 위 파란 획을 선명하게 한 승인된 아이콘을 사용합니다. 이전 디자인은 모두 보관합니다. 웹에는 새 아이콘을 배포했으며 빌드 14는 iPhone/iPad·Watch 연동 앱·Mac의 TestFlight와 Google Play 내부 테스트에서 이용할 수 있습니다.
 

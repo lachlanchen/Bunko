@@ -14,13 +14,13 @@ Los libros pueden incluir cualquier número de idiomas mediante etiquetas están
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Captura del lector Bunko" width="300"></a></p>
 
-## Estado actual · 3 de octubre de 2026
+## Estado actual · 4 de octubre de 2026
 
-Android 1.0.10 (17) ya está disponible en Google Play con un despliegue del 100 % en 172 países, tras corregir la URL de privacidad. Añade un enlace directo en Ajustes y descargas más fiables. iOS/Watch 1.0.9 (14) y Mac 1.0.8 (10) son públicos; Apple iOS/Watch y Mac 1.0.10 (16) siguen esperando revisión. Los revisores usan una cuenta demo de Bunko independiente, sin códigos de correo de GitHub. También se enviaron instrucciones más claras para volver al acceso demo.
+iOS/Watch 1.0.10 (16) está publicado con el icono aprobado y las correcciones de lectura multilingüe. Mac 1.0.10 (16) sigue en revisión y se publicará automáticamente tras la aprobación; la versión pública para Mac continúa siendo 1.0.8 (10). Android 1.0.10 (17) está disponible en 172 países tras corregir la política de privacidad, con un enlace en Ajustes y descargas de libros más fiables. Los revisores usan la cuenta de demostración Bunko independiente, sin códigos de correo de GitHub; Google aceptó las instrucciones de acceso aclaradas.
 
 Se preparan planes opcionales de nube para convertir PDF y obtener respuestas de IA por 2,99 / 14,99 / 29,99 USD al mes. La página de planes está disponible, pero las compras están desactivadas. Los libros, diccionarios y la lectura sin conexión siguen incluidos en la compra de la aplicación. Las descargas prueban GitHub, después el CDN público y, como último recurso, nuestra caché de capacidad limitada.
 
-[Registro de publicación](../store/artifacts/distribution-android-1.0.10-20261003.json) · [Planes de nube](../docs/cloud-subscriptions.md)
+[Registro de publicación](../store/artifacts/distribution-apple-20261004.json) · [Planes de nube](../docs/cloud-subscriptions.md)
 
 ## Contenido del repositorio
 
@@ -109,7 +109,7 @@ El icono renovado y el asistente privado admiten PDF, Word (.docx), Markdown, te
 
 [macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
 
-## Pruebas y revisión
+## Historial de pruebas · 30 de septiembre de 2026
 
 **2026-09-30 · 1.0.9 (14)** usa el icono aprobado, con más blanco abajo a la derecha y trazos azules más claros arriba a la izquierda de 文. Los diseños anteriores siguen archivados. El icono web está publicado; el build 14 está disponible en TestFlight para iPhone/iPad, el complemento Watch y Mac, y en las pruebas internas de Google Play.
 

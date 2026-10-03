@@ -14,13 +14,13 @@ Bücher können beliebig viele Sprachebenen mit standardisierten Sprachkennungen
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko-Reader-Bildschirm" width="300"></a></p>
 
-## Aktueller Stand · 3. Oktober 2026
+## Aktueller Stand · 4. Oktober 2026
 
-Android 1.0.10 (17) ist nach Korrektur der Datenschutz-URL auf Google Play mit 100 % Rollout in 172 Ländern verfügbar. Es ergänzt einen direkten Link in den Einstellungen und zuverlässigere Buchdownloads. iOS/Watch 1.0.9 (14) und Mac 1.0.8 (10) sind öffentlich; Apple iOS/Watch und Mac 1.0.10 (16) warten auf Prüfung. Prüfer verwenden das separate Bunko-Demokonto ohne GitHub-E-Mail-Code. Klarere Hinweise zur Rückkehr zur Demo-Anmeldung wurden ebenfalls eingereicht.
+iOS/Watch 1.0.10 (16) ist mit dem freigegebenen Symbol und Korrekturen für mehrsprachiges Lesen veröffentlicht. Mac 1.0.10 (16) wird noch geprüft und nach Freigabe automatisch veröffentlicht; öffentlich bleibt Mac 1.0.8 (10). Android 1.0.10 (17) ist nach der Datenschutzkorrektur in 172 Ländern verfügbar, mit Datenschutzlink in den Einstellungen und zuverlässigeren Buchdownloads. Prüfer verwenden das separate Bunko-Demokonto ohne GitHub-E-Mail-Code; Google hat die präzisierten Anmeldehinweise akzeptiert.
 
 Optionale Cloud-Tarife für PDF-Konvertierung und KI-Antworten sind für monatlich 2,99 / 14,99 / 29,99 US-Dollar geplant. Die Tarifseite ist verfügbar, Käufe sind deaktiviert. Bücher, Wörterbücher und Offline-Lesen bleiben im App-Kauf enthalten. Downloads versuchen zuerst GitHub, dann das öffentliche CDN und zuletzt unseren begrenzten Cache.
 
-[Veröffentlichungsnachweis](../store/artifacts/distribution-android-1.0.10-20261003.json) · [Cloud-Tarife](../docs/cloud-subscriptions.md)
+[Veröffentlichungsnachweis](../store/artifacts/distribution-apple-20261004.json) · [Cloud-Tarife](../docs/cloud-subscriptions.md)
 
 ## In diesem Repository
 
@@ -109,7 +109,7 @@ Das neue Symbol und der private Dokumentassistent unterstützen PDF, Word (.docx
 
 [macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
 
-## Tests und Prüfung
+## Testverlauf · 30. September 2026
 
 **2026-09-30 · 1.0.9 (14)** verwendet das freigegebene Symbol mit mehr Weiß unten rechts und deutlicheren blauen Strichen oben links im Zeichen 文. Frühere Entwürfe bleiben archiviert. Das Websymbol ist veröffentlicht; Build 14 ist in TestFlight für iPhone/iPad, die Watch-Begleitapp und Mac sowie im internen Google-Play-Test verfügbar.
 

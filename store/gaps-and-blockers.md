@@ -1,3 +1,27 @@
+# Apple release verification · 4 October 2026 HKT
+
+**iOS/Watch 1.0.10 (16) is public; Mac 1.0.10 (16) is still IN_REVIEW.**
+At 21:00 UTC on 3 October, App Store Connect confirms the exact iOS build
+`2aa119e0-47a3-4ec9-86a5-13cdd6956d82` is READY_FOR_DISTRIBUTION and its review is
+COMPLETE. The public US and Hong Kong listings show 1.0.10, released automatically
+at **2026-10-03 19:07:58 UTC**. The iOS update feed now advertises build 16.
+
+The owner reported Mac approval, but the fresh Mac version and review both report
+IN_REVIEW for build `74b65c86-e6c8-4508-96fa-e2a12db79138`. The public
+`platform=mac` page independently still shows **1.0.8 (10)**. Mac 1.0.10 (16) is
+configured for automatic release after approval. Its pending review is preserved;
+the Mac update feed stays at the verified public build 10.
+
+All 175 Apple territories remain available, including future territories, and
+iOS has no phased release. The public US price remains $0.99. Build 16 contains
+the approved icon and multilingual reader fixes; the later cloud-plan and owned
+book-mirror client work is absent from this Apple binary. Google build 17 was
+last verified public on 3 October and was not changed here.
+
+[Platform-specific evidence](artifacts/distribution-apple-20261004.json). No new native build or device GUI was used.
+
+## Earlier records
+
 # Current review checkpoint · 3 October 2026
 
 Android build 16 was rejected for an invalid privacy-policy URL. Build 17 and

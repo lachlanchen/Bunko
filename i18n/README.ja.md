@@ -14,13 +14,13 @@ Bunko はパブリックドメインの中国語・日本語・英語の古典�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko リーダーの画面" width="300"></a></p>
 
-## 現在の状況 · 2026年10月3日
+## 現在の状況 · 2026年10月4日
 
-Android 1.0.10 (17) はプライバシーポリシー URL を修正し、Google Play で172か国への100%公開を開始しました。設定からの直接リンクと安定した本のダウンロードを追加しています。iOS/Watch 1.0.9 (14)、Mac 1.0.8 (10) は公開済みで、Apple iOS/Watch と Mac 1.0.10 (16) は審査待ちです。審査には GitHub のメール確認コード不要の専用 Bunko デモアカウントを使います。デモログインに戻る手順を明確にした審査説明も提出しました。
+iOS/Watch 1.0.10 (16) は公開済みで、承認済みのアイコンと多言語リーダーの修正を含みます。Mac 1.0.10 (16) は審査中で、承認後に自動公開されます。Mac の公開版は引き続き 1.0.8 (10) です。Android 1.0.10 (17) はプライバシーポリシーの修正後、172か国で公開され、設定のプライバシーリンクと安定した本のダウンロードを提供します。審査には GitHub のメール確認コードが不要な専用 Bunko デモアカウントを使い、更新したログイン手順も Google が受理しました。
 
 PDF 変換と AI の回答向けに、月額 US$2.99 / $14.99 / $29.99 の任意のクラウドプランを準備しています。プラン画面は利用できますが、購入は無効です。本・辞書・オフライン読書は引き続きアプリ購入に含まれます。本は GitHub、公開 CDN、容量を制限した自社キャッシュの順に取得します。
 
-[公開記録](../store/artifacts/distribution-android-1.0.10-20261003.json) · [クラウドプラン](../docs/cloud-subscriptions.md)
+[公開記録](../store/artifacts/distribution-apple-20261004.json) · [クラウドプラン](../docs/cloud-subscriptions.md)
 
 ## リポジトリの内容
 
@@ -109,7 +109,7 @@ GitHub でログインして、本文の箇所ごとの公開コメントを Bun
 
 [macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
 
-## テストと審査
+## テスト履歴 · 2026年9月30日
 
 **2026-09-30 · 1.0.9 (14)** は、右下をより白くし、文の左上の青い線を鮮明にした承認済みアイコンを採用しています。以前のデザインはすべて保存しています。Webでは公開済みで、ビルド14はiPhone/iPad・Watch連携アプリ・MacのTestFlightとGoogle Play内部テストで利用できます。
 

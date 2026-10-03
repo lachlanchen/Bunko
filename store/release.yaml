@@ -1,8 +1,8 @@
 # Bunko release state; test availability is separate from production approval.
 app:
   name: 'Bunko: Classics with Ruby'
-  version: 1.0.9
-  build: 14
+  version: 1.0.10
+  build: 16
   price: USD 0.99 paid up front on both stores
   data_origin: https://github.com/lachlanchen/bunko-books
   pwa: https://lachlan.lazying.art/Bunko/
@@ -42,20 +42,20 @@ channels:
     territories: 175
     available_in_new_territories: true
     release: automatic after approval
-    public_version: 1.0.9 (14), including Apple Watch
-    public_released_at: '2026-09-30T23:09:04Z'
-    public_verified: 2026-10-01 HKT; US, Hong Kong, UK and Japan public lookup
-    review_submission: 85e827ad-943b-405f-a170-4179e4be3aa7
-    build_id: 8fef4a93-7c7e-4506-a284-42bdf30f0092
+    public_version: 1.0.10 (16), including Apple Watch
+    public_released_at: '2026-10-03T19:07:58Z'
+    public_verified: 2026-10-04 HKT; US and Hong Kong public lookup plus US public page
+    review_submission: 7f54d416-7bdb-4e73-ab87-81996435b821
+    build_id: 2aa119e0-47a3-4ec9-86a5-13cdd6956d82
     update_version: 1.0.10
     update_build: 16
     update_build_id: 2aa119e0-47a3-4ec9-86a5-13cdd6956d82
-    update_status: WAITING_FOR_REVIEW
+    update_status: READY_FOR_DISTRIBUTION
     update_review_submission: 7f54d416-7bdb-4e73-ab87-81996435b821
     testflight_latest: 1.0.10 (16), VALID and IN_BETA_TESTING
     testflight_latest_build_id: 2aa119e0-47a3-4ec9-86a5-13cdd6956d82
     watch_bundle_id: art.lazying.bunko.watchkitapp
-    distribution_receipt: store/artifacts/distribution-ios-1.0.9-20261001.json
+    distribution_receipt: store/artifacts/distribution-apple-20261004.json
   mac_app_store:
     app_id: '6815137919'
     bundle_id: art.lazying.bunko
@@ -64,7 +64,7 @@ channels:
     public_version: 1.0.8 (10), verified on the public Mac App Store page
     status: READY_FOR_DISTRIBUTION
     public_released_at: '2026-09-29T22:50:52Z'
-    public_verified: 2026-09-30 HKT; platform=mac App Store page, version 1.0.8
+    public_verified: 2026-10-04 HKT; platform=mac App Store page still shows version 1.0.8
     submitted_at: '2026-09-27T20:10:02.462Z'
     release: automatic after approval
     version_id: 731c37f4-b4ed-4268-bafa-e5bfda8f7284
@@ -80,8 +80,10 @@ channels:
     update_version: 1.0.10
     update_build: 16
     update_build_id: 74b65c86-e6c8-4508-96fa-e2a12db79138
-    update_status: WAITING_FOR_REVIEW
+    update_status: IN_REVIEW
     update_review_submission: f4483d0a-f9bc-494b-a0d7-7788930a3a4b
+    update_verified: 2026-10-04 HKT; version and review both IN_REVIEW
+    distribution_receipt: store/artifacts/distribution-apple-20261004.json
 android:
   version_code: 17
   version_name: 1.0.10
