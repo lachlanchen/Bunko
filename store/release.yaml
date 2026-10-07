@@ -30,7 +30,7 @@ channels:
     internal_track: '4701547714770281380'
     internal_status: available to internal testers
     internal_update: 1.0.1 (2), available to internal testers
-    internal_latest: 1.0.10 (17), available to internal testers on 2026-10-03
+    internal_latest: 1.0.11 (18), available to internal testers on 2026-10-07
     reviewer_access: Dedicated Bunko demo sign-in; no owner email verification; verified
       after reload
     privacy: Optional IDs, messages, files/documents, app interactions, search history
@@ -52,8 +52,8 @@ channels:
     update_build_id: 2aa119e0-47a3-4ec9-86a5-13cdd6956d82
     update_status: READY_FOR_DISTRIBUTION
     update_review_submission: 7f54d416-7bdb-4e73-ab87-81996435b821
-    testflight_latest: 1.0.10 (16), VALID and IN_BETA_TESTING
-    testflight_latest_build_id: 2aa119e0-47a3-4ec9-86a5-13cdd6956d82
+    testflight_latest: 1.0.11 (18), VALID and IN_BETA_TESTING
+    testflight_latest_build_id: ff71071f-6edc-428a-87dc-79cc059de672
     watch_bundle_id: art.lazying.bunko.watchkitapp
     distribution_receipt: store/artifacts/distribution-apple-20261004.json
   mac_app_store:
@@ -70,8 +70,8 @@ channels:
     version_id: 731c37f4-b4ed-4268-bafa-e5bfda8f7284
     build_id: 86831728-f214-4e77-b553-59c77470e1ad
     review_submission: 135f98bf-97e0-473a-b148-39817fe20c41
-    testflight_latest: 1.0.10 (16), VALID and IN_BETA_TESTING
-    testflight_latest_build_id: 74b65c86-e6c8-4508-96fa-e2a12db79138
+    testflight_latest: 1.0.11 (18), VALID and IN_BETA_TESTING
+    testflight_latest_build_id: 3fbeb571-d19e-4f34-b0ac-97bb33f0887c
     minimum_macos: '12.0'
     architectures:
     - x86_64
@@ -118,3 +118,14 @@ language_reader_candidate:
   production_submitted: false
   reason: Active build14 reviews preserved
   receipt: store/artifacts/languages-1.0.10-15.json
+
+rounded_icon_candidate:
+  version: 1.0.11
+  build: 18
+  testflight: iOS/Watch and Mac VALID and IN_BETA_TESTING
+  google_internal: Available to internal testers
+  production_submitted: false
+  web_deployed: false
+  branch: test/rounded-icons-20261007
+  receipt: docs/rounded-icons-20261007.json
+  owner_direction: Internal tests only; accumulate for next review

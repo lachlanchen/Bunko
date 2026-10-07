@@ -14,6 +14,12 @@ Books may contain any number of language layers using standard language tags, in
 
 <p align="center"><a href="store/assets/play-phone-01.png"><img src="store/assets/play-phone-01.png" alt="Bunko reader screenshot" width="300"></a></p>
 
+## Rounded icon test builds · 7 October 2026
+
+Rounded icon corners are available in internal testing as 1.0.11 (18) on iOS/Watch, Mac and Android. No production review was submitted or replaced. Current reviews and public releases remain unchanged; this improvement is saved for the next review.
+
+[Test-build evidence](docs/rounded-icons-20261007.md)
+
 ## Current status · 4 October 2026
 
 iOS/Watch 1.0.10 (16) is now public with the approved icon and multilingual reader fixes. Mac 1.0.10 (16) is still in review and will release automatically after approval; the public Mac listing remains 1.0.8 (10). Android 1.0.10 (17) is public in 172 countries after the privacy-policy correction, with a Settings privacy link and resilient book downloads. Reviewers use the separate Bunko Demo account without GitHub email codes; Google has accepted the clarified instructions.

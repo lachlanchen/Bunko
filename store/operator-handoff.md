@@ -1,3 +1,20 @@
+# Rounded icons available for testing · 7 October 2026
+
+**Bunko 1.0.11 (18)** is available in the existing internal TestFlight group for
+iOS/Watch and universal Mac, and in Google Play internal testing. Rounded Mac,
+web and legacy launcher exports preserve the approved master. iOS/Watch continue
+to use the platform mask. All package signatures and icon exports were verified.
+
+The owner explicitly requested **no new production review**. Current releases
+and review attachments are preserved. Work is saved on
+`test/rounded-icons-20261007`, not deployed to the web or merged into `main`.
+Accumulate the change for the next authorized review.
+
+[Builds and evidence](../docs/rounded-icons-20261007.md). No user action is needed
+for the temporary signing prompt; the builds finished with existing credentials.
+
+## Earlier records
+
 # Apple release verification · 4 October 2026 HKT
 
 **iOS/Watch 1.0.10 (16) is public; Mac 1.0.10 (16) is still IN_REVIEW.**
