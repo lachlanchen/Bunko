@@ -103,8 +103,15 @@ def feature_graphic() -> Image.Image:
     box = draw.textbbox((0, 0), '文庫', font=glyph)
     gx = 92
     draw.text((gx, 250 - (box[3] - box[1]) / 2 - box[1]), '文庫', font=glyph, fill=(246, 241, 230))
-    draw.text((gx + 18, 96), 'ぶん', font=reading, fill=(224, 122, 90))
-    draw.text((gx + 224, 96), 'こ', font=reading, fill=(224, 122, 90))
+    # Centre each reading on its own kanji's visible bounds. Fixed left
+    # offsets drift when a reading has two kana (ぶん) rather than one (こ).
+    for index, (kanji, ruby) in enumerate(zip('文庫', ('ぶん', 'こ'))):
+        character_x = gx + draw.textlength('文庫'[:index], font=glyph)
+        kanji_box = draw.textbbox((character_x, 0), kanji, font=glyph)
+        ruby_box = draw.textbbox((0, 0), ruby, font=reading)
+        centre = (kanji_box[0] + kanji_box[2]) / 2
+        ruby_x = centre - (ruby_box[0] + ruby_box[2]) / 2
+        draw.text((ruby_x, 96), ruby, font=reading, fill=(224, 122, 90))
     title = ImageFont.truetype(SERIF, 62)
     sub = ImageFont.truetype(SANS, 30)
     draw.text((560, 176), 'Bunko', font=title, fill=(246, 241, 230))
@@ -122,5 +129,7 @@ if __name__ == '__main__':
         panel(shot_name, headline, sub, size=(1242, 2688)).save(OUT / f'ios-65-{index:02d}.png', optimize=True)
         print('wrote', f'play-phone-{index:02d}.png')
     feature_graphic().save(OUT / 'play-feature.png', optimize=True)
-    Image.open(ROOT / 'public/icon-512.png').convert('RGB').save(OUT / 'play-icon.png')
+    # Store artwork stays opaque; the web export has transparent rounded corners.
+    Image.open(ROOT / 'assets/icon.png').convert('RGB').resize(
+        (512, 512), Image.Resampling.LANCZOS).save(OUT / 'play-icon.png')
     print('wrote play-feature.png and play-icon.png')
