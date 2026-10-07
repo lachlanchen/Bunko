@@ -1,7 +1,7 @@
 {
   "name": "bunko",
   "private": false,
-  "version": "1.0.10",
+  "version": "1.0.11",
   "type": "module",
   "description": "Multilingual books with interlaced passages, ruby readings and offline access",
   "scripts": {
