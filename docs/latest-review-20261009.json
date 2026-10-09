@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-10-09T06:45:44.753229+00:00",
+  "verifiedAt": "2026-10-09T06:47:15.591774+00:00",
   "authorization": "Owner requested latest qualified fixes/builds submitted to Apple and Google on 9 October 2026; supersedes 7 October test-only direction.",
   "source": "7f756f00675f98eae3643a156b3c60db5be3bfff",
   "nativeCandidatesReused": true,
@@ -73,7 +73,8 @@
     "rollout": 1,
     "availability": "All existing targeted countries",
     "submittedChange": "Production release only",
-    "verifiedAt": "2026-10-09T06:45:08.099Z"
+    "verifiedAt": "2026-10-09T06:47:02.439Z",
+    "quickChecksPassed": true
   },
   "checks": {
     "projectTests": 139,
