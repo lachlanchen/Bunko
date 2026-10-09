@@ -14,11 +14,11 @@ Bunko はパブリックドメインの中国語・日本語・英語の古典�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko リーダーの画面" width="300"></a></p>
 
-## 角丸アイコンのテスト版 · 2026年10月7日
+## 最新の審査申請 · 2026年10月9日
 
-角丸アイコンを含む 1.0.11 (18) を、iOS/Watch・Mac・Android の内部テストで利用できます。製品版の審査申請や差し替えは行っていません。現在の審査と公開版を維持し、この改善は次回の審査にまとめます。
+Bunko 1.0.11 (18) を iOS/Watch・Mac・Android の審査に提出しました。Apple は審査待ち、Google は変更を審査中です。旧 Mac 申請を差し替えました。承認済みの角丸アイコンとダウンロード改善を含み、承認後に自動公開します。
 
-[テスト版の確認記録](../docs/rounded-icons-20261007.md)
+[申請と検証の記録](../docs/latest-review-20261009.md)
 
 ## 現在の状況 · 2026年10月4日
 

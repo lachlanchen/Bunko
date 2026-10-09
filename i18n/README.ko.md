@@ -14,11 +14,11 @@ Bunko는 공개 도메인 중국어·일본어·영어 고전을 읽는 앱입�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko 리더 화면" width="300"></a></p>
 
-## 둥근 모서리 아이콘 테스트 빌드 · 2026년 10월 7일
+## 최신 심사 제출 · 2026년 10월 9일
 
-둥근 모서리 아이콘을 적용한 1.0.11 (18)을 iOS/Watch, Mac, Android 내부 테스트에서 사용할 수 있습니다. 정식 출시 심사를 새로 제출하거나 교체하지 않았습니다. 현재 심사와 공개 버전은 그대로 유지하며, 이 개선 사항은 다음 심사에 포함합니다.
+Bunko 1.0.11 (18)을 iOS/Watch, Mac, Android 심사에 제출했습니다. Apple은 심사 대기, Google은 변경사항 심사 중입니다. 이전 Mac 심사를 교체했습니다. 승인된 둥근 아이콘과 다운로드 개선이 포함되며 승인 후 자동 출시됩니다.
 
-[테스트 빌드 확인 기록](../docs/rounded-icons-20261007.md)
+[제출 및 검증 기록](../docs/latest-review-20261009.md)
 
 ## 현재 상태 · 2026년 10월 4일
 

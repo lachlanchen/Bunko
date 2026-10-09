@@ -14,11 +14,11 @@ Bücher können beliebig viele Sprachebenen mit standardisierten Sprachkennungen
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko-Reader-Bildschirm" width="300"></a></p>
 
-## Testversionen mit abgerundeten Symbolen · 7. Oktober 2026
+## Neueste Einreichung · 9. Oktober 2026
 
-Abgerundete App-Symbole stehen mit 1.0.11 (18) für interne Tests auf iOS/Watch, Mac und Android bereit. Es wurde keine neue Produktionsprüfung eingereicht oder eine laufende Prüfung ersetzt. Laufende Prüfungen und öffentliche Versionen bleiben unverändert; diese Verbesserung wird für die nächste Prüfung vorgemerkt.
+Bunko 1.0.11 (18) wurde für iOS/Watch, Mac und Android zur Prüfung eingereicht. Apple: Waiting for Review; Google: Changes in review. Die ältere Mac-Einreichung wurde ersetzt. Das bestätigte abgerundete Symbol und verbesserte Downloads sind enthalten. Veröffentlichung automatisch nach Freigabe.
 
-[Nachweise der Testversionen](../docs/rounded-icons-20261007.md)
+[Einreichung und Prüfung](../docs/latest-review-20261009.md)
 
 ## Aktueller Stand · 4. Oktober 2026
 

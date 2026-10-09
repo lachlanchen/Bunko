@@ -1,3 +1,24 @@
+# Latest builds submitted · 9 October 2026
+
+The owner authorized the latest fixes/builds for Apple and Google review,
+superseding the earlier test-only direction. Bunko **1.0.11 (18)** is now
+**WAITING_FOR_REVIEW** on iOS/Watch and universal Mac. The older Mac16 review was
+withdrawn and replaced. Google production18 is **Changes in review**, with
+automatic checks passed, 100% rollout and managed publishing off.
+
+Fresh139 project tests and renderer/build passed. Existing qualified signed
+uploads were reused; later app-source inputs are unchanged. Fresh live Demo
+login/reload passed without GitHub or email-code navigation. Privacy returned
+HTTPS200. General cloud purchases remain disabled. Public update feeds retain
+the verified public builds until actual approval and distribution.
+
+[Submission and qualifications](../docs/latest-review-20261009.md) ·
+[Exact provider identifiers](../docs/latest-review-20261009.json).
+Private evidence: `.runtime/latest-review-20261009/`. OnlyIdeas uses the same
+owned isolated store desktop; it must be stopped after evidence capture.
+
+## Earlier records
+
 # Rounded icons available for testing · 7 October 2026
 
 **Bunko 1.0.11 (18)** is available in the existing internal TestFlight group for

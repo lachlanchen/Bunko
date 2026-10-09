@@ -14,11 +14,11 @@ Bunko 是閱讀中文、日文與英文公版經典的應用程式。讀者可�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko 閱讀器截圖" width="300"></a></p>
 
-## 圓角圖示測試版 · 2026年10月7日
+## 最新審核提交 · 2026年10月9日
 
-iOS/Watch、Mac 和 Android 的內部測試版 1.0.11 (18) 已包含圓角圖示適配。沒有新增或替換正式版審核。現有審核和公開版本維持不變，此項改進留待下次審核時一併提交。
+Bunko 1.0.11 (18) 已提交 iOS/Watch、Mac 和 Android 審核。Apple 顯示等待審核，Google 顯示變更審核中；舊版 Mac 審核已替換。包含確認的圓角圖示和下載改善，通過後自動發布。
 
-[測試版本驗證記錄](../docs/rounded-icons-20261007.md)
+[提交及驗證紀錄](../docs/latest-review-20261009.md)
 
 ## 目前狀態 · 2026年10月4日
 

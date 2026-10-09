@@ -14,11 +14,11 @@ Los libros pueden incluir cualquier número de idiomas mediante etiquetas están
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Captura del lector Bunko" width="300"></a></p>
 
-## Versiones de prueba con iconos redondeados · 7 de octubre de 2026
+## Último envío · 9 de octubre de 2026
 
-Los iconos con esquinas redondeadas están disponibles para pruebas internas en 1.0.11 (18) para iOS/Watch, Mac y Android. No se ha enviado ni sustituido ninguna revisión de producción. Las revisiones actuales y las versiones públicas siguen sin cambios; esta mejora se reserva para la próxima revisión.
+Bunko 1.0.11 (18) se envió a revisión para iOS/Watch, Mac y Android. Apple: Waiting for Review; Google: Changes in review. Se reemplazó la revisión anterior de Mac. Incluye el icono redondeado aprobado y mejoras de descarga. Se publicará automáticamente tras la aprobación.
 
-[Evidencia de las versiones de prueba](../docs/rounded-icons-20261007.md)
+[Envío y verificación](../docs/latest-review-20261009.md)
 
 ## Estado actual · 4 de octubre de 2026
 

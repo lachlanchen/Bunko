@@ -121,3 +121,12 @@ No credentials are included in this repository.
 overview has no pending review or unsent changes. Production17 remains available,
 and Policy status shows No issues found. No further credentials or binary change
 was needed for this verification.
+
+## Latest candidate · 9 October 2026
+
+Build18 is submitted on all three stores/platforms. Fresh live Demo sign-in,
+reload persistence and sign-out passed without GitHub navigation or an email
+code. Both Apple review records contain the verified dedicated credentials and
+explicit instructions to use the in-app Demo form. The previously accepted
+Google app-access entry is retained. No new public test comment was posted.
+See the [latest receipt](../docs/latest-review-20261009.md).

@@ -1,8 +1,8 @@
 # Bunko release state; test availability is separate from production approval.
 app:
   name: 'Bunko: Classics with Ruby'
-  version: 1.0.10
-  build: 16
+  version: 1.0.11
+  build: 18
   price: USD 0.99 paid up front on both stores
   data_origin: https://github.com/lachlanchen/bunko-books
   pwa: https://lachlan.lazying.art/Bunko/
@@ -17,6 +17,12 @@ channels:
       a published free app to paid
     status: AVAILABLE_ON_GOOGLE_PLAY
     production: 1.0.10 (17), public at 100 percent
+    update_version: 1.0.11
+    update_build: 18
+    update_status: CHANGES_IN_REVIEW
+    update_rollout: 100 percent after approval
+    update_verified: 2026-10-09; automatic checks passed
+    update_receipt: docs/latest-review-20261009.json
     released_at: 2026-10-03 11:17 HKT
     distribution_receipt: store/artifacts/distribution-android-1.0.10-20261003.json
     reviewer_instructions_update: Actioned; no pending review or unsent changes at 2026-10-03 05:47 UTC
@@ -47,11 +53,13 @@ channels:
     public_verified: 2026-10-04 HKT; US and Hong Kong public lookup plus US public page
     review_submission: 7f54d416-7bdb-4e73-ab87-81996435b821
     build_id: 2aa119e0-47a3-4ec9-86a5-13cdd6956d82
-    update_version: 1.0.10
-    update_build: 16
-    update_build_id: 2aa119e0-47a3-4ec9-86a5-13cdd6956d82
-    update_status: READY_FOR_DISTRIBUTION
-    update_review_submission: 7f54d416-7bdb-4e73-ab87-81996435b821
+    update_version: 1.0.11
+    update_build: 18
+    update_build_id: ff71071f-6edc-428a-87dc-79cc059de672
+    update_status: WAITING_FOR_REVIEW
+    update_review_submission: 34d77d09-8983-4623-830b-ee6c466e91f1
+    update_verified: 2026-10-09
+    update_receipt: docs/latest-review-20261009.json
     testflight_latest: 1.0.11 (18), VALID and IN_BETA_TESTING
     testflight_latest_build_id: ff71071f-6edc-428a-87dc-79cc059de672
     watch_bundle_id: art.lazying.bunko.watchkitapp
@@ -77,12 +85,13 @@ channels:
     - x86_64
     - arm64
     price_and_availability: shared existing Apple app record
-    update_version: 1.0.10
-    update_build: 16
-    update_build_id: 74b65c86-e6c8-4508-96fa-e2a12db79138
-    update_status: IN_REVIEW
-    update_review_submission: f4483d0a-f9bc-494b-a0d7-7788930a3a4b
-    update_verified: 2026-10-04 HKT; version and review both IN_REVIEW
+    update_version: 1.0.11
+    update_build: 18
+    update_build_id: 3fbeb571-d19e-4f34-b0ac-97bb33f0887c
+    update_status: WAITING_FOR_REVIEW
+    update_review_submission: 7e47bb7e-a839-4c11-a138-5ff31985f79c
+    update_verified: 2026-10-09; older Mac16 review withdrawn and replaced
+    update_receipt: docs/latest-review-20261009.json
     distribution_receipt: store/artifacts/distribution-apple-20261004.json
 android:
   version_code: 17
@@ -124,8 +133,9 @@ rounded_icon_candidate:
   build: 18
   testflight: iOS/Watch and Mac VALID and IN_BETA_TESTING
   google_internal: Available to internal testers
-  production_submitted: false
+  production_submitted: true
   web_deployed: false
   branch: test/rounded-icons-20261007
   receipt: docs/rounded-icons-20261007.json
-  owner_direction: Internal tests only; accumulate for next review
+  owner_direction: 2026-10-09 owner requested latest builds submitted to both stores
+  submission_receipt: docs/latest-review-20261009.json

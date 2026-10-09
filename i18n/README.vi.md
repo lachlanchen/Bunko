@@ -14,11 +14,11 @@ Sách có thể chứa số lượng ngôn ngữ tùy ý bằng thẻ ngôn ng�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Ảnh trình đọc Bunko" width="300"></a></p>
 
-## Bản thử nghiệm biểu tượng bo góc · 7 tháng 10 năm 2026
+## Bản gửi mới nhất · 9 tháng 10 năm 2026
 
-Biểu tượng bo góc có trong bản thử nghiệm nội bộ 1.0.11 (18) trên iOS/Watch, Mac và Android. Không gửi mới hoặc thay thế bản xét duyệt phát hành chính thức nào. Các bản đang xét duyệt và bản công khai không thay đổi; cải tiến này được lưu cho lần xét duyệt tiếp theo.
+Bunko 1.0.11 (18) đã được gửi xét duyệt cho iOS/Watch, Mac và Android. Apple: Waiting for Review; Google: Changes in review. Bản Mac cũ đang xét duyệt đã được thay thế. Có biểu tượng bo góc đã duyệt và cải thiện tải sách. Tự động phát hành sau khi được chấp thuận.
 
-[Bằng chứng bản thử nghiệm](../docs/rounded-icons-20261007.md)
+[Gửi duyệt và kiểm chứng](../docs/latest-review-20261009.md)
 
 ## Tình trạng hiện tại · 4 tháng 10 năm 2026
 
