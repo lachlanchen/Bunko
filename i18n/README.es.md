@@ -14,11 +14,11 @@ Los libros pueden incluir cualquier número de idiomas mediante etiquetas están
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Captura del lector Bunko" width="300"></a></p>
 
-## Último envío · 9 de octubre de 2026
+## Publicación · 10 de octubre de 2026
 
-Bunko 1.0.11 (18) se envió a revisión para iOS/Watch, Mac y Android. Apple: Waiting for Review; Google: Changes in review. Se reemplazó la revisión anterior de Mac. Incluye el icono redondeado aprobado y mejoras de descarga. Se publicará automáticamente tras la aprobación.
+Bunko 1.0.11 (18) ya está disponible en iOS/Watch y Google Play, con un despliegue de Google al 100 %. Mac 1.0.11 (18) sigue en revisión de Apple y se publicará automáticamente tras la aprobación; la versión pública de Mac es 1.0.8 (10). Las versiones móviles incluyen el icono aprobado con esquinas redondeadas.
 
-[Envío y verificación](../docs/latest-review-20261009.md)
+[Verificación de publicación](../docs/distribution-20261010.md)
 
 ## Estado actual · 4 de octubre de 2026
 

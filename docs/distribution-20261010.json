@@ -1,0 +1,153 @@
+{
+  "verifiedAt": "2026-10-09T21:33:10.375933+00:00",
+  "app": "Bunko",
+  "apple": {
+    "ios": {
+      "id": "b64cffb8-c3bd-4f1c-aadd-0fbc26f8daa1",
+      "platform": "IOS",
+      "version": "1.0.11",
+      "state": "READY_FOR_DISTRIBUTION",
+      "storeState": "READY_FOR_SALE",
+      "release": "AFTER_APPROVAL",
+      "buildId": "ff71071f-6edc-428a-87dc-79cc059de672",
+      "build": "18",
+      "review": {
+        "id": "34d77d09-8983-4623-830b-ee6c466e91f1",
+        "platform": "IOS",
+        "submittedDate": "2026-10-09T06:36:30.909Z",
+        "state": "COMPLETE"
+      },
+      "public": {
+        "us": {
+          "version": "1.0.11",
+          "price": 0.99,
+          "currency": "USD",
+          "currentVersionReleaseDate": "2026-10-09T16:40:19Z",
+          "trackViewUrl": "https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?uo=4"
+        },
+        "hk": {
+          "version": "1.0.11",
+          "price": 8.0,
+          "currency": "HKD",
+          "currentVersionReleaseDate": "2026-10-09T16:40:19Z",
+          "trackViewUrl": "https://apps.apple.com/hk/app/bunko-%E6%96%87%E5%BA%AB-%E7%B6%93%E5%85%B8%E8%88%87%E6%B3%A8%E9%9F%B3/id6815137919?uo=4"
+        },
+        "iphone": {
+          "url": "https://apps.apple.com/us/app/id6815137919?platform=iphone",
+          "intent": {
+            "storefront": "us",
+            "language": "en-US",
+            "isDefaultLanguage": true,
+            "$kind": "ProductPageIntent",
+            "id": "6815137919"
+          },
+          "version": "Version 1.0.11",
+          "date": "Fri Oct 09 2026 16:40:19 GMT+0000 (Coordinated Universal Time)"
+        }
+      }
+    },
+    "macos": {
+      "submitted": {
+        "id": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+        "platform": "MAC_OS",
+        "version": "1.0.11",
+        "state": "IN_REVIEW",
+        "storeState": "IN_REVIEW",
+        "release": "AFTER_APPROVAL",
+        "buildId": "3fbeb571-d19e-4f34-b0ac-97bb33f0887c",
+        "build": "18"
+      },
+      "review": {
+        "id": "7e47bb7e-a839-4c11-a138-5ff31985f79c",
+        "platform": "MAC_OS",
+        "submittedDate": "2026-10-09T06:36:47.04Z",
+        "state": "IN_REVIEW"
+      },
+      "publicBuild": {
+        "id": "731c37f4-b4ed-4268-bafa-e5bfda8f7284",
+        "platform": "MAC_OS",
+        "version": "1.0.8",
+        "state": "READY_FOR_DISTRIBUTION",
+        "storeState": "READY_FOR_SALE",
+        "release": "AFTER_APPROVAL",
+        "buildId": "86831728-f214-4e77-b553-59c77470e1ad",
+        "build": "10"
+      },
+      "publicPage": {
+        "url": "https://apps.apple.com/us/app/id6815137919?platform=mac",
+        "intent": {
+          "storefront": "us",
+          "language": "en-US",
+          "isDefaultLanguage": true,
+          "$kind": "ProductPageIntent",
+          "id": "6815137919",
+          "platform": "mac"
+        },
+        "version": "Version 1.0.8",
+        "date": "Tue Sep 29 2026 22:50:52 GMT+0000 (Coordinated Universal Time)"
+      }
+    },
+    "availability": {
+      "verifiedAt": "2026-10-09T21:32:36.283200+00:00",
+      "total": 175,
+      "available": 175,
+      "availableInNewTerritories": true,
+      "iosPhasedRelease": null
+    }
+  },
+  "google": {
+    "package": "art.lazying.bunko",
+    "version": "1.0.11",
+    "build": 18,
+    "status": "AVAILABLE_ON_GOOGLE_PLAY",
+    "rollout": 1,
+    "countries": 172,
+    "managedPublishing": false,
+    "unpublishedChanges": false,
+    "lastPublishedDate": "2026-10-09",
+    "publicUrl": "https://play.google.com/store/apps/details?id=art.lazying.bunko",
+    "publicHttpStatus": 200,
+    "productionEvidenceSha256": "651ad4697983663ad5ef6bb9c598b365ef62e3428e8e33b02802d0f4cbdc0400",
+    "rolloutEvidenceSha256": "7e4f7b12ef3527e2dd0284f6509afd3c8e1b76461342de5f5dea62b0cc96763d"
+  },
+  "actions": {
+    "manualReleaseRequired": false,
+    "reason": "Both iOS and Google releases published automatically after approval. Mac updates remain in review with AFTER_APPROVAL.",
+    "storeMutations": false
+  },
+  "billing": "General subscription purchases remain disabled; no prices, products or entitlements changed.",
+  "checks": {
+    "distributionReceiptAssertions": true,
+    "localizedReadmeLinks": 11,
+    "noNativeCodeChanges": true
+  },
+  "updateFeed": {
+    "url": "https://lachlan.lazying.art/Bunko/updates.json",
+    "deployedCommit": "9a6f94c50b9546093d987c28d858bf413b03864d",
+    "workflow": "https://github.com/lachlanchen/Bunko/actions/runs/37994100780",
+    "scope": "Only public/updates.json changed from the previously deployed main baseline",
+    "verifiedAt": "2026-10-09T21:36:05.050752+00:00",
+    "live": {
+      "schema": 1,
+      "ios": {
+        "version": "1.0.11",
+        "build": "18"
+      },
+      "android": {
+        "version": "1.0.11",
+        "build": "18"
+      },
+      "macos": {
+        "version": "1.0.8",
+        "build": "10"
+      }
+    },
+    "tests": {
+      "vitest": 81,
+      "server": 58,
+      "lint": true,
+      "renderer": true,
+      "typescriptAndProductionBuild": true
+    }
+  }
+}

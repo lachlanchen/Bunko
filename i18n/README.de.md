@@ -14,11 +14,11 @@ Bücher können beliebig viele Sprachebenen mit standardisierten Sprachkennungen
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko-Reader-Bildschirm" width="300"></a></p>
 
-## Neueste Einreichung · 9. Oktober 2026
+## Öffentliche Veröffentlichung · 10. Oktober 2026
 
-Bunko 1.0.11 (18) wurde für iOS/Watch, Mac und Android zur Prüfung eingereicht. Apple: Waiting for Review; Google: Changes in review. Die ältere Mac-Einreichung wurde ersetzt. Das bestätigte abgerundete Symbol und verbesserte Downloads sind enthalten. Veröffentlichung automatisch nach Freigabe.
+Bunko 1.0.11 (18) ist auf iOS/Watch und Google Play öffentlich verfügbar. Der Google-Rollout beträgt 100 %. Mac 1.0.11 (18) wird noch von Apple geprüft und nach der Freigabe automatisch veröffentlicht; öffentlich verfügbar ist Mac 1.0.8 (10). Die mobilen Versionen enthalten das freigegebene Icon mit abgerundeten Ecken.
 
-[Einreichung und Prüfung](../docs/latest-review-20261009.md)
+[Veröffentlichungsnachweis](../docs/distribution-20261010.md)
 
 ## Aktueller Stand · 4. Oktober 2026
 

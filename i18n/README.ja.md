@@ -14,11 +14,11 @@ Bunko はパブリックドメインの中国語・日本語・英語の古典�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko リーダーの画面" width="300"></a></p>
 
-## 最新の審査申請 · 2026年10月9日
+## 正式公開 · 2026年10月10日
 
-Bunko 1.0.11 (18) を iOS/Watch・Mac・Android の審査に提出しました。Apple は審査待ち、Google は変更を審査中です。旧 Mac 申請を差し替えました。承認済みの角丸アイコンとダウンロード改善を含み、承認後に自動公開します。
+Bunko 1.0.11 (18) は iOS/Watch と Google Play で公開済みです。Google の配信率は 100% です。Mac 1.0.11 (18) は Apple の審査中で、承認後に自動公開されます。Mac の公開版は 1.0.8 (10) です。モバイル版には承認済みの角丸アイコンが含まれます。
 
-[申請と検証の記録](../docs/latest-review-20261009.md)
+[公開の確認記録](../docs/distribution-20261010.md)
 
 ## 現在の状況 · 2026年10月4日
 

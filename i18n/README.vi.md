@@ -14,11 +14,11 @@ Sách có thể chứa số lượng ngôn ngữ tùy ý bằng thẻ ngôn ng�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Ảnh trình đọc Bunko" width="300"></a></p>
 
-## Bản gửi mới nhất · 9 tháng 10 năm 2026
+## Phát hành chính thức · 10 tháng 10 năm 2026
 
-Bunko 1.0.11 (18) đã được gửi xét duyệt cho iOS/Watch, Mac và Android. Apple: Waiting for Review; Google: Changes in review. Bản Mac cũ đang xét duyệt đã được thay thế. Có biểu tượng bo góc đã duyệt và cải thiện tải sách. Tự động phát hành sau khi được chấp thuận.
+Bunko 1.0.11 (18) đã có trên iOS/Watch và Google Play, với tỷ lệ triển khai Google là 100%. Mac 1.0.11 (18) vẫn đang được Apple xét duyệt và sẽ tự động phát hành sau khi được duyệt; bản Mac công khai hiện là 1.0.8 (10). Các bản di động có biểu tượng bo góc đã được chấp thuận.
 
-[Gửi duyệt và kiểm chứng](../docs/latest-review-20261009.md)
+[Xác minh phát hành](../docs/distribution-20261010.md)
 
 ## Tình trạng hiện tại · 4 tháng 10 năm 2026
 

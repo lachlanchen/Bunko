@@ -1,3 +1,22 @@
+# Public mobile releases · 10 October 2026 HKT
+
+Bunko **1.0.11 (18)** is public on iOS/Watch and Google Play. Apple review is
+COMPLETE and the exact build is READY_FOR_DISTRIBUTION; US/HK public listings
+match. All 175 Apple territories are available with no phased release. Google
+production 18 is active at 100% across 172 countries, with no unpublished changes.
+Both stores released automatically; no manual release action was necessary.
+
+Mac 1.0.11 (18) is still IN_REVIEW with AFTER_APPROVAL. Public Mac remains 1.0.8 (10),
+verified separately on the platform=mac listing. Preserve the pending review.
+
+The public update feed advances only iOS/Android to18 through a feed-only change
+on the deployed main baseline. Fresh 139 tests, renderer and production build
+passed. Rounded-icon feature-branch web assets were not deployed in this step.
+See [distribution receipt](../docs/distribution-20261010.md) and private evidence
+in `.runtime/distribution-20261010/`. No billing, price or content changes.
+
+## Earlier records
+
 # Latest builds submitted · 9 October 2026
 
 The owner authorized the latest fixes/builds for Apple and Google review,
@@ -6,7 +25,7 @@ superseding the earlier test-only direction. Bunko **1.0.11 (18)** is now
 withdrawn and replaced. Google production18 is **Changes in review**, with
 automatic checks passed, 100% rollout and managed publishing off.
 
-Fresh139 project tests and renderer/build passed. Existing qualified signed
+Fresh 139 project tests and renderer/build passed. Existing qualified signed
 uploads were reused; later app-source inputs are unchanged. Fresh live Demo
 login/reload passed without GitHub or email-code navigation. Privacy returned
 HTTPS200. General cloud purchases remain disabled. Public update feeds retain
