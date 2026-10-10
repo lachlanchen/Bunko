@@ -9,6 +9,11 @@ redistribute plz add it”. The scoped registry entry is now approved for public
 publication on that owner confirmation. This is not a declaration of worldwide
 public-domain status.
 
+Published to `bunko-books/main` as
+[`7da0111bc2945c6f013758272c2e49656bca604d`](https://github.com/lachlanchen/bunko-books/commit/7da0111bc2945c6f013758272c2e49656bca604d).
+The public catalogue now has **186 books**. All 185 prior catalogue entries are
+unchanged. [Open this edition in Bunko](https://lachlan.lazying.art/Bunko/?book=adler-what-life-should-mean-to-you).
+
 The current reader supports the bundle's English, Chinese and Japanese layers.
 Publishing the catalogue and book files is sufficient; readers
 can refresh the library. See [library publishing](library-publishing.md).
@@ -70,3 +75,22 @@ The publication uses `tools/publish_library.py`, retains the reviewed textless
 cover, and runs the `bunko-books` catalogue validator before publication. Book
 data remains outside the app repository. No app build or store submission is
 required.
+
+## Publication verification
+
+- All eight existing `bunko-books` validator tests passed.
+- Full catalogue validation passed: 186 books, schema 1.
+- Fresh public GitHub downloads of the catalogue, metadata, rights, every one
+  of the 12 chapters, and the cover returned HTTP 200 and exactly matched the
+  published local files, including chapter checksums.
+- The remote `main` SHA matched the publication commit above.
+- Live response hashes and byte counts are recorded privately at
+  `.runtime/adler-20261010/publication-verification.json`.
+- [GitHub library validation](https://github.com/lachlanchen/bunko-books/actions/runs/38033116746)
+  was running when this receipt was written; the local full validation and
+  public-download checks above had already passed.
+- No source checkout, app binary, store review or production app code changed.
+
+Readers can reopen Bunko or press the library refresh button, then search for
+the English title or `自卑与超越`. Existing cached catalogues and CDN mirrors can
+take a few minutes to revalidate.
