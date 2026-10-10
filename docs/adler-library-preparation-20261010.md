@@ -3,12 +3,14 @@
 ## Status
 
 *What Life Should Mean to You / 自卑与超越 / 人生の意味の心理学* is
-prepared as a complete Bunko schema-1 bundle. Public publication is on hold for
-rights clearance. No files were added to the public `bunko-books` repository.
-No app build, store submission or deployment was made.
+prepared as a complete Bunko schema-1 bundle. On 2026-10-10, after being shown
+the original's renewal evidence, the owner confirmed: “I checked it’s ok to
+redistribute plz add it”. The scoped registry entry is now approved for public
+publication on that owner confirmation. This is not a declaration of worldwide
+public-domain status.
 
 The current reader supports the bundle's English, Chinese and Japanese layers.
-After clearance, publishing the catalogue and book files is sufficient; readers
+Publishing the catalogue and book files is sufficient; readers
 can refresh the library. See [library publishing](library-publishing.md).
 
 ## Source and validation
@@ -40,10 +42,11 @@ Private, Git-ignored output:
 `Bunko/.runtime/adler-20261010/library/books/adler-what-life-should-mean-to-you/`
 
 The sibling `validation.json`, `prepare.py`, and
-`adler-what-life-should-mean-to-you.bunko.zip` retain the local preparation receipt,
-reproduction script and packaged bundle. The bundle retains `rights.status: hold`;
-the catalogue validator correctly excludes it. It must not be copied into a
-public Git repository while that hold remains.
+`adler-what-life-should-mean-to-you.bunko.zip` retain the initial local preparation
+receipt, reproduction script and packaged bundle. These historical artifacts
+record the initial hold. The published edition is exported afresh from the
+approved registry into `../bunko-books`, with `rights.status: ship` and the
+owner's redistribution confirmation.
 
 ## Publication evidence
 
@@ -58,13 +61,12 @@ to the recorded 1931 original, that points to **1 January 2027** for U.S. public
 domain entry. This does not independently clear later additions or translations.
 The supplied Capricorn scan's copyright page lists 1931 and 1958 notices.
 
-The registry therefore records a hold and a 2027-01-01 recheck date. Earlier
-publication needs a redistribution permission record. Before changing to `ship`,
-also verify the selected edition's later additions and final translation
-provenance. A modern reference filename alone is not the reason for this hold;
-the original's documented renewal is material evidence.
+The initial registry hold and 2027-01-01 recheck date were based on that evidence.
+The owner's subsequent express redistribution confirmation resolves the
+publication gate for this selected edition. The underlying renewal evidence is
+retained here; no independent license document was supplied or inspected.
 
-Once cleared, update the scoped registry entry, export with
-`tools/publish_library.py`, retain the reviewed textless cover, and run the
-`bunko-books` catalogue validator before publication. Book data remains outside
-the app repository.
+The publication uses `tools/publish_library.py`, retains the reviewed textless
+cover, and runs the `bunko-books` catalogue validator before publication. Book
+data remains outside the app repository. No app build or store submission is
+required.

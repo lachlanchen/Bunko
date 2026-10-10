@@ -1,12 +1,14 @@
 # Catalogue audit — 2026-09-23
 
-## Adler preparation — 2026-10-10
+## Adler addition — 2026-10-10
 
 The completed *What Life Should Mean to You / 自卑与超越* edition is registered
-and prepared locally: 250/250 chunks, 12 chapters, English/Chinese/Japanese with
-readings. Public publication is on hold for the original's recorded U.S.
-copyright renewal; see the [validation and rights receipt](adler-library-preparation-20261010.md).
-This addition does not change the published catalogue or require an app build.
+and approved for publication: 250/250 chunks, 12 chapters,
+English/Chinese/Japanese with readings. The owner confirmed redistribution
+clearance after the initial renewal check; see the
+[validation and rights receipt](adler-library-preparation-20261010.md).
+This addition increases the published catalogue to 186 books and requires no
+app build. Counts in the dated September audit below describe that earlier audit.
 
 ## Owner editions added 2026-09-25
 
