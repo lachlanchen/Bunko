@@ -154,6 +154,28 @@
     "checked": "2026-09-23",
     "build": false
   },
+  "adler-what-life-should-mean-to-you": {
+    "status": "hold",
+    "title": "What Life Should Mean to You / 自卑与超越",
+    "author": "Alfred Adler",
+    "source": "data/interlinear/adler-what-life-should-mean-to-you/assembled/adler-what-life-should-mean-to-you.trilingual.json",
+    "edition": "multilingual",
+    "langs": [
+      "en",
+      "zh",
+      "ja"
+    ],
+    "primary": "en",
+    "cat": "world",
+    "basis": "Complete 250/250-chunk, 12-chapter owner-supplied edition, prepared locally. Public distribution not cleared: the 1931 original (A42453) has recorded renewal R231693 dated 1959-02-24. Recheck the original's U.S. term on 2027-01-01 or obtain redistribution permission; separately verify any later-edition additions and final translation provenance. The source Capricorn scan carries 1931/1958 notices. This hold concerns the original work, not merely a modern translation reference filename.",
+    "references": [
+      "https://www.gutenberg.org/cache/epub/11819/pg11819.txt",
+      "https://www.copyright.gov/circs/circ15a.pdf"
+    ],
+    "checked": "2026-10-10",
+    "recheckAfter": "2027-01-01",
+    "build": false
+  },
   "aeneid-virgil": {
     "status": "ship",
     "title": "The Aeneid",
