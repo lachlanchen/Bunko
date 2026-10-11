@@ -19,14 +19,23 @@ it('shows the selected main in single-language mode and preserves selection orde
   view.rerender(<Reader {...props} settings={{ ...props.settings, langs: ['en', 'ja'], layout: 'interlinear' }} />)
   expect([...view.container.querySelectorAll('[data-reading]')].map(x => x.getAttribute('data-lang'))).toEqual(['en', 'ja'])
   expect(view.container.querySelector('.reading-main')?.textContent).toContain('English translation')
+  for (const layout of ['interlinear', 'paired'] as const) {
+    view.rerender(<Reader {...props} settings={{ ...props.settings, langs: ['en', 'ja'], layout }} />)
+    expect(view.container.querySelector('.reading-main .language-label')).toBeNull()
+    expect(view.container.querySelector('.reading-translation .language-label')?.textContent).toBe('Japanese')
+    view.rerender(<Reader {...props} settings={{ ...props.settings, langs: ['ja', 'en'], layout }} />)
+    expect(view.container.querySelector('.reading-main .language-label')).toBeNull()
+    expect(view.container.querySelector('.reading-translation .language-label')?.textContent).toBe('English')
+  }
 })
 
-it('opens a passage discussion without repetitive language labels', async () => {
+it('labels translations but leaves the selected main unlabelled when opening discussions', async () => {
   vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, json: async () => ({ issue: null, comments: [], nextPage: null }) })))
   const props = { meta, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs: ['ja', 'en'] as LangCode[], layout: 'interlinear' as const }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
   const { container } = render(<Reader {...props} />)
   await screen.findByText('日本語の原文')
-  expect(container.querySelectorAll('.language-label')).toHaveLength(0)
+  expect(container.querySelector('.reading-main .language-label')).toBeNull()
+  expect(container.querySelector('.reading-translation .language-label')?.textContent).toBe('English')
   expect(container.querySelector('.reading-translation')?.textContent).toContain('English translation')
   fireEvent.click(screen.getByRole('button', { name: 'Discuss passage' }))
   expect(screen.getByRole('dialog')).toBeTruthy()
@@ -105,7 +114,7 @@ it('folds translation notes separately and omits missing language rows in paired
   expect(notes.querySelector('summary')?.textContent).toBe('Translation notes')
   expect(notes.querySelectorAll('.para-line')).toHaveLength(1)
   expect(notes.querySelector('.para-line')?.getAttribute('lang')).toBe('ja')
-  expect(notes.querySelectorAll('.language-label')).toHaveLength(0)
+  expect(notes.querySelector('.language-label')?.textContent).toBe('Japanese')
   expect(notes.querySelector('ruby rt')?.textContent).toBe('やくちゅう')
   fireEvent.click(notes.querySelector('summary')!)
   expect(notes.open).toBe(true)

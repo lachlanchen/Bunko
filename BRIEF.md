@@ -237,6 +237,12 @@ build21 for testing and store submission.
 
 The owner also requests selection order as reading order: the first selected
 language is main, removing it promotes the next, and reselecting appends. Numbered
-chips distinguish main and translations; remove repeated language labels from
-reading text. Main-text-only mode follows selection rather than book source.
+chips distinguish main and translations; the first selected language has no
+reading label, and secondary translations keep their language labels. Main-text-only mode follows selection rather than book source.
 Keep one language selected and preserve the reading anchor on changes.
+
+**Owner clarification, 11 October 2026:** Only the first selected/main language
+is unlabelled. Keep the existing bold language labels for every secondary
+translation in both interlinear and paragraph layouts. Labels follow selection
+order, including after promoting another language to main. Build22 corrects
+the overly broad removal in build21 and replaces it after qualification.

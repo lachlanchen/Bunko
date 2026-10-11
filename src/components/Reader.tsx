@@ -9,7 +9,7 @@ import { htmlLanguage, languageDirection, unitLine } from '../lib/languages'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { ChevronLeft, ChevronRight, List, MessageCircle, Settings2, Watch } from 'lucide-react'
 import type { BookMeta, Chapter, LangCode, ReadingSettings, Unit } from '../types'
-import type { UICopy, UILanguage } from '../i18n'
+import { languageName, type UICopy, type UILanguage } from '../i18n'
 import { loadChapter } from '../lib/library'
 import { Line } from './Line'
 import { RichLine } from './RichLine'
@@ -215,6 +215,7 @@ export function Reader({
                 {settings.layout === 'paired'
                   ? shown.filter(lang => paragraph.u.some(unit => unitLine(unit, lang)?.length)).map((lang) => (
                       <p className={`para-line lang-${lang} ${lang === shown[0] ? 'reading-main' : 'reading-translation'}`} key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>
+                        {lang !== shown[0] && <strong className="language-label">{languageName(lang, ui)}</strong>}
                         {paragraph.u.map((unit, unitIndex) => unitLine(unit, lang)?.length ? (
                           <span key={unitIndex} className="paired-unit"><span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><RichLine unit={unit} lang={lang} ruby={settings.ruby} grammar={settings.grammar} /></span>{lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
                         ) : null)}
@@ -225,6 +226,7 @@ export function Reader({
                         {shown.map((lang) =>
                           unitLine(unit, lang)?.length ? (
                             <p className={`unit-line lang-${lang} ${lang === shown[0] ? 'reading-main' : 'reading-translation'}`} key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>
+                              {lang !== shown[0] && <strong className="language-label">{languageName(lang, ui)}</strong>}
                               <span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><RichLine
                                 unit={unit}
                                 lang={lang}
