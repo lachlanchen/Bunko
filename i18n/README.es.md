@@ -16,9 +16,11 @@ Los libros pueden incluir cualquier número de idiomas mediante etiquetas están
 
 ## Actualización enviada · 11 de octubre de 2026
 
-Bunko **1.0.12 (19)** está disponible en TestFlight y pruebas internas de Google, y enviado a revisión de iOS/Watch, macOS y Google Play. Las fichas de libros y Ajustes permiten solicitar traducciones en GitHub, con 11 idiomas sugeridos o uno escrito libremente. Las capturas correspondientes se actualizaron. La publicación será automática tras la aprobación.
+Bunko **1.0.12 (21)** está disponible en TestFlight y pruebas internas de Google, y enviado a revisión de iOS/Watch, macOS y Google Play. Las fichas de libros y Ajustes permiten solicitar traducciones en GitHub, con 11 idiomas sugeridos o uno escrito libremente. Las capturas correspondientes se actualizaron. La publicación será automática tras la aprobación.
 
-[Envío y pruebas](../docs/translation-release-20261011.md)
+Las solicitudes de traducción usan ahora el libro abierto. Su página incluye Ajustes arriba a la derecha. El panel se cierra con el botón Cerrar ampliado, tocando fuera o deslizando a la derecha. Ese gesto vuelve de la lectura a la ficha y luego a la biblioteca. Las traducciones existentes se abren directamente y usan la caché sin conexión. Los botones numerados siguen el orden de selección: el primero es el texto principal; al quitarlo, el siguiente lo sustituye, y al seleccionarlo de nuevo se añade al final. La vista de solo texto principal respeta ese orden, sin etiquetas repetidas.
+
+[Envío y pruebas](../docs/navigation21-20261011.md)
 
 ## Publicación · 10 de octubre de 2026
 

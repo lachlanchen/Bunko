@@ -1,3 +1,19 @@
+# Current: Bunko 1.0.12 (21) submitted · 11 October 2026
+
+Build 21 is available in iOS/Watch and Mac TestFlight and Google internal testing.
+Both Apple submissions are WAITING_FOR_REVIEW. Google accepted the submission;
+its automatic pre-review checks are running, with no unsent changes.
+Apple build 19 and Google build 20 reviews were replaced under the owner's latest build/submission request.
+Current-book translation defaults, book-home Settings, reliable Settings dismissal
+and right-swipe navigation are included. Existing translations open directly and language selections define main/translation order. 150 automated tests and 16 mobile-browser
+interaction checks passed. Signed packages and refreshed screenshots were verified.
+No new physical-device/purchase test or web deployment is claimed.
+
+[Build 21 receipt](../docs/navigation21-20261011.md).
+Private runtime: `.runtime/navigation21-20261011/`.
+
+## Earlier records
+
 # Latest translation update submitted · 11 October 2026
 
 Bunko **1.0.12 (19)** is **WAITING_FOR_REVIEW** on iOS/Watch and universal Mac,

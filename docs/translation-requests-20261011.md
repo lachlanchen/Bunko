@@ -21,3 +21,18 @@ passed (83 client and 58 server tests), as did signed native packaging. See
 [the release receipt](translation-release-20261011.md) for store review and beta
 status. The original Settings captures remain archived; current book-detail
 screenshots accompany the new submission.
+
+## Follow-up in build 21
+
+Requests in book details and reading Settings now default to that book. Existing
+languages offer direct reading instead of a duplicate issue; missing languages
+retain the reviewed GitHub request. Native/localized names and tags are matched
+without collapsing script or classical/modern distinctions.
+
+Numbered Settings chips preserve selection order. The first language is main,
+removing it promotes the next, and reselecting appends. At least one remains
+selected. Both reading layouts and main-text-only mode follow that order; repeated
+language labels were removed. Language changes preserve the current paragraph
+and reuse cached chapters, including offline.
+
+[Build 21 validation and submission receipt](navigation21-20261011.md).

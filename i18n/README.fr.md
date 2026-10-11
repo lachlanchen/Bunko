@@ -16,9 +16,11 @@ Les livres peuvent contenir autant de langues que nécessaire, identifiées par 
 
 ## Mise à jour soumise · 11 octobre 2026
 
-Bunko **1.0.12 (19)** est disponible dans TestFlight et les tests internes Google, et soumis à la validation iOS/Watch, macOS et Google Play. Les fiches des livres et les réglages proposent une demande de traduction sur GitHub : 11 langues suggérées ou une langue saisie librement. Les captures concernées ont été actualisées. La publication sera automatique après approbation.
+Bunko **1.0.12 (21)** est disponible dans TestFlight et les tests internes Google, et soumis à la validation iOS/Watch, macOS et Google Play. Les fiches des livres et les réglages proposent une demande de traduction sur GitHub : 11 langues suggérées ou une langue saisie librement. Les captures concernées ont été actualisées. La publication sera automatique après approbation.
 
-[Soumission et tests](../docs/translation-release-20261011.md)
+La demande de traduction utilise désormais le livre ouvert. Un bouton Réglages figure en haut à droite de sa page. Fermez les réglages avec le grand bouton Fermer, en touchant le fond ou en balayant vers la droite. Le même geste permet de revenir de la lecture à la fiche puis à la bibliothèque. Les traductions existantes s’ouvrent directement, avec le cache hors ligne. Les pastilles numérotées suivent l’ordre de sélection : la première langue est principale, la retirer promeut la suivante et la sélectionner à nouveau l’ajoute à la fin. La lecture principale seule suit ce choix, sans étiquettes répétées.
+
+[Soumission et tests](../docs/navigation21-20261011.md)
 
 ## Publication · 10 octobre 2026
 
