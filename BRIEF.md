@@ -226,3 +226,17 @@ The owner then requested current-book translation requests in Settings, a book
 homepage Settings shortcut, reliable Settings dismissal and right-swipe back.
 Accumulate these fixes in build20 of1.0.12, qualify the complete navigation flow,
 and update the same authorized store submissions after testing.
+
+### Existing translation routing · 11 October 2026
+
+The owner requests that a language already present in the current book opens for
+reading instead of creating a duplicate translation request. Offer an inline
+Read action, match tags/names while preserving script distinctions, retain the
+reading location, and package the navigation/request corrections together as
+build21 for testing and store submission.
+
+The owner also requests selection order as reading order: the first selected
+language is main, removing it promotes the next, and reselecting appends. Numbered
+chips distinguish main and translations; remove repeated language labels from
+reading text. Main-text-only mode follows selection rather than book source.
+Keep one language selected and preserve the reading anchor on changes.

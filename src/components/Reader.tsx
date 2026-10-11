@@ -6,11 +6,10 @@ import { htmlLanguage, languageDirection, unitLine } from '../lib/languages'
  * three arrangements come from the same data: the source line alone, every
  * gloss under its own source line, or whole paragraphs one after another.
  */
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { ChevronLeft, ChevronRight, List, MessageCircle, Settings2, Watch } from 'lucide-react'
 import type { BookMeta, Chapter, LangCode, ReadingSettings, Unit } from '../types'
 import type { UICopy, UILanguage } from '../i18n'
-import { languageName } from '../i18n'
 import { loadChapter } from '../lib/library'
 import { Line } from './Line'
 import { RichLine } from './RichLine'
@@ -78,7 +77,7 @@ export function Reader({
     () => settings.langs.filter((lang) => meta.langs.includes(lang)),
     [settings.langs, meta.langs],
   )
-  const shown: LangCode[] = settings.layout === 'source' ? [meta.primary] : langs.length ? langs : [meta.primary]
+  const shown: LangCode[] = settings.layout === 'source' ? [langs[0] ?? meta.primary] : langs.length ? langs : [meta.primary]
 
   useEffect(() => {
     if (!row) return
@@ -115,6 +114,13 @@ export function Reader({
     const target = host.querySelector<HTMLElement>(`[data-para="${startRef.current}"]`)
     host.scrollTo({ top: target ? target.offsetTop - 12 : 0, behavior: 'auto' })
   }, [chapter])
+
+  const shownKey = shown.join('|')
+  useLayoutEffect(() => {
+    const host = scrollRef.current
+    const target = host?.querySelector<HTMLElement>(`[data-para="${visibleParagraph.current}"]`)
+    if (host && target) host.scrollTo({ top: target.offsetTop - 12, behavior: 'auto' })
+  }, [shownKey])
 
   const handleScroll = useCallback(() => {
     const host = scrollRef.current
@@ -208,8 +214,7 @@ export function Reader({
                 <PassageNotes enabled={paragraph.kind === 'annotation' || (paragraph.id.endsWith('-notes') && paragraph.u.every(unit => unit.annotation === true))} label={notesLabel}>
                 {settings.layout === 'paired'
                   ? shown.filter(lang => paragraph.u.some(unit => unitLine(unit, lang)?.length)).map((lang) => (
-                      <p className={`para-line lang-${lang}`} key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>
-                        <strong className="language-label">{languageName(lang, ui)}</strong>
+                      <p className={`para-line lang-${lang} ${lang === shown[0] ? 'reading-main' : 'reading-translation'}`} key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>
                         {paragraph.u.map((unit, unitIndex) => unitLine(unit, lang)?.length ? (
                           <span key={unitIndex} className="paired-unit"><span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><RichLine unit={unit} lang={lang} ruby={settings.ruby} grammar={settings.grammar} /></span>{lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
                         ) : null)}
@@ -219,8 +224,7 @@ export function Reader({
                       <div className="unit" key={unitIndex}>
                         {shown.map((lang) =>
                           unitLine(unit, lang)?.length ? (
-                            <p className={`unit-line lang-${lang}`} key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>
-                              {shown.length > 1 && <strong className="language-label">{languageName(lang, ui)}</strong>}
+                            <p className={`unit-line lang-${lang} ${lang === shown[0] ? 'reading-main' : 'reading-translation'}`} key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>
                               <span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><RichLine
                                 unit={unit}
                                 lang={lang}

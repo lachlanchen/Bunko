@@ -27,6 +27,7 @@ import {
 import { DocumentAgent } from './components/DocumentAgent'
 import { TranslationRequest } from './components/TranslationRequest'
 import { Sheet } from './components/Sheet'
+import { LanguageChoices } from './components/LanguageChoices'
 import { CloudPlans } from './components/CloudPlans'
 import { cloudCopy } from './components/cloudCopy'
 import { agentCopy } from './components/agentCopy'
@@ -178,6 +179,13 @@ export default function App() {
     [meta, places],
   )
 
+  const readAvailableTranslation = useCallback((language: string) => {
+    if (!meta?.langs.includes(language)) return
+    update({ langs: [language], layout: 'interlinear' })
+    setShowSettings(false)
+    if (view !== 'reader') startReading(false)
+  }, [meta, update, view, startReading])
+
   const runDownload = useCallback(async () => {
     if (!meta) return
     downloadRef.current?.abort()
@@ -257,7 +265,7 @@ export default function App() {
   const settingsSheet = showSettings && <SettingsSheet
     copy={copy} ui={ui} settings={settings} book={view === 'book' || view === 'reader' ? meta : null}
     onUI={(next) => { setUI(next); void saveUI({ language: next }) }}
-    onChange={update} onClose={() => setShowSettings(false)} storage={storage}
+    onChange={update} onClose={() => setShowSettings(false)} onRead={readAvailableTranslation} storage={storage}
     request={request} setRequest={setRequest}
     updates={updates} canReload={canReload}
     onCloud={() => { setShowSettings(false); setView('cloud') }}
@@ -393,7 +401,7 @@ export default function App() {
               </p>
             )}
 
-            <TranslationRequest key={meta.id} ui={ui} book={meta} />
+            <TranslationRequest key={meta.id} ui={ui} book={meta} onRead={readAvailableTranslation} />
             <ol className="chapter-list flat">
               {meta.chapters.map((chapter, position) => (
                 <li key={chapter.file}>
@@ -501,6 +509,7 @@ export default function App() {
 }
 
 function SettingsSheet({
+  onRead,
   onCloud,
   updates,
   canReload,
@@ -522,6 +531,7 @@ function SettingsSheet({
   ui: UILanguage
   settings: ReadingSettings
   book?: BookMeta | null
+  onRead: (language: string) => void
   onUI: (next: UILanguage) => void
   onChange: (patch: Partial<ReadingSettings>) => void
   onClose: () => void
@@ -532,33 +542,12 @@ function SettingsSheet({
   const langs = book?.langs ?? []
   return (
     <Sheet title={copy.settings} onClose={onClose} closeLabel={copy.close}>
-      {book && <section><TranslationRequest key={book.id} ui={ui} book={book} expanded /></section>}
+      {book && <section><TranslationRequest key={book.id} ui={ui} book={book} expanded onRead={onRead} /></section>}
       <section><button type="button" className="cloud-entry" onClick={onCloud}><Sparkles size={18} />{cloudCopy[ui].title}</button></section>
       {langs.length > 0 && (
         <section>
           <h3>{copy.show}</h3>
-          <div className="chips">
-            {langs.map((lang) => {
-              const on = settings.langs.includes(lang)
-              return (
-                <button
-                  key={lang}
-                  type="button"
-                  className={on ? 'active' : ''}
-                  onClick={() => {
-                    const next = on
-                      ? settings.langs.filter((item) => item !== lang)
-                      : [...settings.langs, lang].sort(
-                          (a, b) => langs.indexOf(a) - langs.indexOf(b),
-                        )
-                    onChange({ langs: next.length ? next : [langs[0]] })
-                  }}
-                >
-                  {languageName(lang, ui)}
-                </button>
-              )
-            })}
-          </div>
+          <LanguageChoices available={langs} selected={settings.langs} ui={ui} onChange={next => onChange({ langs: next })} />
         </section>
       )}
 
