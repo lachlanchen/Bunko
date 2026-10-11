@@ -217,7 +217,7 @@ export function Reader({
                       <p className={`para-line lang-${lang} ${lang === shown[0] ? 'reading-main' : 'reading-translation'}`} key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>
                         {lang !== shown[0] && <strong className="language-label">{languageName(lang, ui)}</strong>}
                         {paragraph.u.map((unit, unitIndex) => unitLine(unit, lang)?.length ? (
-                          <span key={unitIndex} className="paired-unit"><span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><RichLine unit={unit} lang={lang} ruby={settings.ruby} grammar={settings.grammar} /></span>{lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
+                          <span key={unitIndex} className="paired-unit"><span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><RichLine unit={unit} lang={lang} ruby={settings.ruby} grammar={settings.grammar} /></span>{(lang === shown[0] || settings.translationBubbles) && <button className="passage-action" type="button" aria-label={lang === shown[0] ? discussLabel : `${discussLabel} · ${languageName(lang, ui)}`} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
                         ) : null)}
                       </p>
                     ))
@@ -233,7 +233,7 @@ export function Reader({
                                 ruby={settings.ruby}
                                 grammar={settings.grammar}
                               /></span>
-                              {lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}
+                              {(lang === shown[0] || settings.translationBubbles) && <button className="passage-action" type="button" aria-label={lang === shown[0] ? discussLabel : `${discussLabel} · ${languageName(lang, ui)}`} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}
                             </p>
                           ) : null,
                         )}

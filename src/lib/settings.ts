@@ -18,6 +18,7 @@ export const DEFAULT_SETTINGS: ReadingSettings = {
   layout: 'interlinear',
   ruby: true,
   grammar: false,
+  translationBubbles: true,
   fontScale: 1,
   rubyScale: 1,
   theme: 'system',

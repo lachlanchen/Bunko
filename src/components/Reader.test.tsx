@@ -66,6 +66,28 @@ it('waits for an explicit Dictionary action and keeps the selected substring', a
   vi.unstubAllGlobals()
 })
 
+it.each(['interlinear', 'paired'] as const)('shares a passage discussion across language bubbles in %s, with optional translation bubbles', async (layout) => {
+  vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, json: async () => ({ issue: null, comments: [], nextPage: null }) })))
+  const props = { meta, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs: ['ja', 'en'], layout }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
+  const view = render(<Reader {...props} />)
+  await screen.findByText('English translation')
+  fireEvent.click(screen.getByRole('button', { name: 'Discuss passage' }))
+  const original = new URL(screen.getByRole('link', { name: 'View on GitHub' }).getAttribute('href')!)
+  fireEvent.click(screen.getByRole('button', { name: 'Close' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Discuss passage · English' }))
+  expect(screen.getByText('English translation', { selector: 'blockquote' })).toBeTruthy()
+  const translated = new URL(screen.getByRole('link', { name: 'View on GitHub' }).getAttribute('href')!)
+  expect(translated.searchParams.get('title')).toBe(original.searchParams.get('title'))
+  expect(translated.searchParams.get('title')).toContain('sample/c001.json/p1/0')
+  fireEvent.click(screen.getByRole('button', { name: 'Close' }))
+  view.rerender(<Reader {...props} settings={{ ...props.settings, translationBubbles: false }} />)
+  expect(screen.queryByRole('button', { name: 'Discuss passage · English' })).toBeNull()
+  expect(screen.getByRole('button', { name: 'Discuss passage' })).toBeTruthy()
+  view.rerender(<Reader {...props} settings={{ ...props.settings, langs: ['en', 'ja'], translationBubbles: false }} />)
+  fireEvent.click(screen.getByRole('button', { name: 'Discuss passage' }))
+  expect(screen.getByText('English translation', { selector: 'blockquote' })).toBeTruthy()
+})
+
 it('renders arbitrary layers, RTL and regional language tags in both layouts and passage tools', async () => {
   const { loadChapter } = await import('../lib/library')
   const langs = ['ar', 'en', 'zh', 'ja', 'he', 'fr-CA', 'hi', 'el']

@@ -45,6 +45,8 @@ export interface UICopy {
   rubyHint: string
   grammar: string
   grammarHint: string
+  translationBubbles: string
+  translationBubblesHint: string
   textSize: string
   rubySize: string
   books: string
@@ -123,6 +125,8 @@ const en: UICopy = {
   rubyHint: 'Furigana above kana, pinyin above hanzi.',
   grammar: 'Colour by grammar',
   grammarHint: 'Subject, predicate, object and the rest, as the generator labelled them.',
+  translationBubbles: 'Comment bubbles on translations',
+  translationBubblesHint: 'Open the same passage discussion from any translation.',
   textSize: 'Main text size',
   rubySize: 'Ruby size',
   books: 'books',
@@ -204,6 +208,8 @@ const zhHans: UICopy = {
   rubyHint: '汉字上标拼音，假名上标振假名。',
   grammar: '语法着色',
   grammarHint: '主语、谓语、宾语等，按生成时的标注。',
+  translationBubbles: '译文评论气泡',
+  translationBubblesHint: '从任意译文打开同一段落的讨论。',
   textSize: '正文字号',
   rubySize: '注音字号',
   books: '本书',
@@ -283,6 +289,8 @@ const zhHant: UICopy = {
   rubyHint: '漢字上標拼音，假名上標振假名。',
   grammar: '語法著色',
   grammarHint: '主語、謂語、賓語等，按生成時的標註。',
+  translationBubbles: '譯文評論氣泡',
+  translationBubblesHint: '從任意譯文開啟同一段落的討論。',
   textSize: '正文字號',
   rubySize: '注音字號',
   books: '本書',
@@ -364,6 +372,8 @@ const ja: UICopy = {
   rubyHint: '漢字にはふりがな、中国語にはピンイン。',
   grammar: '文法で色分け',
   grammarHint: '主語・述語・目的語など、生成時の注記に従います。',
+  translationBubbles: '訳文のコメントボタン',
+  translationBubblesHint: 'どの訳文からも同じ箇所のディスカッションを開けます。',
   textSize: '文字の大きさ',
   rubySize: 'ルビの大きさ',
   books: '冊',

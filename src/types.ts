@@ -85,6 +85,7 @@ export interface ReadingSettings {
   layout: Layout
   ruby: boolean
   grammar: boolean
+  translationBubbles: boolean
   fontScale: number
   rubyScale: number
   theme: 'paper' | 'night' | 'system'

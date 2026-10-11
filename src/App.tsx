@@ -572,6 +572,7 @@ function SettingsSheet({
       </section>
 
       <Toggle label={copy.ruby} hint={copy.rubyHint} on={settings.ruby} onChange={(ruby) => onChange({ ruby })} />
+      <Toggle label={copy.translationBubbles} hint={copy.translationBubblesHint} on={settings.translationBubbles} onChange={(translationBubbles) => onChange({ translationBubbles })} />
       <Toggle
         label={copy.grammar}
         hint={copy.grammarHint}

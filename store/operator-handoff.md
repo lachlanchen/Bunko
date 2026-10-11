@@ -1,3 +1,15 @@
+## Prepared successor · translation bubbles · 11 October 2026
+
+Translation comment bubbles now default on, with a persistent four-language
+Settings toggle to hide secondary-language bubbles. All entrances share the
+same passage discussion; the tapped language supplies the excerpt. 94 client
+tests, lint, web build and five browser checks pass; screenshots prepared locally.
+Accumulate for the next test build. No newer native upload or review replacement
+was made; submitted build22 remains the provider checkpoint below.
+
+[Implementation receipt](../docs/translation-bubbles-20261011.md).
+Private runtime: `.runtime/translation-bubbles-20261011/` (preview stopped after capture).
+
 # Current: Bunko 1.0.12 (22) submitted · 11 October 2026
 
 Only the first selected/main language is unlabelled; secondary translations keep

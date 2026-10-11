@@ -246,3 +246,12 @@ is unlabelled. Keep the existing bold language labels for every secondary
 translation in both interlinear and paragraph layouts. Labels follow selection
 order, including after promoting another language to main. Build22 corrects
 the overly broad removal in build21 and replaces it after qualification.
+
+### Translation discussion bubbles · 11 October 2026
+
+Show the existing end-of-passage comment bubble on secondary translations too,
+enabled by default. A persistent Settings toggle hides translation bubbles while
+keeping the main-language bubble. All language entrances share the same stable
+passage discussion; the panel quotes the language the reader tapped. Support both
+interlinear and paragraph layouts. Accumulate this small successor change for the
+next test build; build22's active reviews remain the submitted checkpoint.
