@@ -14,6 +14,12 @@ Los libros pueden incluir cualquier número de idiomas mediante etiquetas están
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Captura del lector Bunko" width="300"></a></p>
 
+## Actualización enviada · 11 de octubre de 2026
+
+Bunko **1.0.12 (19)** está disponible en TestFlight y pruebas internas de Google, y enviado a revisión de iOS/Watch, macOS y Google Play. Las fichas de libros y Ajustes permiten solicitar traducciones en GitHub, con 11 idiomas sugeridos o uno escrito libremente. Las capturas correspondientes se actualizaron. La publicación será automática tras la aprobación.
+
+[Envío y pruebas](../docs/translation-release-20261011.md)
+
 ## Publicación · 10 de octubre de 2026
 
 Bunko 1.0.11 (18) ya está disponible en iOS/Watch y Google Play, con un despliegue de Google al 100 %. Mac 1.0.11 (18) sigue en revisión de Apple y se publicará automáticamente tras la aprobación; la versión pública de Mac es 1.0.8 (10). Las versiones móviles incluyen el icono aprobado con esquinas redondeadas.

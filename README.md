@@ -14,6 +14,12 @@ Books may contain any number of language layers using standard language tags, in
 
 <p align="center"><a href="store/assets/play-phone-01.png"><img src="store/assets/play-phone-01.png" alt="Bunko reader screenshot" width="300"></a></p>
 
+## Latest update submitted · 11 October 2026
+
+Bunko **1.0.12 (19)** is available in TestFlight and Google internal testing, and submitted for iOS/Watch, macOS and Google Play review. Book details and Settings now include translation requests through GitHub, with 11 suggested target languages and a custom language field. Current screenshots were refreshed. Automatic public release follows approval.
+
+[Submission and test evidence](docs/translation-release-20261011.md)
+
 ## Public distribution · 10 October 2026
 
 Bunko 1.0.11 (18) is public on iOS/Watch and Google Play. Google rollout is 100%. Mac 1.0.11 (18) remains in Apple review and will release automatically after approval; the public Mac version is 1.0.8 (10). The approved rounded icon is included in the mobile releases.

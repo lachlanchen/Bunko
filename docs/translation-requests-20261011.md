@@ -15,6 +15,9 @@ macOS Safari-targeted web build passed. A real Chromium UI check at 390px and
 overflow. No issue was submitted. Light-phone and dark-desktop captures are
 staged in `store/screenshots/translation-request-20261011/`.
 
-This small feature is accumulated on the current test branch for the next
-native candidate. Installed build18 and production reviews are unchanged.
-The staged screenshots have not been uploaded to stores.
+The owner subsequently authorized building and submission. Version **1.0.12 (19)**
+contains this feature on iOS/Watch, universal Mac and Android. Full project checks
+passed (83 client and 58 server tests), as did signed native packaging. See
+[the release receipt](translation-release-20261011.md) for store review and beta
+status. The original Settings captures remain archived; current book-detail
+screenshots accompany the new submission.

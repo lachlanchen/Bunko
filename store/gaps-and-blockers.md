@@ -1,3 +1,21 @@
+# Latest translation update submitted · 11 October 2026
+
+Bunko **1.0.12 (19)** is **WAITING_FOR_REVIEW** on iOS/Watch and universal Mac,
+and **Changes in review** on Google Play. Both Apple builds are in TestFlight;
+Android19 is available internally. Apple automatic release and Google100% rollout
+remain selected. The older Mac18 review was replaced with the owner's authority.
+
+141 automated tests, renderer/build checks, Android lint, signed package checks,
+actual embedded-feature checks, localized layout checks, live no-OTP Demo login
+and privacy availability passed. Current screenshots were added and inventoried.
+No new physical-device or purchase test is claimed. Public feeds remain at
+released builds; web deployment, billing and pricing are unchanged.
+
+[Submission receipt](../docs/translation-release-20261011.md).
+Private runtime: `.runtime/translation-release-20261011/`.
+
+## Earlier records
+
 # Apple release verification · 4 October 2026 HKT
 
 **iOS/Watch 1.0.10 (16) is public; Mac 1.0.10 (16) is still IN_REVIEW.**

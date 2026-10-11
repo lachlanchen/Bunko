@@ -14,6 +14,12 @@ Bunko 是閱讀中文、日文與英文公版經典的應用程式。讀者可�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko 閱讀器截圖" width="300"></a></p>
 
+## 最新更新已提交 · 2026年10月11日
+
+Bunko **1.0.12 (19)** 已提供 TestFlight 和 Google 內部測試，並提交 iOS/Watch、macOS 和 Google Play 審核。圖書詳情與設定新增 GitHub 翻譯申請，可選擇11種建議目標語言或自行填寫。已更新相關截圖，審核通過後自動發佈。
+
+[提交與測試紀錄](../docs/translation-release-20261011.md)
+
 ## 正式發布 · 2026年10月10日
 
 Bunko 1.0.11 (18) 已在 iOS/Watch 和 Google Play 正式發布，Google 推出比例為 100%。Mac 1.0.11 (18) 仍在 Apple 審核中，通過後自動發布；Mac 目前公開版本為 1.0.8 (10)。行動版包含已確認的圓角圖示。
