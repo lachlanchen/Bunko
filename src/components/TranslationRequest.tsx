@@ -11,14 +11,14 @@ const words = {
 }
 const languages = ['en', 'zh-Hans', 'zh-Hant', 'ja', 'ko', 'ar', 'es', 'fr', 'de', 'ru', 'vi']
 
-export function TranslationRequest({ ui, book }: { ui: UILanguage; book?: BookMeta | null }) {
+export function TranslationRequest({ ui, book, expanded = false }: { ui: UILanguage; book?: BookMeta | null; expanded?: boolean }) {
   const copy = words[ui], id = useId()
   const [title, setTitle] = useState(''), [language, setLanguage] = useState<string>(ui), [other, setOther] = useState('')
   const bookTitle = book ? book.titleText[book.primary] || book.id : title.trim()
   const target = language === 'other' ? other.trim() : `${languageName(language, 'en')} (${language})`
   const href = bookTitle && target ? translationIssueUrl({ title: bookTitle, bookId: book?.id, author: book?.author.name, languages: book?.langs, target }) : undefined
   const query = `is:issue "Translation request:" ${book ? `"${book.id}"` : ''}`
-  return <details className="translation-request">
+  return <details className="translation-request" open={expanded || undefined}>
     <summary>{copy.title}</summary>
     <p className="hint">{copy.hint}</p>
     {book ? <p><strong dir="auto">{bookTitle}</strong><small>{copy.available}: {book.langs.map(lang => languageName(lang, ui)).join(' · ')}</small></p> : <label htmlFor={`${id}-book`}>{copy.book}<input id={`${id}-book`} maxLength={200} value={title} onChange={e => setTitle(e.target.value)} /></label>}

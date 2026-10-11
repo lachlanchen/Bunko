@@ -54,8 +54,8 @@ export function installEdgeSwipe(target: Document, back: () => void): () => void
     if (event.touches.length !== 1 || !point || selected()) { cancel(); return }
     const dx = point.clientX - start.x, dy = Math.abs(point.clientY - start.y)
     const elapsed = event.timeStamp - start.time
-    if (dx < -8 || dy > 32 || (dy > 12 && dy > dx / 1.8) || elapsed > 550 || (!start.claimed && elapsed > 250)) { cancel(); return }
-    if (dx >= 14 && dx > dy * 1.8) {
+    if (dx < -8 || dy > 40 || (dy > 12 && dy > dx / 1.8) || elapsed > 1000 || (!start.claimed && elapsed > 250)) { cancel(); return }
+    if (dx >= 8 && dx > dy * 1.8) {
       start.claimed = true
       // Claim only a clearly horizontal gesture. Otherwise the native scroller
       // can cancel touch events before touchend, making swipe-back unreliable.
@@ -68,16 +68,16 @@ export function installEdgeSwipe(target: Document, back: () => void): () => void
     cancel()
     if (!from || !from.claimed || selected() || event.touches.length) return
     const point = Array.from(event.changedTouches).find((touch) => touch.identifier === from.id)
-    const distance = from.x <= 28 ? 70 : 90
-    if (point && event.timeStamp - from.time <= 550 && point.clientX - from.x >= distance && Math.abs(point.clientY - from.y) <= 32) back()
+    const distance = from.x <= 28 ? 56 : 72
+    if (point && event.timeStamp - from.time <= 1000 && point.clientX - from.x >= distance && Math.abs(point.clientY - from.y) <= 40) back()
   }
   target.addEventListener('touchstart', begin, { passive: true })
-  target.addEventListener('touchmove', move, { passive: false })
+  target.addEventListener('touchmove', move, { passive: false, capture: true })
   target.addEventListener('touchend', end, { passive: true })
   target.addEventListener('touchcancel', cancel)
   return () => {
     target.removeEventListener('touchstart', begin)
-    target.removeEventListener('touchmove', move)
+    target.removeEventListener('touchmove', move, true)
     target.removeEventListener('touchend', end)
     target.removeEventListener('touchcancel', cancel)
   }

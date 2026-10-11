@@ -221,3 +221,8 @@ Qualify signed packages, publish to the existing testing groups, and submit
 for formal review. This authorizes replacement of the older pending Bunko Mac
 review with the qualified latest build. Existing pricing and billing settings
 remain as previously qualified. Public update feeds advance only after release.
+
+The owner then requested current-book translation requests in Settings, a book
+homepage Settings shortcut, reliable Settings dismissal and right-swipe back.
+Accumulate these fixes in build20 of1.0.12, qualify the complete navigation flow,
+and update the same authorized store submissions after testing.

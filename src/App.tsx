@@ -1,7 +1,7 @@
 import { baseLanguage, htmlLanguage, languageDirection } from './lib/languages'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { Paperclip as PaperclipIcon, Sparkles, BookOpen, Check, Download, Settings, RefreshCw, Search, Trash2, X } from 'lucide-react'
-import type { BookMeta, BookRow, LangCode, Place, ReaderIndex, ReadingSettings } from './types'
+import { Paperclip as PaperclipIcon, Sparkles, BookOpen, Check, Download, Settings, RefreshCw, Search, Trash2 } from 'lucide-react'
+import type { BookMeta, BookRow, Place, ReaderIndex, ReadingSettings } from './types'
 import { copies, languageName, uiLanguageNames, type UILanguage } from './i18n'
 import {
   cachedBookCounts,
@@ -26,6 +26,7 @@ import {
 } from './lib/settings'
 import { DocumentAgent } from './components/DocumentAgent'
 import { TranslationRequest } from './components/TranslationRequest'
+import { Sheet } from './components/Sheet'
 import { CloudPlans } from './components/CloudPlans'
 import { cloudCopy } from './components/cloudCopy'
 import { agentCopy } from './components/agentCopy'
@@ -254,7 +255,7 @@ export default function App() {
   }, [view, chapterIndex, settings.fontScale, update, goToChapter, checkForUpdates])
 
   const settingsSheet = showSettings && <SettingsSheet
-    copy={copy} ui={ui} settings={settings} bookLangs={meta?.langs}
+    copy={copy} ui={ui} settings={settings} book={view === 'book' || view === 'reader' ? meta : null}
     onUI={(next) => { setUI(next); void saveUI({ language: next }) }}
     onChange={update} onClose={() => setShowSettings(false)} storage={storage}
     request={request} setRequest={setRequest}
@@ -324,9 +325,14 @@ export default function App() {
         <UpdatePrompt ui={ui} updates={updates} canReload={canReload} />
         <MobileStorePrompt copy={copy} />
         {settingsSheet}
-        <button className="link-back" type="button" onClick={() => setView('library')}>
-          ← {copy.library}
-        </button>
+        <nav className="book-toolbar">
+          <button className="link-back" type="button" onClick={() => setView('library')}>
+            ← {copy.library}
+          </button>
+          <button className="icon" type="button" disabled={!meta} onClick={() => setShowSettings(true)} aria-label={copy.settings}>
+            <Settings size={20} />
+          </button>
+        </nav>
         {!meta && <p className={`notice${bookError ? ' error' : ''}`}>{bookError || `${copy.loading}…`}</p>}
         {meta && bookError && <p className="notice error" role="status">{bookError}</p>}
         {meta && row && (
@@ -494,32 +500,6 @@ export default function App() {
   )
 }
 
-function Sheet({
-  title,
-  onClose,
-  closeLabel,
-  children,
-}: {
-  title: string
-  onClose: () => void
-  closeLabel: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className="sheet-backdrop" role="dialog" aria-modal="true" aria-label={title}>
-      <div className="sheet">
-        <header>
-          <strong>{title}</strong>
-          <button type="button" onClick={onClose} aria-label={closeLabel}>
-            <X size={18} />
-          </button>
-        </header>
-        <div className="sheet-body">{children}</div>
-      </div>
-    </div>
-  )
-}
-
 function SettingsSheet({
   onCloud,
   updates,
@@ -527,7 +507,7 @@ function SettingsSheet({
   copy,
   ui,
   settings,
-  bookLangs,
+  book,
   onUI,
   onChange,
   onClose,
@@ -541,7 +521,7 @@ function SettingsSheet({
   copy: import('./i18n').UICopy
   ui: UILanguage
   settings: ReadingSettings
-  bookLangs?: LangCode[]
+  book?: BookMeta | null
   onUI: (next: UILanguage) => void
   onChange: (patch: Partial<ReadingSettings>) => void
   onClose: () => void
@@ -549,9 +529,10 @@ function SettingsSheet({
   request: string
   setRequest: (value: string) => void
 }) {
-  const langs = bookLangs ?? []
+  const langs = book?.langs ?? []
   return (
     <Sheet title={copy.settings} onClose={onClose} closeLabel={copy.close}>
+      {book && <section><TranslationRequest key={book.id} ui={ui} book={book} expanded /></section>}
       <section><button type="button" className="cloud-entry" onClick={onCloud}><Sparkles size={18} />{cloudCopy[ui].title}</button></section>
       {langs.length > 0 && (
         <section>
@@ -676,7 +657,7 @@ function SettingsSheet({
         </div>
       </section>
 
-      <section><TranslationRequest ui={ui} /></section>
+      {!book && <section><TranslationRequest ui={ui} /></section>}
 
       {storage && (
         <section>

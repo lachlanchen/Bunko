@@ -40,6 +40,10 @@ it('accepts right swipes from the edge and page body, preserving scrolling, sele
   expect(touch('touchmove', 125, 103, 2040).defaultPrevented).toBe(true)
   touch('touchend', 230, 106, 2180)
   expect(back).toHaveBeenCalledTimes(2)
+  touch('touchstart', 100, 100, 3000)
+  expect(touch('touchmove', 110, 102, 3100).defaultPrevented).toBe(true)
+  touch('touchmove', 140, 105, 3450); touch('touchend', 180, 109, 3800) // deliberate, slower short swipe
+  expect(back).toHaveBeenCalledTimes(3)
   touch('touchstart', 100, 100, 0); touch('touchmove', 230, 100, 350); touch('touchend', 230, 100, 400) // held text / selection drag
   touch('touchstart', 10, 100, 0); touch('touchmove', 30, 145, 90); touch('touchend', 140, 110, 180) // scroll, even returning to start
   touch('touchstart', 10, 100, 0); touch('touchend', 140, 100, 600) // long press
@@ -53,6 +57,6 @@ it('accepts right swipes from the edge and page body, preserving scrolling, sele
   host.append('Selected text'); const range = document.createRange(); range.selectNodeContents(host)
   window.getSelection()?.addRange(range)
   touch('touchstart', 10, 100, 0); touch('touchmove', 90, 100, 90); touch('touchend', 140, 100, 180)
-  expect(back).toHaveBeenCalledTimes(2)
+  expect(back).toHaveBeenCalledTimes(3)
   remove(); host.remove()
 })
