@@ -212,3 +212,12 @@ masters. Legacy Mac, web and Android launcher exports receive transparent rounde
 corners; iOS/Watch and store marketing assets remain opaque for platform masking.
 Version 1.0.11 (18) is a test candidate. Accumulate this change for the
 next owner-authorized review; preserve current production releases and reviews.
+
+## Release amendment · 2026-10-11
+
+The owner requested “build bunko and submit”. Version 1.0.12 (19) carries the
+GitHub translation-request feature to iOS/Watch, universal Mac and Android.
+Qualify signed packages, publish to the existing testing groups, and submit
+for formal review. This authorizes replacement of the older pending Bunko Mac
+review with the qualified latest build. Existing pricing and billing settings
+remain as previously qualified. Public update feeds advance only after release.
