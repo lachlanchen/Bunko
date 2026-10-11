@@ -1,3 +1,21 @@
+# Current: Bunko 1.0.12 (22) submitted · 11 October 2026
+
+Only the first selected/main language is unlabelled; secondary translations keep
+bold labels in both reader layouts. Settings names and order numbers remain.
+Build22 is in iOS/Watch and Mac TestFlight and Google internal testing.
+Apple submissions are WAITING_FOR_REVIEW; Google accepted the review submission,
+with automatic quick-check status recorded in the receipt. No unsent changes.
+Qualified build22 replaces21. 150 automated tests and four targeted reader-browser
+checks pass. Signed packages contain the tested entry JavaScript; screenshots refreshed.
+No new physical-device/purchase test, PWA deployment or public-feed change.
+
+[Build22 receipt](../../docs/translation-labels22-20261011.md).
+Private runtime: `.runtime/translation-labels22-20261011/`.
+Owned preview4173, noVNC6190/CDP9490 and KVM archive agent stopped after capture;
+the persistent store profile is retained. No Mac mini GUI or peer desktop used.
+
+## Earlier records
+
 # Current: Bunko 1.0.12 (21) submitted · 11 October 2026
 
 Build 21 is available in iOS/Watch and Mac TestFlight and Google internal testing.

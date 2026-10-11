@@ -16,11 +16,11 @@ Bücher können beliebig viele Sprachebenen mit standardisierten Sprachkennungen
 
 ## Update zur Prüfung eingereicht · 11. Oktober 2026
 
-Bunko **1.0.12 (21)** ist in TestFlight und im internen Google-Test verfügbar und zur Prüfung für iOS/Watch, macOS und Google Play eingereicht. Buchdetails und Einstellungen bieten Übersetzungsanfragen über GitHub: 11 vorgeschlagene Zielsprachen oder eine freie Spracheingabe. Die entsprechenden Screenshots wurden aktualisiert. Nach Genehmigung erfolgt die Veröffentlichung automatisch.
+Bunko **1.0.12 (22)** ist in TestFlight und im internen Google-Test verfügbar und zur Prüfung für iOS/Watch, macOS und Google Play eingereicht. Buchdetails und Einstellungen bieten Übersetzungsanfragen über GitHub: 11 vorgeschlagene Zielsprachen oder eine freie Spracheingabe. Die entsprechenden Screenshots wurden aktualisiert. Nach Genehmigung erfolgt die Veröffentlichung automatisch.
 
-Übersetzungsanfragen verwenden jetzt das geöffnete Buch. Auf der Buchseite gibt es oben rechts eine Einstellungstaste. Einstellungen lassen sich mit der größeren Schließen-Taste, durch Tippen außerhalb oder Wischen nach rechts schließen. Wischen nach rechts führt vom Lesen über die Buchdetails zur Bibliothek zurück. Vorhandene Übersetzungen öffnen sich direkt, offline aus dem Cache. Nummerierte Sprachchips folgen der Auswahlreihenfolge: Die erste Sprache ist Haupttext, Abwählen rückt die nächste nach und erneutes Auswählen hängt sie an. Auch die Einzelsprachenansicht folgt dieser Wahl; wiederholte Sprachlabels entfallen.
+Übersetzungsanfragen verwenden jetzt das geöffnete Buch. Auf der Buchseite gibt es oben rechts eine Einstellungstaste. Einstellungen lassen sich mit der größeren Schließen-Taste, durch Tippen außerhalb oder Wischen nach rechts schließen. Wischen nach rechts führt vom Lesen über die Buchdetails zur Bibliothek zurück. Vorhandene Übersetzungen öffnen sich direkt, offline aus dem Cache. Nummerierte Sprachchips folgen der Auswahlreihenfolge: Die erste Sprache ist Haupttext, Abwählen rückt die nächste nach und erneutes Auswählen hängt sie an. Nur die zuerst gewählte Hauptsprache bleibt ohne Sprachlabel; jede Übersetzung behält ihr fett gedrucktes Sprachlabel.
 
-[Einreichung und Tests](../docs/navigation21-20261011.md)
+[Einreichung und Tests](../docs/translation-labels22-20261011.md)
 
 ## Öffentliche Veröffentlichung · 10. Oktober 2026
 

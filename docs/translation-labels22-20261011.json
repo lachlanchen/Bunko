@@ -1,0 +1,268 @@
+{
+  "verifiedAt": "2026-10-11T01:44:49.673996+00:00",
+  "version": "1.0.12",
+  "build": 22,
+  "source": "601b65ed89bb86cea72d5fcaa160afaf7a1d270c",
+  "apple": {
+    "bunko-IOS": {
+      "app": "6815137919",
+      "platform": "IOS",
+      "version": "ea199841-b9b7-4cb9-8f61-550514c04f91",
+      "build": "aa3759f6-cd77-419d-997a-30cc7cb0c462",
+      "buildNumber": "22",
+      "marketing": "1.0.12",
+      "releaseType": "AFTER_APPROVAL",
+      "screenshots": [
+        {
+          "locale": "en-US",
+          "type": "APP_WATCH_SERIES_10",
+          "count": 2,
+          "files": [
+            "watch-01-library.png",
+            "watch-02-reading.png"
+          ],
+          "complete": true
+        },
+        {
+          "locale": "en-US",
+          "type": "APP_IPAD_PRO_3GEN_129",
+          "count": 4,
+          "files": [
+            "ios-ipad-01.png",
+            "ios-ipad-02.png",
+            "en-ipad-translation21.png",
+            "en-ipad-reader22.png"
+          ],
+          "complete": true
+        },
+        {
+          "locale": "en-US",
+          "type": "APP_IPHONE_65",
+          "count": 8,
+          "files": [
+            "ios-65-01.png",
+            "ios-65-02.png",
+            "ios-65-03.png",
+            "ios-65-04.png",
+            "ios-65-05.png",
+            "en-phone-translation21.png",
+            "en-iphone-settings21.png",
+            "en-phone-reader22.png"
+          ],
+          "complete": true
+        }
+      ],
+      "reviewerCredentialsVerified": true,
+      "reviewId": "21511d44-74f4-4478-9a93-c19260dfba80",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-10-11T01:43:56.317Z",
+      "verifiedAt": "2026-10-11T01:44:21.424592+00:00"
+    },
+    "bunko-MAC_OS": {
+      "app": "6815137919",
+      "platform": "MAC_OS",
+      "version": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+      "build": "e62898d1-23d7-46f0-a5e3-a31bd2b9a304",
+      "buildNumber": "22",
+      "marketing": "1.0.12",
+      "releaseType": "AFTER_APPROVAL",
+      "screenshots": [
+        {
+          "locale": "en-US",
+          "type": "APP_DESKTOP",
+          "count": 5,
+          "files": [
+            "macos-01-library.png",
+            "macos-03-equations.png",
+            "macos-02-reading.png",
+            "en-mac-translation21.png",
+            "en-mac-reader22.png"
+          ],
+          "complete": true
+        }
+      ],
+      "reviewerCredentialsVerified": true,
+      "reviewId": "d6b969b8-cf29-4ded-a1a7-3229fc64baa7",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-10-11T01:44:09.526Z",
+      "verifiedAt": "2026-10-11T01:44:23.111347+00:00"
+    }
+  },
+  "google": {
+    "verifiedAt": "2026-10-11T01:42:18.887622+00:00",
+    "package": "art.lazying.bunko",
+    "productionRelease": 12,
+    "version": "1.0.12",
+    "build": 22,
+    "status": "CHANGES_IN_REVIEW",
+    "rollout": "100%",
+    "targetCountries": 172,
+    "managedPublishing": false,
+    "quickChecks": "Running automatically after confirmed submission; proceeds to review when complete",
+    "internalRelease": 17,
+    "internalStatus": "Available to internal testers",
+    "replacedBuild": 21,
+    "newScreenshot": "en-android-reader22.png"
+  },
+  "packages": [
+    {
+      "platform": "IOS",
+      "version": "1.0.12",
+      "build": "22",
+      "signatureVerified": true,
+      "sha256": "a1f3f561f738923e9c5231ff3e60f694ef2270b07d9665b9c75ade5edce2db3d",
+      "currentBookSettingsEmbedded": true,
+      "orderedLanguagesAndReuseEmbedded": true,
+      "entryJS": "index-IRSZtRQ2.js",
+      "watchMatched": true,
+      "entrySHA256": "f14179d7beb69ba0f457b0d4d70e54b40c10afa1f33271e3d11b20c89950ee8f",
+      "translationLabelsEmbedded": true
+    },
+    {
+      "platform": "MAC_OS",
+      "version": "1.0.12",
+      "build": "22",
+      "signatureVerified": true,
+      "sha256": "310ca9a1d47215dcb1d438ac1b49db2f54fd6a22abab170e9e76567deb8f16e0",
+      "currentBookSettingsEmbedded": true,
+      "orderedLanguagesAndReuseEmbedded": true,
+      "entryJS": "index-IRSZtRQ2.js",
+      "architectures": [
+        "x86_64",
+        "arm64"
+      ],
+      "entrySHA256": "f14179d7beb69ba0f457b0d4d70e54b40c10afa1f33271e3d11b20c89950ee8f",
+      "translationLabelsEmbedded": true
+    }
+  ],
+  "android": {
+    "files": {
+      "android/app/build/outputs/bundle/release/app-release.aab": "bcc449865e65dc83a84ae3fab03bd3194bf8c6258bbea684562fd8797b054b3b",
+      "android/app/build/outputs/apk/release/app-release.apk": "e818ba7815e49e02b64ac3cf54124cfdff891addf4bf03faffac87b6fbe99aef"
+    },
+    "version": "1.0.12",
+    "build": 22,
+    "entryJS": "./assets/index-IRSZtRQ2.js",
+    "entrySHA256": "f14179d7beb69ba0f457b0d4d70e54b40c10afa1f33271e3d11b20c89950ee8f",
+    "translationLabelsEmbedded": true,
+    "signatureVerified": true
+  },
+  "qualification": {
+    "clientTests": 92,
+    "serverTests": 58,
+    "lint": true,
+    "renderer": true,
+    "webNativeMacBuilds": true,
+    "androidLint": true,
+    "ui": {
+      "passed": true,
+      "channel": "Chromium responsive reader; no physical native UI claim",
+      "checks": [
+        "interlinear: en main unlabelled; translations ['zh', 'ja'] labelled; narrow viewport fits",
+        "interlinear: ja main unlabelled; translations ['en', 'zh'] labelled; narrow viewport fits",
+        "paired: en main unlabelled; translations ['zh', 'ja'] labelled; narrow viewport fits",
+        "paired: ja main unlabelled; translations ['en', 'zh'] labelled; narrow viewport fits"
+      ]
+    },
+    "liveDemoScope": "Same-day build19 production-origin no-OTP sign-in/reload evidence carried forward; authentication unchanged."
+  },
+  "screenshots": {
+    "captured": 13,
+    "manifest": "store/screenshots/translation-labels22-20261011/manifest.json",
+    "appleNewProcessed": 3,
+    "googleNewSaved": 1,
+    "googleInventory": [
+      {
+        "locale": "en-US",
+        "attachments": [
+          "Remove bunko-white-bottom-right-512.png",
+          "Remove bunko-centered-ruby-feature-20261008.png",
+          "Remove play-phone-01.png",
+          "Remove play-phone-02.png",
+          "Remove play-phone-03.png",
+          "Remove play-phone-04.png",
+          "Remove play-phone-05.png",
+          "Remove en-android-settings21.png",
+          "Remove en-android-reader22.png",
+          "Remove play-tablet-01.png",
+          "Remove play-tablet-02.png",
+          "Remove play-tablet-01.png",
+          "Remove play-tablet-02.png"
+        ],
+        "phoneCount": 7,
+        "tablet7Count": 2,
+        "tablet10Count": 2
+      },
+      {
+        "locale": "zh-CN",
+        "attachments": [
+          "Remove bunko-white-bottom-right-512.png",
+          "Remove bunko-centered-ruby-feature-20261008.png",
+          "Remove play-phone-01.png",
+          "Remove play-phone-02.png",
+          "Remove play-phone-03.png",
+          "Remove play-phone-04.png",
+          "Remove play-phone-05.png",
+          "Remove play-tablet-01.png",
+          "Remove play-tablet-02.png",
+          "Remove play-tablet-01.png",
+          "Remove play-tablet-02.png"
+        ],
+        "phoneCount": 5,
+        "tablet7Count": 2,
+        "tablet10Count": 2
+      },
+      {
+        "locale": "zh-TW",
+        "attachments": [
+          "Remove bunko-white-bottom-right-512.png",
+          "Remove bunko-centered-ruby-feature-20261008.png",
+          "Remove play-phone-01.png",
+          "Remove play-phone-02.png",
+          "Remove play-phone-03.png",
+          "Remove play-phone-04.png",
+          "Remove play-phone-05.png",
+          "Remove play-tablet-01.png",
+          "Remove play-tablet-02.png",
+          "Remove play-tablet-01.png",
+          "Remove play-tablet-02.png"
+        ],
+        "phoneCount": 5,
+        "tablet7Count": 2,
+        "tablet10Count": 2
+      },
+      {
+        "locale": "ja-JP",
+        "attachments": [
+          "Remove bunko-white-bottom-right-512.png",
+          "Remove bunko-centered-ruby-feature-20261008.png",
+          "Remove play-phone-01.png",
+          "Remove play-phone-02.png",
+          "Remove play-phone-03.png",
+          "Remove play-phone-04.png",
+          "Remove play-phone-05.png",
+          "Remove play-tablet-01.png",
+          "Remove play-tablet-02.png",
+          "Remove play-tablet-01.png",
+          "Remove play-tablet-02.png"
+        ],
+        "phoneCount": 5,
+        "tablet7Count": 2,
+        "tablet10Count": 2
+      }
+    ]
+  },
+  "replacedReviews": {
+    "appleBuild": 21,
+    "googleBuild": 21
+  },
+  "webDeployed": false,
+  "publicFeedChanged": false,
+  "limits": [
+    "Reader checks and screenshots use Chromium rendering the exact packaged web assets; no new physical-device/native Apple UI or purchase test.",
+    "Submitted and beta builds are not public releases.",
+    "English reader captures uploaded; other locales prepared locally."
+  ]
+}

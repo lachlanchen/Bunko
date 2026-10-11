@@ -16,11 +16,11 @@ Books may contain any number of language layers using standard language tags, in
 
 ## Latest update submitted · 11 October 2026
 
-Bunko **1.0.12 (21)** is available in TestFlight and Google internal testing, and submitted for iOS/Watch, macOS and Google Play review. Book details and Settings now include translation requests through GitHub, with 11 suggested target languages and a custom language field. Current screenshots were refreshed. Automatic public release follows approval.
+Bunko **1.0.12 (22)** is available in TestFlight and Google internal testing, and submitted for iOS/Watch, macOS and Google Play review. Book details and Settings now include translation requests through GitHub, with 11 suggested target languages and a custom language field. Current screenshots were refreshed. Automatic public release follows approval.
 
-Translation requests now default to the current book. Book pages have a top-right Settings button; Settings closes with a larger Close button, an outside tap or a right swipe. Swipe right to return through reading, book details and library. Existing translations open directly, including cached reading offline. Numbered language chips follow selection order: first is main, deselecting it promotes the next, and reselecting appends. Main-only reading follows that choice without repeated language labels.
+Translation requests now default to the current book. Book pages have a top-right Settings button; Settings closes with a larger Close button, an outside tap or a right swipe. Swipe right to return through reading, book details and library. Existing translations open directly, including cached reading offline. Numbered language chips follow selection order: first is main, deselecting it promotes the next, and reselecting appends. Only the first selected/main language is unlabelled; every translation keeps its bold language label.
 
-[Submission and test evidence](docs/navigation21-20261011.md)
+[Submission and test evidence](docs/translation-labels22-20261011.md)
 
 ## Public distribution · 10 October 2026
 
