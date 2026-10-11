@@ -25,6 +25,7 @@ import {
   saveUI,
 } from './lib/settings'
 import { DocumentAgent } from './components/DocumentAgent'
+import { TranslationRequest } from './components/TranslationRequest'
 import { CloudPlans } from './components/CloudPlans'
 import { cloudCopy } from './components/cloudCopy'
 import { agentCopy } from './components/agentCopy'
@@ -386,6 +387,7 @@ export default function App() {
               </p>
             )}
 
+            <TranslationRequest key={meta.id} ui={ui} book={meta} />
             <ol className="chapter-list flat">
               {meta.chapters.map((chapter, position) => (
                 <li key={chapter.file}>
@@ -673,6 +675,8 @@ function SettingsSheet({
           </a>
         </div>
       </section>
+
+      <section><TranslationRequest ui={ui} /></section>
 
       {storage && (
         <section>

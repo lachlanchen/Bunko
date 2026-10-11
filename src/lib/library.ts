@@ -261,3 +261,17 @@ export const issueUrl = (title: string) =>
   `https://github.com/${REPO}/issues/new?title=${encodeURIComponent(`Book request: ${title}`)}&body=${encodeURIComponent(
     'Which public-domain work would you like to read in Bunko?\n\nTitle:\n' + title + '\n\nAuthor:\n\nWhy this one:\n',
   )}`
+
+/** User reviews and submits this public request on GitHub; opening never posts it. */
+export function translationIssueUrl(book: { title: string; target: string; bookId?: string; author?: string; languages?: string[] }): string {
+  const body = [
+    'Please add a translation to the Bunko library.', '',
+    `Book: ${book.title.trim()}`, `Book ID: ${book.bookId || '(please identify the edition)'}`,
+    `Author: ${book.author || ''}`, `Available languages: ${book.languages?.join(', ') || '(unknown)'}`,
+    `Requested language: ${book.target.trim()}`, '',
+    ...(book.bookId ? [`Read in Bunko: https://lachlan.lazying.art/Bunko/?book=${encodeURIComponent(book.bookId)}`, ''] : []),
+    'Preferred edition, translation style or source (optional):', '',
+    'Please check existing requests first. Any source translation needs redistribution permission.',
+  ].join('\n')
+  return `https://github.com/${REPO}/issues/new?${new URLSearchParams({ title: `Translation request: ${book.title.trim()} → ${book.target.trim()}`, body })}`
+}

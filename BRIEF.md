@@ -1,5 +1,15 @@
 # Bunko — product brief
 
+## Translation requests · 2026-10-11
+
+The owner requested translation requests through the existing book-issue workflow.
+Book details and Settings offer a prefilled public GitHub issue with the target
+language, edition identity and current languages. Readers review and submit on
+GitHub. Link existing requests; support arbitrary target languages. This queues
+editorial work, not an automatic paid translation. Cleared completed language
+editions remain downloadable book data.
+
+
 ## Cloud subscriptions and book mirrors · 2026-10-03
 
 The owner explicitly approved optional cloud-feature subscriptions at

@@ -288,6 +288,14 @@ input[type='range'] { width: 100%; accent-color: var(--indigo); }
 }
 :root[data-theme='night'] .request .button { color: #14131c; }
 .request .button[aria-disabled='true'] { opacity: .45; pointer-events: none; }
+.translation-request { margin: 18px 0; }
+.translation-request summary { cursor: pointer; font-weight: 600; }
+.translation-request label { display: grid; gap: 6px; margin: 12px 0; font-size: .9rem; }
+.translation-request input, .translation-request select { width: 100%; min-width: 0; padding: 10px; font: inherit; color: inherit; background: transparent; border: 1px solid var(--line); border-radius: 8px; }
+.translation-request small { display: block; margin-top: 5px; }
+.translation-links { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: .9rem; }
+.translation-links .button { padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; text-decoration: none; }
+.translation-links [aria-disabled='true'] { opacity: .45; pointer-events: none; }
 
 /* ---------- notices ---------- */
 .notice { color: var(--ink-soft); font-size: 14px; text-align: center; padding: 30px 0; }
