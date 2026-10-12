@@ -11,6 +11,9 @@ python tools/import_polished_physics.py --dry-run
 python tools/import_polished_physics.py
 python ../bunko-books/tools/catalogue.py --write
 python -m unittest discover -s tools -p 'test*polished*py'
+python tools/check_polished_reader.py --book physics-particle-physics-2
+# After publishing the content repository:
+python tools/check_polished_reader.py --live
 ```
 
 `--preflight` checks content while PDFs rebuild and cannot write bundles.
