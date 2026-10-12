@@ -1,5 +1,6 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { BOOK_ORIGINS, createBookTransport } from './bookTransport'
+afterEach(() => vi.unstubAllEnvs())
 
 describe('public book fallback', () => {
   it('uses GitHub first, avoids mirror bandwidth on success, and never sends credentials', async () => {
@@ -54,5 +55,21 @@ describe('public book fallback', () => {
     const fetcher = vi.fn<typeof fetch>(), get = createBookTransport({ fetcher })
     for (const path of ['../config.json','https://other.test/x','books/x/assets/../../config.png','books/x/c0001.json?token=x','books/x/cover-abc.svg']) await expect(get(path)).rejects.toThrow('Invalid book path')
     expect(fetcher).not.toHaveBeenCalled()
+  })
+  it('falls back from direct to legacy cache only for credential-free public reads', async () => {
+    vi.stubEnv('VITE_BUNKO_DIRECT_ORIGIN', '1'); vi.resetModules()
+    const direct = await import('./bookTransport')
+    const fetcher = vi.fn<typeof fetch>()
+      .mockRejectedValueOnce(new TypeError('GitHub blocked'))
+      .mockRejectedValueOnce(new TypeError('CDN blocked'))
+      .mockRejectedValueOnce(new TypeError('direct unavailable'))
+      .mockResolvedValueOnce(Response.json({ books: [] }))
+    expect(await (await direct.createBookTransport({ fetcher })('reader-index.json')).json()).toEqual({ books: [] })
+    expect(fetcher.mock.calls.map(([url]) => String(url))).toEqual([
+      `${BOOK_ORIGINS[0]}/reader-index.json`, `${BOOK_ORIGINS[1]}/reader-index.json`,
+      'https://bunko.lazying.art/bunko/books-cache/reader-index.json',
+      'https://llm.lazying.art/bunko/books-cache/reader-index.json',
+    ])
+    expect(fetcher.mock.calls.every(([, init]) => init?.credentials === 'omit' && init?.redirect === 'error' && !init?.headers)).toBe(true)
   })
 })

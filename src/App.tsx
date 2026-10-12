@@ -1,4 +1,5 @@
 import { baseLanguage, htmlLanguage, languageDirection } from './lib/languages'
+import { BUNKO_LEGAL_API } from './lib/serviceOrigins'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Paperclip as PaperclipIcon, Sparkles, BookOpen, Check, Download, Settings, RefreshCw, Search, Trash2 } from 'lucide-react'
 import type { BookMeta, BookRow, Place, ReaderIndex, ReadingSettings } from './types'
@@ -663,7 +664,7 @@ function SettingsSheet({
       <section>
         <h3>{copy.about}</h3>
         <p className="hint">{copy.aboutBody}</p>
-        <p><a href="https://llm.lazying.art/bunko/privacy.html" target="_blank" rel="noopener noreferrer">{agentCopy[ui].privacyLink}</a></p>
+        <p><a href={`${BUNKO_LEGAL_API}/privacy.html`} target="_blank" rel="noopener noreferrer">{agentCopy[ui].privacyLink}</a></p>
         <h3>{copy.rights}</h3>
         <p className="hint">{copy.rightsBody}</p>
         <h3>{copy.dictionarySources}</h3>

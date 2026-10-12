@@ -8,6 +8,7 @@ import { agentCopy } from './agentCopy'
 import { DocumentContent } from './DocumentContent'
 import { DemoAccount, DemoNotice } from './DemoAccount'
 import { cloudCopy } from './cloudCopy'
+import { BUNKO_LEGAL_API } from '../lib/serviceOrigins'
 import './documentAgent.css'
 
 export function DocumentAgent({ ui, onBack, onCloud }: { ui: UILanguage; onBack: () => void; onCloud: () => void }) {
@@ -198,7 +199,7 @@ export function DocumentAgent({ ui, onBack, onCloud }: { ui: UILanguage; onBack:
       <footer><button type="button" onClick={() => { choose(reading.id); setReading(null); composer.current?.focus() }}>{t.chat}</button></footer>
     </section>}
     {cloudConsent && <div className="agent-modal-backdrop"><section className="agent-modal" role="dialog" aria-modal="true" aria-label={t.consentTitle}>
-      <h2>{t.consentTitle}</h2><p>{t.consentBody}</p><p><a href="https://llm.lazying.art/bunko/privacy.html" target="_blank" rel="noopener noreferrer">{t.privacyLink}</a></p>
+      <h2>{t.consentTitle}</h2><p>{t.consentBody}</p><p><a href={`${BUNKO_LEGAL_API}/privacy.html`} target="_blank" rel="noopener noreferrer">{t.privacyLink}</a></p>
       <button type="button" onClick={() => { setCloudConsent(false); pendingCloud.current = null }}>{t.cancel}</button>
       <button type="button" onClick={() => {
         try { localStorage.setItem(`bunko-cloud-consent-v1:${user?.id}`, 'yes') } catch { /* Consent applies to this action only. */ }

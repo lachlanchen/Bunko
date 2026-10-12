@@ -6,7 +6,7 @@ const state = vi.hoisted(() => ({ native: false, saved: null as string | null })
 vi.mock('@capacitor/core', () => ({ Capacitor: { isNativePlatform: () => state.native } }))
 vi.mock('./discussionStorage', () => ({ savedSession: async () => state.saved, saveSession: async (token: string | null) => { state.saved = token } }))
 beforeEach(() => { vi.resetModules(); vi.useFakeTimers(); localStorage.clear(); state.native = false; state.saved = null; vi.stubGlobal('crypto', webcrypto) })
-afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks() })
+afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.unstubAllEnvs(); vi.restoreAllMocks(); delete window.__BUNKO_DESKTOP__ })
 it('recovers a lost completion response and ignores the COOP closed-popup signal', async () => {
   const popup = { opener: window, closed: true, location: { href: '' }, close: vi.fn() }
   vi.spyOn(window, 'open').mockReturnValue(popup as unknown as Window)
@@ -108,4 +108,39 @@ it('demo password failures are not retried automatically or stored', async () =>
   expect(api.currentUser()).toBeNull()
   expect(localStorage.length).toBe(0)
   expect(state.saved).toBeNull()
+})
+
+it.each(['native', 'desktop'])('restores an existing %s token through the qualified direct endpoint', async platform => {
+  vi.stubEnv('VITE_BUNKO_DIRECT_ORIGIN', '1')
+  state.native = platform === 'native'; window.__BUNKO_DESKTOP__ = platform === 'desktop'
+  state.saved = 's'.repeat(43)
+  const request = vi.fn<typeof fetch>(async () => Response.json({ user: { id: 2, login: 'existing-reader' }, expires: Date.now() + 86400000 }))
+  vi.stubGlobal('fetch', request)
+  const api = await import('./discussions')
+  await api.restoreSession()
+  expect(request.mock.calls[0][0]).toBe('https://bunko.lazying.art/bunko/v1/session')
+  expect(request.mock.calls[0][1]).toMatchObject({ credentials: 'omit', headers: { Authorization: `Bearer ${state.saved}` } })
+  expect(api.currentUser()?.login).toBe('existing-reader')
+})
+
+it('keeps existing web cookie login on its original host even in a direct-enabled build', async () => {
+  vi.stubEnv('VITE_BUNKO_DIRECT_ORIGIN', '1')
+  const request = vi.fn<typeof fetch>(async () => Response.json({ user: { id: 3, login: 'web-reader' }, expires: Date.now() + 86400000 }))
+  vi.stubGlobal('fetch', request)
+  const api = await import('./discussions')
+  await api.restoreSession()
+  expect(request.mock.calls[0][0]).toBe('https://llm.lazying.art/bunko/v1/session')
+  expect(request.mock.calls[0][1]?.credentials).toBe('include')
+  expect(state.saved).toBeNull()
+})
+
+it('never replays an uncertain private upload or checkout across origins', async () => {
+  vi.stubEnv('VITE_BUNKO_DIRECT_ORIGIN', '1'); state.native = true
+  const request = vi.fn<typeof fetch>(async () => { throw new TypeError('response lost') })
+  vi.stubGlobal('fetch', request)
+  const api = await import('./discussions')
+  await expect(api.api('/v1/agent/upload', { fixture: true })).rejects.toThrow('offline')
+  await expect(api.api('/v1/cloud/checkout', { fixture: true })).rejects.toThrow('offline')
+  expect(request).toHaveBeenCalledTimes(2)
+  expect(request.mock.calls.every(([url]) => String(url).startsWith('https://bunko.lazying.art/bunko/'))).toBe(true)
 })

@@ -1,8 +1,10 @@
+import { bookMirrorOrigins } from './serviceOrigins'
+
 /** Public book payloads only. Credentials and account requests never use mirrors. */
 export const BOOK_ORIGINS = [
   'https://raw.githubusercontent.com/lachlanchen/bunko-books/main',
   'https://cdn.jsdelivr.net/gh/lachlanchen/bunko-books@main',
-  'https://llm.lazying.art/bunko/books-cache',
+  ...bookMirrorOrigins(),
 ] as const
 
 export function validBookPath(path: string): boolean {

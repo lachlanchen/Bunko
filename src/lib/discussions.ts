@@ -2,8 +2,9 @@ import { Capacitor } from '@capacitor/core'
 import { App } from '@capacitor/app'
 import { Browser } from '@capacitor/browser'
 import { savedSession, saveSession } from './discussionStorage'
+import { discussionOrigin } from './serviceOrigins'
 
-export const DISCUSSION_API = 'https://llm.lazying.art/bunko'
+export const DISCUSSION_API = discussionOrigin(Capacitor.isNativePlatform() || (typeof window !== 'undefined' && !!window.__BUNKO_DESKTOP__))
 export interface DiscussionUser { id: number; login: string; kind?: 'demo' }
 export interface DiscussionComment { id: number; body: string; user: DiscussionUser; html_url?: string; created_at?: string }
 export interface DiscussionIssue extends DiscussionComment { number: number; locked: boolean }

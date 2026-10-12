@@ -1,5 +1,15 @@
 # Bunko — product brief
 
+## Dedicated Bunko service hostname · 2026-10-12
+
+The owner requests `bunko.lazying.art` as the direct service host, retaining
+`llm.lazying.art/bunko` for installed builds during migration. Both entrances must
+reach the same authoritative backend and sessions. Preserve the current GitHub
+callback and host-scoped PWA cookies; do not broaden cookies to sibling apps.
+Prepare the native/macOS endpoint change for the next cumulative build, enabled
+only after dedicated-host TLS, routes and compatibility checks pass. Existing
+store builds/reviews remain unchanged. See `docs/service-origin-migration.md`.
+
 ## Translation requests · 2026-10-11
 
 The owner requested translation requests through the existing book-issue workflow.

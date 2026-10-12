@@ -21,6 +21,11 @@ An absent client ID/secret leaves sign-in disabled (`503 not_configured`) while 
 
 ## Deployment
 
+The optional dedicated service hostname is staged separately from installed
+clients. See [origin migration](../docs/service-origin-migration.md) for its
+qualification gate, native/PWA session behavior and retained legacy callback.
+Do not remove the existing host when adding the direct ingress.
+
 Package the reviewed files with SHA-256 receipts. Install each release under a new immutable directory; mutable SQLite state belongs in the service's private state directory. Use the provided unprivileged, memory-limited systemd unit and a loopback-only listener. The Caddy snippet imports **inside** the existing HTTPS gateway site and exposes only its declared paths/methods. Preserve the prior Caddy file and all unrelated routes. Validate before reload; probe both preserved sites and new routes before accepting. No firewall or port 80/443 changes are needed.
 
 The operator's private `.runtime/github-comments/` receipt records exact release hashes, service ownership, backup paths, probes, and rollback. Server setup is not complete until health says `ready: true` and real browser authorization has been verified.
