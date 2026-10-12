@@ -75,7 +75,7 @@ def make_cover(folder, source, original_design=False):
                   'sourceAsset': str(source.relative_to(ROOT.parent))}
 
 
-def publish(slug, title, langs, primary, category, author, chapters, source_repo, basis, cover=None, original_cover=False, license=None):
+def publish(slug, title, langs, primary, category, author, chapters, source_repo, basis, cover=None, original_cover=False, license=None, aligned_ids=False):
     folder = OUT / slug
     folder.mkdir(parents=True, exist_ok=True)
     old_meta = json.loads((folder / 'meta.json').read_text()) if (folder / 'meta.json').exists() else {}
@@ -110,7 +110,7 @@ def publish(slug, title, langs, primary, category, author, chapters, source_repo
                         block['figure']['path'] = versioned
                 target = folder / versioned
             target.write_bytes(data)
-        if i in old_chapters:
+        if i in old_chapters and not aligned_ids:
             preserve_passage_ids(blocks, json.loads((folder / old_chapters[i]).read_text())['p'])
         chapter = {'id': f'{slug}-c{i:03d}', 'n': i,
                    'title': {lang: [chapter_title.get(lang) or chapter_title[primary]] for lang in langs}, 'p': blocks}
@@ -254,7 +254,50 @@ def pandoc_text(nodes):
     return ''.join(output).strip()
 
 
-def pandoc_rich(nodes):
+def freeze_math(text):
+    """Keep Pandoc from consuming commutators as optional equation arguments."""
+    from pylatexenc import latexwalker as lw
+    replacements, values = [], {}
+    environments = {'equation', 'align', 'alignat', 'gather', 'multline', 'displaymath', 'eqnarray', 'flalign'}
+    def walk(nodes):
+        for node in nodes:
+            tex, display = None, False
+            if isinstance(node, lw.LatexMathNode):
+                raw = text[node.pos:node.pos + node.len]
+                tex = raw[len(node.delimiters[0]):-len(node.delimiters[1])]
+                display = node.displaytype == 'display'
+            elif isinstance(node, lw.LatexEnvironmentNode):
+                name = node.environmentname.rstrip('*')
+                if name in environments:
+                    raw = text[node.pos:node.pos+node.len]
+                    tex = re.sub(r'^\\begin\{[^}]+\}|\\end\{[^}]+\}$', '', raw).strip()
+                    if name in {'align', 'alignat', 'flalign', 'eqnarray'}:
+                        tex = r'\begin{aligned}' + tex + r'\end{aligned}'
+                    elif name == 'gather':
+                        tex = r'\begin{gathered}' + tex + r'\end{gathered}'
+                    display = True
+                else:
+                    walk(node.nodelist)
+            elif isinstance(node, lw.LatexGroupNode):
+                walk(node.nodelist)
+            elif isinstance(node, lw.LatexMacroNode) and node.nodeargd:
+                walk([arg for arg in node.nodeargd.argnlist if arg])
+            if tex is not None:
+                for spacing in ('', r'\quad', r'\qquad', r'\;', r'\,'):
+                    tex = tex.replace('@{' + spacing + '}', '')
+                token = f'BUNKOMATH{len(values):06d}TOKEN'
+                if token in text:
+                    raise ValueError('Math marker collision')
+                values[token] = {'math': re.sub(r'\\label\{[^}]+\}', '', tex).strip(), 'display': display}
+                replacements.append((node.pos, node.pos+node.len, token))
+    nodes, _, _ = lw.LatexWalker(text).get_latex_nodes()
+    walk(nodes)
+    for start, end, token in sorted(replacements, reverse=True):
+        text = text[:start] + token + text[end:]
+    return text, values
+
+
+def pandoc_rich(nodes, *, strict=False, math=None):
     parts = []
     for node in nodes:
         if not isinstance(node, dict):
@@ -266,47 +309,118 @@ def pandoc_rich(nodes):
             # inter-column @{...} spacing in array specifications.
             tex = re.sub(r'(@\{[^}]*\})', '', tex)
             parts.append({'math': tex, 'display': value[0]['t'] == 'DisplayMath' or '\\begin{split}' in tex})
-        elif tag == 'Str': parts.append({'text': value})
+        elif tag == 'Str':
+            for piece in re.split(r'(BUNKOMATH\d{6}TOKEN)', value) if math else [value]:
+                if piece:
+                    parts.append(math[piece] if math and piece in math else {'text': piece})
         elif tag in ('Space', 'SoftBreak', 'LineBreak'): parts.append({'text': ' '})
-        elif tag in ('Emph', 'Strong', 'Span', 'Link', 'Quoted'):
-            nested = value[-1] if isinstance(value, list) and value and isinstance(value[-1], list) else value
-            parts.extend(pandoc_rich(nested if isinstance(nested, list) else []))
+        elif tag in ('Emph', 'Strong', 'Span', 'Link', 'Quoted', 'SmallCaps', 'Strikeout', 'Superscript', 'Subscript'):
+            nested = value[1] if tag in ('Span', 'Link', 'Quoted') else value
+            parts.extend(pandoc_rich(nested, strict=strict, math=math))
         elif tag == 'Code': parts.append({'text': value[-1]})
+        elif tag == 'Note' and strict:
+            parts.append({'text': ' ('})
+            for block in value:
+                if block['t'] not in ('Para', 'Plain'):
+                    raise ValueError('Complex footnote needs explicit conversion')
+                parts.extend(pandoc_rich(block['c'], strict=True, math=math))
+            parts.append({'text': ') '})
+        elif strict and tag not in ('Note',):
+            raise ValueError(f'Unsupported inline node: {tag}: {value}')
     return parts
 
 
-def tex_blocks(source, figure_root=None, origin=None):
+def tex_blocks(source, figure_root=None, origin=None, *, strict=False, language='en'):
     origin = origin or source
     prepared = prepare_tex(source.read_text(), origin)
+    math = None
+    if strict:
+        prepared, math = freeze_math(prepared)
+        labels = {
+            'en': ['Overview', 'Question from the audience', 'Response', 'Question for the class', 'Lecture timestamp', 'Lecture frame', 'Editorial clarification'],
+            'ja': ['概観', '受講者からの質問', '回答', '受講者への問い', '講義時刻', '講義映像', '編集上の補足'],
+            'zh': ['概述', '听众提问', '回答', '课堂提问', '讲课时间', '讲课画面', '编者说明'],
+        }[language]
+        names = ['lectureoverview', 'audiencequestion', 'lecturerresponse', 'classquestion', 'lecturetimestamp', 'lectureframe', 'editorialnote']
+        definitions = []
+        for index, (name, label) in enumerate(zip(names, labels)):
+            body = (r'\footnote{' + label + ': #1}') if index in (4, 6) else (r'\textbf{' + label + ':} #1' + r'\par')
+            definitions.append('\\newcommand{\\' + name + '}[1]{' + body + '}')
+        definitions.append(r'\newcommand{\proseunicodefont}{}')
+        prepared = '\n'.join(definitions) + '\n' + prepared
     doc = json.loads(subprocess.check_output(['pandoc', '-f', 'latex', '-t', 'json'], input=prepared.encode()))
     blocks, assets = [], {}
+    current_segment = None
     def add(nodes, kind='text'):
-        rich = pandoc_rich(nodes)
+        nonlocal current_segment
+        rich = pandoc_rich(nodes, strict=strict, math=math)
+        groups, pending = [], []
+        for part in rich:
+            if 'text' not in part:
+                pending.append(part)
+                continue
+            for piece in re.split(r'(BUNKOUNIT\d{6}TOKEN)', part['text']):
+                if re.fullmatch(r'BUNKOUNIT\d{6}TOKEN', piece):
+                    if pending:
+                        groups.append((current_segment, pending))
+                    pending = []
+                    current_segment = piece
+                elif piece:
+                    pending.append({'text': piece})
+        if pending:
+            groups.append((current_segment, pending))
+        for segment, rich in groups:
+            add_rich(rich, kind, segment)
+
+    def add_rich(rich, kind, segment):
         if not rich: return
+        meaningful = [part for part in rich if part.get('math') or part.get('text', '').strip()]
+        if kind == 'text' and meaningful and all(part.get('math') and part.get('display') for part in meaningful):
+            kind = 'equation'
         plain = ''.join(item['text'] if 'text' in item else '$' + item['math'] + '$' for item in rich).strip()
         if not plain: return
         if re.fullmatch(r'\[(?:fig|eq|sec|tab):[^\]]+\]', plain): return
         unit = {'src': plain, 'en': [plain]}
         if any('math' in item for item in rich): unit['rich'] = {'en': rich}
-        blocks.append({'id': f'b{len(blocks)+1:04d}', 'src': plain, 'kind': kind, 'u': [unit]})
+        block = {'id': f'b{len(blocks)+1:04d}', 'src': plain, 'kind': kind, 'u': [unit]}
+        if segment is not None:
+            block['_sourceSegment'] = segment
+        blocks.append(block)
     def walk(items):
         for block in items:
             tag, value = block['t'], block.get('c')
             if tag in ('Para', 'Plain'):
                 images = [n for n in value if isinstance(n, dict) and n.get('t') == 'Image']
                 if images:
-                    for image in images:
+                    pending = []
+                    for image in value:
+                        if image.get('t') != 'Image':
+                            pending.append(image)
+                            continue
+                        # Source markers may occur immediately before an image.
+                        # Consume them in document order, never after the caption.
+                        add(pending)
+                        pending = []
                         candidate = resolve_image(image['c'][2][0], origin, figure_root)
                         dest = f'assets/{candidate.stem}.webp'
                         if dest in assets and assets[dest] != candidate:
                             raise ValueError(f'Figure filename collision: {dest}')
                         assets[dest] = candidate
-                        caption = pandoc_text(image['c'][1])
-                        add([{'t': 'Str', 'c': caption or 'Figure'}], 'figure')
-                        blocks[-1]['figure'] = {'path': dest, 'caption': {'en': caption}}
-                        # Retain the passage anchor without printing the caption twice.
-                        blocks[-1]['u'][0]['en'] = ['']
-                    add([n for n in value if n.get('t') != 'Image'])
+                        caption_nodes = image['c'][1]
+                        caption = pandoc_text(caption_nodes)
+                        if math:
+                            caption = re.sub(r'BUNKOMATH\d{6}TOKEN', lambda m: '$' + math[m[0]]['math'] + '$', caption)
+                        if strict and caption:
+                            # Existing readers render rich units but only plain figure
+                            # captions. Put the caption in the unit to retain its math
+                            # and all selected languages without an app/schema change.
+                            add(caption_nodes, 'figure')
+                            blocks[-1]['figure'] = {'path': dest, 'caption': {'en': ''}}
+                        else:
+                            add([{'t': 'Str', 'c': caption or 'Figure'}], 'figure')
+                            blocks[-1]['figure'] = {'path': dest, 'caption': {'en': caption}}
+                            blocks[-1]['u'][0]['en'] = ['']
+                    add(pending)
                 else:
                     meaningful = [n for n in value if isinstance(n, dict) and n.get('t') not in ('Space', 'SoftBreak', 'LineBreak')]
                     standalone = bool(meaningful) and all(n.get('t') == 'Math' and n['c'][0]['t'] == 'DisplayMath' for n in meaningful)
@@ -316,6 +430,40 @@ def tex_blocks(source, figure_root=None, origin=None):
             elif tag == 'BlockQuote': walk(value)
             elif tag in ('BulletList', 'OrderedList'):
                 for item in (value if tag == 'BulletList' else value[1]): walk(item)
+            elif tag == 'Table' and strict:
+                walk(value[1][1])
+                table_rows = value[3][1] + [row for body in value[4] for row in body[2] + body[3]] + value[5][1]
+                array_rows = []
+                for row in table_rows:
+                    cells = []
+                    for cell in row[1]:
+                        if cell[2:4] != [1, 1]:
+                            raise ValueError('Spanning table cells need explicit conversion')
+                        nodes = []
+                        for part in cell[4]:
+                            if part['t'] not in ('Plain', 'Para'):
+                                raise ValueError('Complex table cell needs explicit conversion')
+                            nodes.extend(part['c'])
+                        rich = pandoc_rich(nodes, strict=True, math=math)
+                        text = ''
+                        for part in rich:
+                            if 'math' in part:
+                                text += part['math']
+                            else:
+                                escaped = re.sub(r'([{}%$&#_^])', r'\\\1', part['text'])
+                                escaped = escaped.replace('~', r'\textasciitilde{}')
+                                text += r'\text{' + escaped + '}'
+                        cells.append(text)
+                    array_rows.append(' & '.join(cells))
+                array = r'\begin{array}{' + 'l' * len(value[2]) + '}' + r' \\ '.join(array_rows) + r'\end{array}'
+                add([{'t': 'Math', 'c': [{'t': 'DisplayMath'}, array]}], 'equation')
+            elif tag == 'DefinitionList' and strict:
+                for term, definitions in value:
+                    add(term, 'heading')
+                    for definition in definitions:
+                        walk(definition)
+            elif strict:
+                raise ValueError(f'{origin}: unsupported block {tag}: {value}')
     walk(doc['blocks'])
     body = re.sub(r'(?<!\\)%[^\n]*', '', prepared)
     expected = len(re.findall(r'\\includegraphics(?:\[[^\]]*\])?\s*\{', body))

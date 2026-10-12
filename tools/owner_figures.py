@@ -34,7 +34,7 @@ def unwrap_image_boxes(text):
         end = match.end()
         for _ in range(3 if match[1].startswith('resizebox') else 2):
             body, end = argument(end)
-        if '\\includegraphics' in body:
+        if '\\includegraphics' in body or '\\begin{tabular}' in body:
             replacements.append((match.start(), end, body))
     for start, end, body in reversed(replacements):
         text = text[:start] + body + text[end:]
