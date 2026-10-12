@@ -19,6 +19,11 @@ def main():
     args = parser.parse_args()
     evidence = EVIDENCE / args.book / ('live' if args.live else 'local')
     evidence.mkdir(parents=True, exist_ok=True)
+    folder = BOOKS / 'books' / args.book
+    meta = json.loads((folder / 'meta.json').read_text())
+    first_chapter = json.loads((folder / meta['chapters'][0]['file']).read_text())
+    first_unit = first_chapter['p'][0]['u'][0]
+    intro_titles = [''.join(first_unit[lang]) for lang in ('en', 'ja', 'zh')]
     results = []
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -47,7 +52,7 @@ def main():
                 assert all(counts.values()) and len(set(counts.values())) == 1, counts
                 assert page.locator('.katex-error,.math-error').count() == 0
                 article = page.locator('article').inner_text()
-                assert all(title in article for title in ('About These Notes', '本ノートについて', '关于本讲义'))
+                assert all(title in article for title in intro_titles), intro_titles
                 if args.book == 'physics-higgs-boson':
                     assert all(title in article for title in ('Overview:', '概観', '概述'))
                 assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 2')
