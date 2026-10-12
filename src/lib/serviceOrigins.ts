@@ -1,9 +1,9 @@
 export const LEGACY_BUNKO_API = 'https://llm.lazying.art/bunko'
 export const DIRECT_BUNKO_API = 'https://bunko.lazying.art/bunko'
 
-// Enable only in a release built after direct-origin TLS and route qualification.
+// Direct TLS/routes qualified on 2026-10-12. Set 0 for a legacy-origin build.
 // A boolean gate cannot redirect saved credentials to an arbitrary build URL.
-export const DIRECT_ORIGIN_ENABLED = import.meta.env.VITE_BUNKO_DIRECT_ORIGIN === '1'
+export const DIRECT_ORIGIN_ENABLED = (import.meta.env.VITE_BUNKO_DIRECT_ORIGIN ?? '1') === '1'
 
 export function discussionOrigin(secureNativeSession: boolean, direct = DIRECT_ORIGIN_ENABLED): string {
   // Existing PWA cookies are host-only on llm.lazying.art. Keep that origin until

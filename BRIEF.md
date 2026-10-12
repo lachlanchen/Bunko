@@ -6,9 +6,11 @@ The owner requests `bunko.lazying.art` as the direct service host, retaining
 `llm.lazying.art/bunko` for installed builds during migration. Both entrances must
 reach the same authoritative backend and sessions. Preserve the current GitHub
 callback and host-scoped PWA cookies; do not broaden cookies to sibling apps.
-Prepare the native/macOS endpoint change for the next cumulative build, enabled
-only after dedicated-host TLS, routes and compatibility checks pass. Existing
-store builds/reviews remain unchanged. See `docs/service-origin-migration.md`.
+Dedicated-host TLS, routes and compatibility checks passed on 2026-10-12. The
+next cumulative native/macOS build defaults to the direct endpoint; an explicit
+build flag can retain the legacy endpoint. PWA account cookies and the GitHub
+callback keep their original host. Existing store builds/reviews remain
+unchanged. See `docs/service-origin-migration.md` for native release checks.
 
 ## Translation requests · 2026-10-11
 

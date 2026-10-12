@@ -81,7 +81,7 @@ it('demo signs in without a browser or GitHub and restores from native secure st
   vi.resetModules(); api = await import('./discussions')
   await api.restoreSession()
   expect(api.currentUser()).toEqual(user)
-  expect(request.mock.calls.every(([url]) => String(url).startsWith('https://llm.lazying.art/bunko/'))).toBe(true)
+  expect(request.mock.calls.every(([url]) => String(url).startsWith('https://bunko.lazying.art/bunko/'))).toBe(true)
 })
 it('cancelled demo login cannot resurrect a session from a late password response', async () => {
   let release!: (value: Response) => void
@@ -110,15 +110,20 @@ it('demo password failures are not retried automatically or stored', async () =>
   expect(state.saved).toBeNull()
 })
 
-it.each(['native', 'desktop'])('restores an existing %s token through the qualified direct endpoint', async platform => {
-  vi.stubEnv('VITE_BUNKO_DIRECT_ORIGIN', '1')
+it.each([
+  ['native', undefined, 'https://bunko.lazying.art/bunko'],
+  ['desktop', undefined, 'https://bunko.lazying.art/bunko'],
+  ['native', '0', 'https://llm.lazying.art/bunko'],
+  ['desktop', '0', 'https://llm.lazying.art/bunko'],
+])('restores an existing %s token with build flag %s on %s', async (platform, flag, origin) => {
+  vi.stubEnv('VITE_BUNKO_DIRECT_ORIGIN', flag)
   state.native = platform === 'native'; window.__BUNKO_DESKTOP__ = platform === 'desktop'
   state.saved = 's'.repeat(43)
   const request = vi.fn<typeof fetch>(async () => Response.json({ user: { id: 2, login: 'existing-reader' }, expires: Date.now() + 86400000 }))
   vi.stubGlobal('fetch', request)
   const api = await import('./discussions')
   await api.restoreSession()
-  expect(request.mock.calls[0][0]).toBe('https://bunko.lazying.art/bunko/v1/session')
+  expect(request.mock.calls[0][0]).toBe(`${origin}/v1/session`)
   expect(request.mock.calls[0][1]).toMatchObject({ credentials: 'omit', headers: { Authorization: `Bearer ${state.saved}` } })
   expect(api.currentUser()?.login).toBe('existing-reader')
 })

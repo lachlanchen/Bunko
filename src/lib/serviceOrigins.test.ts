@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { bookMirrorOrigins, DIRECT_BUNKO_API, discussionOrigin, LEGACY_BUNKO_API } from './serviceOrigins'
 
 describe('dedicated Bunko origin rollout', () => {
-  it('keeps unqualified builds and host-only web cookies on the legacy endpoint', () => {
+  it('keeps rollback builds and host-only web cookies on the legacy endpoint', () => {
     expect(discussionOrigin(true, false)).toBe(LEGACY_BUNKO_API)
     expect(discussionOrigin(false, false)).toBe(LEGACY_BUNKO_API)
     expect(discussionOrigin(false, true)).toBe(LEGACY_BUNKO_API)
