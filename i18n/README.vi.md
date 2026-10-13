@@ -14,13 +14,11 @@ Sách có thể chứa số lượng ngôn ngữ tùy ý bằng thẻ ngôn ng�
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Ảnh trình đọc Bunko" width="300"></a></p>
 
-## Đã gửi bản cập nhật xét duyệt · 11 tháng 10 năm 2026
+## Phát hành chính thức · 2026-10-14
 
-Bunko **1.0.12 (22)** có trên TestFlight và thử nghiệm nội bộ Google, đồng thời đã gửi xét duyệt cho iOS/Watch, macOS và Google Play. Trang sách và Cài đặt có yêu cầu bản dịch qua GitHub, với 11 ngôn ngữ gợi ý hoặc ngôn ngữ tự nhập. Ảnh chụp liên quan đã được cập nhật. Ứng dụng sẽ tự động phát hành sau khi được duyệt.
+iOS/Watch 1.0.13 (23) đã được phát hành. Google Play 1.0.12 (22) đã được phát hành; 1.0.13 (23) vẫn đang được xét duyệt. Mac 1.0.13 (23) vẫn đang được xét duyệt và sẽ tự động phát hành sau khi được chấp thuận; bản Mac công khai hiện là 1.0.8 (10).
 
-Yêu cầu bản dịch tự chọn sách đang mở. Trang sách có nút Cài đặt ở góc trên bên phải. Có thể đóng bảng bằng nút Đóng lớn hơn, chạm bên ngoài hoặc vuốt sang phải. Vuốt phải để quay từ trang đọc về trang sách rồi thư viện. Bản dịch đã có mở trực tiếp và dùng bộ nhớ đệm khi ngoại tuyến. Nút ngôn ngữ đánh số theo thứ tự chọn: ngôn ngữ đầu là chính; bỏ chọn sẽ đưa ngôn ngữ kế tiếp lên, chọn lại sẽ thêm vào cuối. Chỉ ngôn ngữ chính được chọn đầu tiên không có nhãn; mỗi bản dịch vẫn giữ nhãn ngôn ngữ in đậm.
-
-[Hồ sơ xét duyệt và kiểm thử](../docs/translation-labels22-20261011.md)
+[Xác minh phát hành](../docs/distribution-20261014.md)
 
 ## Phát hành chính thức · 10 tháng 10 năm 2026
 

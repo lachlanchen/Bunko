@@ -16,15 +16,15 @@ channels:
     created: 2026-09-23 as a PAID app, before any upload, because Play can never convert a published free
       app to paid
     status: AVAILABLE_ON_GOOGLE_PLAY
-    production: 1.0.12 (22), available at preflight
+    production: 1.0.12 (22), available on Google Play
     update_version: 1.0.13
     update_build: 23
     update_status: CHANGES_IN_REVIEW
     update_rollout: 100 percent
-    update_verified: '2026-10-13T07:00:54.322Z'
+    update_verified: '2026-10-13T22:12:22.873757+00:00'
     update_receipt: docs/latest-review-20261013.json
     released_at: 2026-10-11; exact time not captured
-    distribution_receipt: docs/distribution-20261010.json
+    distribution_receipt: docs/distribution-20261014.json
     reviewer_instructions_update: Actioned; no pending review or unsent changes at 2026-10-03 05:47 UTC
     policy_status: No issues found, verified 2026-10-03 05:47 UTC
     privacy_url: https://llm.lazying.art/bunko/privacy.html
@@ -47,21 +47,22 @@ channels:
     territories: 175
     available_in_new_territories: true
     release: automatic after approval
-    public_version: 1.0.12 (22), including Apple Watch; ASC READY_FOR_DISTRIBUTION
-    public_verified: 2026-10-13 preflight; App Store Connect
-    review_submission: 21511d44-74f4-4478-9a93-c19260dfba80
-    build_id: aa3759f6-cd77-419d-997a-30cc7cb0c462
+    public_version: 1.0.13 (23), including Apple Watch
+    public_verified: '2026-10-13T22:12:22.873757+00:00'
+    review_submission: c8d42e11-2114-47b8-b307-6eb13bcd4480
+    build_id: 2cd11283-52ca-47b1-aef8-f69f265936de
     update_version: 1.0.13
     update_build: 23
     update_build_id: 2cd11283-52ca-47b1-aef8-f69f265936de
-    update_status: WAITING_FOR_REVIEW
+    update_status: READY_FOR_DISTRIBUTION
     update_review_submission: c8d42e11-2114-47b8-b307-6eb13bcd4480
-    update_verified: '2026-10-13T07:00:42.723239+00:00'
+    update_verified: '2026-10-13T22:12:22.873757+00:00'
     update_receipt: docs/latest-review-20261013.json
     testflight_latest: 1.0.13 (23), VALID and IN_BETA_TESTING
     testflight_latest_build_id: 2cd11283-52ca-47b1-aef8-f69f265936de
     watch_bundle_id: art.lazying.bunko.watchkitapp
-    distribution_receipt: docs/distribution-20261010.json
+    distribution_receipt: docs/distribution-20261014.json
+    public_released_at: '2026-10-13T16:44:35Z'
   mac_app_store:
     app_id: '6815137919'
     bundle_id: art.lazying.bunko
@@ -70,7 +71,7 @@ channels:
     public_version: 1.0.8 (10), verified on the public Mac App Store page
     status: READY_FOR_DISTRIBUTION
     public_released_at: '2026-09-29T22:50:52Z'
-    public_verified: 2026-10-10 HKT; platform=mac page still shows1.0.8
+    public_verified: '2026-10-13T22:12:22.873757+00:00'
     submitted_at: '2026-09-27T20:10:02.462Z'
     release: automatic after approval
     version_id: 731c37f4-b4ed-4268-bafa-e5bfda8f7284
@@ -86,11 +87,11 @@ channels:
     update_version: 1.0.13
     update_build: 23
     update_build_id: 6db0c006-f129-4dc4-a634-041243aa50be
-    update_status: WAITING_FOR_REVIEW
+    update_status: IN_REVIEW
     update_review_submission: d1a6be32-1158-4b36-8f18-6c10557ddbf6
-    update_verified: '2026-10-13T07:01:00.705723+00:00'
+    update_verified: '2026-10-13T22:12:22.873757+00:00'
     update_receipt: docs/latest-review-20261013.json
-    distribution_receipt: docs/distribution-20261010.json
+    distribution_receipt: docs/distribution-20261014.json
 android:
   version_code: 23
   version_name: 1.0.13

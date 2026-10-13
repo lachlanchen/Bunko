@@ -14,13 +14,11 @@ Books may contain any number of language layers using standard language tags, in
 
 <p align="center"><a href="store/assets/play-phone-01.png"><img src="store/assets/play-phone-01.png" alt="Bunko reader screenshot" width="300"></a></p>
 
-## Latest update submitted · 13 October 2026
+## Public distribution · 2026-10-14
 
-Bunko **1.0.13 (23)** is available in TestFlight and Google internal testing, and submitted for iOS/Watch, macOS and Google Play review. Translation passages now have discussion buttons, with an option to hide them. Native apps use the dedicated Bunko service address while older builds stay compatible. Book details and Settings now include translation requests through GitHub, with 11 suggested target languages and a custom language field. Current screenshots were refreshed. Automatic public release follows approval.
+iOS/Watch 1.0.13 (23) is public. Google Play 1.0.12 (22) is public; 1.0.13 (23) remains in review. Mac 1.0.13 (23) remains in review and will release automatically after approval; the public Mac version is 1.0.8 (10).
 
-Translation requests now default to the current book. Book pages have a top-right Settings button; Settings closes with a larger Close button, an outside tap or a right swipe. Swipe right to return through reading, book details and library. Existing translations open directly, including cached reading offline. Numbered language chips follow selection order: first is main, deselecting it promotes the next, and reselecting appends. Only the first selected/main language is unlabelled; every translation keeps its bold language label.
-
-[Submission and test evidence](docs/latest-review-20261013.md)
+[Release verification](docs/distribution-20261014.md)
 
 ## Public distribution · 10 October 2026
 

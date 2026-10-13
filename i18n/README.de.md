@@ -14,13 +14,11 @@ Bücher können beliebig viele Sprachebenen mit standardisierten Sprachkennungen
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko-Reader-Bildschirm" width="300"></a></p>
 
-## Update zur Prüfung eingereicht · 11. Oktober 2026
+## Öffentliche Veröffentlichung · 2026-10-14
 
-Bunko **1.0.12 (22)** ist in TestFlight und im internen Google-Test verfügbar und zur Prüfung für iOS/Watch, macOS und Google Play eingereicht. Buchdetails und Einstellungen bieten Übersetzungsanfragen über GitHub: 11 vorgeschlagene Zielsprachen oder eine freie Spracheingabe. Die entsprechenden Screenshots wurden aktualisiert. Nach Genehmigung erfolgt die Veröffentlichung automatisch.
+iOS/Watch 1.0.13 (23) ist öffentlich verfügbar. Google Play 1.0.12 (22) ist öffentlich verfügbar; 1.0.13 (23) wird noch geprüft. Mac 1.0.13 (23) wird noch geprüft und nach der Freigabe automatisch veröffentlicht; die öffentliche Mac-Version ist 1.0.8 (10).
 
-Übersetzungsanfragen verwenden jetzt das geöffnete Buch. Auf der Buchseite gibt es oben rechts eine Einstellungstaste. Einstellungen lassen sich mit der größeren Schließen-Taste, durch Tippen außerhalb oder Wischen nach rechts schließen. Wischen nach rechts führt vom Lesen über die Buchdetails zur Bibliothek zurück. Vorhandene Übersetzungen öffnen sich direkt, offline aus dem Cache. Nummerierte Sprachchips folgen der Auswahlreihenfolge: Die erste Sprache ist Haupttext, Abwählen rückt die nächste nach und erneutes Auswählen hängt sie an. Nur die zuerst gewählte Hauptsprache bleibt ohne Sprachlabel; jede Übersetzung behält ihr fett gedrucktes Sprachlabel.
-
-[Einreichung und Tests](../docs/translation-labels22-20261011.md)
+[Veröffentlichungsnachweis](../docs/distribution-20261014.md)
 
 ## Öffentliche Veröffentlichung · 10. Oktober 2026
 

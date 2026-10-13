@@ -14,13 +14,11 @@ Les livres peuvent contenir autant de langues que nécessaire, identifiées par 
 
 <p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Capture du lecteur Bunko" width="300"></a></p>
 
-## Mise à jour soumise · 11 octobre 2026
+## Publication · 2026-10-14
 
-Bunko **1.0.12 (22)** est disponible dans TestFlight et les tests internes Google, et soumis à la validation iOS/Watch, macOS et Google Play. Les fiches des livres et les réglages proposent une demande de traduction sur GitHub : 11 langues suggérées ou une langue saisie librement. Les captures concernées ont été actualisées. La publication sera automatique après approbation.
+iOS/Watch 1.0.13 (23) est disponible. Google Play 1.0.12 (22) est disponible ; 1.0.13 (23) reste en cours d’examen. Mac 1.0.13 (23) reste en cours d’examen et sera publié automatiquement après approbation ; la version Mac publique est 1.0.8 (10).
 
-La demande de traduction utilise désormais le livre ouvert. Un bouton Réglages figure en haut à droite de sa page. Fermez les réglages avec le grand bouton Fermer, en touchant le fond ou en balayant vers la droite. Le même geste permet de revenir de la lecture à la fiche puis à la bibliothèque. Les traductions existantes s’ouvrent directement, avec le cache hors ligne. Les pastilles numérotées suivent l’ordre de sélection : la première langue est principale, la retirer promeut la suivante et la sélectionner à nouveau l’ajoute à la fin. Seule la première langue sélectionnée reste sans étiquette ; chaque traduction conserve son nom de langue en gras.
-
-[Soumission et tests](../docs/translation-labels22-20261011.md)
+[Vérification de publication](../docs/distribution-20261014.md)
 
 ## Publication · 10 octobre 2026
 

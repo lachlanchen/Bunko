@@ -1,3 +1,23 @@
+# Current distribution · 14 October 2026 HKT
+
+Bunko iOS/Watch **1.0.13 (23)** is public, verified through ASC and US/HK listings.
+Google **1.0.12 (22)** remains public; build23 is still IN_REVIEW. Latest Mac23
+is IN_REVIEW; public Mac remains1.0.8(10). Automatic publishing remains selected.
+No approved release was pending manual action. All175 Apple storefronts available.
+
+OnlyIdeas iOS/Watch and Android **1.0.7 (32)** are public. OnlyIdeas Mac32 is still
+IN_REVIEW; public Mac is now1.0.6(28). Its public receipt is in the sibling repo.
+No store, pricing, auth, user-data or review-candidate mutation this task.
+
+[Distribution receipt](../docs/distribution-20261014.md).
+Private runtime: `.runtime/distribution-20261014/`.
+Owned noVNC6190/CDP9490 stopped; persistent profile retained. No Mac desktop used.
+Bunko update feed uses iOS23, Android22 and Mac10, matching approved public builds.
+Feed-only main commit925d01b49496a69652874bc6f4c8808a7df78740 deployed successfully
+(Pages38476064536). Uncached live JSON matched the committed feed.
+
+## Earlier records
+
 # Current: Bunko 1.0.13 (23) submitted · 13 October 2026
 
 Apple iOS/Watch and universal Mac are WAITING_FOR_REVIEW. Google23 is in review,
