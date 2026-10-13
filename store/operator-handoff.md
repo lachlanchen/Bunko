@@ -1,3 +1,26 @@
+# Current: Bunko 1.0.13 (23) submitted · 13 October 2026
+
+Apple iOS/Watch and universal Mac are WAITING_FOR_REVIEW. Google23 is in review,
+automatic checks completed and no unsent changes. Apple automatic release and
+Google100% rollout remain selected. Both Apple builds are in TestFlight; Android23
+is available internally. Mac22's older review was replaced under owner authority.
+
+Translation discussion bubbles and the dedicated native service origin are
+included. 162 automated tests, Android lint/signature, package identity, reader UI,
+fresh no-OTP Demo web login and direct-origin native protocol checks passed.
+The Mac WebKit helper passed login/reload/logout using an isolated login Keychain;
+production Data Protection Keychain and physical-device qualification are not
+claimed by that helper. Full evidence boundaries are in the receipt.
+
+[Build23 receipt](../docs/latest-review-20261013.md).
+Private runtime: `.runtime/review-20261013/`.
+Owned preview4173, noVNC6190/CDP9490, KVM archive/QA agents stopped; temporary
+QA credentials removed. Persistent store profile retained. No Mac mini GUI used.
+OnlyIdeas1.0.7(32) also submitted on all three store platforms; its owned receipt
+is `../OnlyIdeasApp/docs/latest-review-20261013.md`.
+
+## Earlier records
+
 ## Prepared successor · translation bubbles · 11 October 2026
 
 Translation comment bubbles now default on, with a persistent four-language

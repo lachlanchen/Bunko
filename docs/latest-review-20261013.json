@@ -1,0 +1,258 @@
+{
+  "date": "2026-10-13",
+  "app": "Bunko",
+  "version": "1.0.13",
+  "build": 23,
+  "sourceCommit": "3763949",
+  "tests": {
+    "client": 104,
+    "server": 58,
+    "lint": true,
+    "renderer": true,
+    "webBuild": true,
+    "androidReleaseLint": true,
+    "androidSignature": true,
+    "readerUI": {
+      "passed": true,
+      "checks": [
+        "translation bubbles default on",
+        "Japanese translation opens matching discussion context",
+        "toggle survives reload and retains main bubble"
+      ],
+      "channel": "Chromium packaged native-web assets"
+    },
+    "demoWeb": {
+      "at": "2026-10-13T06:28:42.732Z",
+      "freshBrowserDemo": true,
+      "noGithubNavigation": true,
+      "reloadPersistence": true
+    },
+    "directNativeAPI": {
+      "at": "2026-10-13T06:34:41.957718+00:00",
+      "origin": "https://bunko.lazying.art/bunko",
+      "nativeOrigin": "bunko://localhost",
+      "demoLogin": true,
+      "opaqueSessionRestore": true,
+      "agentStateAccessible": true,
+      "noOTP": true,
+      "scope": "Real native-protocol HTTPS; separate from installed-device UI qualification"
+    },
+    "macNativeHarness": {
+      "checks": [
+        "Native AppKit/WebKit demo login uses dedicated origin",
+        "Opaque session restored from real Mac Keychain after WebView reload",
+        "Native sign-out returned to login form"
+      ],
+      "passed": true,
+      "at": "2026-10-13T06:57:28.429365+00:00",
+      "host": "macOS 15.7.9 KVM",
+      "webAssets": "Exact 1.0.13 (23) packaged web assets",
+      "harness": "Actual AppKit/WebKit host compiled with isolated app/service names, ad-hoc signing and login Keychain for test helper; production Data Protection Keychain unchanged",
+      "productionKeychainQualification": false,
+      "freshGitHubProviderLogin": false,
+      "changesOnlyInTestHelper": true
+    }
+  },
+  "artifacts": [
+    {
+      "platform": "IOS",
+      "version": "1.0.13",
+      "build": "23",
+      "signatureVerified": true,
+      "sha256": "8e32c55b9cdc4a854d242387b951ead6580567c4686e449321e067cbc5c09189",
+      "currentBookSettingsEmbedded": true,
+      "orderedLanguagesAndReuseEmbedded": true,
+      "entryJS": "index-DsjO85rB.js",
+      "watchMatched": true
+    },
+    {
+      "platform": "MAC_OS",
+      "version": "1.0.13",
+      "build": "23",
+      "signatureVerified": true,
+      "sha256": "6c72f55c5f543d0552fe75db827af6d4c566212ba054c810096931a529be85e9",
+      "currentBookSettingsEmbedded": true,
+      "orderedLanguagesAndReuseEmbedded": true,
+      "entryJS": "index-DsjO85rB.js",
+      "architectures": [
+        "x86_64",
+        "arm64"
+      ]
+    }
+  ],
+  "androidSHA256": {
+    "aab": "e2f3f497d46008b7dfc31ba13d9d16651361b558af6787552e12248176610f78",
+    "apk": "0c3ed467abbf3702a7c3c2fcc8dc82d61781eca103e9dcf420d1d760cfa0f523"
+  },
+  "entryJavaScript": {
+    "file": "index-DsjO85rB.js",
+    "sha256": "19b6af1c02279c1221ee78865a04458f66780e4cee3e0d28f8a1f86cb147f2a7",
+    "matchesIOSAndMacArchives": true
+  },
+  "apple": {
+    "bunko-IOS": {
+      "app": "6815137919",
+      "platform": "IOS",
+      "version": "6c4e3548-1e2a-4cc8-aae6-5352ccd51e09",
+      "base": "ea199841-b9b7-4cb9-8f61-550514c04f91",
+      "build": "2cd11283-52ca-47b1-aef8-f69f265936de",
+      "buildNumber": "23",
+      "marketing": "1.0.13",
+      "releaseType": "AFTER_APPROVAL",
+      "reviewerCredentialsVerified": true,
+      "screenshots": [
+        {
+          "locale": "en-US",
+          "type": "APP_WATCH_SERIES_10",
+          "count": 2,
+          "files": [
+            "watch-01-library.png",
+            "watch-02-reading.png"
+          ],
+          "complete": true
+        },
+        {
+          "locale": "en-US",
+          "type": "APP_IPHONE_65",
+          "count": 9,
+          "files": [
+            "ios-65-01.png",
+            "ios-65-02.png",
+            "ios-65-03.png",
+            "ios-65-04.png",
+            "ios-65-05.png",
+            "en-phone-translation21.png",
+            "en-iphone-settings21.png",
+            "en-phone-reader22.png",
+            "en-phone-reader23.png"
+          ],
+          "complete": true
+        },
+        {
+          "locale": "en-US",
+          "type": "APP_IPAD_PRO_3GEN_129",
+          "count": 5,
+          "files": [
+            "ios-ipad-01.png",
+            "ios-ipad-02.png",
+            "en-ipad-translation21.png",
+            "en-ipad-reader22.png",
+            "en-ipad-reader23.png"
+          ],
+          "complete": true
+        }
+      ],
+      "reviewId": "c8d42e11-2114-47b8-b307-6eb13bcd4480",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-10-13T07:00:36.212Z",
+      "verifiedAt": "2026-10-13T07:00:42.723239+00:00"
+    },
+    "bunko-MAC_OS": {
+      "app": "6815137919",
+      "platform": "MAC_OS",
+      "version": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+      "base": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+      "build": "6db0c006-f129-4dc4-a634-041243aa50be",
+      "buildNumber": "23",
+      "marketing": "1.0.13",
+      "releaseType": "AFTER_APPROVAL",
+      "reviewerCredentialsVerified": true,
+      "screenshots": [
+        {
+          "locale": "en-US",
+          "type": "APP_DESKTOP",
+          "count": 6,
+          "files": [
+            "macos-01-library.png",
+            "macos-03-equations.png",
+            "macos-02-reading.png",
+            "en-mac-translation21.png",
+            "en-mac-reader22.png",
+            "en-mac-reader23.png"
+          ],
+          "complete": true
+        }
+      ],
+      "reviewId": "d1a6be32-1158-4b36-8f18-6c10557ddbf6",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-10-13T07:00:57.691Z",
+      "verifiedAt": "2026-10-13T07:01:00.705723+00:00"
+    }
+  },
+  "google": {
+    "version": "1.0.13 (23)",
+    "state": "Changes in review",
+    "quickChecks": false,
+    "unsent": false,
+    "automaticPublishing": true,
+    "rollout": "100%",
+    "url": "https://play.google.com/console/u/0/developers/6157557679644496686/app/4972575539744983205/publishing"
+  },
+  "testflight": [
+    {
+      "platform": "MAC_OS",
+      "id": "6db0c006-f129-4dc4-a634-041243aa50be",
+      "version": "1.0.13",
+      "build": "23",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    },
+    {
+      "platform": "IOS",
+      "id": "2cd11283-52ca-47b1-aef8-f69f265936de",
+      "version": "1.0.13",
+      "build": "23",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    }
+  ],
+  "replacedMacReview": {
+    "oldBuild": 22,
+    "oldReview": "d6b969b8-cf29-4ded-a1a7-3229fc64baa7",
+    "reason": "Owner requested latest qualified update"
+  },
+  "screenshots": {
+    "version": "1.0.13",
+    "build": 23,
+    "source": "3763949",
+    "images": [
+      {
+        "path": "store/screenshots/review-20261013/en-phone-reader23.png",
+        "width": 1242,
+        "height": 2688,
+        "sha256": "4d4e1acbdb2bc0cb7d9414bb59594fb92cdb79089756ad8b564771a21b7ada23",
+        "channel": "Chromium rendering exact packaged web assets; not a native device capture"
+      },
+      {
+        "path": "store/screenshots/review-20261013/en-ipad-reader23.png",
+        "width": 2048,
+        "height": 2732,
+        "sha256": "0817381b86be07d78e154b1a9117df050413def66f23b395e56778de57370a21",
+        "channel": "Chromium rendering exact packaged web assets; not a native device capture"
+      },
+      {
+        "path": "store/screenshots/review-20261013/en-mac-reader23.png",
+        "width": 1280,
+        "height": 800,
+        "sha256": "7d0a7aff1f81a17ec399b31c2854f281fd42a1a3d6efb75b5eab6365d72b08ca",
+        "channel": "Chromium rendering exact packaged web assets; not a native device capture"
+      },
+      {
+        "path": "store/screenshots/review-20261013/en-android-reader23.png",
+        "width": 1080,
+        "height": 1920,
+        "sha256": "1c34b33ec62cc7b291ad68923f51f950a33314db968c342cf7de8d93df791f40",
+        "channel": "Chromium rendering exact packaged web assets; not a native device capture"
+      }
+    ]
+  },
+  "publicAtPreflight": {
+    "ios": "1.0.12 (22), ASC READY_FOR_DISTRIBUTION",
+    "google": "1.0.12 (22), production available",
+    "macOS": "1.0.8 (10), ASC READY_FOR_DISTRIBUTION"
+  },
+  "billingOrIngressChanged": false,
+  "pwaDeployed": false
+}

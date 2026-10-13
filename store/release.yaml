@@ -1,8 +1,8 @@
 # Bunko release state; test/review availability is separate from public distribution.
 app:
   name: 'Bunko: Classics with Ruby'
-  version: 1.0.12
-  build: 22
+  version: 1.0.13
+  build: 23
   price: USD 0.99 paid up front on both stores
   data_origin: https://github.com/lachlanchen/bunko-books
   pwa: https://lachlan.lazying.art/Bunko/
@@ -16,14 +16,14 @@ channels:
     created: 2026-09-23 as a PAID app, before any upload, because Play can never convert a published free
       app to paid
     status: AVAILABLE_ON_GOOGLE_PLAY
-    production: 1.0.11 (18), public at 100 percent
-    update_version: 1.0.12
-    update_build: 22
+    production: 1.0.12 (22), available at preflight
+    update_version: 1.0.13
+    update_build: 23
     update_status: CHANGES_IN_REVIEW
     update_rollout: 100 percent
-    update_verified: '2026-10-11T01:44:49.673996+00:00'
-    update_receipt: docs/translation-labels22-20261011.json
-    released_at: 2026-10-09; exact time not captured
+    update_verified: '2026-10-13T07:00:54.322Z'
+    update_receipt: docs/latest-review-20261013.json
+    released_at: 2026-10-11; exact time not captured
     distribution_receipt: docs/distribution-20261010.json
     reviewer_instructions_update: Actioned; no pending review or unsent changes at 2026-10-03 05:47 UTC
     policy_status: No issues found, verified 2026-10-03 05:47 UTC
@@ -32,11 +32,11 @@ channels:
     country_selection: all paid-app eligible regions; China, Cuba, Iran, Sudan and Rest of World are not
       targetable for paid apps
     managed_publishing: false
-    pre_review_checks: Running automatically after confirmed submission; proceeds to review when complete
+    pre_review_checks: Completed; changes in review and no unsent changes
     internal_track: '4701547714770281380'
     internal_status: available to internal testers
     internal_update: 1.0.1 (2), available to internal testers
-    internal_latest: 1.0.12 (22), available to internal testers on 2026-10-11
+    internal_latest: 1.0.13 (23), available to internal testers on 2026-10-13
     reviewer_access: Dedicated Bunko demo sign-in; no owner email verification; verified after reload
     privacy: Optional IDs, messages, files/documents, app interactions, search history and other user
       content declared
@@ -47,20 +47,19 @@ channels:
     territories: 175
     available_in_new_territories: true
     release: automatic after approval
-    public_version: 1.0.11 (18), including Apple Watch
-    public_released_at: '2026-10-09T16:40:19Z'
-    public_verified: 2026-10-10 HKT; US/HK lookup and iPhone page
-    review_submission: 34d77d09-8983-4623-830b-ee6c466e91f1
-    build_id: ff71071f-6edc-428a-87dc-79cc059de672
-    update_version: 1.0.12
-    update_build: 22
-    update_build_id: aa3759f6-cd77-419d-997a-30cc7cb0c462
+    public_version: 1.0.12 (22), including Apple Watch; ASC READY_FOR_DISTRIBUTION
+    public_verified: 2026-10-13 preflight; App Store Connect
+    review_submission: 21511d44-74f4-4478-9a93-c19260dfba80
+    build_id: aa3759f6-cd77-419d-997a-30cc7cb0c462
+    update_version: 1.0.13
+    update_build: 23
+    update_build_id: 2cd11283-52ca-47b1-aef8-f69f265936de
     update_status: WAITING_FOR_REVIEW
-    update_review_submission: 21511d44-74f4-4478-9a93-c19260dfba80
-    update_verified: '2026-10-11T01:44:49.673996+00:00'
-    update_receipt: docs/translation-labels22-20261011.json
-    testflight_latest: 1.0.12 (22), VALID and IN_BETA_TESTING
-    testflight_latest_build_id: aa3759f6-cd77-419d-997a-30cc7cb0c462
+    update_review_submission: c8d42e11-2114-47b8-b307-6eb13bcd4480
+    update_verified: '2026-10-13T07:00:42.723239+00:00'
+    update_receipt: docs/latest-review-20261013.json
+    testflight_latest: 1.0.13 (23), VALID and IN_BETA_TESTING
+    testflight_latest_build_id: 2cd11283-52ca-47b1-aef8-f69f265936de
     watch_bundle_id: art.lazying.bunko.watchkitapp
     distribution_receipt: docs/distribution-20261010.json
   mac_app_store:
@@ -77,28 +76,28 @@ channels:
     version_id: 731c37f4-b4ed-4268-bafa-e5bfda8f7284
     build_id: 86831728-f214-4e77-b553-59c77470e1ad
     review_submission: 135f98bf-97e0-473a-b148-39817fe20c41
-    testflight_latest: 1.0.12 (22), VALID and IN_BETA_TESTING
-    testflight_latest_build_id: e62898d1-23d7-46f0-a5e3-a31bd2b9a304
+    testflight_latest: 1.0.13 (23), VALID and IN_BETA_TESTING
+    testflight_latest_build_id: 6db0c006-f129-4dc4-a634-041243aa50be
     minimum_macos: '12.0'
     architectures:
     - x86_64
     - arm64
     price_and_availability: shared existing Apple app record
-    update_version: 1.0.12
-    update_build: 22
-    update_build_id: e62898d1-23d7-46f0-a5e3-a31bd2b9a304
+    update_version: 1.0.13
+    update_build: 23
+    update_build_id: 6db0c006-f129-4dc4-a634-041243aa50be
     update_status: WAITING_FOR_REVIEW
-    update_review_submission: d6b969b8-cf29-4ded-a1a7-3229fc64baa7
-    update_verified: '2026-10-11T01:44:49.673996+00:00'
-    update_receipt: docs/translation-labels22-20261011.json
+    update_review_submission: d1a6be32-1158-4b36-8f18-6c10557ddbf6
+    update_verified: '2026-10-13T07:01:00.705723+00:00'
+    update_receipt: docs/latest-review-20261013.json
     distribution_receipt: docs/distribution-20261010.json
 android:
-  version_code: 22
-  version_name: 1.0.12
+  version_code: 23
+  version_name: 1.0.13
   keystore: ~/.config/bunko/android/upload-keystore.jks (alias bunko-upload, mode 600)
-  aab_sha256: bcc449865e65dc83a84ae3fab03bd3194bf8c6258bbea684562fd8797b054b3b
-  apk_sha256: e818ba7815e49e02b64ac3cf54124cfdff891addf4bf03faffac87b6fbe99aef
-  artifact_scope: Build22 testing/review candidate; public production18 remains until approval.
+  aab_sha256: e2f3f497d46008b7dfc31ba13d9d16651361b558af6787552e12248176610f78
+  apk_sha256: 0c3ed467abbf3702a7c3c2fcc8dc82d61781eca103e9dcf420d1d760cfa0f523
+  artifact_scope: Build23 internal and review candidate; production22 remains available during review.
 catalogue:
   cleared: 185
   audited: docs/catalogue.md

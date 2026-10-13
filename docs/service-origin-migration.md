@@ -14,6 +14,18 @@ gateway. Installed clients therefore contain that hostname. Moving the backend
 alone preserved those URLs and sessions; it did not update installed binaries.
 The dedicated hostname removes the extra legacy-edge hop for updated clients.
 
+## Candidate qualification · 13 October 2026
+
+Build23 now includes the dedicated native service origin and is in TestFlight,
+Google internal testing and production review on all three store platforms.
+Direct native-protocol Demo login/session/agent-state and Mac WebKit
+login/reload/logout passed. The Mac helper used an isolated login Keychain under
+ad-hoc signing; this does not requalify production Data Protection Keychain or
+fresh GitHub provider consent. Existing production authentication source is
+unchanged. See [the exact receipt and limits](latest-review-20261013.md).
+PWA cookies and the GitHub callback retain the legacy hostname. Both service
+entrances must remain available during and after review for installed clients.
+
 ## Compatibility contract
 
 | Consumer | New-build default (or flag `1`) | Rollback build (flag `0`) |
