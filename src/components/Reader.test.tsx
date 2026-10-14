@@ -11,21 +11,32 @@ vi.mock('../lib/library', () => ({ loadChapter: vi.fn(async () => chapter) }))
 beforeAll(() => { HTMLElement.prototype.scrollTo = vi.fn() })
 afterEach(() => { cleanup(); window.getSelection()?.removeAllRanges(); vi.unstubAllGlobals() })
 const meta: BookMeta = { schema: 1, id: 'sample', mode: 'trilingual_standard', primary: 'ja', langs: ['ja', 'en'], title: {}, titleText: { ja: '作品' }, author: {}, chapters: [{ n: 1, file: 'c001.json', bytes: 1, paras: 1, title: { ja: '第一章' } }], bytes: 1, paras: 1 }
-it('shows only the original in source mode and restores selected translations in interlinear mode', async () => {
+it('shows the selected main in single-language mode and preserves selection order in interlinear mode', async () => {
   const props = { meta, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs: ['en', 'ja'] as const }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
   const view = render(<Reader {...props} settings={{ ...props.settings, langs: ['en', 'ja'], layout: 'source' }} />)
-  await screen.findByText('日本語の原文')
-  expect(screen.queryByText('English translation')).toBeNull()
+  await screen.findByText('English translation')
+  expect(screen.queryByText('日本語の原文')).toBeNull()
   view.rerender(<Reader {...props} settings={{ ...props.settings, langs: ['en', 'ja'], layout: 'interlinear' }} />)
-  expect(screen.getByText('English translation')).toBeTruthy()
+  expect([...view.container.querySelectorAll('[data-reading]')].map(x => x.getAttribute('data-lang'))).toEqual(['en', 'ja'])
+  expect(view.container.querySelector('.reading-main')?.textContent).toContain('English translation')
+  for (const layout of ['interlinear', 'paired'] as const) {
+    view.rerender(<Reader {...props} settings={{ ...props.settings, langs: ['en', 'ja'], layout }} />)
+    expect(view.container.querySelector('.reading-main .language-label')).toBeNull()
+    expect(view.container.querySelector('.reading-translation .language-label')?.textContent).toBe('Japanese')
+    view.rerender(<Reader {...props} settings={{ ...props.settings, langs: ['ja', 'en'], layout }} />)
+    expect(view.container.querySelector('.reading-main .language-label')).toBeNull()
+    expect(view.container.querySelector('.reading-translation .language-label')?.textContent).toBe('English')
+  }
 })
 
-it('opens a passage discussion and shows strong language labels', async () => {
+it('labels translations but leaves the selected main unlabelled when opening discussions', async () => {
   vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, json: async () => ({ issue: null, comments: [], nextPage: null }) })))
   const props = { meta, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs: ['ja', 'en'] as LangCode[], layout: 'interlinear' as const }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
   const { container } = render(<Reader {...props} />)
   await screen.findByText('日本語の原文')
-  expect([...container.querySelectorAll('.language-label')].map((item) => item.textContent)).toEqual(['Japanese', 'English'])
+  expect(container.querySelector('.reading-main .language-label')).toBeNull()
+  expect(container.querySelector('.reading-translation .language-label')?.textContent).toBe('English')
+  expect(container.querySelector('.reading-translation')?.textContent).toContain('English translation')
   fireEvent.click(screen.getByRole('button', { name: 'Discuss passage' }))
   expect(screen.getByRole('dialog')).toBeTruthy()
   expect(screen.getByText('日本語の原文', { selector: 'blockquote' })).toBeTruthy()
@@ -37,6 +48,7 @@ it('waits for an explicit Dictionary action and keeps the selected substring', a
   const props = { meta, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs: ['ja', 'en'] as LangCode[] }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
   const { container } = render(<Reader {...props} />)
   const text = await screen.findByText('English translation')
+  await screen.findByText('Hold a word to select it. Drag the handles for a phrase.')
   fireEvent.click(text)
   expect(screen.queryByRole('dialog')).toBeNull()
   const node = text.firstChild!
@@ -100,7 +112,8 @@ it('folds translation notes separately and omits missing language rows in paired
   const notes = container.querySelector('details')!
   expect(notes.open).toBe(false)
   expect(notes.querySelector('summary')?.textContent).toBe('Translation notes')
-  expect(notes.querySelectorAll('.language-label')).toHaveLength(1)
+  expect(notes.querySelectorAll('.para-line')).toHaveLength(1)
+  expect(notes.querySelector('.para-line')?.getAttribute('lang')).toBe('ja')
   expect(notes.querySelector('.language-label')?.textContent).toBe('Japanese')
   expect(notes.querySelector('ruby rt')?.textContent).toBe('やくちゅう')
   fireEvent.click(notes.querySelector('summary')!)

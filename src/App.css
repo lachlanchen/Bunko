@@ -148,8 +148,8 @@
 .unit-line.lang-en, .para-line.lang-en { line-height: 1.85; }
 .layout-source .unit-line + .unit-line { display: none; }
 
-/* The source line leads; a gloss sits quieter beneath it. */
-.unit .unit-line:not(:first-child), .para-line:not(:first-child) {
+/* The selected main language leads; translations stay quieter. */
+.reading-translation {
   color: var(--ink-soft);
   font-size: .92em;
 }
@@ -355,3 +355,8 @@ input[type='range'] { width: 100%; accent-color: var(--indigo); }
 
 .chapter-title small { display: block; color: var(--ink-soft); font-size: .8em; font-weight: 400; margin-top: .2em; }
 .book-alt bdi + bdi::before { content: " · "; }
+
+.language-choices button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+.language-order { display: inline-grid; place-items: center; min-width: 1.4em; height: 1.4em; border: 1px solid currentColor; border-radius: 50%; font-size: .85em; font-variant-numeric: tabular-nums; }
+.language-choices button.translation-language { color: var(--indigo); background: var(--indigo-soft); border-color: var(--indigo); }
+.reading-main { color: var(--ink); }

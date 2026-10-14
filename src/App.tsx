@@ -1,3 +1,4 @@
+import { LanguageChoices } from './components/LanguageChoices'
 import { baseLanguage, htmlLanguage, languageDirection } from './lib/languages'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Paperclip as PaperclipIcon, Sparkles, BookOpen, Check, Download, Settings, RefreshCw, Search, Trash2, X } from 'lucide-react'
@@ -554,28 +555,7 @@ function SettingsSheet({
       {langs.length > 0 && (
         <section>
           <h3>{copy.show}</h3>
-          <div className="chips">
-            {langs.map((lang) => {
-              const on = settings.langs.includes(lang)
-              return (
-                <button
-                  key={lang}
-                  type="button"
-                  className={on ? 'active' : ''}
-                  onClick={() => {
-                    const next = on
-                      ? settings.langs.filter((item) => item !== lang)
-                      : [...settings.langs, lang].sort(
-                          (a, b) => langs.indexOf(a) - langs.indexOf(b),
-                        )
-                    onChange({ langs: next.length ? next : [langs[0]] })
-                  }}
-                >
-                  {languageName(lang, ui)}
-                </button>
-              )
-            })}
-          </div>
+          <LanguageChoices available={langs} selected={settings.langs} ui={ui} onChange={(selected) => onChange({ langs: selected })} />
         </section>
       )}
 

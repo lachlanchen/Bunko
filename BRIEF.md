@@ -193,3 +193,15 @@ dismissible device-aware suggestions and permanent store links in web Settings
 (Bunko) or Profile (OnlyIdeas). Installed PWAs retain this choice. Reading stays
 available; opening a store is explicit. Enable each destination only after its
 public platform release is verified. See `docs/pwa-store-links.md`.
+
+## PWA language selection parity · 2026-10-14
+
+The first selected book language is the main text and has no language badge.
+Additional languages appear in selection order and keep their bold labels.
+Removing the main language promotes the next; selecting a removed language
+appends it. Keep at least one language selected. Number the selected language
+choices and distinguish the main text from translations. Apply the same order
+to sentence, paragraph and main-text-only layouts, preserving saved settings,
+reading progress and offline books. This focused web deployment supports the
+Japanese promotional film; native reviews and billing remain on their current
+release tracks.
