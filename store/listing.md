@@ -1,32 +1,32 @@
-# Store listing copy
+# Bunko: Classics with Ruby
 
-## Title (30)
-Bunko: Classics with Ruby
+## Short description
 
-## Short description (80)
-Public-domain classics in English, Chinese and Japanese, with readings on every word.
+Read classics in English, Chinese and Japanese with pinyin and furigana.
 
-## Full description (4000)
-Bunko is a reader for the books that belong to everyone.
+## Description
 
-Fifty-six classics, out of copyright and free to read for good: the Chinese canon from the Daodejing's tradition through 古文觀止, 西遊記, 紅樓夢 and 三國演義; Japanese literature from Sōseki and Akutagawa; and world literature from Homer, Virgil and Ovid through Austen, Dickens, Twain, Tolstoy, Dostoevsky, Flaubert, Hugo, Proust and Kafka.
+Read a sentence in Japanese, check the Chinese or English alongside it, and keep going. Bunko brings multilingual books, pinyin and furigana, dictionaries and an offline shelf together in one reader.
 
-WHAT MAKES IT DIFFERENT
+CHOOSE YOUR READING ORDER
+Read one language or several, with aligned sentences or paired paragraphs. The first language you select becomes the main text; the others follow in your chosen order. Removing the first promotes the next. Available languages and readings depend on the edition.
 
-Every character carries its reading. Pinyin sits above the hanzi, furigana above the kanji, exactly where a reader of that language expects to find it, using real ruby typography rather than a cramped imitation of it. If you have ever wanted to read 論語 or 三四郎 in the original but stalled on the characters, this is the book that reads back.
+MAKE THE PAGE COMFORTABLE
+Adjust main text and ruby sizes separately. Choose light or dark appearance, serif text and a layout that suits the book. Long-press to select a word or phrase, adjust the selection, then choose Dictionary. Optional English, Chinese and Japanese dictionary packs work offline after download, with an online Wiktionary fallback.
 
-Each work appears in up to four languages at once, and you choose how many you want to see: the original alone when you are confident, the original with one translation beneath it when you are not, or everything at once when you are studying. Switch arrangement between line-by-line and paragraph-by-paragraph, turn the readings off, colour the words by their grammatical role, set the size, choose paper or night.
+EXPLORE THE LIBRARY
+Browse public-domain classics and rights-cleared original editions: literature, Chinese classics, physics companion notes, learning, finance and travel. Figures and equations remain with technical books. Each edition identifies its languages, sources and rights. Request a missing book or translation through a prefilled GitHub issue; an available language opens directly for reading.
 
-READS WHERE YOU ARE
+TAKE BOOKS WITH YOU
+Download books for offline reading. Reading positions, private notes and preferences stay on your device. Books and dictionary packs are included with the app purchase; ordinary reading needs no account or subscription. There are no advertisements. Downloads use the public book catalogue, with fallback sources when needed.
 
-Download a book once and it is yours to read offline, on a plane or underground, for as long as the app is installed. Your place in each book, your settings and your library are stored on your device and nowhere else.
+DISCUSS A PASSAGE
+Open a passage’s comment bubble to read or join the conversation. Optional GitHub sign-in lets you post from Bunko under your GitHub identity. Published comments are public; private notes and unpublished drafts stay on your device. Translation bubbles open the same passage discussion and can be hidden in Settings.
 
-NOTHING IS COLLECTED
+BRING YOUR OWN DOCUMENTS
+The optional private reading companion accepts PDF, Word, Markdown, text and TeX files. Find open papers, read converted equations, figures and tables, and ask for an explanation or translation. Documents and conversations remain private to your account and can be deleted in the app. Cloud processing uses Mathpix and DeepSeek with a first-use disclosure. Files up to 20 MB and PDFs up to 30 pages are supported; service allowances apply.
 
-No account. No advertising. No analytics. No server of ours that your reading passes through. The books are fetched from a public GitHub repository, and that is the whole of the network traffic.
+READ AN EXCERPT ON APPLE WATCH
+Send the current passage from your paired iPhone. The latest three excerpts stay available offline, with aligned sentences, Chinese pinyin and Japanese furigana where the edition includes them. Adjust text and ruby sizes separately. Figures and equations remain in the full reader.
 
-ABOUT THE TEXTS
-
-The originals are in the public domain. The modern Chinese, Japanese and English renderings were generated from those public-domain texts by LazyingArt and are checked before publication; the per-title rights audit is public, at github.com/lachlanchen/Bunko. Missing a book? Ask for it in the app and it becomes a request we can work from.
-
-One purchase. No subscription, nothing further to buy, and every book in the library included.
+Generated translations, study notes and AI explanations can contain errors. Check the accompanying sources when accuracy matters.
