@@ -1,3 +1,6 @@
+import {createProfileStore} from './shared-link-store.mjs'
+import {PROFILE_BINDING,ProfileLinkError} from './lazyingart-profile.mjs'
+import {createLacBalance,LacReadError} from './lac-balance.mjs'
 import { createDocumentAgent, agentPaths } from './agent/service.mjs'
 import { AppError } from './agent/common.mjs'
 import { createDemoAuth } from './demo-auth.mjs'
@@ -32,7 +35,7 @@ function passage(value) {
   return value
 }
 
-export function createService(config, { fetchImpl = fetch, now = Date.now, database = ':memory:' } = {}) {
+export function createService(config, { fetchImpl = fetch, now = Date.now, database = ':memory:', profileOptions = {}, pointsProvider } = {}) {
   const base = new URL(config.publicUrl)
   if (base.protocol !== 'https:' || base.pathname !== PREFIX || base.search || base.hash) throw new Error('Invalid publicUrl')
   const origins = new Set(config.origins ?? ['https://lachlan.lazying.art', 'https://lachlanchen.github.io', 'capacitor://localhost', 'https://localhost', 'bunko://localhost', 'null'])
@@ -69,6 +72,19 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     }
     db.exec('COMMIT')
   } catch (error) { db.exec('ROLLBACK'); db.close(); throw error }
+  const localSession = id => {
+    const row=db.prepare('SELECT data FROM sessions WHERE id=? AND expires>?').get(id,now())
+    if(!row)return null
+    const auth=unseal(row.data)
+    if(auth.provider==='demo')return null
+    return {owner:cloudOwner(auth.user),user:auth.user,authenticatedAt:auth.authenticatedAt}
+  }
+  const activeOwner=owner=>db.prepare('SELECT id FROM sessions WHERE expires>?').all(now()).some(row=>localSession(row.id)?.owner===owner)
+  const profileStore={db,localSession,active:activeOwner,requireActive:owner=>{if(!activeOwner(owner))throw new ProfileLinkError('local_session_changed')},flowActive:id=>!!db.prepare('SELECT 1 FROM flows WHERE id=? AND expires>?').get(id,now())}
+  const sharedProfile=createProfileStore(profileStore,config.lazyingart,{...profileOptions,now})
+  if(sharedProfile.enabled&&config.publicUrl+'/oauth/lazyingart/callback'!==PROFILE_BINDING.redirectUri)throw new Error('Shared callback binding mismatch')
+  const lacBalance=createLacBalance(db,config.lacPoints,{binding:PROFILE_BINDING,profile:sharedProfile,provider:pointsProvider,now})
+  const revokeTimer=sharedProfile.flushRevocations?setInterval(()=>void sharedProfile.flushRevocations(),30000):null;revokeTimer?.unref()
   const cloudLedger = createCloudLedger(db, config.billing || {}, now)
   const cloudBilling = createCloudBilling(cloudLedger, config.billing || {}, { seal, unseal })
   const agent = createDocumentAgent({ db, seal, unseal, config: config.agent || {}, cloud: cloudLedger, now })
@@ -200,7 +216,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
   }
   const cloudPaths = ['catalog', 'purchase', 'checkout', 'portal', 'restore'].map(p => `${PREFIX}/v1/cloud/${p}`)
   const notificationPaths = ['apple', 'google', 'stripe'].map(p => `${PREFIX}/v1/cloud/notifications/${p}`)
-  const postPaths = ['/v1/auth/start', '/v1/auth/demo', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post', ...agentPaths].map(p => PREFIX + p).concat(cloudPaths)
+  const postPaths = ['/v1/auth/start', '/v1/auth/demo', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post', ...['status','start','complete','cancel','disconnect','balance'].map(p=>'/v1/lazyingart/'+p), ...agentPaths].map(p => PREFIX + p).concat(cloudPaths)
   const server = createServer(async (req, res) => {
     res.setHeader('Cache-Control', 'no-store')
     res.setHeader('Referrer-Policy', 'no-referrer')
@@ -212,7 +228,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       if (active >= 40) fail(503, 'busy')
       active++; counted = true
       const raw = req.url ?? '', path = raw.split('?')[0]
-      if (path !== `${PREFIX}/oauth/callback` && raw !== path) fail(404, 'not_found')
+      if (![`${PREFIX}/oauth/callback`,`${PREFIX}/oauth/lazyingart`,`${PREFIX}/oauth/lazyingart/callback`].includes(path) && raw !== path) fail(404, 'not_found')
       if (bookMirror && path.startsWith(`${PREFIX}/books-cache/`)) {
         res.setHeader('Access-Control-Allow-Origin', '*')
         if (!['GET', 'HEAD'].includes(req.method)) fail(405, 'method_denied')
@@ -226,7 +242,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         const input = await body(req, 200000, true)
         json(res, await cloudBilling.notification(path.split('/').pop(), req, input.value, input.raw)); return
       }
-      if (!postPaths.includes(path) && ![`${PREFIX}/healthz`, `${PREFIX}/oauth/callback`].includes(path)) fail(404, 'not_found')
+      if (!postPaths.includes(path) && ![`${PREFIX}/healthz`, `${PREFIX}/oauth/callback`,`${PREFIX}/oauth/lazyingart`,`${PREFIX}/oauth/lazyingart/callback`].includes(path)) fail(404, 'not_found')
       const origin = req.headers.origin
       if (origin && !origins.has(origin)) fail(403, 'origin_denied')
       if (origin) { res.setHeader('Access-Control-Allow-Origin', origin); res.setHeader('Access-Control-Allow-Credentials', 'true') }
@@ -239,6 +255,27 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       const ip = req.headers['x-bunko-client-address'] ?? req.socket.remoteAddress
       limit(`request:${ip}`, 180, 60000)
       cleanup()
+      if(req.method==='GET'&&path===`${PREFIX}/oauth/lazyingart`){
+        if(!sharedProfile.enabled)fail(503,'shared_login_unavailable')
+        const ticket=new URL(raw,base).searchParams.get('ticket'),row=db.prepare('SELECT data FROM flows WHERE id=? AND expires>?').get(ticket,now())
+        if(!row)fail(400,'flow_expired')
+        const flow=unseal(row.data);if(flow.kind!=='shared-link'||flow.started)fail(400,'invalid_flow')
+        db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({...flow,started:true}),ticket)
+        const binder=opaque(),result=await sharedProfile.begin({binding:binder,...flow.context,flow:ticket})
+        res.setHeader('Set-Cookie',`__Host-bunko-link=${binder}; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=600`)
+        res.writeHead(303,{Location:result.authorizationUrl});res.end();return
+      }
+      if(req.method==='GET'&&path===`${PREFIX}/oauth/lazyingart/callback`){
+        if(!sharedProfile.enabled)fail(503,'shared_login_unavailable')
+        const binder=req.headers.cookie?.split(';').map(v=>v.trim()).find(v=>v.startsWith('__Host-bunko-link='))?.slice('__Host-bunko-link='.length)
+        const result=await sharedProfile.complete({callbackUrl:new URL(raw,base).href,binding:binder})
+        const row=db.prepare('SELECT data FROM flows WHERE id=? AND expires>?').get(result.flow,now())
+        if(!row)fail(400,'flow_expired')
+        const flow=unseal(row.data);db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({...flow,completed:true}),result.flow)
+        res.setHeader('Set-Cookie','__Host-bunko-link=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0')
+        res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Content-Security-Policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"})
+        res.end('<!doctype html><html lang="en"><meta name="viewport" content="width=device-width"><title>Bunko account connected</title><h1>Account connected</h1><p>Return to Bunko to continue reading.</p></html>');return
+      }
       if (req.method === 'GET' && path === `${PREFIX}/oauth/callback`) {
         const params = new URL(raw, base).searchParams, state = params.get('state')
         if (!validOpaque(state)) fail(400, 'invalid_state')
@@ -261,7 +298,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
           if (!Number.isSafeInteger(user.id) || typeof user.login !== 'string') fail(502, 'invalid_user')
           const accessExpires = now() + Math.min(SESSION_MS, (token.expires_in ?? 28800) * 1000)
           const persistent = !!flow.storage && typeof token.refresh_token === 'string' && Number.isFinite(token.refresh_token_expires_in)
-          flow.auth = { token: token.access_token, user, accessExpires, expires: accessExpires, persistent, storage: flow.storage,
+          flow.auth = { token: token.access_token, user, authenticatedAt:now(), accessExpires, expires: accessExpires, persistent, storage: flow.storage,
             ...(persistent ? { refreshToken: token.refresh_token, refreshExpires: now() + token.refresh_token_expires_in * 1000 } : {}) }
           // Refresh tokens stay encrypted on the cloud; only Bunko's opaque session reaches native storage.
           delete flow.githubVerifier
@@ -285,6 +322,35 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         if (action === 'catalog') { json(res, cloudBilling.catalog(owner)); return }
         limit(`billing:${owner}`, 20, 60000)
         json(res, action === 'purchase' ? await cloudBilling.purchase(input.platform, input, owner) : await cloudBilling.web(action, input, owner)); return
+      }
+      if(path.startsWith(`${PREFIX}/v1/lazyingart/`)){
+        const action=path.split('/').pop(),input=await body(req)
+        let auth;try{auth=await session(req,res,false)}catch(e){if(action!=='status'||e.status!==401)throw e}
+        if(action==='status'){json(res,{enabled:sharedProfile.enabled,points: lacBalance.enabled,signedIn:!!auth,eligible:!!auth&&auth.provider!=='demo',...(auth&&sharedProfile.status?sharedProfile.status(cloudOwner(auth.user)):{linked:false,state:'unlinked'})});return}
+        if(!auth||auth.provider==='demo')fail(403,'shared_account_requires_personal_login')
+        if(!sharedProfile.enabled)fail(503,'shared_login_unavailable')
+        const owner=cloudOwner(auth.user)
+        if(action==='start'){
+          if(!validOpaque(input.challenge)||input.consent!==true)fail(400,'explicit_link_required')
+          if(!Number.isSafeInteger(auth.authenticatedAt)||auth.authenticatedAt<now()-600000)fail(403,'local_reauthentication_required')
+          const id=opaque(),context={owner,sessionHash:auth.sessionId,authenticatedAt:auth.authenticatedAt}
+          db.prepare('INSERT INTO flows VALUES(?,NULL,?,?)').run(id,seal({kind:'shared-link',challenge:input.challenge,context}),now()+FLOW_MS)
+          json(res,{flow:id,url:config.publicUrl+'/oauth/lazyingart?ticket='+id});return
+        }
+        if(action==='complete'||action==='cancel'){
+          const row=db.prepare('SELECT data FROM flows WHERE id=? AND expires>?').get(input.flow,now());if(!row)fail(410,'flow_expired')
+          const flow=unseal(row.data)
+          if(flow.kind!=='shared-link'||flow.context.sessionHash!==auth.sessionId||!validOpaque(input.verifier)||!same(hash(input.verifier),flow.challenge))fail(400,'invalid_verifier')
+          if(action==='cancel'){db.prepare('DELETE FROM flows WHERE id=?').run(input.flow);json(res,{ok:true});return}
+          json(res,flow.completed?{linked:true}:{pending:true});return
+        }
+        if(action==='disconnect'){sharedProfile.disconnect(owner);json(res,{ok:true});return}
+        if(action==='balance'){
+          if(!lacBalance.enabled)fail(503,'points_not_qualified')
+          const value=await lacBalance.read(owner)
+          if(!localSession(auth.sessionId))fail(401,'sign_in_again')
+          json(res,value);return
+        }
       }
       const isAgent = agentPaths.includes(path.slice(PREFIX.length))
       if (isAgent) {
@@ -369,7 +435,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       }
       if (path === `${PREFIX}/v1/logout`) {
         const value = credential(req)
-        if (value) db.prepare('DELETE FROM sessions WHERE id=?').run(hash(value))
+        if (value) {const local=localSession(hash(value));if(local)sharedProfile.disconnect?.(local.owner);db.prepare('DELETE FROM sessions WHERE id=?').run(hash(value))}
         cookie(res, ''); json(res, { ok: true }); return
       }
       const auth = await session(req, res)
@@ -425,6 +491,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       }
       fail(404, 'not_found')
     } catch (error) {
+      if(error instanceof ProfileLinkError||error instanceof LacReadError){error.status=['local_reauthentication_required','points_link_required','points_consent_required'].includes(error.code)?403:503}
       // Only fixed route names and controlled error codes; never queries, bodies or tokens.
       if (process.env.BUNKO_LOG_ERRORS === '1' && (error.status ?? 503) >= 400) {
         const route = (req.url ?? '').split('?')[0]
@@ -439,7 +506,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
   server.maxHeadersCount = 40
   server.keepAliveTimeout = 5000
   const timer = setInterval(cleanup, 60000); timer.unref()
-  server.on('close', () => { clearInterval(timer); agent.close(); cloudBilling.stop(); db.close(); void bookMirror?.close() })
+  server.on('close', () => { clearInterval(timer); clearInterval(revokeTimer); agent.close(); cloudBilling.stop(); db.close(); void bookMirror?.close() })
   return server
 }
 

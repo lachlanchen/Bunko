@@ -64,6 +64,7 @@ Coordinate app evidence and backups with Coin's retention; app unlink is not
 central account deletion. Shared subscriptions and cross-app discounts remain
 separate product decisions.
 
-As of16 October2026, this document records the accepted integration direction.
-Bunko shared login and points remain inactive; no store release, billing setting
-or existing account was changed by this documentation checkpoint.
+As of 16 October 2026, the first rollout is explicit linking plus read-only shared
+points. Reward policies remain outside this phase. The app-owned implementation
+is staged and disabled. See [read-only integration qualification](shared-account-read-20261016.md)
+for source tests and the remaining deployment and native-app gates.

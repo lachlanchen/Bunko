@@ -2,6 +2,10 @@
 
 ## Optional shared account and earned LAC points · 2026-10-16
 
+The first coordinated rollout is explicit linking and a consent-backed read-only
+canonical balance. It activates no reward policy. Missing issuer, SDK, callback or
+native capabilities stay disabled; existing accounts and releases remain intact.
+
 The owner requests one optional LazyingArt account connection and accumulated
 earned points across Bunko, OnlyIdeas, EchoMind, AiMemo and participating apps.
 Use the Coin-owned nonmonetary points asset, preserving local purchases,

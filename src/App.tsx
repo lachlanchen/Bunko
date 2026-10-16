@@ -1,3 +1,4 @@
+import {SharedAccount} from './components/SharedAccount'
 import { baseLanguage, htmlLanguage, languageDirection } from './lib/languages'
 import { BUNKO_LEGAL_API } from './lib/serviceOrigins'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
@@ -659,6 +660,7 @@ function SettingsSheet({
         </section>
       )}
 
+      <SharedAccount ui={ui} onLogin={onCloud} />
       <UpdateSettings ui={ui} updates={updates} canReload={canReload} />
       <StoreLinks copy={copy} />
       <section>

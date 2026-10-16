@@ -50,7 +50,7 @@ export async function api<T>(path: string, data: object, signal?: AbortSignal, a
     const failure = error instanceof DiscussionError ? error : new DiscussionError('offline')
     // A repeated post uses the same requestId; the server returns its receipt or
     // refuses an ambiguous write. It never creates a second comment on retry.
-    if (attempt < 1 && ['offline', 'temporarily_unavailable', 'github_unavailable'].includes(failure.code) && !['/v1/auth/start', '/v1/auth/demo'].includes(path) && !path.startsWith('/v1/agent/') && !path.startsWith('/v1/cloud/')) {
+    if (attempt < 1 && ['offline', 'temporarily_unavailable', 'github_unavailable'].includes(failure.code) && !['/v1/auth/start', '/v1/auth/demo', '/v1/lazyingart/start'].includes(path) && !path.startsWith('/v1/agent/') && !path.startsWith('/v1/cloud/')) {
       await new Promise(resolve => setTimeout(resolve, 800))
       return api<T>(path, data, signal, attempt + 1, revision)
     }
