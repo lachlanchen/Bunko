@@ -5,8 +5,8 @@
     "build": "23"
   },
   "android": {
-    "version": "1.0.12",
-    "build": "22"
+    "version": "1.0.13",
+    "build": "23"
   },
   "macos": {
     "version": "1.0.8",
