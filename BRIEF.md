@@ -1,5 +1,25 @@
 # Bunko — product brief
 
+## Optional shared account and earned LAC points · 2026-10-16
+
+The owner requests one optional LazyingArt account connection and accumulated
+earned points across Bunko, OnlyIdeas, EchoMind, AiMemo and participating apps.
+Use the Coin-owned nonmonetary points asset, preserving local purchases,
+subscriptions, reading data and on-chain LAC. Linking must be explicit and proven
+by both accounts; usernames and email addresses never establish a match.
+
+Candidate shared rewards are daily activity5 once per canonical account/UTC day,
+qualified reading1 up to5/day, and approved unique public-paper contribution10
+up to50/day. Coin owns finite policies and the one canonical balance; app source
+events and retries must not grant the same activity twice. Ordinary reading and
+existing login remain available without a shared account.
+
+The exact Bunko profile registration is provisioned; the current service still
+uses its existing login. Keep the accepted legacy HTTPS callback while qualifying
+the separate optional profile integration. Daily/reading rewards are not yet
+enabled. See `docs/shared-account-rewards.md` and the installed
+`lazyingart-accounts-and-rewards` skill for implementation boundaries.
+
 ## Dedicated Bunko service hostname · 2026-10-12
 
 The owner requests `bunko.lazying.art` as the direct service host, retaining
