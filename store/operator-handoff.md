@@ -1,3 +1,21 @@
+# Current store checkpoint · 17 October 2026 HKT
+
+Bunko's newest uploaded build remains **1.0.13 (23)**. It is public on iOS/Watch
+and Google Play; Mac23 is **IN_REVIEW** with automatic release. No duplicate
+submission or native rebuild was needed. The Android update feed now targets 23;
+iOS23 and public Mac10 remain unchanged.
+
+OnlyIdeas' newer **1.0.8 (34)** test candidate is **WAITING_FOR_REVIEW** on
+iOS/Watch and Mac, and submitted on Google Play with quick checks completed
+and no unsent changes. Its former 1.0.7 (32) is public on all three platforms. Existing dedicated reviewer
+access and prices are preserved; no shared-account/reward or billing activation.
+
+[Bunko status](../docs/store-check-20261017.md). OnlyIdeas' exact receipt is in
+`../OnlyIdeasApp/docs/latest-review-20261017.json`. Private operational evidence
+is in `../OnlyIdeasApp/.runtime/review-20261017/`.
+
+## Earlier records
+
 # Current distribution · 14 October 2026 HKT
 
 Bunko iOS/Watch **1.0.13 (23)** is public, verified through ASC and US/HK listings.
