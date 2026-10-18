@@ -54,8 +54,13 @@ final class MacSmokeTests {
             check("native Settings menu opens reader settings")
             _ = try await js("document.querySelector('.sheet header button').click()")
             try await command("search")
-            try await wait("document.activeElement === document.querySelector('.search input')")
-            check("native Find a Book menu focuses search")
+            // A deliberately nonactivating window cannot promise keyboard focus.
+            // Exercise search itself without taking the user's foreground app.
+            try await wait("document.querySelector('.search input')")
+            _ = try await js("const input = document.querySelector('.search input'); Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, 'Natsume'); input.dispatchEvent(new Event('input', {bubbles:true}))")
+            try await wait("document.querySelectorAll('.card').length === 1 && document.querySelector('.card[data-book-id=sanshiro]')")
+            _ = try await js("const input = document.querySelector('.search input'); Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, ''); input.dispatchEvent(new Event('input', {bubbles:true}))")
+            check("book search filters and restores the catalogue without activating the window")
 
             _ = try await js("document.querySelector('.card[data-book-id=sanshiro]').click()")
             try await wait("document.querySelector('.book-hero')")
