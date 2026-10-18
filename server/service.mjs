@@ -1,3 +1,4 @@
+import {linkFailures,linkFailure} from './account-link-errors.mjs'
 import {sharePage} from './share-page.mjs'
 import {createRewardSourceRoutes} from './reward-source-routes.mjs'
 import {createProfileStore} from './shared-link-store.mjs'
@@ -285,7 +286,22 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       if(req.method==='GET'&&path===`${PREFIX}/oauth/lazyingart/callback`){
         if(!sharedProfile.enabled)fail(503,'shared_login_unavailable')
         const binder=req.headers.cookie?.split(';').map(v=>v.trim()).find(v=>v.startsWith('__Host-bunko-link='))?.slice('__Host-bunko-link='.length)
-        const result=await sharedProfile.complete({callbackUrl:new URL(raw,base).href,binding:binder})
+        let result
+        try {result=await sharedProfile.complete({callbackUrl:new URL(raw,base).href,binding:binder})}
+        catch(error){
+          // The store attaches this flow only after verifying/consuming callback proof.
+          if(error instanceof ProfileLinkError&&error.linkFlow&&linkFailures[error.code]){
+            const row=db.prepare('SELECT data FROM flows WHERE id=? AND expires>?').get(error.linkFlow,now())
+            const flow=row&&unseal(row.data)
+            if(flow?.kind==='shared-link'){
+              db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({...flow,linkError:error.code}),error.linkFlow)
+              res.setHeader('Set-Cookie','__Host-bunko-link=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0')
+              res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Content-Security-Policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"})
+              res.end('<!doctype html><meta name="viewport" content="width=device-width"><title>Bunko account connection</title><h1>Account not connected</h1><p>'+linkFailure(error.code).message+'</p><p>Return to Bunko to continue.</p>');return
+            }
+          }
+          throw error
+        }
         const row=db.prepare('SELECT data FROM flows WHERE id=? AND expires>?').get(result.flow,now())
         if(!row)fail(400,'flow_expired')
         const flow=unseal(row.data);db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({...flow,completed:true}),result.flow)
@@ -313,6 +329,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
           if (!response.ok || !token.access_token || token.error) fail(502, 'exchange_failed')
           const user = safeUser(await github('/user', token.access_token))
           if (!Number.isSafeInteger(user.id) || typeof user.login !== 'string') fail(502, 'invalid_user')
+          if(flow.reauth&&(cloudOwner(user)!==flow.reauth.owner||localSession(flow.reauth.sessionHash)?.owner!==flow.reauth.owner))throw new ProfileLinkError('local_session_changed')
           const accessExpires = now() + Math.min(SESSION_MS, (token.expires_in ?? 28800) * 1000)
           const persistent = !!flow.storage && typeof token.refresh_token === 'string' && Number.isFinite(token.refresh_token_expires_in)
           flow.auth = { token: token.access_token, user, authenticatedAt:now(), accessExpires, expires: accessExpires, persistent, storage: flow.storage,
@@ -321,8 +338,8 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
           delete flow.githubVerifier
           db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal(flow), row.id)
           callbackPage(res, flow.platform, row.id)
-        } catch {
-          db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({ ...flow, error: true, githubVerifier: undefined }), row.id)
+        } catch(error) {
+          db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({ ...flow, error: true, reauthError:flow.reauth&&error instanceof ProfileLinkError?error.code:undefined, githubVerifier: undefined }), row.id)
           callbackPage(res, flow.platform, row.id, true)
         }
         return
@@ -364,6 +381,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
           const flow=unseal(row.data)
           if(flow.kind!=='shared-link'||flow.context.sessionHash!==auth.sessionId||!validOpaque(input.verifier)||!same(hash(input.verifier),flow.challenge))fail(400,'invalid_verifier')
           if(action==='cancel'){db.prepare('DELETE FROM flows WHERE id=?').run(input.flow);json(res,{ok:true});return}
+          if(flow.linkError)throw new ProfileLinkError(flow.linkError)
           json(res,flow.completed?{linked:true}:{pending:true});return
         }
         if(action==='disconnect'){rewards.hold(owner);sharedProfile.disconnect(owner);json(res,{ok:true});return}
@@ -416,8 +434,11 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         if (storage !== undefined && !['cookie', 'secure'].includes(storage)) fail(400, 'invalid_flow')
         if (storage === 'cookie' && (origin !== 'https://lachlan.lazying.art' || input.platform !== 'web')) fail(400, 'invalid_flow')
         if (storage === 'secure' && input.platform !== 'native') fail(400, 'invalid_flow')
+        const local=input.reauthenticate===true?await session(req,res,false):null
+        if(local?.provider==='demo')fail(403,'shared_account_requires_personal_login')
+        const reauth=local?{owner:cloudOwner(local.user),sessionHash:local.sessionId}:null
         const id = opaque(), state = opaque(), verifier = opaque()
-        db.prepare('INSERT INTO flows VALUES (?,?,?,?)').run(id, hash(state), seal({ challenge: input.challenge, platform: input.platform, storage, githubVerifier: verifier }), now() + FLOW_MS)
+        db.prepare('INSERT INTO flows VALUES (?,?,?,?)').run(id, hash(state), seal({ challenge: input.challenge, platform: input.platform, storage, githubVerifier: verifier,...(reauth?{reauth}:{}) }), now() + FLOW_MS)
         json(res, { flow: id, url: `https://github.com/login/oauth/authorize?${new URLSearchParams({ client_id: config.clientId, redirect_uri: `${config.publicUrl}/oauth/callback`, state, code_challenge: hash(verifier), code_challenge_method: 'S256' })}` }); return
       }
       if (path === `${PREFIX}/v1/auth/complete`) {
@@ -432,8 +453,9 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
           if (flow.storage === 'cookie') cookie(res, flow.completed.token, flow.completed.expires)
           json(res, { ...flow.completed, ...(flow.storage === 'cookie' ? { token: undefined } : {}) }); return
         }
-        if (flow.error) { db.prepare('DELETE FROM flows WHERE id=?').run(row.id); fail(400, 'authorization_cancelled') }
+        if (flow.error) { db.prepare('DELETE FROM flows WHERE id=?').run(row.id); if(flow.reauthError)throw new ProfileLinkError(flow.reauthError);fail(400, 'authorization_cancelled') }
         if (!flow.auth) { json(res, { pending: true }); return }
+        if(flow.reauth){const local=await session(req,res,false);if(local.sessionId!==flow.reauth.sessionHash||cloudOwner(local.user)!==flow.reauth.owner)throw new ProfileLinkError('local_session_changed')}
         const token = opaque()
         const expires = flow.auth.persistent ? Math.min(now() + PERSISTENT_MS, flow.auth.refreshExpires) : flow.auth.expires
         db.prepare('INSERT INTO sessions VALUES (?,?,?)').run(hash(token), seal(flow.auth), expires)
@@ -513,7 +535,8 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       }
       fail(404, 'not_found')
     } catch (error) {
-      if(error instanceof ProfileLinkError||error instanceof LacReadError){error.status=['local_reauthentication_required','points_link_required','points_consent_required'].includes(error.code)?403:503}
+      if(error instanceof ProfileLinkError)error.status=linkFailure(error.code).status
+      if(error instanceof LacReadError)error.status=['points_link_required','points_consent_required'].includes(error.code)?403:503
       // Only fixed route names and controlled error codes; never queries, bodies or tokens.
       if (process.env.BUNKO_LOG_ERRORS === '1' && (error.status ?? 503) >= 400) {
         const route = (req.url ?? '').split('?')[0]

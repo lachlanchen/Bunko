@@ -1,0 +1,46 @@
+{
+  "en": {
+    "intro": "Start from the app account with the data and plan you want to keep. Connecting never combines accounts or transfers a plan.",
+    "methods": "Sign-in methods",
+    "choose": "Choose another LazyingArt account",
+    "account_already_linked": "This login belongs to another app account. Linking was refused. Your current data and plan are unchanged. Choose another login or cancel.",
+    "different_account_already_linked": "Reconnect the LazyingArt account already linked here. Your data and plan are unchanged.",
+    "local_reauthentication_required": "Sign in again with the same app account, then retry connecting. Your data and plan are unchanged.",
+    "local_session_changed": "Return to the app account you want to keep, then connect again. No accounts were combined.",
+    "central_reauthentication_required": "Confirm your LazyingArt sign-in again, then retry. Your app account is unchanged.",
+    "authorization_cancelled": "Connection cancelled. Your app account is unchanged."
+  },
+  "zh-Hans": {
+    "intro": "请从你想保留数据和套餐的应用账号开始。关联不会合并账号或转移套餐。",
+    "methods": "登录方式",
+    "choose": "选择其他 LazyingArt 账号",
+    "account_already_linked": "此登录方式属于另一个应用账号，无法关联。你当前的数据和套餐未变。请选择其他登录方式或取消。",
+    "different_account_already_linked": "请重新连接已关联的 LazyingArt 账号。你的数据和套餐未变。",
+    "local_reauthentication_required": "请使用同一个应用账号重新登录，再尝试关联。你的数据和套餐未变。",
+    "local_session_changed": "请返回你想保留的应用账号，再重新关联。没有合并任何账号。",
+    "central_reauthentication_required": "请再次确认 LazyingArt 登录，然后重试。你的应用账号未变。",
+    "authorization_cancelled": "已取消关联。你的应用账号未变。"
+  },
+  "zh-Hant": {
+    "intro": "請從你想保留資料和方案的應用程式帳號開始。連結不會合併帳號或轉移方案。",
+    "methods": "登入方式",
+    "choose": "選擇其他 LazyingArt 帳號",
+    "account_already_linked": "此登入方式屬於另一個應用程式帳號，無法連結。目前的資料和方案未變。請選擇其他登入方式或取消。",
+    "different_account_already_linked": "請重新連接已連結的 LazyingArt 帳號。你的資料和方案未變。",
+    "local_reauthentication_required": "請使用同一個應用程式帳號重新登入，再嘗試連結。你的資料和方案未變。",
+    "local_session_changed": "請返回你想保留的應用程式帳號，再重新連結。沒有合併任何帳號。",
+    "central_reauthentication_required": "請再次確認 LazyingArt 登入，然後重試。你的應用程式帳號未變。",
+    "authorization_cancelled": "已取消連結。你的應用程式帳號未變。"
+  },
+  "ja": {
+    "intro": "データとプランを残したいアプリアカウントから始めてください。連携でアカウントの統合やプランの移転は行いません。",
+    "methods": "ログイン方法",
+    "choose": "別の LazyingArt アカウントを選ぶ",
+    "account_already_linked": "このログイン方法は別のアプリアカウントに属するため、連携できません。現在のデータとプランは変わりません。別の方法を選ぶかキャンセルしてください。",
+    "different_account_already_linked": "すでに連携済みの LazyingArt アカウントに再接続してください。データとプランは変わりません。",
+    "local_reauthentication_required": "同じアプリアカウントで再度ログインしてから連携してください。データとプランは変わりません。",
+    "local_session_changed": "残したいアプリアカウントに戻ってから再度連携してください。アカウントは統合されていません。",
+    "central_reauthentication_required": "LazyingArt のログインを再確認してから再試行してください。アプリアカウントは変わりません。",
+    "authorization_cancelled": "連携をキャンセルしました。アプリアカウントは変わりません。"
+  }
+}

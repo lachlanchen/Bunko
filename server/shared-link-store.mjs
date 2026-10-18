@@ -57,9 +57,10 @@ export function createProfileStore(store,config,{transport,now=()=>Date.now()}={
   }
   async function complete({callbackUrl,binding}) {
     const result=await adapter.complete({callbackUrl,binding});
+    let completionFlow;
     try{return transaction(store,()=>{
       const row=db.prepare('SELECT * FROM profile_attempts WHERE id=? AND consumed=1 AND expires>?').get(result.attemptId,now());check(row,'attempt_expired');
-      const {context}=decrypt('attempt',row.id,row.body);contextValid(context);
+      const {context}=decrypt('attempt',row.id,row.body);completionFlow=context.flow;contextValid(context);
       const {identity,tokens}=result;
       check(db.prepare('SELECT 1 FROM profile_revocations WHERE id=? AND created>?').get(result.credentialId,now()),'profile_session_changed');
       if(context.owner)check(identity.authenticatedAt*1000>=context.started-30_000,'central_reauthentication_required');
@@ -75,7 +76,7 @@ export function createProfileStore(store,config,{transport,now=()=>Date.now()}={
       // Retain the original app profile when explicitly linking. No data/credit move.
       const local=store.localSession(context.sessionHash).user;
       return {user:local,flow:context.flow,linked:!!context.owner};
-    })}catch(e){credentials.failed(result.credentialId);throw e}
+    })}catch(e){credentials.failed(result.credentialId);if(completionFlow&&e instanceof ProfileLinkError)e.linkFlow=completionFlow;throw e}
   }
   const proofs=new Map();
   function proof(owner){

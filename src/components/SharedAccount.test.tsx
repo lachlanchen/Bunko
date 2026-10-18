@@ -3,8 +3,8 @@ import '@testing-library/jest-dom/vitest'
 import {afterEach,beforeEach,expect,it,vi} from 'vitest'
 import {act,cleanup,fireEvent,render,screen,waitFor} from '@testing-library/react'
 import {SharedAccount} from './SharedAccount'
-const state=vi.hoisted(()=>({user:{id:1,login:'reader'},listeners:new Set<()=>void>(),status:vi.fn(),connect:vi.fn(),api:vi.fn()}))
-vi.mock('../lib/discussions',()=>({currentUser:()=>state.user,subscribeSession:(fn:()=>void)=>{state.listeners.add(fn);return()=>state.listeners.delete(fn)},restoreSession:async()=>{},api:state.api}))
+const state=vi.hoisted(()=>({user:{id:1,login:'reader'},listeners:new Set<()=>void>(),status:vi.fn(),connect:vi.fn(),reauth:vi.fn(),api:vi.fn()}))
+vi.mock('../lib/discussions',()=>({currentUser:()=>state.user,subscribeSession:(fn:()=>void)=>{state.listeners.add(fn);return()=>state.listeners.delete(fn)},restoreSession:async()=>{},api:state.api,reauthenticateAccount:state.reauth}))
 vi.mock('../lib/sharedAccount',()=>({sharedStatus:state.status,connectSharedAccount:state.connect}))
 const status={enabled:true,points:false,signedIn:true,eligible:true,linked:false,state:'unlinked'}
 beforeEach(()=>{state.user={id:1,login:'reader'};state.status.mockReset().mockResolvedValue(status);state.connect.mockReset();state.api.mockReset();window.__BUNKO_DESKTOP__=false})
@@ -22,3 +22,14 @@ it('cancel and account switch cannot attach a late connection result',async()=>{
 it('does not start a browser flow through an unqualified Mac bridge',async()=>{
  window.__BUNKO_DESKTOP__=true;render(<SharedAccount ui="en" onLogin={()=>{}}/>);await screen.findByText('This Mac connection needs an app update.');expect(screen.queryByText('Connect LazyingArt')).not.toBeInTheDocument();expect(state.connect).not.toHaveBeenCalled()
 })
+
+it.each(['account_already_linked','different_account_already_linked','local_reauthentication_required'])('shows actionable %s without changing the account or draft',async code=>{
+ const onLogin=vi.fn();state.connect.mockImplementation(()=>({cancel:vi.fn(),promise:Promise.reject({code})}));
+ render(<><textarea aria-label="draft" defaultValue="Keep this reading note"/><SharedAccount ui="en" onLogin={onLogin}/></>);
+ fireEvent.click(await screen.findByText('Connect LazyingArt'));
+ await waitFor(()=>expect(screen.getByRole('status').textContent).toMatch(/unchanged/));
+ expect(screen.getByRole('textbox')).toHaveValue('Keep this reading note');expect(state.user.id).toBe(1);expect(onLogin).not.toHaveBeenCalled();expect(state.api).not.toHaveBeenCalled();
+ if(code==='account_already_linked')expect(screen.getByText('Choose another LazyingArt account')).toBeInTheDocument();
+ if(code==='local_reauthentication_required')expect(screen.getByText('Sign in')).toBeInTheDocument();
+ expect(screen.queryByText(/merge accounts/i)).not.toBeInTheDocument();
+});

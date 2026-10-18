@@ -92,7 +92,8 @@ export async function signOut() {
 
 // Native sessions use Keychain/Keystore; web sessions use an HttpOnly cookie.
 // GitHub credentials and refresh tokens never leave the cloud service.
-function beginSignIn(demo?: { username: string; password: string }) {
+function beginSignIn(demo?: { username: string; password: string }, reauthenticate = false) {
+  const hadSession = !!session
   generation++
   const revision = generation
   const native = Capacitor.isNativePlatform(), desktop = !!window.__BUNKO_DESKTOP__
@@ -103,7 +104,7 @@ function beginSignIn(demo?: { username: string; password: string }) {
   const cancel = () => {
     if (completed) return
     stop = true; controller.abort(); popup?.close()
-    if (generation === revision) rememberSignOut(true)
+    if (generation === revision && !hadSession) rememberSignOut(true)
     if (!demo && native) void Browser.close().catch(() => {})
     if (!demo && desktop) void window.webkit?.messageHandlers.bunkoAuth.postMessage({ cancel: true })
   }
@@ -112,7 +113,7 @@ function beginSignIn(demo?: { username: string; password: string }) {
     const verifier = requestId()
     const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier)))
     const challenge = btoa(String.fromCharCode(...digest)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-    const flow = await api<{ flow: string; url: string }>(demo ? '/v1/auth/demo' : '/v1/auth/start', { challenge, platform: native || desktop ? 'native' : 'web', storage: native || desktop ? 'secure' : 'cookie', ...demo }, controller.signal)
+    const flow = await api<{ flow: string; url: string }>(demo ? '/v1/auth/demo' : '/v1/auth/start', { challenge, platform: native || desktop ? 'native' : 'web', storage: native || desktop ? 'secure' : 'cookie', ...demo, ...(reauthenticate ? { reauthenticate:true } : {}) }, controller.signal)
     if (stop || generation !== revision) throw new DiscussionError('authorization_cancelled')
     if (!demo) {
       const url = new URL(flow.url)
@@ -162,3 +163,5 @@ function beginSignIn(demo?: { username: string; password: string }) {
 }
 export const signIn = () => beginSignIn()
 export const signInDemo = (username: string, password: string) => beginSignIn({ username, password })
+
+export const reauthenticateAccount = () => beginSignIn(undefined, true)

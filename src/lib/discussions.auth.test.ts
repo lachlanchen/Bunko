@@ -149,3 +149,10 @@ it('never replays an uncertain private upload or checkout across origins', async
   expect(request).toHaveBeenCalledTimes(2)
   expect(request.mock.calls.every(([url]) => String(url).startsWith('https://bunko.lazying.art/bunko/'))).toBe(true)
 })
+
+it('cancelled reauthentication preserves the existing session across restoration', async()=>{
+ vi.stubGlobal('fetch',vi.fn(async url=>String(url).endsWith('/session')?Response.json({user:{id:3,login:'reader'},expires:Date.now()+86400000}):Response.json({flow:'f'.repeat(43),url:'https://github.com/login/oauth/authorize?client_id=fixture'})));
+ vi.spyOn(window,'open').mockReturnValue({opener:null,location:{href:''},close:vi.fn()} as unknown as Window);
+ const api=await import('./discussions');await api.restoreSession();const flow=api.reauthenticateAccount();const rejected=expect(flow.promise).rejects.toBeDefined();flow.cancel();await rejected;
+ expect(api.currentUser()?.id).toBe(3);expect(localStorage.getItem('bunko:signed-out')).not.toBe('1');await api.restoreSession();expect(api.currentUser()?.id).toBe(3);
+});

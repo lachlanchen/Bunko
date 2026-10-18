@@ -310,3 +310,14 @@ next test build; build22's active reviews remain the submitted checkpoint.
 The owner requests title-rich book/paper sharing to WeChat and EchoMind, and AiMemo read-later or research-idea drafts. Public share pages contain canonical metadata, a browser reader, an explicit app link and store choices. Sharing never publishes a private document or sends a message automatically. EchoMind owns its recipient/draft/card receiver and AiMemo owns its memo/agent draft receiver; qualify accepted ingress before enabling direct handoff. The OS share sheet and clearly labeled copy fallback remain usable independently.
 
 These changes accumulate in internal build26, without replacing public reviews.
+
+## Account linking · 2026-10-19
+
+Start from the account whose data and subscription the reader wants to keep.
+That initiating local ID remains primary. Refuse a connection when the target
+already belongs to another local account; offer cancellation or another login.
+There is no account consolidation, purchase inheritance or automatic grant.
+Reauthentication must return to the same app account and preserve drafts.
+Central account management is shown only after its exact destination and return
+contract are qualified by EchoMind. Bunko remains link-only for shared identity;
+this source update does not enable central-only registration or change releases.
