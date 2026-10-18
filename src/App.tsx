@@ -291,7 +291,7 @@ export default function App() {
     onCloud={() => { setShowSettings(false); setView('cloud') }}
   />
 
-  if (view === 'agent') return <DocumentAgent ui={ui} onBack={() => setView('library')} onCloud={() => setView('cloud')} />
+  if (view === 'agent') return <DocumentAgent ui={ui} onBack={() => setView('library')} />
   if (view === 'cloud') return <CloudPlans ui={ui} onBack={() => {
     const url = new URL(window.location.href)
     url.searchParams.delete('billing')

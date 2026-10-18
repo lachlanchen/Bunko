@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
-import { ArrowLeft, ArrowUp, BookOpen, FileText, LoaderCircle, Paperclip, Plus, RefreshCw, Search, Trash2, X } from 'lucide-react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
+import { ArrowDown, ArrowLeft, ArrowUp, BookOpen, FileText, Ellipsis, LoaderCircle, LogOut, Paperclip, Plus, RefreshCw, Trash2, X } from 'lucide-react'
 import { currentUser, restoreSession, signIn, signOut, subscribeSession, DiscussionError, requestId } from '../lib/discussions'
 import { agentCall, uploadDocument, type AgentMessage, type PrivateDocument, type PaperMatch } from '../lib/documentAgent'
 import { useBackAction } from '../lib/backNavigation'
@@ -7,12 +7,15 @@ import type { UILanguage } from '../i18n'
 import { agentCopy } from './agentCopy'
 import { DocumentContent } from './DocumentContent'
 import { DemoAccount, DemoNotice } from './DemoAccount'
+import { CloudPlans } from './CloudPlans'
 import { cloudCopy } from './cloudCopy'
 import { BUNKO_LEGAL_API } from '../lib/serviceOrigins'
 import './documentAgent.css'
 
-export function DocumentAgent({ ui, onBack, onCloud }: { ui: UILanguage; onBack: () => void; onCloud: () => void }) {
+export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => void }) {
   const t = agentCopy[ui]
+  const page = useRef<HTMLElement>(null), history = useRef<HTMLDivElement>(null), historyContent = useRef<HTMLDivElement>(null), followLatest = useRef(true), userScrolling = useRef(false), savedScroll = useRef(0), menu = useRef<HTMLDetailsElement>(null)
+  const [atBottom, setAtBottom] = useState(true), [plans, setPlans] = useState(false), [menuOpen, setMenuOpen] = useState(false)
   const user = useSyncExternalStore(subscribeSession, currentUser, () => null)
   const [documents, setDocuments] = useState<PrivateDocument[]>([])
   const [selected, setSelected] = useState('')
@@ -38,9 +41,32 @@ export function DocumentAgent({ ui, onBack, onCloud }: { ui: UILanguage; onBack:
   const cancelAuth = useRef<(() => void) | null>(null)
   const activeUser = useRef(user?.id)
   useEffect(() => { activeUser.current = user?.id }, [user?.id])
+  useEffect(() => {
+    const viewport = window.visualViewport
+    const resize = () => { page.current?.style.setProperty('--agent-height', `${viewport?.height ?? window.innerHeight}px`); page.current?.style.setProperty('--agent-top', `${viewport?.offsetTop ?? 0}px`) }
+    resize(); viewport?.addEventListener('resize', resize); viewport?.addEventListener('scroll', resize); window.addEventListener('resize', resize)
+    return () => { viewport?.removeEventListener('resize', resize); viewport?.removeEventListener('scroll', resize); window.removeEventListener('resize', resize) }
+  }, [plans])
+  useLayoutEffect(() => { if (history.current) history.current.scrollTop = followLatest.current ? history.current.scrollHeight : savedScroll.current }, [messages, busy, plans])
+  useLayoutEffect(() => { if (composer.current) { composer.current.style.height = 'auto'; composer.current.style.height = draft ? `${Math.min(144, composer.current.scrollHeight)}px` : '44px' } }, [draft, plans])
+  useEffect(() => {
+    if (!historyContent.current || typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(() => { if (followLatest.current && history.current) history.current.scrollTop = history.current.scrollHeight })
+    observer.observe(historyContent.current); if (history.current) observer.observe(history.current)
+    return () => observer.disconnect()
+  }, [plans, user?.id])
+  const latest = () => { followLatest.current = true; userScrolling.current = false; setAtBottom(true); if (history.current) history.current.scrollTop = history.current.scrollHeight }
   const activeDocument = useRef(selected)
   useEffect(() => { activeDocument.current = selected }, [selected])
   const doc = documents.find(d => d.id === selected)
+  useBackAction(() => { menu.current?.removeAttribute('open') }, menuOpen, 30)
+  useEffect(() => {
+    if (!menuOpen) return
+    const outside = (event: PointerEvent) => { if (event.target instanceof Node && !menu.current?.contains(event.target)) menu.current?.removeAttribute('open') }
+    const escape = (event: KeyboardEvent) => { if (event.key === 'Escape') menu.current?.removeAttribute('open') }
+    document.addEventListener('pointerdown', outside); document.addEventListener('keydown', escape)
+    return () => { document.removeEventListener('pointerdown', outside); document.removeEventListener('keydown', escape) }
+  }, [menuOpen])
   useBackAction(() => { if (reading) setReading(null); else onBack() }, true, 20)
   useBackAction(() => { setConfirm(null); setReport(null); setCloudConsent(false); pendingCloud.current = null }, !!confirm || !!report || cloudConsent, 40)
   useEffect(() => {
@@ -112,7 +138,7 @@ export function DocumentAgent({ ui, onBack, onCloud }: { ui: UILanguage; onBack:
   const send = async (text = draft) => run('send', async () => {
     if (!text.trim()) return
     const owner = user?.id, target = selected, question = text.trim(), id = requestId()
-    setDraft('')
+    followLatest.current = true; userScrolling.current = false; setAtBottom(true); setDraft('')
     setMessages(items => [...items, { id, state: 'processing', question, answer: '', papers: [] }])
     try {
       const response = await agentCall<AgentMessage>('send', { text: question, documentId: target, requestId: id })
@@ -131,14 +157,22 @@ export function DocumentAgent({ ui, onBack, onCloud }: { ui: UILanguage; onBack:
     const result = await agentCall<PrivateDocument>('import', { url: paper.pdfUrl, name: `${paper.title.slice(0, 160)}.pdf`, requestId: requestId() })
     setSelected(result.id); setMessages([]); await refresh()
   })
-  const choose = (id: string) => { if (busy) return; setSelected(id); setMessages([]); setError('') }
+  const choose = (id: string) => { if (busy) return; followLatest.current = true; userScrolling.current = false; setAtBottom(true); setSelected(id); setMessages([]); setError('') }
   const stateLabel = (state: string) => t[state as 'queued' | 'processing' | 'ready' | 'failed' | 'interrupted'] || state
-  return <main className="agent-page">
+  if (plans) return <CloudPlans ui={ui} onBack={() => setPlans(false)} />
+  return <main ref={page} className={`agent-page${user ? ' agent-page-active' : ''}`}>
     <header className="agent-header">
-      <button type="button" onClick={onBack} aria-label={t.back}><ArrowLeft size={20} /></button>
-      <div><strong>Bunko</strong><span>{t.name}</span></div>
-      <button type="button" onClick={onCloud}>{cloudCopy[ui].title}</button>
-      {user && <button type="button" className="agent-account" disabled={!!busy} onClick={() => { void signOut().catch(failure); setDocuments([]); setMessages([]); setReading(null); setSelected('') }}>{user.login} · {t.signOut}</button>}
+      <button type="button" className="agent-icon-button" onClick={onBack} aria-label={t.back}><ArrowLeft size={20} /></button>
+      <div className="agent-heading"><strong>{t.name}</strong><span>Bunko</span></div>
+      <details ref={menu} className="agent-menu" onKeyDown={e => { if (e.key === 'Escape') { e.currentTarget.removeAttribute('open'); e.stopPropagation() } }} onToggle={e => setMenuOpen(e.currentTarget.open)}>
+        <summary aria-label={t.more} title={t.more}><Ellipsis size={22} /></summary>
+        <div className="agent-menu-panel">
+          <button type="button" onClick={() => { menu.current?.removeAttribute('open'); setMenuOpen(false); setPlans(true) }}><BookOpen size={18} />{cloudCopy[ui].title}</button>
+          <p>{t.fileHint}</p><p>{t.privacy}</p>
+          <a href={`${BUNKO_LEGAL_API}/privacy.html`} target="_blank" rel="noopener noreferrer">{t.privacyLink}</a>
+          {user && <><small>{user.login}</small><button type="button" disabled={!!busy} onClick={() => { void signOut().catch(failure); setDocuments([]); setMessages([]); setReading(null); setSelected(''); setDraft('') }}><LogOut size={17} />{t.signOut}</button></>}
+        </div>
+      </details>
     </header>
     {user?.kind === 'demo' && <DemoNotice ui={ui} />}
     {!user ? <section className="agent-welcome">
@@ -149,9 +183,11 @@ export function DocumentAgent({ ui, onBack, onCloud }: { ui: UILanguage; onBack:
       {error && <p role="alert">{error}</p>}
     </section> : <div className="agent-layout">
       <aside className="agent-library">
-        <div className="agent-section-heading"><h2>{t.files}</h2><button type="button" onClick={() => { void refresh().catch(failure) }} aria-label={t.refresh}><RefreshCw size={16} /></button></div>
-        <button type="button" className={`agent-general ${!selected ? 'selected' : ''}`} onClick={() => choose('')} disabled={!!busy}><Plus size={17} />{t.newChat}</button>
-        {!documents.length && <p className="agent-muted">{t.empty}</p>}
+        <div className="agent-section-heading"><h2>{t.files}</h2><div className="agent-library-tools">
+          <button type="button" className={!selected ? 'selected' : ''} onClick={() => choose('')} disabled={!!busy} aria-label={t.newChat} title={t.newChat} aria-pressed={!selected}><Plus size={18} /></button>
+          <button type="button" onClick={() => { void refresh().catch(failure) }} disabled={!!busy} aria-label={t.refresh} title={t.refresh}><RefreshCw size={17} /></button>
+          <button type="button" disabled={!!busy || (!documents.length && !messages.length)} onClick={() => setConfirm('all')} aria-label={t.deleteAll} title={t.deleteAll}><Trash2 size={17} /></button>
+        </div></div>
         <div className="agent-document-list">
           {documents.map(d => <article key={d.id} className={selected === d.id ? 'selected' : ''}>
             <button type="button" className="agent-document-title" onClick={() => choose(d.id)} disabled={!!busy}><FileText size={18} /><span>{d.name}<small>{stateLabel(d.state)}</small></span></button>
@@ -163,33 +199,34 @@ export function DocumentAgent({ ui, onBack, onCloud }: { ui: UILanguage; onBack:
             </div>
           </article>)}
         </div>
-        <button className="agent-clear" type="button" disabled={!!busy} onClick={() => setConfirm('all')}>{t.deleteAll}</button>
       </aside>
       <section className="agent-conversation" aria-label={t.name}>
-        <div className="agent-context">
-          {doc ? <><FileText size={19} /><div><small>{t.selected}</small><strong>{doc.name}</strong></div><button type="button" onClick={() => choose('')} disabled={!!busy} aria-label={t.newChat}><X size={17} /></button></> : <><Search size={19} /><span>{t.hint}</span></>}
-        </div>
-        <div className="agent-messages" aria-live="polite" aria-busy={busy === 'send'}>
+        {doc && <div className="agent-context"><FileText size={17} /><strong>{doc.name}</strong><button type="button" onClick={() => choose('')} disabled={!!busy} aria-label={t.newChat}><X size={17} /></button></div>}
+        <div className="agent-history">
+        <div ref={history} className="agent-messages" role="log" tabIndex={0} onWheel={() => { userScrolling.current = true }} onTouchMove={() => { userScrolling.current = true }} onPointerDown={() => { userScrolling.current = true }} onKeyDown={e => { if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End'].includes(e.key)) userScrolling.current = true }} aria-label={t.name} aria-live="polite" aria-busy={busy === 'send'} onScroll={() => { const el = history.current; if (el) { const bottom = el.scrollHeight - el.scrollTop - el.clientHeight < 64; if (!bottom && !userScrolling.current) return; savedScroll.current = el.scrollTop; followLatest.current = bottom; if (bottom) userScrolling.current = false; setAtBottom(bottom) } }}>
+          <div ref={historyContent} className="agent-message-content">
           {!messages.length && <div className="agent-empty"><h1>{doc ? doc.name : t.intro}</h1><p>{doc ? stateLabel(doc.state) : t.hint}</p>
-            <div className="agent-suggestions">{(doc ? [t.summarize, t.explain, t.translate] : [t.search]).map(prompt => <button type="button" key={prompt} onClick={() => { setDraft(prompt); composer.current?.focus() }}>{prompt}</button>)}</div>
+            <div className="agent-suggestions">{(doc ? [t.summarize, t.explain, t.translate] : [t.search, t.explain]).map(prompt => <button type="button" key={prompt} onClick={() => { setDraft(prompt); composer.current?.focus() }}>{prompt}</button>)}</div>
           </div>}
           {messages.map(m => <article className="agent-exchange" key={m.id}>
             <p className="agent-question">{m.question}</p>
-            <div className="agent-answer">{m.answer ? <><small>{t.ai}</small><DocumentContent key={m.id} text={m.answer} preparing={t.preparing} failed={t.renderFailed} /></> : <p>{m.error || (m.state === 'processing' ? t.sending : t.interrupted)}</p>}
+            <div className="agent-answer">{m.answer ? <><DocumentContent key={m.id} text={m.answer} preparing={t.preparing} failed={t.renderFailed} /></> : <p>{m.error || (m.state === 'processing' ? t.sending : t.interrupted)}</p>}
               {m.papers.map(p => <article className="agent-paper" key={p.pdfUrl}><h3>{p.title}</h3><p>{p.authors} {p.year}</p><p>{p.summary}</p><button type="button" disabled={!!busy} onClick={() => { withCloudConsent(() => { void importPaper(p) }) }}><BookOpen size={16} />{t.import}</button><a href={p.source} target="_blank" rel="noopener noreferrer">{t.source}</a></article>)}
-              {m.answer && <button type="button" className="agent-report" onClick={() => { setReason(''); setReport(m) }}>{t.report}</button>}
+              {m.answer && <div className="agent-answer-tools"><small title={t.ai}>Bunko · AI</small><button type="button" className="agent-report" onClick={() => { setReason(''); setReport(m) }}>{t.report}</button></div>}
             </div>
           </article>)}
+          </div>
+        </div>
+        {!atBottom && <button type="button" className="agent-jump" onClick={latest} aria-label={t.latest} title={t.latest}><ArrowDown size={18} /></button>}
         </div>
         <div className="agent-composer-area">
           {error && <p className="notice error" role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
           <form className="agent-composer" onSubmit={e => { e.preventDefault(); withCloudConsent(() => { void send() }) }}>
             <input ref={file} type="file" accept=".pdf,.docx,.md,.mmd,.txt,.tex,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" hidden onChange={e => { void upload(e.target.files) }} />
-            <textarea ref={composer} aria-label={t.placeholder} value={draft} onChange={e => setDraft(e.target.value)} placeholder={t.placeholder} maxLength={8000} rows={3} />
-            <div><button type="button" disabled={!!busy} onClick={() => withCloudConsent(() => file.current?.click())} title={t.fileHint}><Paperclip size={20} />{busy === 'upload' ? t.uploading : t.attach}</button>
-              <button type="submit" className="agent-send" aria-label={t.send} disabled={!!busy || !draft.trim() || (!!doc && doc.state !== 'ready')}>{busy ? <LoaderCircle className="spinning" size={20} /> : <ArrowUp size={21} />}</button></div>
+            <button type="button" className="agent-attach" disabled={!!busy} onClick={() => withCloudConsent(() => file.current?.click())} aria-label={busy === 'upload' ? t.uploading : t.attach} title={t.fileHint}><Paperclip size={20} /></button>
+            <textarea ref={composer} aria-label={t.placeholder} value={draft} onChange={e => setDraft(e.target.value)} placeholder={t.placeholder} maxLength={8000} rows={1} />
+            <button type="submit" className="agent-send" aria-label={t.send} disabled={!!busy || !draft.trim() || (!!doc && doc.state !== 'ready')}>{busy ? <LoaderCircle className="spinning" size={20} /> : <ArrowUp size={21} />}</button>
           </form>
-          <p className="agent-muted agent-file-hint">{t.fileHint}</p><p className="agent-muted agent-privacy">{t.privacy}</p>
         </div>
       </section>
     </div>}

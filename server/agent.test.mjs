@@ -189,3 +189,18 @@ test('paper discovery coalesces calls, caches success, and falls back during pro
   assert.deepEqual(await search('quantum'),a); assert.equal(calls,2)
   await search('another topic'); assert.equal(calls,3); assert.equal(arxivCalls,1)
 })
+
+test('ordinary reading requests reach the companion and never fall back to paper search', async () => {
+  const {respond}=await import('./agent/discovery.mjs')
+  let prompt
+  const answer=await respond({text:'Help me understand the narrator in this book.',messages:[]},{model:{url:'https://model.invalid/chat',name:'fixture'}},async()=>{}, {
+    provider:async(_url,options)=>{prompt=JSON.parse(options.body);return {choices:[{message:{content:'not valid JSON'}}]}},
+    search:async()=>{throw Error('A book question must not become a paper search')},
+  })
+  assert.match(prompt.messages[0].content,/reading companion for books/)
+  assert.equal(prompt.messages.at(-1).content,'Help me understand the narrator in this book.')
+  assert.equal(answer.papers.length,0);assert.match(answer.text,/book title or paste a passage/)
+  let searched=false
+  await respond({text:'Find research papers about polarization',messages:[]},{},async()=>{}, {search:async()=>{searched=true;return []}})
+  assert.equal(searched,true)
+})

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
-import { ArrowLeft, Cloud, RefreshCw } from 'lucide-react'
+import { ArrowLeft, BookOpen, RefreshCw } from 'lucide-react'
 import { currentUser, restoreSession, sessionRevision, signIn, subscribeSession } from '../lib/discussions'
 import { cloudCall, cloudPlatform, paymentURL, type CloudCatalog } from '../lib/cloudPlans'
 import { useBackAction } from '../lib/backNavigation'
@@ -66,7 +66,7 @@ function CloudPlanAccount({ ui, onBack }: { ui: UILanguage; onBack: () => void }
   const hasStripe = catalog?.subscriptions.some(item => item.platform === 'stripe')
   return <main className="cloud-page">
     <header><button type="button" onClick={onBack} aria-label={t.close}><ArrowLeft size={20} /></button><strong>{t.title}</strong><button type="button" onClick={() => void refresh()} disabled={!!busy} aria-label={t.retry}><RefreshCw size={18} /></button></header>
-    <section className="cloud-intro"><Cloud size={32} /><h1>{t.title}</h1><p>{t.intro}</p><p className="cloud-included">{t.included}</p></section>
+    <section className="cloud-intro"><BookOpen size={28} /><h1>{t.intro}</h1><p className="cloud-included">{t.included}</p></section>
     {!user && <section className="cloud-account"><p>{t.signedOut}</p><button className="primary" type="button" onClick={login} disabled={!!busy}>{busy === 'login' ? t.signingIn : t.signIn}</button>{busy === 'login' && <button type="button" onClick={() => cancelLogin.current?.()}>{t.cancel}</button>}</section>}
     {quota?.enabled && <section className="cloud-usage"><h2>{t.usage}</h2>{quota.unlimited ? <p>{t.unlimited}</p> : <><div><strong>{quota.remainingPages.toLocaleString(ui)} <small>{t.pages} · {t.remaining}</small></strong><strong>{quota.remainingAgentTurns.toLocaleString(ui)} <small>{t.answers} · {t.remaining}</small></strong></div><p>{t.resets}: {new Date(quota.ends).toLocaleDateString(ui)}</p></>}</section>}
     {catalog && !webReady && <p className="cloud-status">{t.unavailable}</p>}

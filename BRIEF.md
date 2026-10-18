@@ -321,3 +321,17 @@ Reauthentication must return to the same app account and preserve drafts.
 Central account management is shown only after its exact destination and return
 contract are qualified by EchoMind. Bunko remains link-only for shared identity;
 this source update does not enable central-only registration or change releases.
+
+## Reading-companion presentation · 2026-10-19
+
+Keep Bunko focused on reading books and personal texts. Use a compact header and
+composer, put messages above the composer, and place add/refresh/delete together.
+Move file/privacy details out of the persistent chat layout while retaining
+consent and accessible privacy information. Keep the current conversation and
+unsent draft when opening its plan page.
+
+Present optional subscriptions as Reading plans, with Reader, Creator and
+Entrepreneur display names. All existing book, dictionary and offline-reading
+access stays included. Existing product IDs, prices, quotas and purchase gates
+remain unchanged; these labels do not activate billing or alter store products.
+Accumulate the qualified source for a subsequent internal candidate.
