@@ -1,3 +1,4 @@
+import {bookIdFromLink} from './lib/bookLink'
 import {App as CapacitorApp} from '@capacitor/app'
 import {Capacitor} from '@capacitor/core'
 import {ReadingShare} from './components/ReadingShare'
@@ -177,7 +178,7 @@ export default function App() {
   const launchLinkChecked=useRef(false)
   useEffect(() => {
     if (!index) return
-    const openLink = (value: string) => {try{const url=new URL(value);if(url.protocol!=='art.lazying.bunko:'||url.host!=='book'||url.search||url.hash)return;const id=url.pathname.slice(1);if(!/^[a-z0-9-]{1,120}$/.test(id))return;const book=index.books.find(b=>b.id===id);if(book)void openBook(book)}catch{/* Ignore unrelated links. */}}
+    const openLink = (value: string) => {const id=bookIdFromLink(value);if(!id)return;const book=index.books.find(b=>b.id===id);if(book)void openBook(book)}
     const receive=(event:Event)=>{const value=(event as CustomEvent<string>).detail;if(typeof value==='string'){delete window.__BUNKO_BOOK_LINK__;openLink(value)}}
     window.addEventListener('bunko-open-book',receive)
     if(window.__BUNKO_BOOK_LINK__) {openLink(window.__BUNKO_BOOK_LINK__);delete window.__BUNKO_BOOK_LINK__}

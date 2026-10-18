@@ -296,4 +296,4 @@ next test build; build22's active reviews remain the submitted checkpoint.
 
 The owner requests title-rich book/paper sharing to WeChat and EchoMind, and AiMemo read-later or research-idea drafts. Public share pages contain canonical metadata, a browser reader, an explicit app link and store choices. Sharing never publishes a private document or sends a message automatically. EchoMind owns its recipient/draft/card receiver and AiMemo owns its memo/agent draft receiver; qualify accepted ingress before enabling direct handoff. The OS share sheet and clearly labeled copy fallback remain usable independently.
 
-These changes accumulate in internal build25, without replacing public reviews.
+These changes accumulate in internal build26, without replacing public reviews.
