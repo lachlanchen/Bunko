@@ -5,7 +5,7 @@ export function observeForegroundUse() {
  const resume=()=>{if(document.visibilityState==='visible')sent=false}
  const use=()=>{
   const user=currentUser()
-  if(sent||document.visibilityState!=='visible'||!user||user.kind==='demo')return
+  if(sent||document.visibilityState!=='visible'||!user?.id||user.kind==='demo')return
   sent=true
   void api('/v1/lazyingart/activity',{kind:'foreground'}).catch(()=>{})
  }
