@@ -62,12 +62,15 @@ final class MacSmokeTests {
             check("ruby and multilingual text render")
             try await screenshot("02-reading")
             // Exercise the bundled reader through real WebKit/window reflow.
-            _ = try await js("window.__qaParagraph = Math.min(10, document.querySelectorAll('[data-para]').length - 2); const p = document.querySelector('[data-para=\"' + window.__qaParagraph + '\"]'); document.querySelector('.page').scrollTop = p.offsetTop - 12")
-            try await Task.sleep(nanoseconds: 300_000_000)
+            _ = try await js("window.__qaParagraph = Math.min(10, document.querySelectorAll('[data-para]').length - 2); const p = document.querySelector('[data-para=\"' + window.__qaParagraph + '\"]'); const page = document.querySelector('.page'); page.scrollTop += p.getBoundingClientRect().top - page.getBoundingClientRect().top - 12")
+            try await Task.sleep(nanoseconds: 500_000_000)
+            // Compare the actual visible passage and fractional position. offsetTop
+            // depends on the offset parent and is not a viewport coordinate.
+            _ = try await js("window.__qaPoint = () => { const page = document.querySelector('.page'); const edge = page.getBoundingClientRect().top + 12; const p = Array.from(page.querySelectorAll('[data-para]')).find(p => p.getBoundingClientRect().bottom > edge); const r = p.getBoundingClientRect(); return {id:p.dataset.para, fraction:(edge-r.top)/r.height}; }; window.__qaBefore = window.__qaPoint()")
             for width in [620, 1000, 740, 1280] {
                 webView.window?.setContentSize(NSSize(width: width, height: 800))
-                try await Task.sleep(nanoseconds: 300_000_000)
-                try await wait("Math.abs(document.querySelector('[data-para=\"' + window.__qaParagraph + '\"]').getBoundingClientRect().top - document.querySelector('.page').getBoundingClientRect().top - 12) < 5", timeout: 5)
+                try await Task.sleep(nanoseconds: 500_000_000)
+                try await wait("window.__qaPoint().id === window.__qaBefore.id && Math.abs(window.__qaPoint().fraction - window.__qaBefore.fraction) < 0.04", timeout: 5)
             }
             check("reading passage and ruby survive four native window resizes")
             try await screenshot("02-resized-reading")
