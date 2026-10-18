@@ -27,12 +27,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         config.websiteDataStore = .default()
         #if DEBUG
         // Test hosts can use a loopback CONNECT tunnel without changing system proxies.
+        #if compiler(>=5.9)
         if #available(macOS 14.0, *), CommandLine.arguments.contains("--bunko-smoke-test"),
            let value = ProcessInfo.processInfo.environment["BUNKO_QA_PROXY_PORT"],
            let port = UInt16(value), let endpointPort = NWEndpoint.Port(rawValue: port) {
             config.websiteDataStore.proxyConfigurations = [ProxyConfiguration(
                 httpCONNECTProxy: .hostPort(host: "127.0.0.1", port: endpointPort))]
         }
+        #endif
         #endif
         config.userContentController.addScriptMessageHandler(self, contentWorld: .page, name: "bunkoAuth")
         let appInfo = ["version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "",
