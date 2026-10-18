@@ -1,5 +1,7 @@
 /* Design tokens. Paper by day, ink by night, one warm accent for the readings. */
 :root {
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
   --paper: #faf7f1;
   --paper-raised: #fffdf9;
   --ink: #1c1b22;

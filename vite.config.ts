@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => ({
   base: './',
   server: { watch: { ignored: ['**/.runtime/**'] } },
   define: { __APP_VERSION__: JSON.stringify(version) },
-  build: { target: mode === 'macos' ? 'safari15.6' : undefined },
+  build: { target: mode === 'macos' || mode === 'native' ? 'safari15' : undefined },
   plugins: [
     react(),
     {

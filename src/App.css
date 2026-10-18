@@ -2,7 +2,7 @@
 .page-shell {
   max-width: 900px;
   margin: 0 auto;
-  padding: max(18px, env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom));
+  padding: max(18px, env(safe-area-inset-top)) max(18px, var(--safe-right)) calc(28px + env(safe-area-inset-bottom)) max(18px, var(--safe-left));
 }
 
 .masthead { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 3px 8px; margin: 4px 0 16px; }
@@ -124,7 +124,7 @@
 .reader { position: fixed; inset: 0; display: flex; flex-direction: column; background: var(--paper); }
 .reader-bar {
   display: flex; align-items: center; gap: 12px;
-  padding: max(10px, env(safe-area-inset-top)) 14px 10px;
+  padding: max(10px, env(safe-area-inset-top)) max(14px, var(--safe-right)) 10px max(14px, var(--safe-left));
   border-bottom: 1px solid var(--line); background: var(--paper-raised);
 }
 .reader-bar button { color: var(--ink-soft); padding: 6px; }
@@ -135,8 +135,8 @@
 .reader-progress i { display: block; height: 100%; background: var(--coral); transition: width .2s; }
 
 .page {
-  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-  padding: 26px 20px calc(48px + env(safe-area-inset-bottom));
+  flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding: 26px max(20px, var(--safe-right)) calc(48px + env(safe-area-inset-bottom)) max(20px, var(--safe-left));
 }
 .page article { max-width: 42em; margin: 0 auto; }
 .page.serif { font-family: var(--serif); }
@@ -261,6 +261,7 @@
   position: fixed; inset: 0; background: rgba(20, 19, 26, .42);
   display: flex; align-items: flex-end; justify-content: center; z-index: 50;
   padding-top: max(12px, env(safe-area-inset-top));
+  padding-left: var(--safe-left); padding-right: var(--safe-right);
 }
 .sheet {
   background: var(--paper); width: min(560px, 100%); max-height: 86vh;
@@ -378,3 +379,6 @@ input[type='range'] { width: 100%; accent-color: var(--indigo); }
 .language-order { display: inline-grid; place-items: center; min-width: 1.4em; height: 1.4em; border: 1px solid currentColor; border-radius: 50%; font-size: .85em; font-variant-numeric: tabular-nums; }
 .language-choices button.translation-language { color: var(--indigo); background: var(--indigo-soft); border-color: var(--indigo); }
 .reading-main { color: var(--ink); }
+
+/* Each safe-area edge is independent, including landscape and narrow panes. */
+.selection-tools, .selection-hint, .reading-panel header, .reading-panel-body { padding-left: max(18px, var(--safe-left)); padding-right: max(18px, var(--safe-right)); }

@@ -6,11 +6,11 @@ const reserved = new Set(['src', 'rich', 'annotation'])
 /** Accept standard language/script/region tags without a fixed language list. */
 export function isLanguageCode(value: unknown): value is string {
   return typeof value === 'string' && !reserved.has(value) &&
-    (Object.hasOwn(aliases, value) || (value.length <= 63 && /^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$/.test(value)))
+    (Object.prototype.hasOwnProperty.call(aliases, value) || (value.length <= 63 && /^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$/.test(value)))
 }
 
 export function htmlLanguage(lang: string): string {
-  return Object.hasOwn(aliases, lang) ? aliases[lang] : isLanguageCode(lang) ? lang : 'und'
+  return Object.prototype.hasOwnProperty.call(aliases, lang) ? aliases[lang] : isLanguageCode(lang) ? lang : 'und'
 }
 
 export function baseLanguage(lang: string): string {

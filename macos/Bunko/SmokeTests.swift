@@ -61,6 +61,16 @@ final class MacSmokeTests {
             try await wait("document.querySelectorAll('ruby').length > 20")
             check("ruby and multilingual text render")
             try await screenshot("02-reading")
+            // Exercise the bundled reader through real WebKit/window reflow.
+            _ = try await js("window.__qaParagraph = Math.min(10, document.querySelectorAll('[data-para]').length - 2); const p = document.querySelector('[data-para=\"' + window.__qaParagraph + '\"]'); document.querySelector('.page').scrollTop = p.offsetTop - 12")
+            try await Task.sleep(nanoseconds: 300_000_000)
+            for width in [620, 1000, 740, 1280] {
+                webView.window?.setContentSize(NSSize(width: width, height: 800))
+                try await Task.sleep(nanoseconds: 300_000_000)
+                try await wait("Math.abs(document.querySelector('[data-para=\"' + window.__qaParagraph + '\"]').getBoundingClientRect().top - document.querySelector('.page').getBoundingClientRect().top - 12) < 5", timeout: 5)
+            }
+            check("reading passage and ruby survive four native window resizes")
+            try await screenshot("02-resized-reading")
             try await command("larger-text")
             try await wait("document.querySelector('.page').style.fontSize !== '1rem'")
             try await command("reset-text")

@@ -20,6 +20,7 @@ import { ReadingPanel, type ReadingFocus } from './ReadingPanel'
 import { SelectionTools } from './SelectionTools'
 import type { ReaderSelection } from '../lib/readerSelection'
 import { supportsWatch, watchExcerpt, sendToWatch } from '../lib/watchReading'
+import { preserveReadingViewport } from '../lib/readingViewport'
 
 interface ReaderProps {
   meta: BookMeta
@@ -113,6 +114,12 @@ export function Reader({
     if (!host) return
     const target = host.querySelector<HTMLElement>(`[data-para="${startRef.current}"]`)
     host.scrollTo({ top: target ? target.offsetTop - 12 : 0, behavior: 'auto' })
+  }, [chapter])
+
+  useEffect(() => {
+    const host = scrollRef.current
+    const article = host?.querySelector('article')
+    if (host && article) return preserveReadingViewport(host, article, '[data-para]')
   }, [chapter])
 
   const shownKey = shown.join('|')

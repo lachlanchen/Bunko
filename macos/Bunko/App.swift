@@ -53,8 +53,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         window.center()
         window.isReleasedWhenClosed = false
         createMenus()
+        #if DEBUG
+        if CommandLine.arguments.contains("--bunko-smoke-test") {
+            window.orderBack(nil)
+        } else {
+            window.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+        }
+        #else
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
+        #endif
         webView.load(URLRequest(url: URL(string: "bunko://localhost/index.html")!))
         #if DEBUG
         if CommandLine.arguments.contains("--bunko-smoke-test") {
