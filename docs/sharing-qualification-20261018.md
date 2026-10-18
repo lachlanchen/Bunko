@@ -35,4 +35,8 @@ and version checks. No messages were sent to contacts.
 The public web release contains only the qualified sharing changes over its
 previous deployed baseline. The live Sanshiro page, share dialog and icon passed
 browser QA. Apple build25 archives are retained as superseded evidence and their
-uploads are gated; build26 requires its separately serialized archive slot.
+uploads remain gated. Build26 completed its serialized archive/upload round.
+
+## Apple internal delivery
+
+Bunko 1.0.14 (26) is VALID and IN_BETA_TESTING for iOS and macOS in the existing internal group. The exact archived source is 2411c14a1583ccd12e48f934046cca8e6f84df00. Resource hashes and signatures passed; the Mac package declares macOS12.0. This does not replace the outstanding physical Monterey/Duo runtime checks. Both uploads succeeded and the shared host was handed back after exact cleanup. No production review candidate was changed.
