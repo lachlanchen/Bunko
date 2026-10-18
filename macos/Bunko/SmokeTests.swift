@@ -12,7 +12,14 @@ final class MacSmokeTests {
     init(webView: WKWebView) { self.webView = webView }
 
     private func js(_ source: String) async throws -> Any? {
-        try await webView.evaluateJavaScript(source)
+        // The older WebKit async overlay force-unwraps JavaScript undefined.
+        // The callback API preserves its optional result on Monterey toolchains.
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Any?, Error>) in
+            webView.evaluateJavaScript(source) { value, error in
+                if let error { continuation.resume(throwing: error) }
+                else { continuation.resume(returning: value) }
+            }
+        }
     }
     private func wait(_ expression: String, timeout: TimeInterval = 90) async throws {
         let deadline = Date().addingTimeInterval(timeout)
