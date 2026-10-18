@@ -1,3 +1,4 @@
+import {sharePage} from './share-page.mjs'
 import {createProfileStore} from './shared-link-store.mjs'
 import {PROFILE_BINDING,ProfileLinkError} from './lazyingart-profile.mjs'
 import {createLacBalance,LacReadError} from './lac-balance.mjs'
@@ -229,6 +230,19 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       active++; counted = true
       const raw = req.url ?? '', path = raw.split('?')[0]
       if (![`${PREFIX}/oauth/callback`,`${PREFIX}/oauth/lazyingart`,`${PREFIX}/oauth/lazyingart/callback`].includes(path) && raw !== path) fail(404, 'not_found')
+      const sharedBook = path.match(new RegExp('^' + PREFIX + '/share/book/([a-z0-9-]{1,120})$'))
+      if (sharedBook && ['GET','HEAD'].includes(req.method)) {
+        if (!bookMirror) fail(503, 'book_mirror_unavailable')
+        limit(`share:${req.socket.remoteAddress}`, 90, 60000)
+        const index = JSON.parse(Buffer.from((await bookMirror.get('reader-index.json')).body).toString('utf8'))
+        const book = index.books.find(row => row.id === sharedBook[1])
+        if (!book) fail(404, 'book_not_found')
+        const id = book.id, title = book.title?.en || Object.values(book.title || {})[0] || id
+        const card = {app:'Bunko',title,description:book.author || 'Read with interlaced languages and ruby readings.',url:'https://bunko.lazying.art/bunko/share/book/'+id,web:'https://lachlan.lazying.art/Bunko/?book='+id,native:'art.lazying.bunko://book/'+id,image:'https://lachlan.lazying.art/Bunko/icon-512.png',appleID:'6815137919',androidID:'art.lazying.bunko'}
+        res.setHeader('Content-Security-Policy', "default-src 'none'; style-src 'unsafe-inline'; img-src https://lachlan.lazying.art; base-uri 'none'; frame-ancestors 'none'")
+        res.writeHead(200, {'Content-Type':'text/html; charset=utf-8'})
+        res.end(req.method === 'HEAD' ? undefined : sharePage(card)); return
+      }
       if (bookMirror && path.startsWith(`${PREFIX}/books-cache/`)) {
         res.setHeader('Access-Control-Allow-Origin', '*')
         if (!['GET', 'HEAD'].includes(req.method)) fail(405, 'method_denied')

@@ -17,6 +17,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     private var window: NSWindow!
     private(set) var webView: WKWebView!
+    private var pendingBookLink:URL?
+    private var readerLoaded=false
     private var authSession: ASWebAuthenticationSession?
     private let schemeHandler = BundleSchemeHandler()
 
@@ -130,6 +132,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             }
             return
         }
+        if let share = body["share"] as? [String: String], let title = share["title"],
+           let value = share["url"], let url = URL(string: value),
+           url.scheme == "https", url.host == "bunko.lazying.art",
+           url.path.range(of: "^/bunko/share/book/[a-z0-9-]{1,120}$", options: .regularExpression) != nil {
+            let picker = NSSharingServicePicker(items: [String(title.prefix(400)), url])
+            picker.show(relativeTo: NSRect(x:webView.bounds.midX,y:40,width:1,height:1), of:webView, preferredEdge:.minY)
+            replyHandler(true, nil); return
+        }
         if body["cancel"] as? Bool == true { authSession?.cancel(); authSession = nil; replyHandler(true, nil); return }
         guard authSession == nil, let value = body["url"] as? String, let url = URL(string: value),
               url.scheme == "https", url.host == "github.com", url.path == "/login/oauth/authorize" else {
@@ -145,6 +155,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         session.presentationContextProvider = self
         authSession = session
         if !session.start() { authSession = nil; replyHandler(nil, "Could not open authorization") }
+    }
+
+    func application(_ application:NSApplication, open urls:[URL]) {
+        guard let url=urls.first(where:{$0.scheme=="art.lazying.bunko" && $0.host=="book" && $0.query==nil && $0.fragment==nil && $0.path.range(of:"^/[a-z0-9-]{1,120}$",options:.regularExpression) != nil}) else{return}
+        pendingBookLink=url
+        deliverBookLink()
+    }
+    func webView(_ webView:WKWebView,didFinish navigation:WKNavigation!) {readerLoaded=true;deliverBookLink()}
+    private func deliverBookLink() {
+        guard readerLoaded,let url=pendingBookLink,let webView=webView,webView.url?.scheme == "bunko" else{return}
+        let value=String(data:try! JSONSerialization.data(withJSONObject:[url.absoluteString]),encoding:.utf8)!
+        webView.evaluateJavaScript("window.__BUNKO_BOOK_LINK__ = \(value)[0]; window.dispatchEvent(new CustomEvent('bunko-open-book',{detail:window.__BUNKO_BOOK_LINK__}));",completionHandler:nil)
+        pendingBookLink=nil
     }
 
     private func createMenus() {

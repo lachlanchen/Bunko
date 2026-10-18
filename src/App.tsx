@@ -1,3 +1,6 @@
+import {App as CapacitorApp} from '@capacitor/app'
+import {Capacitor} from '@capacitor/core'
+import {ReadingShare} from './components/ReadingShare'
 import {SharedAccount} from './components/SharedAccount'
 import { baseLanguage, htmlLanguage, languageDirection } from './lib/languages'
 import { BUNKO_LEGAL_API } from './lib/serviceOrigins'
@@ -170,6 +173,18 @@ export default function App() {
     linkedBookOpened.current = true
     queueMicrotask(() => { void openBook(book) })
   }, [index, openBook])
+
+  const launchLinkChecked=useRef(false)
+  useEffect(() => {
+    if (!index) return
+    const openLink = (value: string) => {try{const url=new URL(value);if(url.protocol!=='art.lazying.bunko:'||url.host!=='book'||url.search||url.hash)return;const id=url.pathname.slice(1);if(!/^[a-z0-9-]{1,120}$/.test(id))return;const book=index.books.find(b=>b.id===id);if(book)void openBook(book)}catch{/* Ignore unrelated links. */}}
+    const receive=(event:Event)=>{const value=(event as CustomEvent<string>).detail;if(typeof value==='string'){delete window.__BUNKO_BOOK_LINK__;openLink(value)}}
+    window.addEventListener('bunko-open-book',receive)
+    if(window.__BUNKO_BOOK_LINK__) {openLink(window.__BUNKO_BOOK_LINK__);delete window.__BUNKO_BOOK_LINK__}
+    const subscription=Capacitor.isNativePlatform()?CapacitorApp.addListener('appUrlOpen',event=>openLink(event.url)):null
+    if(Capacitor.isNativePlatform()&&!launchLinkChecked.current){launchLinkChecked.current=true;void CapacitorApp.getLaunchUrl().then(result=>{if(result)openLink(result.url)})}
+    return()=>{window.removeEventListener('bunko-open-book',receive);void subscription?.then(s=>s.remove())}
+  }, [index,openBook])
 
   const startReading = useCallback(
     (fromStart: boolean) => {
@@ -372,6 +387,7 @@ export default function App() {
             </section>
 
             <div className="actions">
+              <ReadingShare ui={ui} title={meta.titleText[settings.langs[0]] || meta.titleText[meta.primary] || meta.id} url={"https://bunko.lazying.art/bunko/share/book/"+encodeURIComponent(meta.id)} />
               <button type="button" className="primary" onClick={() => startReading(!places[meta.id])}>
                 <BookOpen size={17} /> {places[meta.id] ? copy.continueReading : copy.start}
               </button>
