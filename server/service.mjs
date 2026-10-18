@@ -1,4 +1,5 @@
 import {sharePage} from './share-page.mjs'
+import {createRewardSourceRoutes} from './reward-source-routes.mjs'
 import {createProfileStore} from './shared-link-store.mjs'
 import {PROFILE_BINDING,ProfileLinkError} from './lazyingart-profile.mjs'
 import {createLacBalance,LacReadError} from './lac-balance.mjs'
@@ -36,7 +37,7 @@ function passage(value) {
   return value
 }
 
-export function createService(config, { fetchImpl = fetch, now = Date.now, database = ':memory:', profileOptions = {}, pointsProvider } = {}) {
+export function createService(config, { fetchImpl = fetch, now = Date.now, database = ':memory:', profileOptions = {}, pointsProvider, rewardOptions = {} } = {}) {
   const base = new URL(config.publicUrl)
   if (base.protocol !== 'https:' || base.pathname !== PREFIX || base.search || base.hash) throw new Error('Invalid publicUrl')
   const origins = new Set(config.origins ?? ['https://lachlan.lazying.art', 'https://lachlanchen.github.io', 'capacitor://localhost', 'https://localhost', 'bunko://localhost', 'null'])
@@ -85,6 +86,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
   const sharedProfile=createProfileStore(profileStore,config.lazyingart,{...profileOptions,now})
   if(sharedProfile.enabled&&config.publicUrl+'/oauth/lazyingart/callback'!==PROFILE_BINDING.redirectUri)throw new Error('Shared callback binding mismatch')
   const lacBalance=createLacBalance(db,config.lacPoints,{binding:PROFILE_BINDING,profile:sharedProfile,provider:pointsProvider,now})
+  const rewards=createRewardSourceRoutes(profileStore,{origin:base.origin,rewardSource:config.rewardSource},{...rewardOptions,now})
   const revokeTimer=sharedProfile.flushRevocations?setInterval(()=>void sharedProfile.flushRevocations(),30000):null;revokeTimer?.unref()
   const cloudLedger = createCloudLedger(db, config.billing || {}, now)
   const cloudBilling = createCloudBilling(cloudLedger, config.billing || {}, { seal, unseal })
@@ -217,7 +219,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
   }
   const cloudPaths = ['catalog', 'purchase', 'checkout', 'portal', 'restore'].map(p => `${PREFIX}/v1/cloud/${p}`)
   const notificationPaths = ['apple', 'google', 'stripe'].map(p => `${PREFIX}/v1/cloud/notifications/${p}`)
-  const postPaths = ['/v1/auth/start', '/v1/auth/demo', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post', ...['status','start','complete','cancel','disconnect','balance'].map(p=>'/v1/lazyingart/'+p), ...agentPaths].map(p => PREFIX + p).concat(cloudPaths)
+  const postPaths = ['/v1/auth/start', '/v1/auth/demo', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post', ...['status','start','complete','cancel','disconnect','balance','activity'].map(p=>'/v1/lazyingart/'+p), ...agentPaths].map(p => PREFIX + p).concat(cloudPaths)
   const server = createServer(async (req, res) => {
     res.setHeader('Cache-Control', 'no-store')
     res.setHeader('Referrer-Policy', 'no-referrer')
@@ -229,6 +231,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       if (active >= 40) fail(503, 'busy')
       active++; counted = true
       const raw = req.url ?? '', path = raw.split('?')[0]
+      if(await rewards.route(req,res))return
       if (![`${PREFIX}/oauth/callback`,`${PREFIX}/oauth/lazyingart`,`${PREFIX}/oauth/lazyingart/callback`].includes(path) && raw !== path) fail(404, 'not_found')
       const sharedBook = path.match(new RegExp('^' + PREFIX + '/share/book/([a-z0-9-]{1,120})$'))
       if (sharedBook && ['GET','HEAD'].includes(req.method)) {
@@ -342,6 +345,11 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         let auth;try{auth=await session(req,res,false)}catch(e){if(action!=='status'||e.status!==401)throw e}
         if(action==='status'){json(res,{enabled:sharedProfile.enabled,points: lacBalance.enabled,signedIn:!!auth,eligible:!!auth&&auth.provider!=='demo',...(auth&&sharedProfile.status?sharedProfile.status(cloudOwner(auth.user)):{linked:false,state:'unlinked'})});return}
         if(!auth||auth.provider==='demo')fail(403,'shared_account_requires_personal_login')
+        if(action==='activity'){
+          if(Object.keys(input).length!==1||input.kind!=='foreground')fail(400,'invalid_activity')
+          limit(`lac-activity:${cloudOwner(auth.user)}`,12,60000)
+          json(res,await rewards.foreground({id:cloudOwner(auth.user)}));return
+        }
         if(!sharedProfile.enabled)fail(503,'shared_login_unavailable')
         const owner=cloudOwner(auth.user)
         if(action==='start'){
@@ -358,7 +366,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
           if(action==='cancel'){db.prepare('DELETE FROM flows WHERE id=?').run(input.flow);json(res,{ok:true});return}
           json(res,flow.completed?{linked:true}:{pending:true});return
         }
-        if(action==='disconnect'){sharedProfile.disconnect(owner);json(res,{ok:true});return}
+        if(action==='disconnect'){rewards.hold(owner);sharedProfile.disconnect(owner);json(res,{ok:true});return}
         if(action==='balance'){
           if(!lacBalance.enabled)fail(503,'points_not_qualified')
           const value=await lacBalance.read(owner)

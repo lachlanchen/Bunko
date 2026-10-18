@@ -1,5 +1,18 @@
 # Bunko — product brief
 
+## Foreground and reading rewards · 2026-10-18
+
+The owner requests automatic daily shared LAC rewards from opening and using
+Bunko, without a check-in button, plus reading, comments and replies. Every
+rights-cleared public book is eligible in principle, regardless of topic or
+genre. Coordinate usable reading-session criteria with Coin; existing books,
+offline reading and discussion access remain independent of shared rewards.
+
+Daily foreground evidence and its durable outbox are prepared with Coin's v2
+contract. They stay disabled until exact account/consent, source transport and
+delivery qualification are complete. Coin owns the one canonical nonmonetary
+balance and duplicate prevention across apps; no app-local balance is minted.
+
 ## Optional shared account and earned LAC points · 2026-10-16
 
 The first coordinated rollout is explicit linking and a consent-backed read-only

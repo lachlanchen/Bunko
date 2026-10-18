@@ -210,3 +210,12 @@ test('persistent sessions expire after ninety days without use', async t => {
   s.advance(90 * 86400000 + 1)
   assert.equal((await s.request('/v1/session', {}, complete.body.token)).status, 401)
 })
+
+test('foreground rewards require the existing session and origin, and remain disabled until qualified',async t=>{
+ const s=await setup(t),token=await s.login();
+ assert.equal((await s.request('/v1/lazyingart/activity',{kind:'foreground'})).status,401);
+ assert.equal((await s.request('/v1/lazyingart/activity',{kind:'foreground'},token,{Origin:'https://evil.test'})).status,403);
+ assert.equal((await s.request('/v1/lazyingart/activity',{kind:'foreground',points:500},token)).status,400);
+ assert.deepEqual((await s.request('/v1/lazyingart/activity',{kind:'foreground'},token)).body,{enabled:false});
+ assert.equal(s.writes(),0);
+});

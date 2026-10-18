@@ -1,4 +1,5 @@
 import {bookIdFromLink} from './lib/bookLink'
+import {observeForegroundUse} from './lib/activityRewards'
 import {App as CapacitorApp} from '@capacitor/app'
 import {Capacitor} from '@capacitor/core'
 import {ReadingShare} from './components/ReadingShare'
@@ -58,6 +59,7 @@ function categoryOf(book: BookRow): Filter {
 }
 
 export default function App() {
+  useEffect(observeForegroundUse,[])
   const [ui, setUI] = useState<UILanguage>('en')
   const [settings, setSettings] = useState<ReadingSettings>(DEFAULT_SETTINGS)
   const [index, setIndex] = useState<ReaderIndex | null>(null)
