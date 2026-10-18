@@ -1,3 +1,4 @@
+import {ReadingShare} from './ReadingShare'
 import { htmlLanguage, languageDirection, unitLine } from '../lib/languages'
 /**
  * The reading screen.
@@ -180,6 +181,7 @@ export function Reader({
           catch (error) { setWatchStatus(error instanceof Error ? error.message : String(error)) }
           finally { setWatchBusy(false) }
         }}><Watch size={18} /></button>}
+        <ReadingShare ui={ui} title={meta.titleText[settings.langs[0]] || meta.titleText[meta.primary] || meta.id} url={"https://bunko.lazying.art/bunko/share/book/"+encodeURIComponent(meta.id)} />
         <button type="button" onClick={onOpenSettings} aria-label={copy.settings}>
           <Settings2 size={18} />
         </button>

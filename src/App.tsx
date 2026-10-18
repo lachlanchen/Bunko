@@ -1,3 +1,4 @@
+import {ReadingShare} from './components/ReadingShare'
 import { LanguageChoices } from './components/LanguageChoices'
 import { baseLanguage, htmlLanguage, languageDirection } from './lib/languages'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
@@ -356,6 +357,7 @@ export default function App() {
             </section>
 
             <div className="actions">
+              <ReadingShare ui={ui} title={meta.titleText[settings.langs[0]] || meta.titleText[meta.primary] || meta.id} url={"https://bunko.lazying.art/bunko/share/book/"+encodeURIComponent(meta.id)} />
               <button type="button" className="primary" onClick={() => startReading(!places[meta.id])}>
                 <BookOpen size={17} /> {places[meta.id] ? copy.continueReading : copy.start}
               </button>
