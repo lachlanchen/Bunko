@@ -28,3 +28,16 @@ This is a source checkpoint, not a deployment or new native binary. The Mac
 shared-login bridge remains unavailable; no central-only Bunko signup or central
 management URL is advertised. Live issuer/client and native qualification are
 still required before activation. Store candidates and billing are unchanged.
+
+## Peer comparison
+
+AiMemo's October 19 implementation uses the same initiating-account and refusal
+rule. The app-owned source retains its existing mapping and purchase boundaries.
+A subsequent copy correction distinguishes a login owned by another local account
+from an attempt to replace this account's existing LazyingArt connection. The
+latter now asks the reader to reconnect the original LazyingArt account, matching
+the structured recovery action and translated UI.
+
+AiMemo's deployed and native-test evidence does not qualify this app's runtime.
+Central management destinations and direct-provider convergence remain separate
+qualification requirements.
