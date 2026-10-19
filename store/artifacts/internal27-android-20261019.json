@@ -1,0 +1,13 @@
+{
+  "app": "Bunko",
+  "version": "1.0.14",
+  "build": 27,
+  "source": "074b6dc179b6eba317c1f07be4f9b295cc170881",
+  "platform": "ANDROID",
+  "track": "internal",
+  "state": "Available to internal testers",
+  "at": "2026-10-19T03:03:58.370236+00:00",
+  "aabSha256": "6ae80f344f58749e74c10a4816700bf3eb8a163eb04316fe37cca6953edd0375",
+  "screenshotSha256": "6b88a13d6934238e5d6538135a8a0b149f9ec0e171b6b611cd07f4aa992c42e8",
+  "publicReviewChanged": false
+}

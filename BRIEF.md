@@ -1,5 +1,16 @@
 # Bunko — product brief
 
+## Contextual visual reading companion plan · 2026-10-19
+
+The owner requests a later companion beside the open book: questions about
+characters and aliases, relationship diagrams, places/maps and chronological
+timelines. Plan clear, compact visualizations with passage evidence, explicit
+uncertainty and a current-chapter spoiler boundary. Reuse edition-aware public
+companion packs; keep personal questions and private documents private. This is
+a possible Reading plan feature, not a new product, quota or billing activation.
+See `docs/visual-reading-companion-plan-20261019.md`. Build27 delivers the current
+layout cleanup; these visual guides remain a separate implementation milestone.
+
 ## Foreground and reading rewards · 2026-10-18
 
 The owner requests automatic daily shared LAC rewards from opening and using

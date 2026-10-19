@@ -1,3 +1,21 @@
+# Internal test checkpoint · 19 October 2026 HKT
+
+Bunko **1.0.14 (27)** is **Available to internal testers** on Google Play,
+verified in the existing track. It includes the compact reading companion and
+Reading plan labels. Source074b6dc,119 client +95 server tests, Android release
+lint/signatures and all86 packaged reader resources passed.
+
+Apple27 remains locally prepared, awaiting the coordinated KVM slot after Coin
+and AiMemo. No Apple27 archive/upload or tester availability is claimed. The
+corrected delivery helper pack is private under `.runtime/test27-20261019/v3`;
+its nine local supervision tests pass. Shared admission is still required.
+Production reviews, public releases and billing are unchanged.
+
+[Build27 qualification](../docs/internal-build27-20261019.md).
+The owned6190/CDP9490 store desktop is stopped; its persistent profile remains.
+
+## Earlier records
+
 # Current store checkpoint · 17 October 2026 HKT
 
 Bunko's newest uploaded build remains **1.0.13 (23)**. It is public on iOS/Watch
