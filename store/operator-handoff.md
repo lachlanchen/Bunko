@@ -6,11 +6,12 @@ people/place/timeline guides. Source `1666e7e` is pushed; 125 client and 102 ser
 tests passed. The companion backend is live and both service entrances passed
 HTTPS/authentication/cache checks.
 
-Apple build 28's first delivery attempt stopped before compilation while capturing
-locked-keychain settings; its exact cleanup is complete. The corrected frozen
-helpers pass 73 tests and await a new shared-Mac admission. The old build 27 admission
-was returned unused because 27 omitted the new guides. No Apple build 28 archive,
-upload or tester availability is claimed yet.
+Apple **iOS/Watch and universal Mac28 are VALID and IN_BETA_TESTING** in the
+existing internal group. Both archives, exports, resource/identity/signature gates
+and provider validations/uploads passed in the corrected admitted round.
+Embedded Watch matches1.0.14(28); Mac arm64/x86_64 minimumOS12.0 verified.
+The shared Mac guard was released at12:43:57UTC; independent12:44:13 readback
+verified exact process cleanup and signing/profile restoration. No host hold.
 Existing public releases, review candidates and billing gates are preserved.
 
 [Build 28 qualification](../docs/internal-build28-20261020.md).
