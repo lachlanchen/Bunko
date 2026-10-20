@@ -1,3 +1,21 @@
+# Internal test checkpoint · 20 October 2026 HKT
+
+Bunko **1.0.14 (28)** is **Available to internal testers** on Google Play.
+It includes the compact reading companion, contextual book questions and cited
+people/place/timeline guides. Source1666e7e is pushed; 125 client and 102 server
+tests passed. The companion backend is live and both service entrances passed
+HTTPS/authentication/cache checks.
+
+Apple28 source and delivery helpers are frozen; a new shared-Mac admission is
+pending. The old27 admission was returned unused because27 omitted the new
+guides. No Apple28 archive, upload or tester availability is claimed yet.
+Existing public releases, review candidates and billing gates are preserved.
+
+[Build28 qualification](../docs/internal-build28-20261020.md).
+The owned6190/CDP9490 browser is stopped and its profile retained.
+
+## Earlier records
+
 # Internal test checkpoint · 19 October 2026 HKT
 
 Bunko **1.0.14 (27)** is **Available to internal testers** on Google Play,

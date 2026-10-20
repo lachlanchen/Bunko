@@ -32,5 +32,6 @@ The frozen iOS/Watch and universal Mac candidate is awaiting a serialized shared
 Mac slot. This is not an Apple upload or tester-availability claim. Production
 reviews, public releases, provider activation and billing remain unchanged.
 
-The requested contextual relationship, place and timeline views are a separate
-[next feature plan](visual-reading-companion-plan-20261019.md), not part of27.
+The contextual relationship, place and timeline views were subsequently
+implemented in [build28](internal-build28-20261020.md); they are not part of27.
+Apple27's unused delivery slot was returned before any remote operation.
