@@ -1,0 +1,28 @@
+{
+  "sourceRevision": "ca96624a56bd078437bca8184e78163e5039ad19",
+  "license": "Public domain / CC0 names",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/ca96624a56bd078437bca8184e78163e5039ad19/geojson/ne_50m_land.geojson",
+      "sha256": "e874b27a51d146452be360cafb3cc50c86001074a67d534113e6534682f9826b",
+      "bytes": 1636166
+    },
+    {
+      "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/ca96624a56bd078437bca8184e78163e5039ad19/geojson/ne_10m_populated_places.geojson",
+      "sha256": "9b8e3de09048ef00dfc70357dbb9fa324493f214b5e0ae4daf1aa79a8d10116b",
+      "bytes": 19359003
+    }
+  ],
+  "outputs": [
+    {
+      "path": "src/data/atlas-places.json",
+      "sha256": "865c5095d9a23adc16d29d6219af51c19bb41f56625e11334b8e35a8f1406e49",
+      "bytes": 2390417
+    },
+    {
+      "path": "src/data/atlas-land.json",
+      "sha256": "2665256c49d268cbc67658039c86cf5e45523b6e063f68a8ce78cad820bd9373",
+      "bytes": 1208755
+    }
+  ]
+}

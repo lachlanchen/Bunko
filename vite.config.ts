@@ -51,7 +51,7 @@ export default defineConfig(({ mode }) => ({
         maximumFileSizeToCacheInBytes: 6_000_000,
         skipWaiting: false,
         clientsClaim: false,
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,woff2}', 'reading-atlas-NOTICES.txt'],
         // Book JSON is cached by the app in IndexedDB, not by the service
         // worker: the app needs to know what it holds, and a 10 MB chapter has
         // no business in the precache.

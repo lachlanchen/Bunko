@@ -112,6 +112,23 @@ test('guides reject invented quotes, hidden later passages, missing nodes and ov
   assert.throws(() => validateBookResponse({ answer: 'Unsupported assertion.', citations: [] }, context, 'answer'), /source passages/)
   assert.equal(validateBookResponse({ answer: 'The passage does not say.', insufficient: true, citations: [] }, context, 'answer').insufficient, true)
 })
+
+test('one repair receives every invalid citation instead of failing one quotation at a time', async t => {
+  let calls = 0
+  const s = setup(t, { provider: async (_url, options) => {
+    calls++
+    if (calls === 1) {
+      const result = guide(); result.people[0].citations = [{ passage: 'P1', quote: 'An invented quotation' }]; result.places[0].citations = [{ passage: 'P2', quote: 'A second invented quotation' }]
+      return { choices: [{ message: { content: JSON.stringify(result) } }] }
+    }
+    const feedback = JSON.parse(options.body).messages.at(-1).content
+    assert.match(feedback, /people\[0\]/); assert.match(feedback, /places\[0\]/)
+    assert.match(feedback, /Ada met her brother Ben/); assert.match(feedback, /At sunrise/)
+    return { choices: [{ message: { content: JSON.stringify(guide()) } }] }
+  } })
+  const result = await s.call('send', input('multi-repair'))
+  assert.equal(result.state, 'completed'); assert.equal(calls, 2)
+})
 test('public guides reuse processing and allowance across accounts without sharing private conversations', async t => {
   const { call, prompts, cloud } = setup(t)
   const first = await call('send', input())

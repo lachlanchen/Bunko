@@ -1,3 +1,24 @@
+# Current internal checkpoint · 21 October 2026 HKT
+
+Bunko **1.0.14 (29)** is available to the existing Apple iOS/Watch and Mac
+TestFlight internal group and Google Play internal testers. Both Apple builds
+are VALID / IN_BETA_TESTING. The admitted operation is complete; its shared Mac
+guard, phase processes and temporary signing state were cleaned up and verified.
+Do not rerun its consumed admission. No public review or release changed.
+
+[Build29 delivery](updates/reading-references29-20261020.md).
+A newer source-only visualization update is documented in
+[reading visualizations](../docs/reading-visualizations-20261021.md). It is not
+part of uploaded build29. Its tests/screenshots/native web bundles are local;
+new native delivery requires a fresh coordinated round. AgInTi image jobs and
+central-created Bunko login sessions remain unqualified/disabled.
+
+No current Mac hold. The Bunko noVNC6190 / CDP9490 browser remains stopped,
+with its existing login profile retained. Local visualization browser QA stopped
+after capture; no peer desktop or service was touched.
+
+## Earlier records
+
 # Internal test checkpoint · 20 October 2026 HKT
 
 Bunko **1.0.14 (28)** is **Available to internal testers** on Google Play.

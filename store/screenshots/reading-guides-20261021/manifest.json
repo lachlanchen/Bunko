@@ -1,0 +1,70 @@
+{
+  "capturedAt": "2026-10-20T22:53:10.567Z",
+  "status": "locally captured and visually reviewed; not uploaded to stores",
+  "channel": "Headless Chromium, actual reader components in a layout fixture; not native-device evidence",
+  "version": "successor source after 1.0.14(29)",
+  "content": {
+    "people": "Public Romance of the Three Kingdoms preface; actual DeepSeek generation with source-checked quotations",
+    "mapAndCalendar": "Explicitly labelled synthetic journey for geographic/calendar layout checks"
+  },
+  "viewports": {
+    "phone": [
+      390,
+      844
+    ],
+    "desktop": [
+      1280,
+      950
+    ],
+    "night": [
+      390,
+      844
+    ],
+    "japanese": [
+      390,
+      844
+    ]
+  },
+  "captures": [
+    {
+      "file": "phone-graph-focused.png",
+      "sha256": "ac6b951d720770c244112278feab32b8160aa42dab7d5e88501edfe00951bc0d",
+      "bytes": 46333
+    },
+    {
+      "file": "phone-tree.png",
+      "sha256": "f6ed0c963232ac5e8436eb8660235160552106fa2614ec91098f47a8bf4d44c9",
+      "bytes": 35869
+    },
+    {
+      "file": "phone-map.png",
+      "sha256": "719e1bd1806dff9b4109e64ca124c909bf9bb065376fa011c7181fb5831a2ed8",
+      "bytes": 62906
+    },
+    {
+      "file": "phone-timeline.png",
+      "sha256": "32d89129a2f2b936b7878df75e9bf32a2c706dc9b780b90af24c0ef91a345000",
+      "bytes": 56294
+    },
+    {
+      "file": "desktop-graph-focused.png",
+      "sha256": "164016ab024f490736fb614bdee2d72bab37e7f7bb04762ce98c183db7c984f5",
+      "bytes": 85750
+    },
+    {
+      "file": "desktop-graph-overview.png",
+      "sha256": "4dfd3fa7c0312ff7c2e8f0b39dfc8f2b3c24d02dd1ac43c2a4f0a85f034d363d",
+      "bytes": 80750
+    },
+    {
+      "file": "night-map.png",
+      "sha256": "15df825b7c0b1a1eb977a13069c3388d933a2f920bc6331579fcd9c8e9f4c9a8",
+      "bytes": 63817
+    },
+    {
+      "file": "japanese-tree.png",
+      "sha256": "58f567ec8ec09aef4357a33595368863f705f9bbef14610a3adcf9ae3a94a137",
+      "bytes": 40295
+    }
+  ]
+}

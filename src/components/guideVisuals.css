@@ -1,0 +1,52 @@
+.guide-visual-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin: 14px 0 10px; }
+.guide-visual-toolbar > span { color: var(--ink-soft); font-size: 12px; }
+.guide-segmented { display: inline-flex; flex-wrap: wrap; gap: 3px; background: var(--indigo-soft); border-radius: 12px; padding: 3px; }
+.agent-page .guide-segmented button { border: 0; background: transparent; min-height: 38px; padding: 8px 13px; font-size: 13px; border-radius: 9px; }
+.agent-page .guide-segmented button[aria-pressed=true] { background: var(--paper-raised); color: var(--indigo); box-shadow: 0 1px 5px #0000000b; font-weight: 650; }
+.guide-map-tabs { margin-bottom: 10px; }
+.guide-canvas { width: 100%; min-width: 0; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; background: var(--paper-raised); }
+.guide-canvas-tools { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.guide-canvas-tools > span { font-size: 12px; color: var(--ink-soft); min-width: 0; overflow-wrap: anywhere; }
+.guide-canvas-tools > div { display: flex; flex-shrink: 0; gap: 2px; }
+.agent-page .guide-canvas-tools button { padding: 8px; min-width: 36px; min-height: 36px; border: 0; background: transparent; }
+.guide-canvas > svg { display: block; width: 100%; height: 430px; touch-action: none; cursor: grab; user-select: none; }
+.guide-canvas > svg:active { cursor: grabbing; }
+.guide-canvas-footer { padding: 10px 14px; border-top: 1px solid var(--line); }
+.guide-canvas-footer p { color: var(--ink-soft); font: 12px/1.55 system-ui, sans-serif; margin: 2px 0; }
+.guide-canvas.expanded { position: fixed; inset: max(8px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left)); width: auto; z-index: 160; display: flex; flex-direction: column; box-shadow: 0 0 0 100vmax #0008; }
+.guide-canvas.expanded > svg { flex: 1; min-height: 0; height: 0; }
+.guide-canvas.expanded .guide-canvas-tools { padding: 12px 16px; }
+.graph-person,.graph-connection,.atlas-pin,.time-marker { cursor: pointer; outline: none; }
+.graph-person { --node-color: #597ccc; }.graph-person.tone-1 { --node-color: #329998; }.graph-person.tone-2 { --node-color: #ba7d47; }.graph-person.tone-3 { --node-color: #aa658c; }.graph-person.tone-4 { --node-color: #8173b4; }.graph-person.tone-5 { --node-color: #5c9875; }
+.graph-person > rect { fill: var(--paper-raised); stroke: var(--node-color); stroke-width: 1.3; filter: drop-shadow(0 3px 5px #0000000c); }
+.graph-person > rect.graph-node-accent { fill: var(--node-color); stroke: none; }
+.graph-person.selected > rect,.graph-person:focus-visible > rect { stroke-width: 3; fill: var(--indigo-soft); }
+.graph-person text { font: 600 14px system-ui, sans-serif; fill: var(--ink); pointer-events: none; }
+.graph-connection text { font: 12px system-ui, sans-serif; fill: var(--ink-soft); pointer-events: none; }
+.graph-connection rect { fill: var(--paper-raised); stroke: var(--line); stroke-width: .7; }
+.graph-edge { fill: none; stroke: #8292ab; stroke-width: 1.6; stroke-linejoin: round; }.graph-arrow { fill: #8292ab; }
+.graph-connection.inferred .graph-edge { stroke-dasharray: 6 5; }.graph-edge-hit { stroke: transparent; stroke-width: 18; fill: none; }
+.graph-connection:hover .graph-edge,.graph-connection:focus-visible .graph-edge { stroke: var(--indigo); stroke-width: 3; }
+.graph-person.dim,.graph-connection.dim { opacity: .2; }
+.guide-search { width: 100%; min-width: 0; box-sizing: border-box; margin: 14px 0 0; border: 1px solid var(--line); border-radius: 12px; background: var(--paper-raised); padding: 12px; font: inherit; color: var(--ink); }
+.guide-name-index { margin: 10px 0 16px; }.guide-details-panel { margin-top: 16px; }.guide-connection-list { margin-top: 14px; }.guide-connection-list > summary { padding: 12px 0; cursor: pointer; font-size: 14px; color: var(--ink-soft); }
+.guide-connection.selected { background: var(--indigo-soft); border-radius: 16px; padding: 18px; margin-bottom: 14px; }
+.guide-time-overview { border: 1px solid var(--line); border-radius: 18px; padding: 16px 10px; background: var(--paper-raised); }
+.guide-time-chart { max-height: 300px; overflow-y: auto; overscroll-behavior: contain; }.guide-time-chart > svg { display: block; width: 100%; height: auto; }.guide-time-overview > p { font-size: 12px; color: var(--ink-soft); padding: 0 6px; line-height: 1.6; }
+.guide-time-overview text { fill: var(--ink-soft); font: 14px system-ui, sans-serif; }.time-axis,.time-tick { stroke: var(--ink-soft); stroke-width: 1; }
+.time-stem { stroke: var(--line); stroke-width: 1; }.time-range { stroke: var(--indigo); stroke-width: 7; opacity: .25; stroke-linecap: round; }
+.time-marker circle { fill: var(--paper-raised); stroke: var(--indigo); stroke-width: 2; }.time-marker text { fill: var(--indigo); font-size: 12px; }
+.time-marker.selected circle,.time-marker:focus-visible circle { fill: var(--indigo); }.time-marker.selected text,.time-marker:focus-visible text { fill: var(--paper); }
+.guide-timeline { padding-left: 22px; }.guide-timeline > li { padding: 0 0 28px 30px; border-left: 2px solid var(--line); }.guide-timeline > li::before { display: none; }
+.guide-event-number { position: absolute; left: -14px; top: 0; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--paper); color: var(--indigo); border: 1px solid var(--indigo); font-size: 11px; font-weight: 700; }
+.guide-timeline .guide-time { padding-top: 4px; font-weight: 650; color: var(--indigo); font-size: 13px; }
+.guide-timeline > li.selected .guide-card { border-color: var(--indigo); background: var(--indigo-soft); }.guide-undated-title { font-size: 16px; margin-top: 24px; }
+.atlas-ocean { fill: #e7f2f5; }.atlas-land { fill: #f8f6e9; stroke: #a5bdb4; stroke-width: .7; vector-effect: non-scaling-stroke; }.atlas-grid { stroke: #9ebbc5; stroke-width: .5; opacity: .4; fill: none; }
+.atlas-route { stroke: #597f9e; stroke-width: 1.8; stroke-dasharray: 6 5; fill: none; }
+.atlas-pin circle { fill: #f8fcfd; stroke: #486c9b; stroke-width: 2; stroke-dasharray: 3 2; }.atlas-pin.confirmed circle { fill: #38699a; stroke-dasharray: none; }.atlas-pin text { font: 600 13px system-ui, sans-serif; fill: #244761; }.atlas-pin.confirmed > text:not(.atlas-place-label) { fill: white; }
+.atlas-pin text.atlas-place-label { font-size: 13px; paint-order: stroke; stroke: #f8fcfd; stroke-width: 3px; stroke-linejoin: round; }.atlas-pin.selected circle,.atlas-pin:focus-visible circle { stroke: #c27760; stroke-width: 3; }
+.atlas-compass path { fill: #577887; }.atlas-compass text { fill: #577887; font: 12px system-ui, sans-serif; }
+.guide-locate { padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; }.guide-locate summary { cursor: pointer; font-size: 14px; overflow-wrap: anywhere; }.guide-locate p { line-height: 1.6; font-size: 13px; }
+.guide-location-results { display: grid; gap: 6px; max-height: 220px; overflow: auto; padding-top: 10px; }.agent-page .guide-location-results button { display: grid; gap: 5px; text-align: start; padding: 12px; }.guide-location-results button span { color: var(--ink-soft); font-size: 12px; }
+[data-theme=night] .atlas-ocean { fill: #20343e; }[data-theme=night] .atlas-land { fill: #39443c; stroke: #758879; }[data-theme=night] .atlas-grid { stroke: #71878c; }[data-theme=night] .atlas-pin text.atlas-place-label { fill: #e1e9df; stroke: #243b42; }
+@media(max-width:600px) { .guide-canvas > svg { height: 410px; }.guide-canvas-tools > span { font-size: 11px; }.guide-canvas-tools { padding: 6px; }.agent-page .guide-canvas-tools button { padding: 7px; min-width: 34px; }.guide-timeline { padding-left: 15px; }.guide-timeline > li { padding-left: 22px; }.guide-canvas.expanded > svg { height: 0; } }

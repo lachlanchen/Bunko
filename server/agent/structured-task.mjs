@@ -7,9 +7,9 @@ const object = (properties, required = Object.keys(properties)) => ({ type: 'obj
 const citations = array(object({ passage: string(40), quote: string(600) }), 5)
 const certainty = { type: 'string', enum: ['stated', 'interpretation'], maxLength: 20 }
 const entity = object({ id: string(40), name: string(120), detail: string(600), aliases: array(string(120), 6), certainty, citations }, ['id', 'name', 'detail', 'citations'])
-const edge = object({ from: string(120), to: string(120), label: string(160), certainty, citations }, ['from', 'to', 'label', 'citations'])
+const edge = object({ from: string(120), to: string(120), label: string(160), direction: { type: 'string', enum: ['forward', 'mutual'], maxLength: 10 }, certainty, citations }, ['from', 'to', 'label', 'citations'])
 const event = object({ title: string(160), when: string(120), detail: string(600), certainty, citations }, ['title', 'detail', 'citations'])
-const guideFields = { people: array(entity, 12), relationships: array(edge, 18), places: array(entity, 10), routes: array(edge, 12), events: array(event, 16) }
+const guideFields = { people: array(entity, 32), relationships: array(edge, 64), places: array(entity, 24), routes: array(edge, 32), events: array(event, 48) }
 export const answerSchema = object({ answer: string(20000), insufficient: { type: 'boolean' }, citations, ...guideFields }, ['answer', 'citations'])
 export const guideSchema = object(answerSchema.properties, ['answer', 'citations', 'people', 'relationships', 'places', 'routes', 'events'])
 

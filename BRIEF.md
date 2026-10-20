@@ -1,5 +1,27 @@
 # Bunko — product brief
 
+## Geographic maps and interactive reading guides · 2026-10-21
+
+Replace the initial schematic guides with pannable, zoomable graphs and tree
+layouts, a real geographic reference, and a proportional calendar timeline.
+Keep every returned person, connection and event accessible, with full names,
+source passages and explicit uncertainty. A selected person opens a readable
+neighborhood; Show all retains the entire returned graph. Tree layout alone is
+not evidence of ancestry. Ambiguous or fictional places require a location
+choice or remain on the story map; calendar dates must occur in quoted text.
+
+Use an offline public-domain atlas for geographic coordinates. AgInTi-generated
+illustrations may be an optional visual layer after the reusable image worker
+and Bunko adapter are qualified; generated pixels never establish coordinates,
+relationships or dates. Keep images disabled while that integration is pending.
+Guides cover the selected excerpts, with sampled/partial book coverage visible;
+this update does not assert exhaustive analysis of an entire book.
+
+Google, Apple, GitHub and LazyingArt login can coexist with GitHub storage.
+The current audit is documented in `docs/identity-and-github-storage.md`;
+central-created Bunko sessions and general non-GitHub authorship are a separate
+unfinished integration, not newly enabled by these visualization changes.
+
 ## Reading references and lightweight model routing · 2026-10-20
 
 Preserve automatic book context when opening the companion. Strengthen

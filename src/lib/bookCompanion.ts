@@ -5,11 +5,11 @@ import type { AgentMessage } from './documentAgent'
 export interface BookReference { id: string; file: string; chapter: number; paragraph: number; language: string; replyLanguage: UILanguage; scope: 'passage' | 'chapter' | 'book' | 'paragraph' | 'sentence'; quote?: string }
 export interface BookCitation { passage: string; paragraph: number; quote: string; chapter?: number; file?: string }
 export interface GuideEntity { id: string; name: string; detail: string; aliases: string[]; certainty: 'stated' | 'interpretation'; citations: BookCitation[] }
-export interface GuideConnection { from: string; to: string; label: string; certainty: 'stated' | 'interpretation'; citations: BookCitation[] }
+export interface GuideConnection { from: string; to: string; label: string; direction?: 'forward' | 'mutual'; certainty: 'stated' | 'interpretation'; citations: BookCitation[] }
 export interface GuideEvent { title: string; when: string; detail: string; certainty: 'stated' | 'interpretation'; citations: BookCitation[] }
 export interface BookResponse {
   title?: string; answer: string; citations: BookCitation[]; insufficient: boolean; key: string; revision: string; reference: BookReference; reused?: boolean
-  coverage: { chapter: number; first: number; last: number; total: number; partial: boolean; scope: BookReference['scope']; language: string }
+  coverage: { chapter: number; first: number; last: number; total: number; partial: boolean; scope: BookReference['scope']; language: string; chapters?: number[] }
   people?: GuideEntity[]; relationships?: GuideConnection[]; places?: GuideEntity[]; routes?: GuideConnection[]; events?: GuideEvent[]
 }
 export interface BookMessage extends AgentMessage { kind: 'answer' | 'guide'; bookResponse?: BookResponse; reference?: BookReference; referenceTitle?: string }
