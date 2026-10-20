@@ -38,8 +38,10 @@ See the [reader guide](book-companion.md).
 - The companion backend was deployed with state backups and unchanged protected
   configuration. Both the dedicated and legacy HTTPS entrances passed health,
   authentication-boundary and book-cache checks.
-- Fifty-four disposable Apple delivery-helper tests passed. These test
-  supervision and cleanup; they do not establish a native build or upload.
+- Seventy-three disposable Apple delivery-helper tests passed. These cover
+  supervision, signing restoration, artifact checks and preserving unexpected
+  checkout edits before staging, including the locked-keychain behavior observed
+  on the Mac. They do not establish a native build or upload.
 
 Matching quotations establish source location, not the correctness of every
 interpretation. Guides retain AI labels, reporting controls and source links.
@@ -52,6 +54,7 @@ Play track on 20 October at 09:54 UTC. Release notes cover all four configured
 locales. The final AAB SHA-256 is
 `b22e7d0cc013bfe0b645a389277a7c42f9d4454c46e0b125fc74cf5ee2861f83`.
 
-The frozen iOS/Watch and universal Mac candidate awaits its separately admitted
-shared-Mac delivery operation. Apple 28 is not yet claimed as uploaded or
-available. Existing public releases and formal review candidates are preserved.
+The first iOS/Watch and universal Mac delivery attempt stopped during signing
+state capture, before compilation or upload. Its cleanup completed. The corrected
+delivery helpers await a new shared-Mac admission; Apple 28 is not yet uploaded
+or available. Existing public releases and formal review candidates are preserved.
