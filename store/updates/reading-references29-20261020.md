@@ -41,8 +41,8 @@ Dedicated and legacy HTTPS health/cache routes passed; unauthenticated model
 administration was refused. No shared ingress or other application was changed.
 
 Native packaging, signing, provider processing and tester availability are
-separate delivery evidence; this source receipt does not claim build 29 uploaded.
-No additional physical-device or Monterey runtime pass is claimed.
+recorded separately below. No additional physical-device or Monterey runtime
+pass is claimed.
 
 ## Android internal delivery
 
@@ -51,6 +51,20 @@ Signed AAB SHA256 `3e8b2c2030ff597761ab3cf4d3d560d9dda7234c97f469d00045ed96c4599
 all 86 bundled web resources matched. Four release-note locales were saved.
 Supported device counts are unchanged. No production rollout was changed.
 
-Apple29's 257-file source archive and 17 helpers are frozen; 73 disposable
-helper regressions pass. A new shared-Mac admission was requested. No Apple29
-archive, upload or tester availability is claimed by this receipt.
+Apple29's 257-file source archive and 17 helpers were frozen before delivery;
+73 disposable helper regressions passed. The single-use shared-Mac admission
+was consumed once for the delivery recorded below.
+
+## Apple internal delivery completed
+
+Both iOS/Watch and universal Mac 1.0.14(29) passed archive/export identity,
+resource and signature checks, then Apple validation/upload. Both are VALID /
+IN_BETA_TESTING in the existing internal group; four beta-note locales were
+verified. iOS build `2ac353da-3760-419c-b40e-d20ebf0bea2c`; Mac build `2468d973-1393-4582-9862-cdcc1443ded2`.
+
+Matching guard released at 2026-10-20T17:07:41.824226+00:00; independent readback
+2026-10-20T17:10:13.646196+00:00 verified all phase groups/tools absent, original keychain state
+and six profiles restored, all 257 source files and 17 helpers unchanged.
+No simulator/GUI, second host or formal review action. Actual Mac Mach-O
+slices are arm64 and x86_64, each minOS12.0; no additional Monterey physical
+runtime pass is claimed. See the artifact receipt for signed package hashes.
