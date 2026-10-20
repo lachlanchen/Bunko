@@ -43,3 +43,14 @@ administration was refused. No shared ingress or other application was changed.
 Native packaging, signing, provider processing and tester availability are
 separate delivery evidence; this source receipt does not claim build 29 uploaded.
 No additional physical-device or Monterey runtime pass is claimed.
+
+## Android internal delivery
+
+Google Play confirmed 1.0.14(29) **Available to internal testers** at 13:50 UTC.
+Signed AAB SHA256 `3e8b2c2030ff597761ab3cf4d3d560d9dda7234c97f469d00045ed96c4599ff3`;
+all 86 bundled web resources matched. Four release-note locales were saved.
+Supported device counts are unchanged. No production rollout was changed.
+
+Apple29's 257-file source archive and 17 helpers are frozen; 73 disposable
+helper regressions pass. A new shared-Mac admission was requested. No Apple29
+archive, upload or tester availability is claimed by this receipt.
