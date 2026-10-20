@@ -8,7 +8,8 @@ import { htmlLanguage, languageDirection, unitLine } from '../lib/languages'
  * gloss under its own source line, or whole paragraphs one after another.
  */
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
-import { ChevronLeft, ChevronRight, List, MessageCircle, Settings2, Watch } from 'lucide-react'
+import { ChevronLeft, ChevronRight, List, MessageCircle, Settings2, Sparkles, Watch } from 'lucide-react'
+import { agentCopy } from './agentCopy'
 import type { BookMeta, Chapter, LangCode, ReadingSettings, Unit } from '../types'
 import { languageName, type UICopy, type UILanguage } from '../i18n'
 import { loadChapter } from '../lib/library'
@@ -34,6 +35,7 @@ interface ReaderProps {
   startParagraph: number
   onOpenChapters: () => void
   onOpenSettings: () => void
+  onCompanion?: (paragraph: number, language: string) => void
   onBack: () => void
   backLabel: string
   overlayOpen?: boolean
@@ -54,6 +56,7 @@ export function Reader({
   startParagraph,
   onOpenChapters,
   onOpenSettings,
+  onCompanion,
   onBack,
   backLabel,
   overlayOpen = false,
@@ -188,6 +191,7 @@ export function Reader({
           catch (error) { setWatchStatus(error instanceof Error ? error.message : String(error)) }
           finally { setWatchBusy(false) }
         }}><Watch size={18} /></button>}
+        {onCompanion && <button type="button" disabled={!chapter} onClick={() => onCompanion(visibleParagraph.current, shown[0])} aria-label={agentCopy[ui].name}><Sparkles size={18} /></button>}
         <ReadingShare ui={ui} title={meta.titleText[settings.langs[0]] || meta.titleText[meta.primary] || meta.id} url={"https://bunko.lazying.art/bunko/share/book/"+encodeURIComponent(meta.id)} />
         <button type="button" onClick={onOpenSettings} aria-label={copy.settings}>
           <Settings2 size={18} />

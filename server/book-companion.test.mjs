@@ -1,0 +1,141 @@
+import { test } from 'node:test'
+import assert from 'node:assert/strict'
+import { DatabaseSync } from 'node:sqlite'
+import { bookContext, bookReference, validateBookResponse } from './agent/book-companion.mjs'
+import { createDocumentAgent } from './agent/service.mjs'
+import { hash } from './agent/common.mjs'
+import { createCloudLedger, cloudOwner } from './cloud-ledger.mjs'
+
+const chapter = { p: [
+  { id: 'one', u: [{ en: ['Ada met her brother Ben in the garden.'], ja: [['庭', 'にわ'], 'でエイダは兄のベンに会った。'] }] },
+  { id: 'two', u: [{ en: ['At sunrise they walked from the garden to the tower.'], ja: ['日の出に二人は庭から塔へ歩いた。'] }] },
+  { id: 'three', u: [{ en: ['Later Ben revealed the secret identity.'], ja: ['その後ベンは秘密の正体を明かした。'] }] },
+] }
+const bytes = Buffer.from(JSON.stringify(chapter))
+const ref = { id: 'fixture-book', chapter: 0, paragraph: 1, file: 'c0001-aabb.json', language: 'en', replyLanguage: 'en', scope: 'passage' }
+const files = {
+  'reader-index.json': { books: [{ id: ref.id }] },
+  [`books/${ref.id}/meta.json`]: { langs: ['en', 'ja'], primary: 'en', titleText: { en: 'The garden' }, chapters: [{ file: ref.file, sha256: hash(bytes), title: { en: 'Arrival' } }] },
+  [`books/${ref.id}/${ref.file}`]: chapter,
+}
+const read = async path => { assert.ok(files[path], `Unexpected path ${path}`); return { body: Buffer.from(JSON.stringify(files[path])) } }
+const cite = { passage: 'P1', quote: 'Ada met her brother Ben' }
+const guide = () => ({
+  answer: 'Ada and Ben are siblings.', citations: [cite], insufficient: false,
+  people: [{ id: 'ada', name: 'Ada', detail: 'Ben’s sister.', aliases: [], certainty: 'stated', citations: [cite] },
+    { id: 'ben', name: 'Ben', detail: 'Ada’s brother.', aliases: [], certainty: 'stated', citations: [cite] }],
+  relationships: [{ from: 'ada', to: 'ben', label: 'Siblings', certainty: 'stated', citations: [cite] }],
+  places: [{ id: 'garden', name: 'Garden', detail: 'Where the siblings meet.', aliases: [], citations: [{ passage: 'P1', quote: 'in the garden' }] },
+    { id: 'tower', name: 'Tower', detail: 'Their destination.', aliases: [], citations: [{ passage: 'P2', quote: 'from the garden to the tower' }] }],
+  routes: [{ from: 'garden', to: 'tower', label: 'Walk at sunrise', citations: [{ passage: 'P2', quote: 'At sunrise they walked from the garden to the tower.' }] }],
+  events: [{ title: 'Walk to the tower', when: 'Sunrise', detail: 'The siblings leave the garden.', citations: [{ passage: 'P2', quote: 'At sunrise they walked' }] },
+    { title: 'Meeting', when: '', detail: 'Ada meets Ben.', citations: [cite] }],
+})
+function setup(t, overrides = {}) {
+  const db = new DatabaseSync(':memory:')
+  const cloud = createCloudLedger(db, { enabled: true, quotasEnabled: true })
+  const prompts = []
+  const agent = createDocumentAgent({ db, cloud, seal: JSON.stringify, unseal: JSON.parse, readBook: read,
+    config: { enabled: true, model: { url: 'https://example.org/chat', name: 'fixture' } },
+    provider: async (_url, options) => { prompts.push(JSON.parse(options.body)); return { choices: [{ finish_reason: 'stop', message: { content: JSON.stringify(guide()) } }] } },
+    ...overrides })
+  t.after(() => { agent.close(); db.close() })
+  return { db, cloud, prompts, call: (action, input = {}, user = { id: 1 }) => agent.handle(action, input, user) }
+}
+const input = (suffix = 'one', book = ref) => ({ book, kind: 'guide', text: 'Build reading guide', requestId: `book_companion_request_${suffix}` })
+
+test('book source is pinned, verified, language-specific and bounded by the passage', async () => {
+  const context = await bookContext(bookReference(ref), read)
+  assert.equal(context.passages.length, 2)
+  assert.equal(context.coverage.last, 1)
+  assert.ok(!JSON.stringify(context).includes('secret identity'))
+  const japanese = await bookContext({ ...ref, language: 'ja' }, read)
+  assert.match(japanese.passages[0].text, /庭で/)
+  assert.ok(!japanese.passages[0].text.includes('にわ'))
+  const full = await bookContext({ ...ref, scope: 'chapter' }, read)
+  assert.equal(full.passages.length, 3); assert.notEqual(full.key, context.key)
+  assert.throws(() => bookReference({ ...ref, id: '../private' }), /library book/)
+  assert.throws(() => bookReference({ ...ref, file: 'https://evil.test/data' }), /chapter file/)
+  await assert.rejects(bookContext({ ...ref, file: 'c9999.json' }, read), /edition changed/)
+  await assert.rejects(bookContext(ref, async path => path.endsWith(ref.file) ? { body: Buffer.from('{"p":[]}') } : read(path)), /verified/)
+})
+test('guides reject invented quotes, hidden later passages, missing nodes and overlong data', async () => {
+  const context = await bookContext(ref, read)
+  const valid = validateBookResponse(guide(), context, 'guide')
+  assert.equal(valid.events[0].title, 'Meeting')
+  const bad = guide(); bad.people[0].citations[0] = { passage: 'P3', quote: 'secret identity' }
+  assert.throws(() => validateBookResponse(bad, context, 'guide'), /quotation/)
+  const fabricated = guide(); fabricated.places[0].citations[0].quote = 'Paris'
+  assert.throws(() => validateBookResponse(fabricated, context, 'guide'), /quotation/)
+  const missing = guide(); missing.routes[0].to = 'moon'
+  assert.throws(() => validateBookResponse(missing, context, 'guide'), /unknown connection/)
+  assert.throws(() => validateBookResponse({ answer: 'Unsupported assertion.', citations: [] }, context, 'answer'), /source passages/)
+  assert.equal(validateBookResponse({ answer: 'The passage does not say.', insufficient: true, citations: [] }, context, 'answer').insufficient, true)
+})
+test('public guides reuse processing and allowance across accounts without sharing private conversations', async t => {
+  const { call, prompts, cloud } = setup(t)
+  const first = await call('send', input())
+  assert.equal(first.state, 'completed'); assert.equal(prompts.length, 1)
+  assert.equal(cloud.usage(cloudOwner({ id: 1 })).usedAgentTurns, 1)
+  assert.equal((await call('send', input())).id, first.id)
+  const second = await call('send', input('two'), { id: 2 })
+  assert.equal(second.bookResponse.reused, true); assert.equal(prompts.length, 1)
+  assert.equal(cloud.usage(cloudOwner({ id: 2 })).usedAgentTurns, 0)
+  assert.equal((await call('messages', { book: ref }, { id: 2 })).messages.length, 1)
+  assert.equal((await call('messages', {})).messages.length, 0)
+  assert.equal((await call('messages', { book: { ...ref, paragraph: 0 } })).messages.length, 0)
+  await call('send', { ...input('private'), kind: 'answer', text: 'My private question about Ada' })
+  const third = await call('send', input('three'), { id: 3 })
+  assert.equal(third.bookResponse.reused, true)
+  assert.ok(!JSON.stringify(third).includes('My private question'))
+  assert.ok(!JSON.stringify(prompts[0]).includes('My private question'))
+  await call('clear', { confirm: 'DELETE' })
+  assert.equal((await call('messages', { book: ref })).messages.length, 0)
+  assert.equal(cloud.usage(cloudOwner({ id: 1 })).usedAgentTurns, 2)
+  assert.equal((await call('messages', { book: ref }, { id: 2 })).messages.length, 1)
+})
+test('simultaneous guide requests share one provider call and one charge', async t => {
+  let release, began
+  const started = new Promise(resolve => { began = resolve }), waiting = new Promise(resolve => { release = resolve })
+  let count = 0
+  const { call, cloud } = setup(t, { provider: async () => { count++; began(); await waiting; return { choices: [{ message: { content: JSON.stringify(guide()) } }] } } })
+  const one = call('send', input()); await started
+  const two = call('send', input('two'), { id: 2 })
+  await new Promise(resolve => setImmediate(resolve)); release()
+  const results = await Promise.all([one, two])
+  assert.equal(count, 1); assert.ok(results.every(r => r.state === 'completed'))
+  assert.equal(cloud.usage(cloudOwner({ id: 1 })).usedAgentTurns + cloud.usage(cloudOwner({ id: 2 })).usedAgentTurns, 1)
+})
+test('invalid model output releases quota; retries are explicit and cache remains clean', async t => {
+  const { call, cloud, db } = setup(t, { provider: async () => ({ choices: [{ message: { content: '{"answer":"no evidence"}' } }] }) })
+  const result = await call('send', input())
+  assert.equal(result.state, 'failed')
+  assert.equal(cloud.usage(cloudOwner({ id: 1 })).usedAgentTurns, 0)
+  assert.equal(db.prepare('SELECT count(*) n FROM agent_book_guides').get().n, 0)
+  assert.equal((await call('send', input())).state, 'failed')
+})
+test('one malformed guide can be repaired within one allowance charge; names resolve only when unambiguous', async t => {
+  let calls = 0
+  const { call, cloud } = setup(t, { provider: async (_url, options) => {
+    calls++
+    const payload = JSON.parse(options.body)
+    if (calls === 1) return { choices: [{ message: { content: '{"answer":"Incomplete"}' } }] }
+    assert.match(payload.messages.at(-1).content, /Correct the JSON/)
+    const fixed = guide(); fixed.relationships[0].from = 'Ada'
+    return { choices: [{ message: { content: JSON.stringify(fixed) } }] }
+  } })
+  const result = await call('send', input())
+  assert.equal(result.state, 'completed'); assert.equal(calls, 2)
+  assert.equal(result.bookResponse.relationships[0].from, 'ada')
+  assert.equal(cloud.usage(cloudOwner({ id: 1 })).usedAgentTurns, 1)
+})
+test('deleted conversation cannot return after a provider answer, nor consume an owner quota', async t => {
+  let release, began
+  const started = new Promise(resolve => { began = resolve }), waiting = new Promise(resolve => { release = resolve })
+  const { call, cloud } = setup(t, { provider: async () => { began(); await waiting; return { choices: [{ message: { content: JSON.stringify(guide()) } }] } } })
+  const pending = call('send', input()); await started
+  await call('clear', { confirm: 'DELETE' }); release()
+  assert.equal((await pending).state, 'failed')
+  assert.equal((await call('messages', { book: ref })).messages.length, 0)
+  assert.equal(cloud.usage(cloudOwner({ id: 1 })).usedAgentTurns, 0)
+})

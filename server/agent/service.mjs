@@ -4,9 +4,10 @@ import { AppError, requireValue, hash } from './common.mjs'
 import { convertDocument, inspectFile, formats } from './convert.mjs'
 import { respond } from './discovery.mjs'
 import { providerJSON } from './network.mjs'
+import { createBookCompanion } from './book-companion.mjs'
 
 export const agentPaths = ['state', 'upload', 'import', 'document', 'delete', 'resume', 'messages', 'send', 'report', 'clear'].map(p => `/v1/agent/${p}`)
-export function createDocumentAgent({ db, seal, unseal, config, cloud, now = Date.now, convert = convertDocument, discover = respond, provider = providerJSON, freeBytes = () => { if (!config.storageDirectory) return Infinity; const s = statfsSync(config.storageDirectory); return s.bavail * s.bsize } }) {
+export function createDocumentAgent({ db, seal, unseal, config, cloud, readBook, now = Date.now, convert = convertDocument, discover = respond, provider = providerJSON, freeBytes = () => { if (!config.storageDirectory) return Infinity; const s = statfsSync(config.storageDirectory); return s.bavail * s.bsize } }) {
   db.exec(`CREATE TABLE IF NOT EXISTS agent_documents(id TEXT PRIMARY KEY, owner TEXT NOT NULL, state TEXT NOT NULL, data TEXT NOT NULL, bytes INTEGER NOT NULL, created INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS agent_sources(id TEXT PRIMARY KEY, data TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS agent_messages(id TEXT PRIMARY KEY, owner TEXT NOT NULL, document TEXT NOT NULL, state TEXT NOT NULL, data TEXT NOT NULL, created INTEGER NOT NULL);
@@ -26,7 +27,8 @@ export function createDocumentAgent({ db, seal, unseal, config, cloud, now = Dat
       (SELECT COALESCE(SUM(bytes),0) FROM agent_documents) +
       (SELECT COALESCE(SUM(length(data)),0) FROM agent_sources) +
       (SELECT COALESCE(SUM(length(data)),0) FROM agent_messages) +
-      (SELECT COALESCE(SUM(length(data)),0) FROM agent_reports) AS n`).get().n
+      (SELECT COALESCE(SUM(length(data)),0) FROM agent_reports) +
+      (SELECT COALESCE(SUM(length(data)),0) FROM agent_book_guides) AS n`).get().n
     requireValue(used + growth <= (config.maxStoredBytes || 256_000_000) && freeBytes() >= (config.minFreeBytes || 256_000_000) + growth * 2, 'The companion storage is full. You can still read or remove existing documents. Please try importing later.', 507)
   }
   const document = (id, owner) => {
@@ -93,6 +95,13 @@ export function createDocumentAgent({ db, seal, unseal, config, cloud, now = Dat
   const timer = setInterval(() => { void tick() }, 1500); timer.unref()
   const requestKey = (owner, id) => { requireValue(typeof id === 'string' && /^[A-Za-z0-9_-]{20,64}$/.test(id), 'Invalid request identifier.'); return hash(`${owner}:${id}`) }
   const messages = (owner, id) => db.prepare('SELECT * FROM agent_messages WHERE owner=? AND document=? ORDER BY created').all(owner, id).map(r => ({ id: r.id, state: r.state, ...unseal(r.data) }))
+  const books = createBookCompanion({ db, seal, unseal, read: readBook, provider, config, now, capacity,
+    reserve: (id, owner) => atomic(() => {
+      reserve(`ai:${id}`, owner, 'answers', 1, config.maxAnswersPerDay || 100, metered(owner) ? Infinity : 30)
+      cloud?.reserve(owner, `ai:${id}`, 'answers', 1)
+    }),
+    finish: (id, state) => { if (!stopped) cloud?.finish(`ai:${id}`, state) },
+  })
   async function handle(path, input, user) {
     requireValue(config.enabled === true, 'The document companion is not available yet.', 503)
     const owner = ownerKey(user)
@@ -139,6 +148,10 @@ export function createDocumentAgent({ db, seal, unseal, config, cloud, now = Dat
         db.exec('COMMIT')
       } catch (e) { db.exec('ROLLBACK'); throw e }
       return { ok: true }
+    }
+    if (input.book && ['send', 'messages'].includes(path)) {
+      requireValue(!input.documentId, 'Choose either a book or a private document.')
+      return books.handle(path, input, owner, requestKey)
     }
     const documentId = typeof input.documentId === 'string' ? input.documentId : ''
     const doc = documentId ? document(documentId, owner) : null

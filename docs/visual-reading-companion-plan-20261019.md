@@ -1,6 +1,10 @@
-# Visual reading companion — next feature plan
+# Visual reading companion — original design
 
-Requested 19 October 2026. Planning only; not part of test build27 and no subscription activation.
+Requested 19 October 2026. Superseded by the owner's 20 October instruction to
+implement the contextual companion in the current update. The implemented
+reading flow, supported scope and limits are described in
+[A companion beside the book](book-companion.md). This original design remains
+as history; it is not a claim of full-book processing or subscription activation.
 
 ## Reading flow
 

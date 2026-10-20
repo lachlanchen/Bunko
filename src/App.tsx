@@ -32,6 +32,8 @@ import {
   saveUI,
 } from './lib/settings'
 import { DocumentAgent } from './components/DocumentAgent'
+import { BookCompanion } from './components/BookCompanion'
+import type { BookCompanionContext } from './lib/bookCompanion'
 import { TranslationRequest } from './components/TranslationRequest'
 import { Sheet } from './components/Sheet'
 import { LanguageChoices } from './components/LanguageChoices'
@@ -46,7 +48,7 @@ import { Line } from './components/Line'
 import { UpdatePrompt, UpdateSettings } from './components/UpdatePrompt'
 import { useUpdates, type Updates } from './lib/updateService'
 
-type View = 'library' | 'book' | 'reader' | 'agent' | 'cloud'
+type View = 'library' | 'book' | 'reader' | 'agent' | 'book-agent' | 'cloud'
 type Filter = 'all' | 'chinese' | 'japanese' | 'world' | 'physics' | 'learning' | 'finance' | 'travel' | 'device'
 
 /** Which shelf a book belongs on, from its id and mode. */
@@ -72,6 +74,7 @@ export default function App() {
   const [meta, setMeta] = useState<BookMeta | null>(null)
   const [places, setPlaces] = useState<Record<string, Place>>({})
   const [chapterIndex, setChapterIndex] = useState(0)
+  const [companionContext, setCompanionContext] = useState<BookCompanionContext | null>(null)
   const [onDevice, setOnDevice] = useState<Record<string, number>>({})
   const [downloading, setDownloading] = useState<{ id: string; done: number; total: number } | null>(null)
   const [showChapters, setShowChapters] = useState(false)
@@ -291,6 +294,16 @@ export default function App() {
     onCloud={() => { setShowSettings(false); setView('cloud') }}
   />
 
+  if (view === 'book-agent' && companionContext) return <BookCompanion context={companionContext} ui={ui}
+    onBack={() => setView(companionContext.returnTo)}
+    onGeneral={() => setView('agent')}
+    onRead={paragraph => {
+      const place = { chapter: companionContext.chapter, paragraph }
+      setMeta(companionContext.meta); setChapterIndex(place.chapter)
+      setPlaces(current => ({ ...current, [companionContext.meta.id]: place }))
+      void savePlace(companionContext.meta.id, place)
+      setView('reader')
+    }} />
   if (view === 'agent') return <DocumentAgent ui={ui} onBack={() => setView('library')} />
   if (view === 'cloud') return <CloudPlans ui={ui} onBack={() => {
     const url = new URL(window.location.href)
@@ -313,6 +326,11 @@ export default function App() {
           onPlace={handlePlace}
           onOpenChapters={() => setShowChapters(true)}
           onOpenSettings={() => setShowSettings(true)}
+          onCompanion={(paragraph, language) => {
+            handlePlace(paragraph)
+            setCompanionContext({ meta, chapter: chapterIndex, paragraph, language, returnTo: 'reader' })
+            setView('book-agent')
+          }}
           onBack={() => setView('book')}
           backLabel={copy.back}
           overlayOpen={showChapters || showSettings}
@@ -394,6 +412,12 @@ export default function App() {
               <button type="button" className="primary" onClick={() => startReading(!places[meta.id])}>
                 <BookOpen size={17} /> {places[meta.id] ? copy.continueReading : copy.start}
               </button>
+              <button type="button" onClick={() => {
+                const place = places[meta.id] || { chapter: 0, paragraph: 0 }
+                setChapterIndex(place.chapter)
+                setCompanionContext({ meta, ...place, language: settings.langs.find(lang => meta.langs.includes(lang)) || meta.primary, returnTo: 'book' })
+                setView('book-agent')
+              }}><Sparkles size={17} />{agentCopy[ui].name}</button>
               {downloading?.id === meta.id ? (
                 <button type="button" onClick={() => downloadRef.current?.abort()}>
                   {copy.downloading} {downloading.done}/{downloading.total}

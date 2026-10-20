@@ -91,8 +91,8 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
   const revokeTimer=sharedProfile.flushRevocations?setInterval(()=>void sharedProfile.flushRevocations(),30000):null;revokeTimer?.unref()
   const cloudLedger = createCloudLedger(db, config.billing || {}, now)
   const cloudBilling = createCloudBilling(cloudLedger, config.billing || {}, { seal, unseal })
-  const agent = createDocumentAgent({ db, seal, unseal, config: config.agent || {}, cloud: cloudLedger, now })
   const bookMirror = config.bookMirror?.enabled === true ? createBookMirror({ database: config.bookMirror.database, maxBytes: config.bookMirror.maxBytes, fetchImpl, now }) : null
+  const agent = createDocumentAgent({ db, seal, unseal, config: config.agent || {}, cloud: cloudLedger, readBook: bookMirror?.get, now })
   const cleanup = () => {
     for (const table of ['flows', 'sessions', 'posts']) db.prepare(`DELETE FROM ${table} WHERE expires < ?`).run(now())
   }
