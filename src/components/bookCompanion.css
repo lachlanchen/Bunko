@@ -6,6 +6,19 @@
 .book-companion-tabs button[aria-pressed=true] { color: var(--indigo); background: var(--indigo-soft); font-weight: 650; }
 .book-companion-scope { display: flex; align-items: center; justify-content: space-between; gap: 8px; max-width: 850px; width: 100%; margin: 0 auto; color: var(--ink-soft); font-size: 12px; flex-shrink: 0; }
 .book-companion-scope span { min-width: 0; }.book-companion-scope button { padding: 8px; border: 0; }
+.book-companion-scope .book-reference-chip { flex: 1; min-width: 0; justify-content: flex-start; font-size: 12px; }
+.book-reference-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.book-reference-chip svg,.reference-add svg { flex-shrink: 0; }
+.agent-page .reference-add { border: 0; padding: 10px; }
+.book-reference-picker { display: grid; gap: 16px; min-width: 0; }
+.book-reference-picker label { display: grid; gap: 8px; }
+.book-reference-picker input,.book-reference-picker select { width: 100%; min-width: 0; box-sizing: border-box; font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.reference-results,.reference-sentences { display: grid; gap: 8px; max-height: 240px; overflow: auto; }
+.reference-results button,.reference-sentences button { text-align: start; white-space: normal; overflow-wrap: anywhere; }
+.reference-sentences button[aria-pressed=true] { border-color: var(--indigo); background: var(--indigo-soft); }
+.reference-preview { margin: 0; max-height: 120px; overflow: auto; color: var(--ink-soft); font: 16px/1.7 var(--serif); }
+.reference-focus { outline: 2px solid var(--indigo); outline-offset: 6px; border-radius: 8px; background: var(--indigo-soft); }
+.reader .page,.agent-messages { overscroll-behavior-x: contain; }
 .guide-scope { display: grid; gap: 8px; font-size: 13px; margin: 16px 4px; }
 .guide-scope select { width: 100%; min-width: 0; padding: 10px 8px; background: var(--paper); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; font: inherit; }
 .book-companion-login { padding: 14px; text-align: center; border: 1px solid var(--line); border-radius: 16px; margin: 12px 0; }
@@ -52,3 +65,6 @@
  .guide-timeline { padding-left: 8px; }.guide-timeline > li { padding-left: 16px; }
 }
 @media(max-height:540px) { .book-companion-tabs { padding: 0; }.book-companion-scope { display: none; } }
+
+.book-companion .agent-message-reference { display: flex; margin: -8px 0 12px auto; max-width: 85%; border: 0; padding: 4px 8px; min-height: 32px; font-size: 11px; color: var(--ink-soft); }
+.agent-message-reference span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }

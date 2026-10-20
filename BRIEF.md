@@ -1,5 +1,23 @@
 # Bunko — product brief
 
+## Reading references and lightweight model routing · 2026-10-20
+
+Preserve automatic book context when opening the companion. Strengthen
+right-swipe back, retain drafts and reading positions, and let source references
+return to the exact book/chapter/passage. Add compact @ references to books,
+chapters, paragraphs and selected sentences, with explicit spoiler scope.
+
+Use AiMemo's explicit model choices and the AgInTi-owned lightweight runtime
+where appropriate. DeepSeek Flash remains the default; offer qualified DeepSeek
+and OpenAI routes through server-admin settings with bounded safe fallback.
+Keep account scope, citations and quota commits in Bunko. Additional providers
+need actual credential/model qualification and reader disclosure. This does not
+activate shared billing, change prices, or mutate sibling apps.
+
+Accumulate this successor in internal build29. Build28 is already available in
+the existing Apple and Google internal groups; its public review state stays
+unchanged.
+
 ## Contextual visual reading companion · 2026-10-20
 
 The owner requests the complete companion in the current test update: questions about

@@ -5,7 +5,7 @@ import {act,cleanup,fireEvent,render,screen} from '@testing-library/react'
 import {DocumentAgent} from './DocumentAgent'
 const fixture=vi.hoisted(()=>({user:{id:1,login:'reader'},resize:()=>{}}))
 vi.mock('../lib/discussions',()=>({currentUser:()=>fixture.user,subscribeSession:()=>()=>{},restoreSession:async()=>{},signIn:vi.fn(),signOut:vi.fn(),requestId:()=> 'request',DiscussionError:class extends Error{}}))
-vi.mock('../lib/documentAgent',()=>({agentCall:async(action:string)=>action==='state'?{documents:[]}:{messages:[{id:'m',state:'ready',question:'A reading question',answer:'A reply',papers:[]}]},uploadDocument:vi.fn()}))
+vi.mock('../lib/documentAgent',()=>({initialModelPolicy: { providers: ['DeepSeek'], consentKey: 'DeepSeek' },agentCall:async(action:string)=>action==='state'?{documents:[]}:{messages:[{id:'m',state:'ready',question:'A reading question',answer:'A reply',papers:[]}]},uploadDocument:vi.fn()}))
 vi.mock('../lib/backNavigation',()=>({useBackAction:()=>{}}))
 vi.mock('./DocumentContent',()=>({DocumentContent:({text}:{text:string})=><p>{text}</p>}))
 vi.mock('./DemoAccount',()=>({DemoAccount:()=>null,DemoNotice:()=>null}))

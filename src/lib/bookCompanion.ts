@@ -2,21 +2,21 @@ import type { BookMeta } from '../types'
 import type { UILanguage } from '../i18n'
 import type { AgentMessage } from './documentAgent'
 
-export interface BookReference { id: string; file: string; chapter: number; paragraph: number; language: string; replyLanguage: UILanguage; scope: 'passage' | 'chapter' }
-export interface BookCitation { passage: string; paragraph: number; quote: string }
+export interface BookReference { id: string; file: string; chapter: number; paragraph: number; language: string; replyLanguage: UILanguage; scope: 'passage' | 'chapter' | 'book' | 'paragraph' | 'sentence'; quote?: string }
+export interface BookCitation { passage: string; paragraph: number; quote: string; chapter?: number; file?: string }
 export interface GuideEntity { id: string; name: string; detail: string; aliases: string[]; certainty: 'stated' | 'interpretation'; citations: BookCitation[] }
 export interface GuideConnection { from: string; to: string; label: string; certainty: 'stated' | 'interpretation'; citations: BookCitation[] }
 export interface GuideEvent { title: string; when: string; detail: string; certainty: 'stated' | 'interpretation'; citations: BookCitation[] }
 export interface BookResponse {
-  answer: string; citations: BookCitation[]; insufficient: boolean; key: string; revision: string; reference: BookReference; reused?: boolean
-  coverage: { chapter: number; first: number; last: number; total: number; partial: boolean; scope: 'passage' | 'chapter'; language: string }
+  title?: string; answer: string; citations: BookCitation[]; insufficient: boolean; key: string; revision: string; reference: BookReference; reused?: boolean
+  coverage: { chapter: number; first: number; last: number; total: number; partial: boolean; scope: BookReference['scope']; language: string }
   people?: GuideEntity[]; relationships?: GuideConnection[]; places?: GuideEntity[]; routes?: GuideConnection[]; events?: GuideEvent[]
 }
-export interface BookMessage extends AgentMessage { kind: 'answer' | 'guide'; bookResponse?: BookResponse }
-export interface BookCompanionContext { meta: BookMeta; chapter: number; paragraph: number; language: string; returnTo: 'reader' | 'book' }
+export interface BookMessage extends AgentMessage { kind: 'answer' | 'guide'; bookResponse?: BookResponse; reference?: BookReference; referenceTitle?: string }
+export interface BookCompanionContext { meta: BookMeta; chapter: number; paragraph: number; language: string; returnTo: 'reader' | 'book' | 'agent'; quote?: string; scope?: BookReference['scope'] }
 export function companionReference(context: BookCompanionContext, ui: UILanguage, scope: BookReference['scope']): BookReference {
   return { id: context.meta.id, file: context.meta.chapters[context.chapter].file, chapter: context.chapter, paragraph: context.paragraph,
-    language: context.language, replyLanguage: ui, scope }
+    language: context.language, replyLanguage: ui, scope, ...(scope === 'sentence' ? { quote: context.quote } : {}) }
 }
 export const referenceKey = (ref: BookReference) => JSON.stringify(ref)
 

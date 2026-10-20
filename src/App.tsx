@@ -33,7 +33,8 @@ import {
 } from './lib/settings'
 import { DocumentAgent } from './components/DocumentAgent'
 import { BookCompanion } from './components/BookCompanion'
-import type { BookCompanionContext } from './lib/bookCompanion'
+import { companionReference, referenceKey, type BookCompanionContext, type BookReference } from './lib/bookCompanion'
+import { currentUser } from './lib/discussions'
 import { TranslationRequest } from './components/TranslationRequest'
 import { Sheet } from './components/Sheet'
 import { LanguageChoices } from './components/LanguageChoices'
@@ -74,6 +75,11 @@ export default function App() {
   const [meta, setMeta] = useState<BookMeta | null>(null)
   const [places, setPlaces] = useState<Record<string, Place>>({})
   const [chapterIndex, setChapterIndex] = useState(0)
+  const [generalReturn, setGeneralReturn] = useState<'library' | 'book-agent'>('library')
+  const [companionPeek, setCompanionPeek] = useState(false)
+  const [peekPlace, setPeekPlace] = useState<Place | null>(null)
+  const [referenceQuote, setReferenceQuote] = useState('')
+  const [referenceLanguage, setReferenceLanguage] = useState('')
   const [companionContext, setCompanionContext] = useState<BookCompanionContext | null>(null)
   const [onDevice, setOnDevice] = useState<Record<string, number>>({})
   const [downloading, setDownloading] = useState<{ id: string; done: number; total: number } | null>(null)
@@ -89,7 +95,7 @@ export default function App() {
   const checkForUpdates = updates.check
   const canReload = view !== 'reader' && !downloading && !request.trim()
   useBackNavigation()
-  useBackAction(() => setView(view === 'reader' ? 'book' : 'library'), view !== 'library')
+  useBackAction(() => setView(view === 'reader' ? (companionPeek ? 'book-agent' : 'book') : 'library'), view !== 'library')
   useBackAction(() => { if (showSettings) setShowSettings(false); else setShowChapters(false) }, showSettings || showChapters, 40)
 
   useEffect(() => {
@@ -237,6 +243,7 @@ export default function App() {
     (paragraph: number) => {
       if (!meta) return
       const place = { chapter: chapterIndex, paragraph }
+      if (companionPeek) { setPeekPlace(place); return }
       setPlaces((current) => {
         const existing = current[meta.id]
         if (existing && existing.chapter === place.chapter && existing.paragraph === place.paragraph) {
@@ -246,16 +253,17 @@ export default function App() {
         return { ...current, [meta.id]: place }
       })
     },
-    [meta, chapterIndex],
+    [meta, chapterIndex, companionPeek],
   )
 
   const goToChapter = useCallback((next: number) => {
     if (!meta || next < 0 || next >= meta.chapters.length) return
     const place = { chapter: next, paragraph: 0 }
     setChapterIndex(next)
+    if (companionPeek) { setPeekPlace(place); return }
     setPlaces((current) => ({ ...current, [meta.id]: place }))
     void savePlace(meta.id, place)
-  }, [meta])
+  }, [meta, companionPeek])
 
   // The macOS shell sends menu commands; the same reader remains responsible
   // for navigation, settings and their on-device persistence.
@@ -295,16 +303,25 @@ export default function App() {
   />
 
   if (view === 'book-agent' && companionContext) return <BookCompanion context={companionContext} ui={ui}
-    onBack={() => setView(companionContext.returnTo)}
-    onGeneral={() => setView('agent')}
-    onRead={paragraph => {
-      const place = { chapter: companionContext.chapter, paragraph }
-      setMeta(companionContext.meta); setChapterIndex(place.chapter)
-      setPlaces(current => ({ ...current, [companionContext.meta.id]: place }))
-      void savePlace(companionContext.meta.id, place)
-      setView('reader')
+    onBack={() => { setCompanionPeek(false); setPeekPlace(null); setReferenceQuote(''); setMeta(companionContext.meta); setChapterIndex(companionContext.chapter); setPlaces(current => ({ ...current, [companionContext.meta.id]: { chapter: companionContext.chapter, paragraph: companionContext.paragraph } })); setView(companionContext.returnTo) }}
+    onGeneral={() => { setGeneralReturn(companionContext.returnTo === 'agent' ? 'library' : 'book-agent'); setView('agent') }}
+    onRead={(paragraph, reference?: BookReference, quote?: string) => {
+      const open = async () => {
+        const nextMeta = reference && reference.id !== companionContext.meta.id ? await loadMeta(reference.id) : companionContext.meta
+        const place = { chapter: reference?.chapter ?? companionContext.chapter, paragraph }
+        if (reference && nextMeta.chapters[place.chapter]?.file !== reference.file) throw new Error('This edition changed. Reopen its reference.')
+        setMeta(nextMeta); setChapterIndex(place.chapter); setReferenceQuote(quote || ''); setReferenceLanguage(reference?.language || companionContext.language)
+        setPeekPlace(place)
+        setCompanionPeek(true); setView('reader')
+      }
+      void open().catch((error: Error) => { setBookError(error.message); setView('book') })
     }} />
-  if (view === 'agent') return <DocumentAgent ui={ui} onBack={() => setView('library')} />
+  if (view === 'agent') return <DocumentAgent ui={ui} onBack={() => setView(generalReturn)} onBook={(reference, book, draft) => {
+    const next: BookCompanionContext = { meta: book, chapter: reference.chapter, paragraph: reference.paragraph, language: reference.language, quote: reference.quote, scope: reference.scope, returnTo: 'agent' }
+    const ref = companionReference(next, ui, reference.scope)
+    try { sessionStorage.setItem(`bunko-book-draft:${currentUser()?.id || 'guest'}:${referenceKey(ref)}`, draft) } catch { /* Reference navigation still works without storage. */ }
+    setGeneralReturn('library'); setCompanionContext(next); setCompanionPeek(false); setView('book-agent')
+  }} />
   if (view === 'cloud') return <CloudPlans ui={ui} onBack={() => {
     const url = new URL(window.location.href)
     url.searchParams.delete('billing')
@@ -318,20 +335,23 @@ export default function App() {
         <Reader
           meta={meta}
           chapterIndex={chapterIndex}
-          settings={settings}
+          settings={companionPeek && referenceLanguage ? { ...settings, langs: [referenceLanguage, ...settings.langs.filter(l => l !== referenceLanguage)] } : settings}
           copy={copy}
           ui={ui}
-          startParagraph={places[meta.id]?.chapter === chapterIndex ? (places[meta.id]?.paragraph ?? 0) : 0}
+          startParagraph={companionPeek && peekPlace?.chapter === chapterIndex ? peekPlace.paragraph : places[meta.id]?.chapter === chapterIndex ? (places[meta.id]?.paragraph ?? 0) : 0}
           onChapter={goToChapter}
           onPlace={handlePlace}
           onOpenChapters={() => setShowChapters(true)}
           onOpenSettings={() => setShowSettings(true)}
-          onCompanion={(paragraph, language) => {
+          highlightQuote={referenceQuote}
+          onCompanion={(paragraph, language, quote) => {
+            if (companionPeek && !quote) { setView('book-agent'); return }
+            setCompanionPeek(false); setReferenceQuote('')
             handlePlace(paragraph)
-            setCompanionContext({ meta, chapter: chapterIndex, paragraph, language, returnTo: 'reader' })
+            setCompanionContext({ meta, chapter: chapterIndex, paragraph, language, quote, returnTo: 'reader' })
             setView('book-agent')
           }}
-          onBack={() => setView('book')}
+          onBack={() => setView(companionPeek ? 'book-agent' : 'book')}
           backLabel={copy.back}
           overlayOpen={showChapters || showSettings}
         />
@@ -492,7 +512,7 @@ export default function App() {
       <UpdatePrompt ui={ui} updates={updates} canReload={canReload} />
       <MobileStorePrompt copy={copy} />
 
-      <button type="button" className="companion-entry" onClick={() => setView('agent')}><Sparkles size={19} /><span><strong>{agentCopy[ui].name}</strong><small>{agentCopy[ui].hint}</small></span><PaperclipIcon /></button>
+      <button type="button" className="companion-entry" onClick={() => { setGeneralReturn('library'); setView('agent') }}><Sparkles size={19} /><span><strong>{agentCopy[ui].name}</strong><small>{agentCopy[ui].hint}</small></span><PaperclipIcon /></button>
 
       <div className="search">
         <Search size={16} />

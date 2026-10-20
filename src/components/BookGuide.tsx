@@ -5,15 +5,15 @@ import type { BookCitation, BookResponse, GuideConnection, GuideEntity } from '.
 import { bookCompanionCopy } from './bookCompanionCopy'
 import './bookCompanion.css'
 
-export function PassageEvidence({ citations, ui, onRead }: { citations: BookCitation[]; ui: UILanguage; onRead: (paragraph: number) => void }) {
+export function PassageEvidence({ citations, ui, onRead }: { citations: BookCitation[]; ui: UILanguage; onRead: (paragraph: number, citation?: BookCitation) => void }) {
   const t = bookCompanionCopy[ui]
   if (!citations.length) return null
   return <details className="guide-evidence"><summary><BookOpen size={14} />{t.evidence} · {citations.map(c => c.passage).join(', ')}</summary>
-    {citations.map((c, i) => <blockquote key={`${c.passage}:${i}`}><p dir="auto">{c.quote}</p><button type="button" onClick={() => onRead(c.paragraph)}>{t.source} · {c.passage}<ArrowUpRight size={14} /></button></blockquote>)}
+    {citations.map((c, i) => <blockquote key={`${c.passage}:${i}`}><p dir="auto">{c.quote}</p><button type="button" onClick={() => onRead(c.paragraph, c)}>{t.source} · {c.passage}<ArrowUpRight size={14} /></button></blockquote>)}
   </details>
 }
 
-function Connections({ nodes, edges, ui, onRead, kind }: { nodes: GuideEntity[]; edges: GuideConnection[]; ui: UILanguage; onRead: (paragraph: number) => void; kind: 'people' | 'places' }) {
+function Connections({ nodes, edges, ui, onRead, kind }: { nodes: GuideEntity[]; edges: GuideConnection[]; ui: UILanguage; onRead: (paragraph: number, citation?: BookCitation) => void; kind: 'people' | 'places' }) {
   const [focused, setFocused] = useState('')
   const t = bookCompanionCopy[ui]
   const selected = nodes.find(n => n.id === focused)
@@ -61,7 +61,7 @@ function Connections({ nodes, edges, ui, onRead, kind }: { nodes: GuideEntity[];
   </>
 }
 
-export function BookGuide({ guide, tab, ui, onRead }: { guide: BookResponse; tab: 'people' | 'places' | 'timeline'; ui: UILanguage; onRead: (paragraph: number) => void }) {
+export function BookGuide({ guide, tab, ui, onRead }: { guide: BookResponse; tab: 'people' | 'places' | 'timeline'; ui: UILanguage; onRead: (paragraph: number, citation?: BookCitation) => void }) {
   const t = bookCompanionCopy[ui]
   const entries = tab === 'timeline' ? guide.events : guide[tab]
   return <section className="book-guide">

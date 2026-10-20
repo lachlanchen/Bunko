@@ -35,7 +35,8 @@ interface ReaderProps {
   startParagraph: number
   onOpenChapters: () => void
   onOpenSettings: () => void
-  onCompanion?: (paragraph: number, language: string) => void
+  highlightQuote?: string
+  onCompanion?: (paragraph: number, language: string, quote?: string) => void
   onBack: () => void
   backLabel: string
   overlayOpen?: boolean
@@ -57,6 +58,7 @@ export function Reader({
   onOpenChapters,
   onOpenSettings,
   onCompanion,
+  highlightQuote = '',
   onBack,
   backLabel,
   overlayOpen = false,
@@ -104,6 +106,13 @@ export function Reader({
   // startParagraph is read when a chapter changes, not while scrolling it.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meta.id, row])
+
+  useEffect(() => {
+    if (!highlightQuote || !chapter || !scrollRef.current) return
+    const paragraph = scrollRef.current.querySelector<HTMLElement>(`[data-para="${startParagraph}"]`)
+    paragraph?.classList.add('reference-focus')
+    return () => paragraph?.classList.remove('reference-focus')
+  }, [highlightQuote, chapter, startParagraph])
 
   // Restore the reader's place once, when the chapter arrives. Reading then
   // updates the stored place, and this must not turn that into a scroll loop,
@@ -274,7 +283,11 @@ export function Reader({
           </article>
         )}
       </div>
-      {chapter && !activeFocus && !overlayOpen && <SelectionTools key={`${row.file}:${settings.layout}:${shown.join(',')}`} host={scrollRef} ui={ui} onOpen={openSelection} />}
+      {chapter && !activeFocus && !overlayOpen && <SelectionTools key={`${row.file}:${settings.layout}:${shown.join(',')}`} host={scrollRef} ui={ui} onOpen={openSelection} onCompanion={onCompanion ? selected => {
+        const id = selected.passage.dataset.readingPara
+        const paragraph = Number(id)
+        if (Number.isSafeInteger(paragraph) && chapter.p[paragraph] && selected.passage.dataset.lang) onCompanion(paragraph, selected.passage.dataset.lang, selected.text)
+      } : undefined} />}
       {activeFocus && <ReadingPanel key={`${activeFocus.key}:${activeFocus.word ?? ''}:${activeFocus.lang}`} focus={activeFocus} ui={ui} onClose={() => setFocus(null)} />}
     </div>
   )

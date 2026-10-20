@@ -58,5 +58,13 @@ it('accepts right swipes from the edge and page body, preserving scrolling, sele
   window.getSelection()?.addRange(range)
   touch('touchstart', 10, 100, 0); touch('touchmove', 90, 100, 90); touch('touchend', 140, 100, 180)
   expect(back).toHaveBeenCalledTimes(3)
+  // A shorter edge gesture works and cannot click a source link on the next page.
+  window.getSelection()?.removeAllRanges()
+  touch('touchstart', 10, 100, 4000); touch('touchmove', 35, 101, 4050); touch('touchend', 57, 102, 4100)
+  expect(back).toHaveBeenCalledTimes(4)
+  const click = new MouseEvent('click', { bubbles: true, cancelable: true, detail: 1 })
+  host.dispatchEvent(click); expect(click.defaultPrevented).toBe(true)
+  const keyboard = new MouseEvent('click', { bubbles: true, cancelable: true, detail: 0 })
+  host.dispatchEvent(keyboard); expect(keyboard.defaultPrevented).toBe(false)
   remove(); host.remove()
 })

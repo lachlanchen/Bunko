@@ -7,6 +7,19 @@ import { isPublicIP } from './agent/network.mjs'
 import { createCloudLedger, cloudOwner } from './cloud-ledger.mjs'
 const reader = { id: 7 }, other = { id: 9 }
 const requestId = 'request_fixture_1234567890'
+test('model administration uses the existing authenticated state route and excludes ordinary/demo readers', async t => {
+  const db = new DatabaseSync(':memory:')
+  const agent = createDocumentAgent({ db, seal: JSON.stringify, unseal: JSON.parse,
+    config: { enabled: true, model: { name: 'deepseek-flash', url: 'https://api.deepseek.com/chat/completions', token: 'private-value' }, models: { adminUserIds: [7] } } })
+  t.after(() => { agent.close(); db.close() })
+  assert.equal((await agent.handle('state', {}, reader)).modelAdmin, true)
+  assert.equal((await agent.handle('state', {}, other)).modelAdmin, false)
+  await assert.rejects(agent.handle('state', { adminModels: true }, other), /Administrator/)
+  await assert.rejects(agent.handle('state', { adminModels: true }, { id: 7, kind: 'demo' }), /Administrator/)
+  const value = await agent.handle('state', { adminModels: true }, reader)
+  assert.equal(value.primary, 'deepseek-flash')
+  assert.equal(JSON.stringify(value).includes('private-value'), false)
+})
 test('cloud conversion retries reuse the provider job and allowance reservation', async t => {
   const db = new DatabaseSync(':memory:'), owner = cloudOwner(reader)
   const cloud = createCloudLedger(db, { enabled: true, quotasEnabled: true })

@@ -1,0 +1,15 @@
+{
+  "source": "AgInTiLite",
+  "commit": "78a6c925b55792761994c1881bd909f6c0ce97dd",
+  "package": "@lazyingart/agintilite@0.1.0-preview.1",
+  "archiveSha256": "21613c0670fe742edde4e183f4a50755d0fe34ad0c86e2dcfef3040f5c870479",
+  "files": {
+    "package.json": "356ba2b3715ecdf0d14052d1ff7ec76fc69ced261b4ab36a11a8f22e82927378",
+    "README.md": "cec75b210525f0f998091400574cd4a68a12d9d6ade4583d2293ecc49a74cc80",
+    "NOTICE": "e4a7be019ee78aeacc00708556e427ce78359acc819ea3940cb12839eecb05b7",
+    "LICENSE": "0d32b7e7d7a8fadb1027212eb87a35704f3ed8709cfabfd01c84c90296182ba2",
+    "src/restricted-application.js": "c1c4949a43ef9f842ccac87a48b7d84d7207654007505d0c7275027aed543315",
+    "src/restricted-application-contract.js": "286565e1ec2357e0a8dcf75d6ca40d330192e37027a2c37050c7d5059919672b",
+    "src/redaction.js": "5cc41726dcb780b4d6b3e65ebe64d1794b5be675e9f066c9f7ebb6cc1ebfa7de"
+  }
+}

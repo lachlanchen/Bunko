@@ -34,9 +34,25 @@ export async function downloadPublic(input, { maxBytes = 20_000_000, redirects =
 }
 
 export async function providerJSON(url, options = {}) {
-  const res = await fetch(url, { ...options, redirect: 'error', signal: AbortSignal.timeout(options.timeout || 60_000) });
-  if (!res.ok) throw new AppError(`Provider returned HTTP ${res.status}. Please try again later.`, 502);
-  const body = await res.text();
-  requireValue(body.length <= 4_000_000, 'Provider response is too large.', 502);
+  const timeout = AbortSignal.timeout(options.timeout || 60_000);
+  const signal = options.signal ? AbortSignal.any([options.signal, timeout]) : timeout;
+  const res = await fetch(url, { ...options, redirect: 'error', signal });
+  if (!res.ok) {
+    await res.body?.cancel();
+    const error = new AppError(`Provider returned HTTP ${res.status}. Please try again later.`, 502);
+    error.retryable = [429, 502, 503, 504].includes(res.status);
+    throw error;
+  }
+  const reader = res.body.getReader(), chunks = []; let bytes = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      bytes += value.byteLength;
+      requireValue(bytes <= 4_000_000, 'Provider response is too large.', 502);
+      chunks.push(value);
+    }
+  } catch (error) { await reader.cancel().catch(() => {}); throw error; }
+  const body = Buffer.concat(chunks).toString();
   try { return JSON.parse(body); } catch { throw new AppError('Provider returned an unreadable response.', 502); }
 }

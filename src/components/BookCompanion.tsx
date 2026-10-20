@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
-import { ArrowDown, ArrowLeft, ArrowUp, BookOpen, Ellipsis, MapPin, MessageCircle, RefreshCw, Sparkles, Users, Waypoints } from 'lucide-react'
+import { ArrowDown, AtSign, ArrowLeft, ArrowUp, BookOpen, Ellipsis, MapPin, MessageCircle, RefreshCw, Sparkles, Users, Waypoints } from 'lucide-react'
 import type { UILanguage } from '../i18n'
 import { currentUser, DiscussionError, requestId, restoreSession, signIn, subscribeSession } from '../lib/discussions'
-import { agentCall } from '../lib/documentAgent'
+import { initialModelPolicy, type ModelPolicy, agentCall } from '../lib/documentAgent'
 import { companionReference, referenceKey, savedGuide, saveGuide, forgetGuide, type BookCompanionContext, type BookMessage, type BookReference, type BookResponse } from '../lib/bookCompanion'
 import { useBackAction } from '../lib/backNavigation'
 import { agentCopy } from './agentCopy'
 import { bookCompanionCopy } from './bookCompanionCopy'
+import { BookReferencePicker } from './BookReferencePicker'
+import { referenceCopy } from './bookReferenceCopy'
 import { BookGuide, PassageEvidence } from './BookGuide'
 import { DocumentContent } from './DocumentContent'
 import { CloudPlans } from './CloudPlans'
@@ -17,23 +19,32 @@ import './bookCompanion.css'
 
 type Tab = 'chat' | 'people' | 'places' | 'timeline'
 export function BookCompanion({ context, ui, onBack, onRead, onGeneral }: {
-  context: BookCompanionContext; ui: UILanguage; onBack: () => void; onRead: (paragraph: number) => void; onGeneral: () => void
+  context: BookCompanionContext; ui: UILanguage; onBack: () => void; onRead: (paragraph: number, reference?: BookReference, quote?: string) => void; onGeneral: () => void
 }) {
   const t = bookCompanionCopy[ui], a = agentCopy[ui]
   const user = useSyncExternalStore(subscribeSession, currentUser, () => null)
-  const [scope, setScope] = useState<BookReference['scope']>('passage')
-  const ref = useMemo(() => companionReference(context, ui, scope), [context, ui, scope])
+  const ref = useMemo(() => companionReference(context, ui, context.scope || (context.quote ? 'sentence' : 'passage')), [context, ui])
   const key = referenceKey(ref), owner = user?.id
   // Keyed child remounts on scope/account changes; late responses cannot alter a new conversation.
-  return <BookCompanionSession key={`${owner || 'guest'}:${key}`} {...{ context, ui, onBack, onRead, onGeneral, refValue: ref, setScope, user, t, a }} />
+  return <BookCompanionSession key={`${owner || 'guest'}:${key}`} {...{ context, ui, onBack, onRead, onGeneral, refValue: ref, user, t, a }} />
 }
-function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue, setScope, user, t, a }: {
-  context: BookCompanionContext; ui: UILanguage; onBack: () => void; onRead: (paragraph: number) => void; onGeneral: () => void
-  refValue: BookReference; setScope: (scope: BookReference['scope']) => void; user: ReturnType<typeof currentUser>
+function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue, user, t, a }: {
+  context: BookCompanionContext; ui: UILanguage; onBack: () => void; onRead: (paragraph: number, reference?: BookReference, quote?: string) => void; onGeneral: () => void
+  refValue: BookReference; user: ReturnType<typeof currentUser>
   t: typeof bookCompanionCopy[UILanguage]; a: typeof agentCopy[UILanguage]
 }) {
+  const selectionKey = `bunko-book-selection:${user?.id || 'guest'}:${referenceKey(refValue)}`
+  const [selection] = useState(() => {
+    try { const value = JSON.parse(sessionStorage.getItem(selectionKey) || 'null'); if (value?.reference?.id && value.meta?.id === value.reference.id && value.meta.chapters?.[value.reference.chapter]?.file === value.reference.file) return value as { reference: BookReference; meta: typeof context.meta } } catch { /* Optional selection persistence. */ }
+    return { reference: refValue, meta: context.meta }
+  })
+  const [reference, setReference] = useState(selection.reference), [referenceMeta, setReferenceMeta] = useState(selection.meta), [picking, setPicking] = useState(false)
+  const referenceId = referenceKey(reference), activeReference = useRef(referenceId)
+  const mentionStart = useRef(-1)
+  const r = referenceCopy[ui]
+  const [modelPolicy, setModelPolicy] = useState<ModelPolicy>(initialModelPolicy)
   const [tab, setTab] = useState<Tab>('chat'), [plans, setPlans] = useState(false)
-  const [guide, setGuide] = useState<BookResponse | null>(() => savedGuide(refValue))
+  const [guide, setGuide] = useState<BookResponse | null>(() => savedGuide(reference))
   const [messages, setMessages] = useState<BookMessage[]>([])
   const draftKey = `bunko-book-draft:${user?.id || 'guest'}:${referenceKey(refValue)}`
   const [draft, setDraft] = useState(() => { try { return sessionStorage.getItem(draftKey) || '' } catch { return '' } })
@@ -46,7 +57,7 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
   const manualScroll = useRef(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const title = context.meta.titleText[context.language] || context.meta.titleText[context.meta.primary] || context.meta.id
-  useBackAction(() => { if (report) setReport(null); else if (consent) { setConsent(false); pending.current = null } else if (plans) setPlans(false); else if (menuOpen) menu.current?.removeAttribute('open'); else onBack() }, true, 30)
+  useBackAction(() => { if (report) setReport(null); else if (consent) { setConsent(false); pending.current = null } else if (picking) setPicking(false); else if (plans) setPlans(false); else if (menuOpen) menu.current?.removeAttribute('open'); else onBack() }, true, 30)
   const fail = useCallback((e: unknown) => {
     if (!live.current) return
     const detail = (e as Error & { detail?: string })?.detail
@@ -54,14 +65,15 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
   }, [a.error])
   const refresh = useCallback(async () => {
     if (!user) return
-    const response = await agentCall<{ messages: BookMessage[]; guide?: BookResponse | null }>('messages', { book: refValue, checkGuide: true })
-    if (!live.current || currentUser()?.id !== user.id || inFlight.current) return
+    const response = await agentCall<{ messages: BookMessage[]; guide?: BookResponse | null; modelPolicy?: ModelPolicy }>('messages', { book: refValue, ...(referenceId !== referenceKey(refValue) ? { reference } : {}), checkGuide: true })
+    if (!live.current || currentUser()?.id !== user.id || inFlight.current || activeReference.current !== referenceId) return
     setMessages(response.messages)
+    setModelPolicy(response.modelPolicy || initialModelPolicy)
     if ('guide' in response) {
       setGuide(response.guide || null)
-      if (response.guide) saveGuide(refValue, response.guide); else forgetGuide(refValue)
+      if (response.guide) saveGuide(reference, response.guide); else forgetGuide(reference)
     }
-  }, [refValue, user])
+  }, [refValue, reference, referenceId, user])
   useEffect(() => {
     live.current = true
     void restoreSession().catch(() => {})
@@ -105,7 +117,7 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
     void flow.promise.catch(fail).finally(() => { if (live.current) setAuth(false) })
   }
   const withConsent = (action: () => void) => {
-    try { if (localStorage.getItem(`bunko-book-consent-v1:${user?.id}`) === 'yes') { action(); return } } catch { /* Ask without persistent storage. */ }
+    try { if (localStorage.getItem(`bunko-book-consent-v2:${user?.id}:${modelPolicy.consentKey}`) === 'yes') { action(); return } } catch { /* Ask without persistent storage. */ }
     pending.current = action; setConsent(true)
   }
   const send = async (kind: 'answer' | 'guide', text = draft) => {
@@ -114,17 +126,21 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
     const id = requestId(), question = text.trim(), owner = user.id
     following.current = true; setAtBottom(true)
     if (kind === 'answer') setDraft('')
-    setMessages(items => [...items, { id, state: 'processing', question, answer: '', papers: [], kind }])
+    setMessages(items => [...items, { id, state: 'processing', question, answer: '', papers: [], kind, reference, referenceTitle: referenceMeta.titleText[reference.language] || reference.id }])
     try {
-      const result = await agentCall<BookMessage>('send', { book: refValue, text: question, kind, requestId: id })
+      const result = await agentCall<BookMessage>('send', { book: refValue, ...(referenceId !== referenceKey(refValue) ? { reference } : {}), modelConsent: modelPolicy.providers, text: question, kind, requestId: id })
       if (!live.current || currentUser()?.id !== owner) return
       setMessages(items => items.map(m => m.id === id ? result : m))
       if (result.state === 'failed') setError(result.error || a.error)
-      if (kind === 'guide' && result.bookResponse) { setGuide(result.bookResponse); saveGuide(refValue, result.bookResponse) }
+      if (kind === 'guide' && result.bookResponse) { setGuide(result.bookResponse); saveGuide(reference, result.bookResponse) }
     } catch (e) { fail(e); if (live.current) { if (kind === 'answer') setDraft(question); await refresh().catch(() => {}) } }
     finally { inFlight.current = false; if (live.current) setBusy(false) }
   }
   const buildGuide = () => withConsent(() => { void send('guide', t.guide) })
+  const chooseReference = (next: BookReference, meta: typeof context.meta) => {
+    try { sessionStorage.setItem(selectionKey, JSON.stringify({ reference: next, meta })) } catch { /* Optional reference persistence. */ }
+    activeReference.current = referenceKey(next); setReference(next); setReferenceMeta(meta); setGuide(savedGuide(next)); setPicking(false); setError(''); const at = mentionStart.current; setDraft(value => at >= 0 && value[at] === '@' ? value.slice(0, at) + value.slice(at + 1) : value); mentionStart.current = -1; composer.current?.focus()
+  }
   const waiting = busy || messages.some(m => m.state === 'processing')
   if (plans) return <CloudPlans ui={ui} onBack={() => setPlans(false)} />
   return <main ref={page} className="agent-page agent-page-active book-companion" data-tab={tab}>
@@ -135,8 +151,8 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
         <summary aria-label={a.more}><Ellipsis size={22} /></summary>
         <div className="agent-menu-panel">
           <button type="button" onClick={() => { menu.current?.removeAttribute('open'); setMenuOpen(false); setPlans(true) }}><BookOpen size={18} />{cloudCopy[ui].title}</button>
-          <label className="guide-scope">{t.scope}<select value={refValue.scope} disabled={waiting} onChange={e => setScope(e.target.value as BookReference['scope'])}><option value="passage">{t.passage}</option><option value="chapter">{t.chapter}</option></select></label>
-          <p>{t.consent}</p>
+          <button type="button" disabled={waiting} onClick={() => { menu.current?.removeAttribute('open'); setPicking(true) }}><AtSign size={18} />{r.title}</button>
+          <p>{t.consent.replace('DeepSeek', modelPolicy.providers.join(' / '))}</p>
           <button type="button" onClick={onGeneral} disabled={waiting}>{t.newChat}</button>
         </div>
       </details>
@@ -144,7 +160,8 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
     <nav className="book-companion-tabs" aria-label={a.name}>
       {([['chat', MessageCircle], ['people', Users], ['places', MapPin], ['timeline', Waypoints]] as const).map(([value, Icon]) => <button type="button" key={value} aria-pressed={tab === value} onClick={() => { setTab(value); setError('') }}><Icon size={17} /><span>{t[value]}</span></button>)}
     </nav>
-    <div className="book-companion-scope"><span>{t.chapterLabel} {refValue.chapter + 1} · {refValue.scope === 'passage' ? `${t.coverage} 1–${refValue.paragraph + 1}` : t.chapter}</span>
+    <div className="book-companion-scope"><button type="button" className="book-reference-chip" title={reference.quote || r.current} onClick={() => onRead(reference.paragraph, reference, reference.quote)}><BookOpen size={14} /><span>{referenceMeta.titleText[reference.language] || reference.id} · {reference.scope === 'book' ? r.whole : reference.scope === 'sentence' ? `${r.sentence} · ${reference.quote?.slice(0, 40)}` : `${r.chapter} ${reference.chapter + 1} · ${r.paragraph} ${reference.paragraph + 1}`}</span></button>
+      {referenceId !== referenceKey(refValue) && <button type="button" title={r.current} aria-label={r.current} onClick={() => onRead(context.paragraph, refValue)}><BookOpen size={16} /></button>}
       <button type="button" aria-label={t.refresh} title={t.refresh} disabled={waiting || !user} onClick={() => { if (tab === 'chat') void refresh().catch(fail); else buildGuide() }}><RefreshCw size={16} /></button>
     </div>
     {user?.kind === 'demo' && <DemoNotice ui={ui} />}
@@ -166,14 +183,15 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
               </div>}
               {messages.map(m => <article className="agent-exchange" key={m.id}>
                 <p className="agent-question">{m.question}</p>
+                {m.reference && <button type="button" className="agent-message-reference" onClick={() => onRead(m.reference!.paragraph, m.reference, m.reference?.quote)}><BookOpen size={13} /><span>{m.referenceTitle || m.bookResponse?.title || m.reference.id} · {r.chapter} {m.reference.chapter + 1} · {r.paragraph} {m.reference.paragraph + 1}</span></button>}
                 <div className="agent-answer">{m.answer ? <>
                   <DocumentContent text={m.answer} preparing={a.preparing} failed={a.renderFailed} />
-                  {m.bookResponse && <PassageEvidence citations={m.bookResponse.citations} ui={ui} onRead={onRead} />}
+                  {m.bookResponse && <PassageEvidence citations={m.bookResponse.citations} ui={ui} onRead={(paragraph, citation) => onRead(paragraph, { ...m.bookResponse!.reference, ...(citation?.chapter !== undefined ? { chapter: citation.chapter, file: citation.file! } : {}) }, citation?.quote)} />}
                   {m.kind === 'guide' && m.bookResponse && <button type="button" onClick={() => setTab('people')}><Users size={16} />{t.people} · {t.places} · {t.timeline}</button>}
                   <div className="agent-answer-tools"><small title={a.ai}>Bunko · AI</small><button type="button" className="agent-report" onClick={() => { setReason(''); setReport(m) }}>{a.report}</button></div>
                 </> : <p role="status">{m.error || (m.state === 'processing' ? t.generating : a.interrupted)}</p>}</div>
               </article>)}
-            </> : guide ? <><BookGuide guide={guide} tab={tab} ui={ui} onRead={onRead} /><p className="guide-saved">{t.cached}</p>
+            </> : guide ? <><BookGuide guide={guide} tab={tab} ui={ui} onRead={(paragraph, citation) => onRead(paragraph, { ...guide.reference, ...(citation?.chapter !== undefined ? { chapter: citation.chapter, file: citation.file! } : {}) }, citation?.quote)} /><p className="guide-saved">{t.cached}</p>
               {messages.some(m => m.bookResponse?.key === guide.key) && <button type="button" className="agent-report" onClick={() => { setReason(''); setReport(messages.find(m => m.bookResponse?.key === guide.key) || null) }}>{t.report}</button>}
             </> : <div className="agent-empty">
               <Sparkles size={30} /><h1>{t[tab]}</h1><p>{t.hint}</p><button type="button" className="guide-build" disabled={!user || waiting} onClick={buildGuide}>{waiting ? t.generating : t.guide}</button><p className="guide-caption">{t.savedHint}</p>
@@ -186,16 +204,18 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
         {error && <p role="alert">{error}</p>}
         {notice && <p role="status">{notice}</p>}
         {tab === 'chat' && <form className="agent-composer" onSubmit={e => { e.preventDefault(); withConsent(() => { void send('answer') }) }}>
-          <textarea ref={composer} value={draft} rows={1} maxLength={8000} aria-label={t.placeholder} placeholder={t.placeholder} onChange={e => setDraft(e.target.value)}
+          <button type="button" className="reference-add" disabled={waiting} aria-label={r.title} title={r.title} onClick={() => setPicking(true)}><AtSign size={20} /></button>
+          <textarea ref={composer} value={draft} rows={1} maxLength={8000} aria-label={t.placeholder} placeholder={t.placeholder} onChange={e => { setDraft(e.target.value); if (e.target.value.endsWith('@') && !waiting) { mentionStart.current = e.target.value.length - 1; setPicking(true) } }}
             onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing && (e.ctrlKey || e.metaKey)) { e.preventDefault(); withConsent(() => { void send('answer') }) } }} />
           <button type="submit" className="agent-send" disabled={!user || waiting || !draft.trim()} aria-label={a.send}><ArrowUp size={20} /></button>
         </form>}
       </div>
     </section>
+    {picking && <BookReferencePicker initial={reference} meta={referenceMeta} ui={ui} onClose={() => { mentionStart.current = -1; setPicking(false) }} onChoose={chooseReference} />}
     {consent && <div className="agent-modal-backdrop"><section className="agent-modal" role="dialog" aria-modal="true" aria-labelledby="book-consent-title">
-      <h2 id="book-consent-title">{a.consentTitle}</h2><p>{t.consent}</p>
+      <h2 id="book-consent-title">{a.consentTitle}</h2><p>{t.consent.replace('DeepSeek', modelPolicy.providers.join(' / '))}</p>
       <button type="button" onClick={() => { setConsent(false); pending.current = null }}>{a.cancel}</button>
-      <button type="button" onClick={() => { try { localStorage.setItem(`bunko-book-consent-v1:${user?.id}`, 'yes') } catch { /* Continue for this request. */ } setConsent(false); const action = pending.current; pending.current = null; action?.() }}>{a.consentAllow}</button>
+      <button type="button" onClick={() => { try { localStorage.setItem(`bunko-book-consent-v2:${user?.id}:${modelPolicy.consentKey}`, 'yes') } catch { /* Continue for this request. */ } setConsent(false); const action = pending.current; pending.current = null; action?.() }}>{a.consentAllow}</button>
     </section></div>}
     {report && <div className="agent-modal-backdrop"><form className="agent-modal" role="dialog" aria-modal="true" aria-labelledby="book-report-title" onSubmit={e => {
       e.preventDefault()

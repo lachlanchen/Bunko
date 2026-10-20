@@ -1,3 +1,4 @@
+import { runStructuredReading } from './structured-task.mjs'
 import { AppError, hash, requireValue } from './common.mjs'
 
 const VERSION = 1
@@ -12,20 +13,32 @@ export function bookReference(value) {
   requireValue(Number.isSafeInteger(value.paragraph) && value.paragraph >= 0 && value.paragraph < 100000, 'Choose a passage.')
   requireValue(typeof value.language === 'string' && /^[A-Za-z][A-Za-z0-9-]{0,34}$/.test(value.language), 'Choose a reading language.')
   requireValue(['en', 'zh-Hans', 'zh-Hant', 'ja'].includes(value.replyLanguage), 'Choose an interface language.')
-  requireValue(['passage', 'chapter'].includes(value.scope), 'Choose a reading scope.')
+  requireValue(['passage', 'chapter', 'book', 'paragraph', 'sentence'].includes(value.scope), 'Choose a reading scope.')
   requireValue(value.file && /^c[0-9]+(?:p[0-9]+)?(?:-[a-f0-9]+)?\.json$/.test(value.file), 'Choose a chapter file.')
-  return { id: value.id, chapter: value.chapter, paragraph: value.paragraph, file: value.file,
+  if (value.scope === 'sentence') requireValue(typeof value.quote === 'string' && value.quote.trim().length >= 2 && value.quote.length <= 2000, 'Select a sentence of up to 2,000 characters.')
+  return { ...(value.scope === 'sentence' ? { quote: value.quote.trim() } : {}), id: value.id, chapter: value.chapter, paragraph: value.paragraph, file: value.file,
     language: value.language, replyLanguage: value.replyLanguage, scope: value.scope }
 }
 
 /** Only the fixed public catalogue is read. Client text, URLs and account history never enter shared guides. */
-export async function bookContext(ref, read) {
+export async function bookContext(ref, read, { maxChars = 48000 } = {}) {
   requireValue(typeof read === 'function', 'The book companion is temporarily unavailable.', 503)
   const index = JSON.parse(Buffer.from((await read('reader-index.json')).body).toString())
   requireValue(Array.isArray(index.books) && index.books.some(b => b.id === ref.id), 'This book is no longer in the public library.', 404)
   const meta = JSON.parse(Buffer.from((await read(`books/${ref.id}/meta.json`)).body).toString())
   const row = meta.chapters?.[ref.chapter]
   requireValue(row && row.file === ref.file && meta.langs?.includes(ref.language), 'This edition changed. Reopen the book before asking again.', 409)
+  if (ref.scope === 'book') {
+    // A bounded, deterministic overview. Never claim an entire long book was read.
+    const indexes = [...new Set(Array.from({ length: Math.min(8, meta.chapters.length) }, (_, i) => Math.round(i * (meta.chapters.length - 1) / Math.max(1, Math.min(8, meta.chapters.length) - 1))))]
+    const contexts = []
+    for (const chapter of indexes) contexts.push(await bookContext({ ...ref, chapter, file: meta.chapters[chapter].file, paragraph: 0, scope: 'chapter' }, read, { maxChars: 6000 }))
+    const passages = contexts.flatMap(c => c.passages.map(p => ({ ...p, id: `C${c.reference.chapter + 1}${p.id}`, chapter: c.reference.chapter, file: c.reference.file })))
+    const revision = hash(JSON.stringify(contexts.map(c => [c.reference.file, c.revision])))
+    return { key: hash(JSON.stringify([VERSION, ref, revision, passages])), revision, reference: ref,
+      title: clean(meta.titleText?.[ref.language] || meta.titleText?.[meta.primary] || ref.id, 300), chapterTitle: 'Selected excerpts across the book', passages,
+      coverage: { chapter: ref.chapter, first: 0, last: ref.paragraph, total: meta.paras, partial: contexts.some(c => c.coverage.partial) || indexes.length < meta.chapters.length, chapters: indexes, scope: 'book', language: ref.language } }
+  }
   const bytes = Buffer.from((await read(`books/${ref.id}/${row.file}`)).body)
   if (row.sha256) requireValue(hash(bytes) === row.sha256, 'The chapter could not be verified. Try again later.', 502)
   const chapter = JSON.parse(bytes.toString())
@@ -33,13 +46,15 @@ export async function bookContext(ref, read) {
   const end = ref.scope === 'chapter' ? chapter.p.length - 1 : ref.paragraph
   // A finite contiguous window ending at the spoiler boundary. Never imply full-book coverage.
   const passages = []
+  const first = ['paragraph', 'sentence'].includes(ref.scope) ? ref.paragraph : 0
   let characters = 0
-  for (let i = end; i >= 0 && passages.length < 160; i--) {
+  for (let i = end; i >= first && passages.length < 160; i--) {
     const p = chapter.p[i]
-    const text = (p.u || []).map(u => plain(u[ref.language])).filter(Boolean).join('\n')
+    let text = (p.u || []).map(u => plain(u[ref.language])).filter(Boolean).join('\n')
+    if (ref.scope === 'sentence') { requireValue(text.includes(ref.quote), 'The selected sentence does not match this edition. Select it again.', 409); text = ref.quote }
     if (!text.trim()) continue
-    if (characters + text.length > 48000) {
-      if (!passages.length) passages.unshift({ id: `P${i + 1}`, paragraph: i, text: text.slice(0, 48000), partial: true })
+    if (characters + text.length > maxChars) {
+      if (!passages.length) passages.unshift({ id: `P${i + 1}`, paragraph: i, text: text.slice(0, maxChars), partial: true })
       break
     }
     passages.unshift({ id: `P${i + 1}`, paragraph: i, text, partial: false })
@@ -51,7 +66,7 @@ export async function bookContext(ref, read) {
   return { key, revision, reference: { ...ref, paragraph: end }, title: clean(meta.titleText?.[ref.language] || meta.titleText?.[meta.primary] || ref.id, 300),
     chapterTitle: clean(row.title?.[ref.language] || row.title?.[meta.primary] || `${ref.chapter + 1}`, 300),
     passages, coverage: { chapter: ref.chapter, first: passages[0].paragraph, last: end, total: chapter.p.length,
-      partial: passages[0].paragraph > 0 || passages.some(p => p.partial), scope: ref.scope, language: ref.language } }
+      partial: passages[0].paragraph > first || passages.some(p => p.partial), scope: ref.scope, language: ref.language } }
 }
 
 /** Quotes are checked against exact supplied passages; output is data, never executable SVG/HTML. */
@@ -63,7 +78,7 @@ export function validateBookResponse(raw, context, kind) {
     return values.map(v => {
       const p = sources.get(v?.passage), quote = clean(v?.quote, 600)
       requireValue(p && normalized(quote).length >= 2 && normalized(p.text).includes(normalized(quote)), 'A source quotation could not be verified. Please retry.', 502)
-      return { passage: p.id, paragraph: p.paragraph, quote }
+      return { passage: p.id, paragraph: p.paragraph, quote, ...(p.chapter !== undefined ? { chapter: p.chapter, file: p.file } : {}) }
     })
   }
   const text = (value, maximum = 600) => {
@@ -104,7 +119,7 @@ export function validateBookResponse(raw, context, kind) {
   const events = list(raw.events, 16).map(v => ({
     title: text(v.title, 160), when: clean(v.when, 120), detail: text(v.detail), certainty: certainty(v.certainty),
     citations: evidence(v.citations), // Keep source order, not an invented calendar.
-  })).sort((a, b) => Math.min(...a.citations.map(c => c.paragraph)) - Math.min(...b.citations.map(c => c.paragraph)))
+  })).sort((a, b) => Math.min(...a.citations.map(c => (c.chapter || 0) * 100000 + c.paragraph)) - Math.min(...b.citations.map(c => (c.chapter || 0) * 100000 + c.paragraph)))
   requireValue(people.length || places.length || events.length || raw.insufficient === true, 'No supported guide entries were returned.', 502)
   return { answer, citations, insufficient: raw.insufficient === true, people, relationships, places, routes, events }
 }
@@ -114,10 +129,10 @@ Return one JSON object (no fences) with answer (concise Markdown), insufficient 
 For a GUIDE also include people:[{id,name,detail,aliases:[],certainty:"stated"|"interpretation",citations}], relationships:[{from,to,label,certainty,citations}], places:[{id,name,detail,aliases:[],certainty,citations}], routes:[{from,to,label,certainty,citations}], events:[{title,when,detail,certainty,citations}].
 Use up to 8 people, 8 relationships, 6 places, 6 routes and 8 events. All arrays are required for guides, empty if unsupported. Every from/to MUST exactly equal an id in the corresponding people/places list; omit a connection if either entity is absent. A route means a journey or spatial connection explicitly supported by passages, never assumed distance or coordinates. A timeline follows order in the text; use when="" if no time is given, never invent a year. Each entity, connection and event needs 1–3 exact quotations. Aliases must be directly supported by that entity's citations. Answer citations: up to 5. Short quotes only, at most 240 characters each. Interpretive details must be marked interpretation. Do not output raw HTML.`;
 
-export function createBookCompanion({ db, seal, unseal, read, provider, config, now, reserve, finish, capacity }) {
+export function createBookCompanion({ db, seal, unseal, read, provider, models, config, now, reserve, finish, capacity }) {
   db.exec('CREATE TABLE IF NOT EXISTS agent_book_guides(id TEXT PRIMARY KEY,data TEXT NOT NULL,created INTEGER NOT NULL)')
   const pending = new Map()
-  async function generate(context, kind, question, history = []) {
+  async function generate(context, kind, question, history = [], modelConsent) {
     requireValue(config.model?.url && config.model?.name, 'The reading assistant is not connected.', 503)
     const messages = [{ role: 'system', content: system }, { role: 'user', content: JSON.stringify({
       task: kind === 'guide' ? 'GUIDE: people, relationships, places, journeys and events in this selection' : 'ANSWER',
@@ -125,45 +140,41 @@ export function createBookCompanion({ db, seal, unseal, read, provider, config, 
       coverage: context.coverage, passages: context.passages.map(p => ({ id: p.id, text: p.text })),
     }) }, ...history, ...(kind === 'answer' ? [{ role: 'user', content: question }] : [])]
     const deadline = Date.now() + 110000
+    const complete = models?.forRequest(modelConsent) || provider
     for (let attempt = 0; attempt < 2; attempt++) {
-    const response = await provider(config.model.url, { method: 'POST', timeout: Math.max(1000, Math.min(70000, deadline - Date.now())),
-      headers: { 'Content-Type': 'application/json', ...(config.model.token ? { Authorization: `Bearer ${config.model.token}` } : {}) },
-      body: JSON.stringify({ model: config.model.name, temperature: 0.15, stream: false, max_tokens: kind === 'guide' ? 6000 : 3000,
-        response_format: { type: 'json_object' },
-        messages,
-        ...(new URL(config.model.url).hostname === 'api.deepseek.com' ? { thinking: { type: 'disabled' } } : {}) }),
-    })
-    const content = response.choices?.[0]?.message?.content
-    try {
-      requireValue(response.choices?.[0]?.finish_reason !== 'length', 'The guide was too long. Choose a shorter section.', 502)
-      let parsed
-      try { parsed = JSON.parse(content) } catch { throw new AppError('The reading guide was incomplete. Please retry.', 502) }
-      return { ...validateBookResponse(parsed, context, kind), coverage: context.coverage, revision: context.revision, key: context.key, reference: context.reference }
-    } catch (error) {
-      if (attempt || !(error instanceof AppError) || Date.now() >= deadline - 1000) throw error
-      // One bounded structural repair, with the same source boundary and no second allowance charge.
-      messages.push({ role: 'assistant', content: typeof content === 'string' ? content.slice(0, 40000) : '{}' },
-        { role: 'user', content: `Correct the JSON using only the supplied passages. Validation: ${error.message} Use exact existing entity ids in from/to, exact source substrings in quote, and all required arrays. Omit unsupported entries. Return the complete corrected JSON, with fewer entries if needed.` })
-    }
+      let content = '', structured = false
+      try {
+        const parsed = await runStructuredReading({ messages, kind, complete, url: config.model.url,
+          timeoutMs: Math.max(1000, Math.min(70000, deadline - Date.now())), maxTokens: kind === 'guide' ? 6000 : 3000,
+          onContent: value => { content = value } })
+        structured = true
+        return { ...validateBookResponse(parsed, context, kind), title: context.title, coverage: context.coverage, revision: context.revision, key: context.key, reference: context.reference }
+      } catch (error) {
+        if (attempt || !(error instanceof AppError) || (!structured && !error.repairable) || Date.now() >= deadline - 1000) throw error
+        // One structural/citation repair within the same quota and whole deadline.
+        messages.push({ role: 'assistant', content: content || '{}' },
+          { role: 'user', content: `Correct the JSON using only the supplied passages. Validation: ${error.message} Use exact existing entity ids in from/to, exact source substrings in quote, and all required arrays. Omit unsupported entries. Return the complete corrected JSON, with fewer entries if needed.` })
+      }
     }
   }
+
   const conversation = ref => `book:${hash(JSON.stringify(ref))}`
   const messages = (owner, key) => db.prepare('SELECT * FROM agent_messages WHERE owner=? AND document=? ORDER BY created').all(owner, key)
     .map(r => ({ id: r.id, state: r.state, ...unseal(r.data) }))
   return {
     async handle(path, input, owner, requestKey) {
-      const ref = bookReference(input.book), key = conversation(ref)
+      const ref = bookReference(input.book), target = input.reference ? bookReference(input.reference) : ref, key = conversation(ref)
       if (path === 'messages') {
-        if (!input.checkGuide) return { messages: messages(owner, key) }
-        const context = await bookContext(ref, read)
+        if (!input.checkGuide) return { messages: messages(owner, key), modelPolicy: models?.policy() }
+        const context = await bookContext(target, read)
         const cached = db.prepare('SELECT data FROM agent_book_guides WHERE id=?').get(context.key)
-        return { messages: messages(owner, key), guide: cached ? JSON.parse(cached.data) : null, revision: context.revision }
+        return { modelPolicy: models?.policy(), messages: messages(owner, key), guide: cached ? JSON.parse(cached.data) : null, revision: context.revision }
       }
       requireValue(path === 'send', 'Unknown book companion action.', 404)
       const kind = input.kind || 'answer'
       requireValue(kinds.has(kind), 'Choose a guide or ask a question.')
       requireValue(typeof input.text === 'string' && input.text.trim() && input.text.length <= 8000, 'Write a question of up to 8,000 characters.')
-      const id = requestKey(owner, input.requestId), fingerprint = hash(JSON.stringify([ref, kind, input.text]))
+      const id = requestKey(owner, input.requestId), fingerprint = hash(JSON.stringify(input.reference ? [ref, target, kind, input.text] : [ref, kind, input.text]))
       const previous = db.prepare('SELECT * FROM agent_messages WHERE id=? AND owner=?').get(id, owner)
       if (previous) {
         const data = unseal(previous.data)
@@ -173,11 +184,12 @@ export function createBookCompanion({ db, seal, unseal, read, provider, config, 
       requireValue(!db.prepare("SELECT id FROM agent_messages WHERE owner=? AND state='processing'").get(owner), 'A response is already in progress.', 409)
       // Reserve an owner-scoped durable request before any asynchronous read.
       capacity(200000)
-      const data = { question: input.text.trim(), fingerprint, answer: '', papers: [], kind }
+      const data = { question: input.text.trim(), fingerprint, answer: '', papers: [], kind, reference: target }
       db.prepare('INSERT INTO agent_messages VALUES (?,?,?,?,?,?)').run(id, owner, key, 'processing', seal(data), now())
       let charged = false
       try {
-        const context = await bookContext(ref, read)
+        const context = await bookContext(target, read)
+        data.referenceTitle = context.title
         requireValue(db.prepare('SELECT id FROM agent_messages WHERE id=?').get(id), 'Conversation removed.', 410)
         let result
         if (kind === 'guide') {
@@ -187,7 +199,7 @@ export function createBookCompanion({ db, seal, unseal, read, provider, config, 
           else if (pending.has(context.key)) result = { ...await pending.get(context.key), reused: true }
           else {
             reserve(id, owner); charged = true
-            const task = generate(context, kind).then(value => {
+            const task = generate(context, kind, undefined, [], input.modelConsent).then(value => {
               capacity(Buffer.byteLength(JSON.stringify(value)))
               db.prepare('INSERT OR IGNORE INTO agent_book_guides VALUES(?,?,?)').run(context.key, JSON.stringify(value), now())
               // Bounded shared public output; old editions are naturally evicted.
@@ -201,7 +213,7 @@ export function createBookCompanion({ db, seal, unseal, read, provider, config, 
           reserve(id, owner); charged = true
           const recent = messages(owner, key).filter(m => m.state === 'completed' && m.kind === 'answer' && m.bookResponse?.revision === context.revision).slice(-4)
           const history = recent.flatMap(m => [{ role: 'user', content: m.question.slice(0, 4000) }, { role: 'assistant', content: m.answer.slice(0, 5000) }])
-          result = await generate(context, kind, data.question, history)
+          result = await generate(context, kind, data.question, history, input.modelConsent)
         }
         data.answer = result.answer; data.bookResponse = result
         const updated = db.prepare("UPDATE agent_messages SET state='completed',data=? WHERE id=? AND owner=?").run(seal(data), id, owner)

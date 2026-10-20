@@ -1,0 +1,31 @@
+{
+  "capturedAt": "2026-10-20T13:38:30.494Z",
+  "version": "1.0.14",
+  "build": 29,
+  "channel": "Actual React components in Chromium, synthetic public-style book and responses. Layout QA draft, not installed native screenshots or live answers.",
+  "captures": [
+    {
+      "file": "phone-reference.png",
+      "sha256": "3a3bef269a47291072f3f396f0d7e0a6b6e24bb21188ed2f6972ee25c8324500",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "desktop-reference.png",
+      "sha256": "ca4c5419c43e5d3be3a1b3da1117c56e675d9e739c0420bb87b03b4d577150c2",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "general-320.png",
+      "sha256": "c35d8fda9759e1409e33fd901acb711316a10265f6e5d88a59c18da01326d7d5",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "general-1280.png",
+      "sha256": "76fe60bc7763bc2fcac5086def0a48e1aaa704939aa480521b0eadcad3dc6847",
+      "visuallyReviewed": true
+    }
+  ],
+  "uploaded": false,
+  "approved": false,
+  "public": false
+}

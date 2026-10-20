@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
-import { ArrowDown, ArrowLeft, ArrowUp, BookOpen, FileText, Ellipsis, LoaderCircle, LogOut, Paperclip, Plus, RefreshCw, Trash2, X } from 'lucide-react'
+import { ArrowDown, AtSign, ArrowLeft, ArrowUp, BookOpen, FileText, Ellipsis, LoaderCircle, LogOut, Paperclip, Plus, RefreshCw, Trash2, X } from 'lucide-react'
 import { currentUser, restoreSession, signIn, signOut, subscribeSession, DiscussionError, requestId } from '../lib/discussions'
+import { loadIndex, loadMeta } from '../lib/library'
+import type { BookMeta } from '../types'
+import type { BookReference } from '../lib/bookCompanion'
+import { BookReferencePicker } from './BookReferencePicker'
+import { referenceCopy } from './bookReferenceCopy'
+import { ModelSettings } from './ModelSettings'
+import { initialModelPolicy, type ModelPolicy } from '../lib/documentAgent'
 import { agentCall, uploadDocument, type AgentMessage, type PrivateDocument, type PaperMatch } from '../lib/documentAgent'
 import { useBackAction } from '../lib/backNavigation'
 import type { UILanguage } from '../i18n'
@@ -12,16 +19,26 @@ import { cloudCopy } from './cloudCopy'
 import { BUNKO_LEGAL_API } from '../lib/serviceOrigins'
 import './documentAgent.css'
 
-export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => void }) {
+type AgentProps = { ui: UILanguage; onBack: () => void; onBook?: (reference: BookReference, meta: BookMeta, draft: string) => void }
+export function DocumentAgent({ ui, onBack, onBook }: AgentProps) {
+  const user = useSyncExternalStore(subscribeSession, currentUser, () => null)
+  return <DocumentAgentSession key={user?.id || 'guest'} {...{ ui, onBack, onBook, user }} />
+}
+function DocumentAgentSession({ ui, onBack, onBook, user }: AgentProps & { user: ReturnType<typeof currentUser> }) {
   const t = agentCopy[ui]
+  const [bookPicker, setBookPicker] = useState<{ meta: BookMeta; reference: BookReference } | null>(null)
+  const mentionStart = useRef(-1)
+  const [modelPolicy, setModelPolicy] = useState<ModelPolicy>(initialModelPolicy), [modelAdmin, setModelAdmin] = useState(false), [modelsOpen, setModelsOpen] = useState(false)
   const page = useRef<HTMLElement>(null), history = useRef<HTMLDivElement>(null), historyContent = useRef<HTMLDivElement>(null), followLatest = useRef(true), userScrolling = useRef(false), savedScroll = useRef(0), menu = useRef<HTMLDetailsElement>(null)
   const [atBottom, setAtBottom] = useState(true), [plans, setPlans] = useState(false), [menuOpen, setMenuOpen] = useState(false)
-  const user = useSyncExternalStore(subscribeSession, currentUser, () => null)
   const [documents, setDocuments] = useState<PrivateDocument[]>([])
-  const [selected, setSelected] = useState('')
+  const storageKey = `bunko-agent-session:${user?.id || 'guest'}`
+  const readSaved = () => { try { return JSON.parse(sessionStorage.getItem(storageKey) || '{}') as { selected?: string; drafts?: Record<string, string> } } catch { return {} } }
+  const [selected, setSelected] = useState(() => readSaved().selected || '')
   const [reading, setReading] = useState<PrivateDocument | null>(null)
   const [messages, setMessages] = useState<AgentMessage[]>([])
-  const [draft, setDraft] = useState('')
+  const [draft, setDraft] = useState(() => readSaved().drafts?.[selected] || '')
+  useEffect(() => { try { const old = JSON.parse(sessionStorage.getItem(storageKey) || '{}'); sessionStorage.setItem(storageKey, JSON.stringify({ selected, drafts: { ...old.drafts, [selected]: draft } })) } catch { /* Optional draft persistence. */ } }, [draft, selected, storageKey])
   const [busy, setBusy] = useState('')
   const [error, setError] = useState('')
   const [fontSize, setFontSize] = useState(20)
@@ -34,7 +51,7 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
   const [cloudConsent, setCloudConsent] = useState(false)
   const pendingCloud = useRef<(() => void) | null>(null)
   const withCloudConsent = (action: () => void) => {
-    try { if (localStorage.getItem(`bunko-cloud-consent-v1:${user?.id}`) === 'yes') { action(); return } } catch { /* Ask again if storage is unavailable. */ }
+    try { if (localStorage.getItem(`bunko-cloud-consent-v2:${user?.id}:${modelPolicy.consentKey}`) === 'yes') { action(); return } } catch { /* Ask again if storage is unavailable. */ }
     pendingCloud.current = action; setCloudConsent(true)
   }
   const file = useRef<HTMLInputElement>(null), composer = useRef<HTMLTextAreaElement>(null)
@@ -67,7 +84,7 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
     document.addEventListener('pointerdown', outside); document.addEventListener('keydown', escape)
     return () => { document.removeEventListener('pointerdown', outside); document.removeEventListener('keydown', escape) }
   }, [menuOpen])
-  useBackAction(() => { if (reading) setReading(null); else onBack() }, true, 20)
+  useBackAction(() => { if (bookPicker) { setBookPicker(null); mentionStart.current = -1 } else if (reading) setReading(null); else onBack() }, true, 20)
   useBackAction(() => { setConfirm(null); setReport(null); setCloudConsent(false); pendingCloud.current = null }, !!confirm || !!report || cloudConsent, 40)
   useEffect(() => {
     if (!reading && !confirm && !report && !cloudConsent) return
@@ -82,8 +99,8 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
   const refresh = useCallback(async () => {
     const owner = user?.id
     if (!owner) return
-    const result = await agentCall<{ documents: PrivateDocument[] }>('state')
-    if (activeUser.current === owner) setDocuments(result.documents)
+    const result = await agentCall<{ documents: PrivateDocument[]; modelPolicy?: ModelPolicy; modelAdmin?: boolean }>('state')
+    if (activeUser.current === owner) { setDocuments(result.documents); setModelPolicy(result.modelPolicy || initialModelPolicy); setModelAdmin(result.modelAdmin === true) }
   }, [user?.id])
   useEffect(() => { void restoreSession().catch(() => {}); return () => cancelAuth.current?.() }, [])
   useEffect(() => {
@@ -131,7 +148,7 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
       const owner = user?.id
       const result = await uploadDocument(chosen)
       if (activeUser.current !== owner) return
-      setSelected(result.id); setMessages([]); await refresh()
+      setSelected(result.id); setDraft(''); setMessages([]); await refresh()
     })
     if (file.current) file.current.value = ''
   }
@@ -141,7 +158,7 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
     followLatest.current = true; userScrolling.current = false; setAtBottom(true); setDraft('')
     setMessages(items => [...items, { id, state: 'processing', question, answer: '', papers: [] }])
     try {
-      const response = await agentCall<AgentMessage>('send', { text: question, documentId: target, requestId: id })
+      const response = await agentCall<AgentMessage>('send', { modelConsent: modelPolicy.providers, text: question, documentId: target, requestId: id })
       if (activeUser.current === owner && activeDocument.current === target) setMessages(items => items.map(m => m.id === id ? response : m))
     } catch (e) {
       if (activeUser.current === owner && activeDocument.current === target) {
@@ -155,10 +172,23 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
   })
   const importPaper = (paper: PaperMatch) => run('upload', async () => {
     const result = await agentCall<PrivateDocument>('import', { url: paper.pdfUrl, name: `${paper.title.slice(0, 160)}.pdf`, requestId: requestId() })
-    setSelected(result.id); setMessages([]); await refresh()
+    setSelected(result.id); setDraft(''); setMessages([]); await refresh()
   })
-  const choose = (id: string) => { if (busy) return; followLatest.current = true; userScrolling.current = false; setAtBottom(true); setSelected(id); setMessages([]); setError('') }
+  const choose = (id: string) => { if (busy) return; followLatest.current = true; userScrolling.current = false; setAtBottom(true); setSelected(id); setDraft(readSaved().drafts?.[id] || ''); setMessages([]); setError('') }
+  const openBookPicker = async () => {
+    if (!onBook || busy) return
+    const owner = user?.id
+    try {
+      const index = await loadIndex(), first = index.books[0]
+      if (!first) return
+      const meta = await loadMeta(first.id)
+      if (activeUser.current !== owner) return
+      const reference: BookReference = { id: meta.id, file: meta.chapters[0].file, chapter: 0, paragraph: 0, language: meta.primary, replyLanguage: ui, scope: 'book' }
+      setBookPicker({ meta, reference })
+    } catch (error) { failure(error) }
+  }
   const stateLabel = (state: string) => t[state as 'queued' | 'processing' | 'ready' | 'failed' | 'interrupted'] || state
+  if (modelsOpen && modelAdmin && user) return <ModelSettings key={user.id} ui={ui} onBack={() => { setModelsOpen(false); void refresh().catch(failure) }} />
   if (plans) return <CloudPlans ui={ui} onBack={() => setPlans(false)} />
   return <main ref={page} className={`agent-page${user ? ' agent-page-active' : ''}`}>
     <header className="agent-header">
@@ -168,7 +198,7 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
         <summary aria-label={t.more} title={t.more}><Ellipsis size={22} /></summary>
         <div className="agent-menu-panel">
           <button type="button" onClick={() => { menu.current?.removeAttribute('open'); setMenuOpen(false); setPlans(true) }}><BookOpen size={18} />{cloudCopy[ui].title}</button>
-          <p>{t.fileHint}</p><p>{t.privacy}</p>
+          <>{modelAdmin && <button type="button" onClick={() => { menu.current?.removeAttribute('open'); setModelsOpen(true) }}>{({ en: 'Assistant models', 'zh-Hans': '助手模型', 'zh-Hant': '助手模型', ja: 'アシスタントのモデル' })[ui]}</button>}</><p>{t.fileHint}</p><p>{t.privacy}</p>
           <a href={`${BUNKO_LEGAL_API}/privacy.html`} target="_blank" rel="noopener noreferrer">{t.privacyLink}</a>
           {user && <><small>{user.login}</small><button type="button" disabled={!!busy} onClick={() => { void signOut().catch(failure); setDocuments([]); setMessages([]); setReading(null); setSelected(''); setDraft('') }}><LogOut size={17} />{t.signOut}</button></>}
         </div>
@@ -224,7 +254,8 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
           <form className="agent-composer" onSubmit={e => { e.preventDefault(); withCloudConsent(() => { void send() }) }}>
             <input ref={file} type="file" accept=".pdf,.docx,.md,.mmd,.txt,.tex,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" hidden onChange={e => { void upload(e.target.files) }} />
             <button type="button" className="agent-attach" disabled={!!busy} onClick={() => withCloudConsent(() => file.current?.click())} aria-label={busy === 'upload' ? t.uploading : t.attach} title={t.fileHint}><Paperclip size={20} /></button>
-            <textarea ref={composer} aria-label={t.placeholder} value={draft} onChange={e => setDraft(e.target.value)} placeholder={t.placeholder} maxLength={8000} rows={1} />
+            {onBook && <button type="button" disabled={!!busy} aria-label={referenceCopy[ui].title} onClick={() => { mentionStart.current = -1; void openBookPicker() }}><AtSign size={20} /></button>}
+            <textarea ref={composer} aria-label={t.placeholder} value={draft} onChange={e => { setDraft(e.target.value); if (e.target.value.endsWith('@') && onBook && !busy) { mentionStart.current = e.target.value.length - 1; void openBookPicker() } }} placeholder={t.placeholder} maxLength={8000} rows={1} />
             <button type="submit" className="agent-send" aria-label={t.send} disabled={!!busy || !draft.trim() || (!!doc && doc.state !== 'ready')}>{busy ? <LoaderCircle className="spinning" size={20} /> : <ArrowUp size={21} />}</button>
           </form>
         </div>
@@ -235,11 +266,15 @@ export function DocumentAgent({ ui, onBack }: { ui: UILanguage; onBack: () => vo
       <article><DocumentContent key={reading.id} document={reading} preparing={t.preparing} failed={t.renderFailed} /></article>
       <footer><button type="button" onClick={() => { choose(reading.id); setReading(null); composer.current?.focus() }}>{t.chat}</button></footer>
     </section>}
+    {bookPicker && onBook && <BookReferencePicker meta={bookPicker.meta} initial={bookPicker.reference} ui={ui} onClose={() => { setBookPicker(null); mentionStart.current = -1 }} onChoose={(reference, meta) => {
+      const at = mentionStart.current, question = at >= 0 && draft[at] === '@' ? draft.slice(0, at) + draft.slice(at + 1) : draft
+      setDraft(question); setBookPicker(null); mentionStart.current = -1; onBook(reference, meta, question)
+    }} />}
     {cloudConsent && <div className="agent-modal-backdrop"><section className="agent-modal" role="dialog" aria-modal="true" aria-label={t.consentTitle}>
-      <h2>{t.consentTitle}</h2><p>{t.consentBody}</p><p><a href={`${BUNKO_LEGAL_API}/privacy.html`} target="_blank" rel="noopener noreferrer">{t.privacyLink}</a></p>
+      <h2>{t.consentTitle}</h2><p>{t.consentBody.replace('DeepSeek', modelPolicy.providers.join(' / '))}</p><p><a href={`${BUNKO_LEGAL_API}/privacy.html`} target="_blank" rel="noopener noreferrer">{t.privacyLink}</a></p>
       <button type="button" onClick={() => { setCloudConsent(false); pendingCloud.current = null }}>{t.cancel}</button>
       <button type="button" onClick={() => {
-        try { localStorage.setItem(`bunko-cloud-consent-v1:${user?.id}`, 'yes') } catch { /* Consent applies to this action only. */ }
+        try { localStorage.setItem(`bunko-cloud-consent-v2:${user?.id}:${modelPolicy.consentKey}`, 'yes') } catch { /* Consent applies to this action only. */ }
         setCloudConsent(false); const action = pendingCloud.current; pendingCloud.current = null; action?.()
       }}>{t.consentAllow}</button>
     </section></div>}
