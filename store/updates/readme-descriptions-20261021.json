@@ -1,0 +1,20 @@
+{
+  "verifiedAt": "2026-10-21T02:03:58.551548+00:00",
+  "repository": "lachlanchen/Bunko",
+  "defaultBranchCommit": "758f10e64d89a52d66ba8a1f9d07617593a0d609",
+  "readmeLanguages": 11,
+  "localLinksVerified": 256,
+  "profileReadmeValidation": "passed",
+  "githubAbout": "updated and read back",
+  "testflightDescriptionLocales": [
+    "en-US",
+    "ja",
+    "zh-Hans",
+    "zh-Hant"
+  ],
+  "testflightDescriptions": "published and read back",
+  "build30Notes": "prepared; not yet attached to a build",
+  "build30Upload": "not started; accepted Mac placement awaits predecessor handback and new admission",
+  "publicVersionAndSelectedBuildState": "unchanged from before metadata update",
+  "appCodeChangedByDocumentationUpdate": false
+}
