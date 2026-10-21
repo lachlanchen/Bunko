@@ -97,7 +97,8 @@ it('cancelled demo login cannot resurrect a session from a late password respons
   expect((await result).code).toBe('authorization_cancelled')
   expect(api.currentUser()).toBeNull()
   expect(state.saved).toBeNull()
-  expect(request).toHaveBeenCalledTimes(1)
+  expect(request).toHaveBeenCalledTimes(2)
+  expect(String(request.mock.calls[1][0])).toMatch(/\/auth\/cancel$/)
 })
 it('demo password failures are not retried automatically or stored', async () => {
   const request = vi.fn<typeof fetch>(async () => Response.json({ error: 'invalid_demo_credentials' }, { status: 401 }))

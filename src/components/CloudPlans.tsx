@@ -1,3 +1,5 @@
+import { SignInOptions } from './SignInOptions'
+import type { SignInProvider } from '../lib/discussions'
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { ArrowLeft, BookOpen, RefreshCw } from 'lucide-react'
 import { currentUser, restoreSession, sessionRevision, signIn, subscribeSession } from '../lib/discussions'
@@ -34,9 +36,9 @@ function CloudPlanAccount({ ui, onBack }: { ui: UILanguage; onBack: () => void }
     catch { if (active()) setError(t.error) }
     finally { if (active()) setBusy('') }
   }
-  function login() {
+  function login(provider: SignInProvider = 'github') {
     setBusy('login'); setError('')
-    const flow = signIn(); cancelLogin.current = flow.cancel
+    const flow = signIn(provider); cancelLogin.current = flow.cancel
     // beginSignIn advances the session revision before the identity is known.
     revision.current = sessionRevision()
     void flow.promise.catch(() => { if (active()) setError(t.error) }).finally(() => { if (active()) setBusy(''); cancelLogin.current = null })
@@ -67,7 +69,7 @@ function CloudPlanAccount({ ui, onBack }: { ui: UILanguage; onBack: () => void }
   return <main className="cloud-page">
     <header><button type="button" onClick={onBack} aria-label={t.close}><ArrowLeft size={20} /></button><strong>{t.title}</strong><button type="button" onClick={() => void refresh()} disabled={!!busy} aria-label={t.retry}><RefreshCw size={18} /></button></header>
     <section className="cloud-intro"><BookOpen size={28} /><h1>{t.intro}</h1><p className="cloud-included">{t.included}</p></section>
-    {!user && <section className="cloud-account"><p>{t.signedOut}</p><button className="primary" type="button" onClick={login} disabled={!!busy}>{busy === 'login' ? t.signingIn : t.signIn}</button>{busy === 'login' && <button type="button" onClick={() => cancelLogin.current?.()}>{t.cancel}</button>}</section>}
+    {!user && <section className="cloud-account"><p>{t.signedOut}</p><SignInOptions ui={ui} disabled={!!busy} onSelect={login} />{busy === 'login' && <button type="button" onClick={() => cancelLogin.current?.()}>{t.cancel}</button>}</section>}
     {quota?.enabled && <section className="cloud-usage"><h2>{t.usage}</h2>{quota.unlimited ? <p>{t.unlimited}</p> : <><div><strong>{quota.remainingPages.toLocaleString(ui)} <small>{t.pages} · {t.remaining}</small></strong><strong>{quota.remainingAgentTurns.toLocaleString(ui)} <small>{t.answers} · {t.remaining}</small></strong></div><p>{t.resets}: {new Date(quota.ends).toLocaleDateString(ui)}</p></>}</section>}
     {catalog && !webReady && <p className="cloud-status">{t.unavailable}</p>}
     {catalog?.hasBlockingPurchase && <p className="cloud-status">{t.blocked}</p>}

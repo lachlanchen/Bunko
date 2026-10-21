@@ -18,6 +18,7 @@ export function createProfileStore(store,config,{transport,now=()=>Date.now()}={
       CREATE TABLE IF NOT EXISTS profile_attempts(id TEXT PRIMARY KEY,state TEXT UNIQUE,binding TEXT,expires INTEGER NOT NULL,body TEXT NOT NULL,consumed INTEGER NOT NULL DEFAULT 0);
       CREATE TABLE IF NOT EXISTS profile_links(owner TEXT PRIMARY KEY,issuer TEXT NOT NULL,subject TEXT NOT NULL,body TEXT NOT NULL,state TEXT NOT NULL,generation TEXT NOT NULL,lease INTEGER NOT NULL DEFAULT 0,UNIQUE(issuer,subject));
       CREATE TABLE IF NOT EXISTS profile_revocations(id TEXT PRIMARY KEY,body TEXT NOT NULL,created INTEGER NOT NULL);`);
+    db.exec('CREATE TABLE IF NOT EXISTS profile_accounts(owner TEXT PRIMARY KEY,body TEXT NOT NULL,epoch TEXT NOT NULL)');
     const old=db.prepare('SELECT fingerprint FROM profile_meta WHERE id=1').get();
     check(!old||old.fingerprint===fingerprint,'profile_store_binding_changed');
     db.prepare('INSERT OR IGNORE INTO profile_meta VALUES(1,?)').run(fingerprint);
@@ -41,22 +42,30 @@ export function createProfileStore(store,config,{transport,now=()=>Date.now()}={
   const current=owner=>db.prepare('SELECT * FROM profile_links WHERE owner=?').get(owner);
   function deferRevoke(tokens,delay=0){const id=randomUUID();db.prepare('INSERT INTO profile_revocations VALUES(?,?,?)').run(id,encrypt('revoke',id,{token:tokens.refreshToken}),now()+delay);return id}
   function contextValid(context) {
+    if(context.intent==='login'&&!context.owner){check(store.flowActive(context.flow),'local_session_changed');return}
     check(typeof context.owner==='string'&&context.owner.length>0,'local_reauthentication_required');
     store.requireActive(context.owner);
     check(store.flowActive(context.flow),'local_session_changed');
     const local=store.localSession(context.sessionHash);
     check(local&&local.owner===context.owner,'local_session_changed');
     check(local.authenticatedAt===context.authenticatedAt,'local_reauthentication_required');
-    check(Number.isSafeInteger(context.authenticatedAt)&&context.authenticatedAt<=now()&&context.authenticatedAt>=now()-600_000,'local_reauthentication_required');
+    check(Number.isSafeInteger(context.authenticatedAt)&&context.authenticatedAt<=now()&&(context.intent==='login'||context.authenticatedAt>=now()-600_000),'local_reauthentication_required');
   }
-  async function begin({binding,owner=null,sessionHash=null,authenticatedAt=null,flow=null}) {
-    const context={owner,sessionHash,authenticatedAt,flow,started:now()};contextValid(context);
+  const loginProviders=async({advertised=false}={})=>config.loginEnabled===true?(await adapter.providers()).filter(p=>['lazyingart','google','apple'].includes(p)&&(config.loginProviders?.includes(p)||(!advertised&&config.qualificationProviders?.includes(p)))):[];
+  async function begin({binding,owner=null,sessionHash=null,authenticatedAt=null,flow=null,intent='link',provider}) {
+    check(['link','login'].includes(intent),'invalid_flow');
+    if(intent==='login')check((await loginProviders()).includes(provider),'provider_unavailable');
+    const context={owner,sessionHash,authenticatedAt,flow,intent,started:now()};contextValid(context);
     const id=randomBytes(32).toString('base64url');
     transaction(store,()=>{db.prepare('DELETE FROM profile_attempts WHERE expires<=?').run(now());db.prepare('INSERT INTO profile_attempts(id,expires,body) VALUES(?,?,?)').run(id,now()+600_000,encrypt('attempt',id,{context}))});
-    try{return await adapter.begin({binding,attemptId:id,fresh:!!owner})}catch(e){db.prepare('DELETE FROM profile_attempts WHERE id=?').run(id);throw e}
+    try{return await adapter.begin({binding,attemptId:id,fresh:!!owner,provider})}catch(e){db.prepare('DELETE FROM profile_attempts WHERE id=?').run(id);throw e}
   }
   async function complete({callbackUrl,binding}) {
-    const result=await adapter.complete({callbackUrl,binding});
+    let result;
+    try{result=await adapter.complete({callbackUrl,binding})}catch(error){
+      if(error.attemptId){const row=db.prepare('SELECT * FROM profile_attempts WHERE id=? AND consumed=1 AND expires>?').get(error.attemptId,now());if(row)error.linkFlow=decrypt('attempt',row.id,row.body).context.flow}
+      throw error;
+    }
     let completionFlow;
     try{return transaction(store,()=>{
       const row=db.prepare('SELECT * FROM profile_attempts WHERE id=? AND consumed=1 AND expires>?').get(result.attemptId,now());check(row,'attempt_expired');
@@ -65,17 +74,25 @@ export function createProfileStore(store,config,{transport,now=()=>Date.now()}={
       check(db.prepare('SELECT 1 FROM profile_revocations WHERE id=? AND created>?').get(result.credentialId,now()),'profile_session_changed');
       if(context.owner)check(identity.authenticatedAt*1000>=context.started-30_000,'central_reauthentication_required');
       const existing=db.prepare('SELECT * FROM profile_links WHERE issuer=? AND subject=?').get(identity.issuer,identity.subject);
-      const owner=context.owner;
-      store.requireActive(owner);
+      const login=context.intent==='login';
+      let owner=context.owner,local;
+      if(login&&!owner){
+        if(existing){
+          owner=existing.owner;
+          const account=db.prepare('SELECT body FROM profile_accounts WHERE owner=?').get(owner);
+          check(account,'local_reauthentication_required');local=decrypt('account',owner,account.body);
+        }else{local={id:'bunko_'+randomUUID(),login:identity.displayName||'Bunko reader',kind:'lazyingart'};owner=hash('bunko-agent:'+local.id)}
+      }else{store.requireActive(owner);local=store.localSession(context.sessionHash).user}
       check(!existing||existing.owner===owner,'account_already_linked');
       const previous=current(owner);check(!previous||(previous.issuer===identity.issuer&&previous.subject===identity.subject),'different_account_already_linked');
       if(previous)deferRevoke(decrypt('link',owner,previous.body));
       db.prepare('INSERT INTO profile_links VALUES(?,?,?,?,?,?,0) ON CONFLICT(owner) DO UPDATE SET body=excluded.body,state=excluded.state,generation=excluded.generation,lease=0').run(owner,identity.issuer,identity.subject,encrypt('link',owner,credentialData(tokens,identity)),'active',randomUUID());
       db.prepare('DELETE FROM profile_attempts WHERE id=?').run(row.id);
       db.prepare('DELETE FROM profile_revocations WHERE id=?').run(result.credentialId);
-      // Retain the original app profile when explicitly linking. No data/credit move.
-      const local=store.localSession(context.sessionHash).user;
-      return {user:local,flow:context.flow,linked:!!context.owner};
+      // Persistent app identity, independent of provider display names and sessions.
+      db.prepare('INSERT INTO profile_accounts VALUES(?,?,?) ON CONFLICT(owner) DO UPDATE SET body=excluded.body').run(owner,encrypt('account',owner,local),randomUUID());
+      const epoch=db.prepare('SELECT epoch FROM profile_accounts WHERE owner=?').get(owner).epoch;
+      return {user:local,flow:context.flow,linked:!login,epoch};
     })}catch(e){credentials.failed(result.credentialId);if(completionFlow&&e instanceof ProfileLinkError)e.linkFlow=completionFlow;throw e}
   }
   const proofs=new Map();
@@ -107,7 +124,7 @@ export function createProfileStore(store,config,{transport,now=()=>Date.now()}={
     return {identity,accessToken:data.accessToken};
   }
   function disconnect(owner) {
-    transaction(store,()=>{const row=current(owner);if(!row)return;const data=decrypt('link',owner,row.body);deferRevoke(data);db.prepare("UPDATE profile_links SET state='disconnected',generation=?,lease=0 WHERE owner=?").run(randomUUID(),owner)});
+    transaction(store,()=>{const row=current(owner);if(!row)return;const data=decrypt('link',owner,row.body);deferRevoke(data);db.prepare("UPDATE profile_links SET state='disconnected',generation=?,lease=0 WHERE owner=?").run(randomUUID(),owner);db.prepare('UPDATE profile_accounts SET epoch=? WHERE owner=?').run(randomUUID(),owner)});
   }
   let flushing=false;
   async function flushRevocations(){
@@ -119,14 +136,15 @@ export function createProfileStore(store,config,{transport,now=()=>Date.now()}={
     }finally{flushing=false}
   }
   const verifiedReads=new Map();
-  async function authorizeSession(owner,{fresh=false}={}) {
+  async function authorizeSession(owner,{fresh=false,epoch}={}) {
+    if(epoch!==undefined)check(db.prepare('SELECT epoch FROM profile_accounts WHERE owner=?').get(owner)?.epoch===epoch,'reconnect_required');
     const row=current(owner),cached=verifiedReads.get(owner);
     store.requireActive(owner);check(['active','refreshing'].includes(row?.state),'reconnect_required');
     if(!fresh&&cached?.generation===row.generation&&cached.until>now())return;
     const result=await proof(owner);verifiedReads.set(owner,{generation:current(owner).generation,until:Math.min(now()+30_000,result.identity.expiresAt*1000)});
     if(verifiedReads.size>1000){for(const[id,v]of verifiedReads)if(v.until<=now())verifiedReads.delete(id);while(verifiedReads.size>1000)verifiedReads.delete(verifiedReads.keys().next().value)}
   }
-  function remove(owner) {transaction(store,()=>{const row=current(owner);if(row)deferRevoke(decrypt('link',owner,row.body));db.prepare('DELETE FROM profile_links WHERE owner=?').run(owner)})}
+  function remove(owner) {transaction(store,()=>{const row=current(owner);if(row)deferRevoke(decrypt('link',owner,row.body));db.prepare('DELETE FROM profile_links WHERE owner=?').run(owner);db.prepare('DELETE FROM profile_accounts WHERE owner=?').run(owner)})}
   const status=owner=>{const row=current(owner);return {enabled:adapter.enabled,linked:row?.state==='active',state:row?.state||'unlinked'}};
-  return {enabled:adapter.enabled,begin,complete,proof,authorizeSession,disconnect,remove,flushRevocations,status,connection:owner=>{const row=current(owner);return row?{issuer:row.issuer,subject:row.subject,generation:row.generation,state:row.state}:null}};
+  return {enabled:adapter.enabled,loginProviders,begin,complete,proof,authorizeSession,disconnect,remove,flushRevocations,status,connection:owner=>{const row=current(owner);return row?{issuer:row.issuer,subject:row.subject,generation:row.generation,state:row.state}:null}};
 }

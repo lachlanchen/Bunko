@@ -1,3 +1,5 @@
+import { SignInOptions } from './SignInOptions'
+import type { SignInProvider } from '../lib/discussions'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
 import { ArrowDown, AtSign, ArrowLeft, ArrowUp, BookOpen, FileText, Ellipsis, LoaderCircle, LogOut, Paperclip, Plus, RefreshCw, Trash2, X } from 'lucide-react'
 import { currentUser, restoreSession, signIn, signOut, subscribeSession, DiscussionError, requestId } from '../lib/discussions'
@@ -126,9 +128,9 @@ function DocumentAgentSession({ ui, onBack, onBook, user }: AgentProps & { user:
     if (!busy) void load()
     return () => { active = false; clearTimeout(timer) }
   }, [selected, user, failure, busy])
-  const login = () => {
+  const login = (provider: SignInProvider = 'github') => {
     setError(''); setAuth(true)
-    const flow = signIn(); cancelAuth.current = flow.cancel
+    const flow = signIn(provider); cancelAuth.current = flow.cancel
     void flow.promise.catch(failure).finally(() => { setAuth(false); cancelAuth.current = null })
   }
   const run = async (state: string, action: () => Promise<void>) => {
@@ -207,7 +209,7 @@ function DocumentAgentSession({ ui, onBack, onBook, user }: AgentProps & { user:
     {user?.kind === 'demo' && <DemoNotice ui={ui} />}
     {!user ? <section className="agent-welcome">
       <BookOpen size={36} /><h1>{t.intro}</h1><p>{t.hint}</p><p className="agent-muted">{t.privacy}</p>
-      <button type="button" className="primary" onClick={login} disabled={auth || demoBusy}>{auth ? t.signingIn : t.signIn}</button>
+      <SignInOptions ui={ui} disabled={auth || demoBusy} onSelect={login} />
       {auth && <button type="button" onClick={() => cancelAuth.current?.()}>{t.cancel}</button>}
       <DemoAccount ui={ui} disabled={auth} onBusy={setDemoBusy} />
       {error && <p role="alert">{error}</p>}

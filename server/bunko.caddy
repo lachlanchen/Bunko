@@ -29,11 +29,11 @@ handle @bunko_books {
 }
 @bunko_discussions {
     method POST OPTIONS
-    path /bunko/v1/auth/start /bunko/v1/auth/demo /bunko/v1/auth/complete /bunko/v1/session /bunko/v1/logout /bunko/v1/discussions/read /bunko/v1/discussions/post
+    path /bunko/v1/auth/methods /bunko/v1/auth/cancel /bunko/v1/auth/start /bunko/v1/auth/demo /bunko/v1/auth/complete /bunko/v1/session /bunko/v1/logout /bunko/v1/discussions/read /bunko/v1/discussions/post /bunko/v1/lazyingart/status /bunko/v1/lazyingart/start /bunko/v1/lazyingart/complete /bunko/v1/lazyingart/cancel /bunko/v1/lazyingart/disconnect
 }
 @bunko_callback {
     method GET
-    path /bunko/oauth/callback /bunko/healthz
+    path /bunko/oauth/callback /bunko/oauth/lazyingart /bunko/oauth/lazyingart/callback /bunko/healthz
 }
 handle @bunko_discussions {
     request_body {

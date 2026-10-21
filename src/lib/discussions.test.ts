@@ -30,3 +30,8 @@ it('discards a delayed cloud response after sign-out', async () => {
   finish(Response.json({ enabled: true, newPurchaseEnabled: true }))
   await expect(pending).rejects.toThrow('authorization_cancelled')
 })
+it('accepts only the registered central entry and exact flow ticket',async()=>{
+ const {isBunkoAuthorizationURL}=await import('./discussions'),flow='b'.repeat(43)
+ expect(isBunkoAuthorizationURL('https://llm.lazying.art/bunko/oauth/lazyingart?ticket='+flow,flow,'apple')).toBe(true)
+ for(const url of ['https://evil.test/bunko/oauth/lazyingart?ticket='+flow,'https://llm.lazying.art/bunko/oauth/lazyingart?ticket='+flow+'&ticket='+flow,'https://llm.lazying.art/bunko/oauth/lazyingart?ticket='+flow+'#fragment','https://llm.lazying.art/bunko/oauth/lazyingart?ticket=wrong'])expect(isBunkoAuthorizationURL(url,flow,'google')).toBe(false)
+})

@@ -27,7 +27,7 @@ function Connections({ nodes, edges, ui, onRead, kind, guideKey }: { nodes: Guid
       <button type="button" aria-pressed={geographic} onClick={() => setGeographic(true)}>{v.map}</button>
       <button type="button" aria-pressed={!geographic} onClick={() => setGeographic(false)}>{v.story}</button>
     </div>}
-    {kind === 'places' && geographic ? <Suspense fallback={<p role="status">{t.generating}</p>}><GuideMap nodes={nodes} edges={edges} guideKey={guideKey} ui={ui} onSelect={select} /></Suspense>
+    {kind === 'places' && geographic ? <Suspense fallback={<p role="status">{t.generating}</p>}><GuideMap nodes={nodes} edges={edges} guideKey={guideKey} ui={ui} onSelect={select} onEdge={selectEdge} selectedEdge={edgeIndex} /></Suspense>
       : <GuideGraph nodes={nodes} edges={edges} ui={ui} selected={focused} onSelect={select} onEdge={selectEdge} label={kind === 'places' ? t.schematic : t.people} />}
     <div ref={details} className="guide-details-panel">
       {edge && <article className="guide-connection selected" aria-live="polite"><h3><bdi>{nodes.find(n => n.id === edge.from)?.name}</bdi><span aria-hidden="true">{edge.direction === 'forward' ? '→' : '↔'}</span><bdi>{nodes.find(n => n.id === edge.to)?.name}</bdi></h3><p dir="auto">{edge.label}</p><PassageEvidence citations={edge.citations} ui={ui} onRead={onRead} /></article>}

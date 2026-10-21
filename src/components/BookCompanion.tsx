@@ -1,3 +1,5 @@
+import { SignInOptions } from './SignInOptions'
+import type { SignInProvider } from '../lib/discussions'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
 import { ArrowDown, AtSign, ArrowLeft, ArrowUp, BookOpen, Ellipsis, MapPin, MessageCircle, RefreshCw, Sparkles, Users, Waypoints } from 'lucide-react'
 import type { UILanguage } from '../i18n'
@@ -111,9 +113,9 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
     document.addEventListener('pointerdown', outside)
     return () => document.removeEventListener('pointerdown', outside)
   }, [menuOpen])
-  const login = () => {
+  const login = (provider: SignInProvider = 'github') => {
     setAuth(true); setError('')
-    const flow = signIn(); cancelledLogin.current = flow.cancel
+    const flow = signIn(provider); cancelledLogin.current = flow.cancel
     void flow.promise.catch(fail).finally(() => { if (live.current) setAuth(false) })
   }
   const withConsent = (action: () => void) => {
@@ -173,7 +175,7 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
         }}>
           <div ref={contents} className="agent-message-content">
             {!user && <section className="book-companion-login">
-              <p>{t.hint}</p><button type="button" onClick={login} disabled={auth || demoBusy}>{auth ? a.signingIn : a.signIn}</button>
+              <p>{t.hint}</p><SignInOptions ui={ui} disabled={auth || demoBusy} onSelect={login} />
               {auth && <button type="button" onClick={() => cancelledLogin.current?.()}>{a.cancel}</button>}
               <DemoAccount ui={ui} disabled={auth} onBusy={setDemoBusy} />
             </section>}

@@ -50,3 +50,10 @@
 .guide-location-results { display: grid; gap: 6px; max-height: 220px; overflow: auto; padding-top: 10px; }.agent-page .guide-location-results button { display: grid; gap: 5px; text-align: start; padding: 12px; }.guide-location-results button span { color: var(--ink-soft); font-size: 12px; }
 [data-theme=night] .atlas-ocean { fill: #20343e; }[data-theme=night] .atlas-land { fill: #39443c; stroke: #758879; }[data-theme=night] .atlas-grid { stroke: #71878c; }[data-theme=night] .atlas-pin text.atlas-place-label { fill: #e1e9df; stroke: #243b42; }
 @media(max-width:600px) { .guide-canvas > svg { height: 410px; }.guide-canvas-tools > span { font-size: 11px; }.guide-canvas-tools { padding: 6px; }.agent-page .guide-canvas-tools button { padding: 7px; min-width: 34px; }.guide-timeline { padding-left: 15px; }.guide-timeline > li { padding-left: 22px; }.guide-canvas.expanded > svg { height: 0; } }
+/* Wide invisible targets keep map connections usable on touchscreens. */
+.atlas-route-control{cursor:pointer;outline:none}
+.atlas-route-hit{fill:none;stroke:transparent;stroke-width:24;vector-effect:non-scaling-stroke;pointer-events:stroke}
+.atlas-route-control.selected .atlas-route,.atlas-route-control:focus-visible .atlas-route{stroke:var(--accent,#2587a0);stroke-width:4}
+.atlas-route.uncertain{stroke-dasharray:3 6}
+.guide-canvas svg:focus-visible{outline:2px solid var(--accent,#2587a0);outline-offset:-3px}
+.guide-canvas-tools button{min-width:44px;min-height:44px}

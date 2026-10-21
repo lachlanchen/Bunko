@@ -142,9 +142,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         }
         if body["cancel"] as? Bool == true { authSession?.cancel(); authSession = nil; replyHandler(true, nil); return }
         guard authSession == nil, let value = body["url"] as? String, let url = URL(string: value),
-              url.scheme == "https", url.host == "github.com", url.path == "/login/oauth/authorize" else {
+              url.scheme == "https", url.user == nil, url.password == nil, url.fragment == nil,
+              url.port == nil || url.port == 443 else {
             replyHandler(nil, "Invalid authorization URL"); return
         }
+        let query = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
+        let github = url.host == "github.com" && url.path == "/login/oauth/authorize"
+        let shared = url.host == "llm.lazying.art" && url.path == "/bunko/oauth/lazyingart"
+            && query.count == 1 && query.first?.name == "ticket"
+            && query.first?.value?.range(of: "^[A-Za-z0-9_-]{43}$", options: .regularExpression) != nil
+        guard github || shared else { replyHandler(nil, "Invalid authorization URL"); return }
         let session = ASWebAuthenticationSession(url: url, callbackURLScheme: "art.lazying.bunko") { [weak self] callback, error in
             DispatchQueue.main.async {
                 self?.authSession = nil

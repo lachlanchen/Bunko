@@ -8,7 +8,7 @@ import { GuideCanvas } from './GuideCanvas'
 import { guideVisualCopy } from './guideVisualCopy'
 import { labelLines } from '../lib/guideLayout'
 
-export default function GuideMap({ nodes, edges, guideKey, ui, onSelect }: { nodes: GuideEntity[]; edges: GuideConnection[]; guideKey: string; ui: UILanguage; onSelect: (id: string) => void }) {
+export default function GuideMap({ nodes, edges, guideKey, ui, onSelect, onEdge, selectedEdge }: { nodes: GuideEntity[]; edges: GuideConnection[]; guideKey: string; ui: UILanguage; onSelect: (id: string) => void; onEdge: (index: number) => void; selectedEdge: number | null }) {
   const t = guideVisualCopy[ui], storageKey = `bunko-atlas-v1:${guideKey}`
   const [choices, setChoices] = useState<Record<string, string | null>>(() => {
     try { const value = JSON.parse(localStorage.getItem(storageKey) || '{}'); return value && typeof value === 'object' && !Array.isArray(value) ? value : {} } catch { return {} }
@@ -52,7 +52,11 @@ export default function GuideMap({ nodes, edges, guideKey, ui, onSelect }: { nod
       {edges.map((edge, i) => {
         const a = pins.find(p => p.node.id === edge.from), b = pins.find(p => p.node.id === edge.to)
         if (!a || !b) return null
-        return <path key={i} d={geometry.path({ type: 'LineString', coordinates: [[a.place.longitude, a.place.latitude], [b.place.longitude, b.place.latitude]] }) || ''} className="atlas-route"><title>{edge.label}</title></path>
+        const d = geometry.path({ type: 'LineString', coordinates: [[a.place.longitude, a.place.latitude], [b.place.longitude, b.place.latitude]] }) || ''
+        const label = `${a.node.name} → ${b.node.name}: ${edge.label}`
+        return <g key={i} className={`atlas-route-control${selectedEdge === i ? ' selected' : ''}`} role="button" tabIndex={0} aria-label={label} onClick={() => onEdge(i)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onEdge(i) } }}>
+          <title>{label}</title><path d={d} className="atlas-route-hit" /><path d={d} className={`atlas-route${edge.certainty !== 'stated' ? ' uncertain' : ''}`} />
+        </g>
       })}
       {pins.map((pin, i) => {
         const point = geometry.projection([pin.place.longitude, pin.place.latitude])

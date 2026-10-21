@@ -5,17 +5,19 @@ import { savedSession, saveSession } from './discussionStorage'
 import { discussionOrigin } from './serviceOrigins'
 
 export const DISCUSSION_API = discussionOrigin(Capacitor.isNativePlatform() || (typeof window !== 'undefined' && !!window.__BUNKO_DESKTOP__))
-export interface DiscussionUser { id: number; login: string; kind?: 'demo' }
+export type SignInProvider = 'github' | 'google' | 'apple' | 'lazyingart'
+export interface DiscussionUser { id: number | string; login: string; kind?: 'demo' | 'lazyingart' }
 export interface DiscussionComment { id: number; body: string; user: DiscussionUser; html_url?: string; created_at?: string }
 export interface DiscussionIssue extends DiscussionComment { number: number; locked: boolean }
 export interface DiscussionThread { issue: DiscussionIssue | null; comments: DiscussionComment[]; nextPage: number | null }
-interface Session { token?: string; user: DiscussionUser; expires: number }
+interface Session { token?: string; user: DiscussionUser; expires: number; method?: 'lazyingart' }
 let session: Session | null = null
 let restoring: Promise<void> | null = null
 let generation = 0
 const subscribers = new Set<() => void>()
 export const subscribeSession = (callback: () => void) => { subscribers.add(callback); return () => { subscribers.delete(callback) } }
 export const currentUser = () => session?.user ?? null
+export const currentSignInMethod = () => session?.method ?? 'github'
 export const sessionRevision = () => generation
 function setSession(value: Session | null) { session = value; subscribers.forEach(callback => callback()) }
 export class DiscussionError extends Error {
@@ -92,7 +94,14 @@ export async function signOut() {
 
 // Native sessions use Keychain/Keystore; web sessions use an HttpOnly cookie.
 // GitHub credentials and refresh tokens never leave the cloud service.
-function beginSignIn(demo?: { username: string; password: string }, reauthenticate = false) {
+export function isBunkoAuthorizationURL(value: string, flow: string, provider: SignInProvider) {
+  const url = new URL(value)
+  if (url.username || url.password || url.hash) return false
+  return provider === 'github' ? url.origin === 'https://github.com' && url.pathname === '/login/oauth/authorize'
+    : url.origin === 'https://llm.lazying.art' && url.pathname === '/bunko/oauth/lazyingart'
+      && [...url.searchParams.keys()].join(' ') === 'ticket' && url.searchParams.get('ticket') === flow
+}
+function beginSignIn(demo?: { username: string; password: string }, reauthenticate = false, provider: SignInProvider = 'github') {
   const hadSession = !!session
   generation++
   const revision = generation
@@ -101,9 +110,11 @@ function beginSignIn(demo?: { username: string; password: string }, reauthentica
   if (popup) popup.opener = null
   const controller = new AbortController()
   let stop = false, browserClosed = false, completed = false
+  let attempt: {flow: string; verifier: string} | undefined
   const cancel = () => {
     if (completed) return
     stop = true; controller.abort(); popup?.close()
+    if(attempt) void api('/v1/auth/cancel',attempt).catch(()=>{})
     if (generation === revision && !hadSession) rememberSignOut(true)
     if (!demo && native) void Browser.close().catch(() => {})
     if (!demo && desktop) void window.webkit?.messageHandlers.bunkoAuth.postMessage({ cancel: true })
@@ -113,11 +124,11 @@ function beginSignIn(demo?: { username: string; password: string }, reauthentica
     const verifier = requestId()
     const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier)))
     const challenge = btoa(String.fromCharCode(...digest)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-    const flow = await api<{ flow: string; url: string }>(demo ? '/v1/auth/demo' : '/v1/auth/start', { challenge, platform: native || desktop ? 'native' : 'web', storage: native || desktop ? 'secure' : 'cookie', ...demo, ...(reauthenticate ? { reauthenticate:true } : {}) }, controller.signal)
+    const flow = await api<{ flow: string; url: string }>(demo ? '/v1/auth/demo' : '/v1/auth/start', { challenge, platform: native || desktop ? 'native' : 'web', storage: native || desktop ? 'secure' : 'cookie', ...demo, ...(!demo&&provider!=='github'?{provider}:{}), ...(reauthenticate ? { reauthenticate:true } : {}) }, controller.signal)
+    attempt={flow:flow.flow,verifier}
     if (stop || generation !== revision) throw new DiscussionError('authorization_cancelled')
     if (!demo) {
-      const url = new URL(flow.url)
-      if (url.origin !== 'https://github.com' || url.pathname !== '/login/oauth/authorize') throw new DiscussionError('invalid_flow')
+      if (!isBunkoAuthorizationURL(flow.url, flow.flow, provider)) throw new DiscussionError('invalid_flow')
     }
     let listener: Awaited<ReturnType<typeof App.addListener>> | undefined
     let finished: Awaited<ReturnType<typeof Browser.addListener>> | undefined
@@ -158,10 +169,16 @@ function beginSignIn(demo?: { username: string; password: string }, reauthentica
       }
       throw new DiscussionError(stop ? 'authorization_cancelled' : 'flow_expired')
     } finally { await listener?.remove(); await finished?.remove() }
-  })().finally(() => { popup?.close(); if (!demo && native) void Browser.close().catch(() => {}) })
+  })().finally(() => {
+    // A failed secure-store write or a dismissed system browser must not leave
+    // a completed server session behind. The verifier scopes cleanup to this attempt.
+    if (!completed && attempt) void api('/v1/auth/cancel', attempt).catch(() => {})
+    popup?.close(); if (!demo && native) void Browser.close().catch(() => {})
+    if (!demo && desktop) void window.webkit?.messageHandlers.bunkoAuth.postMessage({ cancel: true })
+  })
   return { promise, cancel }
 }
-export const signIn = () => beginSignIn()
+export const signIn = (provider: SignInProvider = 'github') => beginSignIn(undefined,false,provider)
 export const signInDemo = (username: string, password: string) => beginSignIn({ username, password })
 
-export const reauthenticateAccount = () => beginSignIn(undefined, true)
+export const reauthenticateAccount = () => beginSignIn(undefined, true, session?.method==='lazyingart'?'lazyingart':'github')

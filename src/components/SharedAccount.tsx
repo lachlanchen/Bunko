@@ -1,5 +1,5 @@
 import {useEffect,useRef,useState,useSyncExternalStore} from 'react'
-import {api,currentUser,restoreSession,subscribeSession,reauthenticateAccount} from '../lib/discussions'
+import {api,currentUser,currentSignInMethod,restoreSession,subscribeSession,reauthenticateAccount} from '../lib/discussions'
 import {sharedStatus,connectSharedAccount,type SharedStatus} from '../lib/sharedAccount'
 import {SharedPoints,type SharedPointsState} from './SharedPoints'
 import pointsCopy from '../shared-points-locales.json'
@@ -38,11 +38,12 @@ function AccountConnection({ui,onLogin}:{ui:UILanguage;onLogin:()=>void}) {
  const text=(key:string)=>(pointsCopy[ui] as Record<string,string>)[key]||key
  const balance=async():Promise<SharedPointsState>=>{try{return await api<SharedPointsState>('/v1/lazyingart/balance',{})}catch(e){const code=(e as {code?:string}).code;return {state:code==='points_consent_required'?'consent-required':code==='points_link_required'?'link-required':'unavailable'}}}
  return <section className="shared-account">
-  <h3>{copy[0]}</h3><p className="hint">{help.intro}</p><p>{help.methods}: GitHub</p><p className="hint">{copy[1]}</p>
+  <h3>{copy[0]}</h3><p className="hint">{help.intro}</p><p>{help.methods}: {currentSignInMethod()==='lazyingart'?'LazyingArt':'GitHub'}</p><p className="hint">{copy[1]}</p>
   {linkError&&<div role="status"><p>{(help as Record<string,string>)[linkError]||copy[12]}</p>{linkError==='local_reauthentication_required'&&<button disabled={busy} onClick={()=>void reauthenticate()}>{copy[10]}</button>}<button disabled={busy} onClick={()=>setLinkError('')}>{copy[5]}</button></div>}
   {error&&<><p role="status">{error}</p><button disabled={busy} onClick={refresh}>{copy[8]}</button></>}
-  {!status.eligible?<><p>{copy[9]}</p><button onClick={onLogin}>{copy[10]}</button></>:status.state==='refreshing'?<><p role="status">{copy[14]}</p><button onClick={refresh}>{copy[8]}</button></>:status.linked?<><p>{copy[2]}</p><button disabled={busy} onClick={()=>void disconnect()}>{copy[4]}</button></>:window.__BUNKO_DESKTOP__?<p>{copy[13]}</p>:<button disabled={busy} onClick={()=>void connect()}>{linkError==='account_already_linked'?help.choose:copy[3]}</button>}
+  {!status.eligible?<><p>{copy[9]}</p><button onClick={onLogin}>{copy[10]}</button></>:status.state==='refreshing'?<><p role="status">{copy[14]}</p><button onClick={refresh}>{copy[8]}</button></>:status.linked?<><p>{copy[2]}</p>{currentSignInMethod()!=='lazyingart'&&<button disabled={busy} onClick={()=>void disconnect()}>{copy[4]}</button>}</>:<button disabled={busy} onClick={()=>void (currentSignInMethod()==='lazyingart'?reauthenticate():connect())}>{linkError==='account_already_linked'?help.choose:copy[3]}</button>}
   {busy&&<button onClick={()=>{pending.current?.cancel();setLinkError('authorization_cancelled');setBusy(false)}}>{copy[5]}</button>}
+  {status.linked&&<details><summary>{help.manage}</summary><p className="hint">{help.manageNote}</p><a href="https://chat.lazying.art/account#sign-in-methods" target="_blank" rel="noopener noreferrer">{help.manage} ↗</a></details>}
   {status.linked&&status.points&&<SharedPoints load={balance} text={text}/>}
  </section>
 }

@@ -1,5 +1,9 @@
 # Bunko — product brief
 
+## Additional sign-in methods and internal build31 · 2026-10-21
+
+The owner explicitly requests Google, Apple and LazyingArt sign-in with the existing GitHub entrance and storage preserved, improved visualizations, and a cumulative internal test build. Reuse the registered central profile protocol; retain original Bunko IDs through explicit linking and refuse collisions. General non-GitHub comments use the repository-scoped app with durable reader attribution. Qualify each provider separately before advertising its button. Build30 was closed unused after its admission expired; its source/archive remain intact. Build31 supersedes that unrun candidate, without changing public reviews, billing or rewards.
+
 ## Geographic maps and interactive reading guides · 2026-10-21
 
 Replace the initial schematic guides with pannable, zoomable graphs and tree

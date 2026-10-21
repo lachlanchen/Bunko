@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode, type PointerEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactNode, type PointerEvent } from 'react'
 import { Maximize2, Minimize2, Minus, Plus, Scan } from 'lucide-react'
 import type { UILanguage } from '../i18n'
 import { useBackAction } from '../lib/backNavigation'
@@ -30,15 +30,31 @@ export function GuideCanvas({ width, height, label, ui, children, footer }: {
     container.current?.querySelector<HTMLButtonElement>('button')?.focus()
     return () => { document.body.style.overflow = overflow; if (priorFocus instanceof HTMLElement && priorFocus.isConnected) priorFocus.focus() }
   }, [expanded])
-  const update = (next: typeof view) => {
+  const update = useCallback((next: typeof view) => {
     const limit = Math.max(width, height) * 1.5
     next.x = Math.max(-limit, Math.min(limit, next.x)); next.y = Math.max(-limit, Math.min(limit, next.y))
     current.current = next; setView(next)
-  }
-  const zoom = (factor: number) => {
+  }, [width, height])
+  const zoom = useCallback((factor: number, clientX?: number, clientY?: number) => {
     const old = current.current, next = Math.max(fit * .6, Math.min(4, (old.zoom || fit) * factor))
-    update({ ...old, zoom: next })
-  }
+    const rect = svg.current?.getBoundingClientRect()
+    const dx = rect && clientX !== undefined ? clientX - rect.left - rect.width / 2 : 0
+    const dy = rect && clientY !== undefined ? clientY - rect.top - rect.height / 2 : 0
+    // Keep the place under the pointer stationary while zooming.
+    update({ x: old.x + dx * (1 / (old.zoom || fit) - 1 / next), y: old.y + dy * (1 / (old.zoom || fit) - 1 / next), zoom: next })
+  }, [fit, update])
+  useEffect(() => {
+    const element = svg.current
+    if (!element) return
+    const wheel = (event: WheelEvent) => {
+      // Ordinary page scrolling remains available until the map is focused.
+      if (!event.ctrlKey && !event.metaKey && document.activeElement !== element) return
+      event.preventDefault()
+      zoom(Math.exp(-Math.max(-120, Math.min(120, event.deltaY)) * .004), event.clientX, event.clientY)
+    }
+    element.addEventListener('wheel', wheel, { passive: false })
+    return () => element.removeEventListener('wheel', wheel)
+  }, [zoom])
   const pointerDown = (e: PointerEvent<SVGSVGElement>) => {
     if (e.button !== 0) return
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
@@ -53,7 +69,7 @@ export function GuideCanvas({ width, height, label, ui, children, footer }: {
     if (others.length) {
       const other = others[0][1], before = Math.hypot(previous.x - other.x, previous.y - other.y)
       const after = Math.hypot(e.clientX - other.x, e.clientY - other.y)
-      if (before > 8 && after > 8) zoom(after / before)
+      if (before > 8 && after > 8) zoom(after / before, (e.clientX + other.x) / 2, (e.clientY + other.y) / 2)
       moved.current = true
     } else {
       if (Math.hypot(e.clientX - start.current.x, e.clientY - start.current.y) > 5) moved.current = true
@@ -79,7 +95,7 @@ export function GuideCanvas({ width, height, label, ui, children, footer }: {
         <button type="button" aria-label={expanded ? t.close : t.expand} title={expanded ? t.close : t.expand} onClick={() => setExpanded(v => !v)}>{expanded ? <Minimize2 size={17} /> : <Maximize2 size={17} />}</button>
       </div>
     </div>
-    <svg ref={svg} viewBox={`${view.x - size.width / effectiveZoom / 2} ${view.y - size.height / effectiveZoom / 2} ${size.width / effectiveZoom} ${size.height / effectiveZoom}`} role="group" aria-label={label} data-no-swipe="true"
+    <svg ref={svg} tabIndex={0} viewBox={`${view.x - size.width / effectiveZoom / 2} ${view.y - size.height / effectiveZoom / 2} ${size.width / effectiveZoom} ${size.height / effectiveZoom}`} role="group" aria-label={label} data-no-swipe="true"
       onPointerDown={pointerDown} onPointerMove={pointerMove}
       onPointerUp={e => { pointers.current.delete(e.pointerId) }} onPointerCancel={e => { pointers.current.delete(e.pointerId); moved.current = true }}
       onClickCapture={e => { if (moved.current && e.detail) { e.preventDefault(); e.stopPropagation() } }}
@@ -87,6 +103,10 @@ export function GuideCanvas({ width, height, label, ui, children, footer }: {
       onKeyDown={e => {
         if (e.key === '+' || e.key === '=') { e.preventDefault(); zoom(1.35) }
         if (e.key === '-') { e.preventDefault(); zoom(1 / 1.35) }
+        if (e.target !== e.currentTarget) return
+        const direction = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key]
+        if (direction) { e.preventDefault(); update({ ...current.current, x: current.current.x + direction[0] * 64 / effectiveZoom, y: current.current.y + direction[1] * 64 / effectiveZoom }) }
+        if (e.key === 'Home') { e.preventDefault(); update({ x: width / 2, y: height / 2, zoom: 0 }) }
       }}>
       <title>{label}</title>{typeof children === 'function' ? children(effectiveZoom) : children}
     </svg>

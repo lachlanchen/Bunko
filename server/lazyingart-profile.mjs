@@ -186,24 +186,26 @@ export function createProfileAdapter(config = {}, { attempts, credentials, trans
     return Object.freeze({ issuer, subject: v.sub, displayName: a.display_name, clientId, audience,
       authenticatedAt: v.auth_time, issuedAt: v.iat, expiresAt: v.exp });
   }
-  async function begin({ binding, attemptId, fresh = false }) {
+  function selectedProviders(d) {
+    const c = d.authorization_extensions?.['provider-select-v1'];
+    check(Array.isArray(d.adapter_contracts) && d.adapter_contracts.includes('provider-select-v1')
+      && keys(c, ['parameter','provider_parameter','prompt_parameter','reuse_consent_parameter','scope','consent_ttl_seconds','providers','prompt_values'])
+      && c.parameter === 'authorization_contract' && c.provider_parameter === 'provider'
+      && c.prompt_parameter === 'prompt' && c.reuse_consent_parameter === 'reuse_consent'
+      && c.scope === 'profile' && c.consent_ttl_seconds === 2592000
+      && Array.isArray(c.providers) && [...c.providers].sort().join(' ') === 'apple github google lazyingart'
+      && Array.isArray(c.prompt_values) && [...c.prompt_values].sort().join(' ') === 'consent login select_account', 'discovery_not_qualified');
+    return ['lazyingart','google','apple','github'].filter(p => d.providers[p === 'lazyingart' ? 'password' : p]);
+  }
+  async function providers() { check(enabled, 'shared_login_disabled'); return selectedProviders(await discovery()); }
+  async function begin({ binding, attemptId, fresh = false, provider }) {
     const browserHash = bindingHash(binding);
     check(typeof attemptId === 'string' && /^[A-Za-z0-9_-]{32,128}$/.test(attemptId), 'local_attempt_required');
     check(typeof attempts?.create === 'function' && typeof attempts?.consume === 'function', 'attempt_store_required');
     check(typeof fresh === 'boolean', 'invalid_configuration');
     check(enabled, 'shared_login_disabled');
     const d = await discovery();
-    if (fresh) {
-      const c = d.authorization_extensions?.['provider-select-v1'];
-      check(Array.isArray(d.adapter_contracts) && d.adapter_contracts.includes('provider-select-v1')
-        && keys(c, ['parameter','provider_parameter','prompt_parameter','reuse_consent_parameter','scope','consent_ttl_seconds','providers','prompt_values'])
-        && c.parameter === 'authorization_contract' && c.provider_parameter === 'provider'
-        && c.prompt_parameter === 'prompt' && c.reuse_consent_parameter === 'reuse_consent'
-        && c.scope === 'profile' && c.consent_ttl_seconds === 2592000
-        && Array.isArray(c.providers) && [...c.providers].sort().join(' ') === 'apple github google lazyingart'
-        && Array.isArray(c.prompt_values) && [...c.prompt_values].sort().join(' ') === 'consent login select_account'
-        && d.providers.password, 'discovery_not_qualified');
-    }
+    if (fresh || provider !== undefined) check(selectedProviders(d).includes(provider ?? 'lazyingart'), 'provider_unavailable');
     const state = randomBytes(32).toString('base64url'), verifier = randomBytes(32).toString('base64url');
     const issuedAt = clock();
     try {
@@ -213,7 +215,7 @@ export function createProfileAdapter(config = {}, { attempts, credentials, trans
     const url = new URL(issuer + '/account/authorize');
     url.search = new URLSearchParams({ response_type: 'code', client_id: clientId, audience, redirect_uri: redirectUri,
       scope: 'profile', state, code_challenge: createHash('sha256').update(verifier).digest('base64url'), code_challenge_method: 'S256' }).toString();
-    if (fresh) for (const [key,value] of Object.entries({authorization_contract:'provider-select-v1',provider:'lazyingart',prompt:'login',reuse_consent:'false'})) url.searchParams.set(key,value);
+    if (fresh || provider !== undefined) for (const [key,value] of Object.entries({authorization_contract:'provider-select-v1',provider:provider ?? 'lazyingart',prompt:fresh?'login':'select_account',reuse_consent:fresh?'false':'true'})) url.searchParams.set(key,value);
     return { authorizationUrl: url.href };
   }
   async function complete({ callbackUrl, binding }) {
@@ -238,7 +240,7 @@ export function createProfileAdapter(config = {}, { attempts, credentials, trans
       && Number.isSafeInteger(record.expiresAt) && record.expiresAt > clock() && record.expiresAt <= record.issuedAt + 600
       && typeof record.attemptId === 'string' && /^[A-Za-z0-9_-]{32,128}$/.test(record.attemptId)
       && typeof record.verifier === 'string' && /^[A-Za-z0-9_-]{43}$/.test(record.verifier), 'callback_invalid');
-    if (query.has('error')) throw new ProfileLinkError('authorization_cancelled');
+    if (query.has('error')) { const error = new ProfileLinkError('authorization_cancelled'); error.attemptId = record.attemptId; throw error; }
     const tokens = credentialEnvelope(await post('/account/token', { grant_type: 'authorization_code', code: query.get('code'),
       redirect_uri: redirectUri, code_verifier: record.verifier }));
     return { attemptId: record.attemptId, ...await qualify(tokens) };
@@ -256,5 +258,5 @@ export function createProfileAdapter(config = {}, { attempts, credentials, trans
     const result = await post('/account/revoke', { token });
     check(keys(result, ['success']) && result.success === true, 'revocation_unconfirmed');
   }
-  return Object.freeze({ enabled, discovery, begin, complete, introspect, refreshOnce, revoke });
+  return Object.freeze({ enabled, discovery, providers, begin, complete, introspect, refreshOnce, revoke });
 }

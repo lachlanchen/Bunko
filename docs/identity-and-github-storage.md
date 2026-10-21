@@ -30,7 +30,7 @@ GitHub supports issue-comment creation using installation access tokens with
 appropriate repository permissions. See the
 [GitHub issue comment API](https://docs.github.com/en/rest/issues/comments#create-an-issue-comment).
 Bunko already uses a narrowly scoped installation token for its separately
-labelled demo account; normal non-GitHub authorship still needs implementation.
+labelled demo account; the current candidate adds ordinary non-GitHub authorship with a durable Bunko author mapping.
 
 App-mediated posts need durable mappings from GitHub issue/comment IDs to the
 verified Bunko author, with ownership checks for changes and moderation. An
@@ -48,13 +48,27 @@ AiMemo source demonstrates separate login/link intents, preserved local IDs,
 fresh introspection, durable credential adoption, conflict refusal and native
 completion binding. These patterns fit Bunko's existing encrypted link store.
 
-Bunko's 23 profile-protocol, encrypted-store and local-HTTP tests passed. Current
-Bunko source remains profile-link-only: central-created sessions and general
-non-GitHub discussion authors are not implemented. Its Mac authentication bridge
-accepts only the legacy GitHub authorization entrance. The Bunko client/audience
-and registered legacy callback remain unchanged.
+The current candidate implements central-created Bunko sessions, explicit provider selection, original-ID reuse, repository-app comments and the Mac system-authentication return path. It keeps the exact registered client/audience/callback. The GitHub login remains separate from central provider identity, with no email matching.
 
-Complete those app-owned session, authorship and native-return paths, then
-qualify each provider's real round-trip, cancellation, reopening, revocation,
-collision and posting behavior before exposing its button. No provider or
-deployment was enabled by this assessment. Build 29's delivery is unchanged.
+Ten HTTP fixture tests cover provider gates, independent PKCE/browser binding,
+cancellation, replay, concurrent completion, persistent local-ID reuse, linked
+GitHub-account reuse, author attribution, collisions, outages and revocation.
+These are synthetic protocol tests, not real provider sign-in receipts. The
+Mac Swift bridge still needs compilation and installed-app qualification.
+
+`lazyingart.loginProviders` lists app-qualified methods advertised to readers.
+`qualificationProviders` permits a bounded operator round-trip before a button
+is advertised; it grants no alternate token, identity or repository permission.
+Both remain empty unless configured by the Bunko operator. Issuer discovery
+also has to advertise the requested method. Methods are qualified and enabled
+independently; a successful password route does not establish Google or Apple.
+
+Ordinary Bunko session handles remain in native protected storage or the PWA's
+HttpOnly cookie. Central credentials remain encrypted server-side. Fresh
+introspection protects writes; revocation rejects the local session, while a
+transport outage preserves its handle for recovery. Public book access remains
+independent of accounts.
+
+Before general release, complete actual provider/browser/native round-trips,
+account-deletion and comment-management qualification, and corresponding store
+privacy review. No new production availability is asserted by source tests.
