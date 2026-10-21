@@ -57,7 +57,13 @@ are genuine component captures. Map/calendar journey data is explicitly syntheti
 these drafts are not storefront uploads. Public listings must use current
 qualified app captures when this feature is formally released.
 
-## Delivery and dependencies
+## Delivery update
+
+The cumulative visualization work is now included in internal build31 on
+iOS/Watch, Mac and Android. See the [verified delivery receipt](signin-guides31-20261021.md).
+The earlier source-only checkpoint below is retained as dated evidence.
+
+## Original delivery and dependencies
 
 This is successor source after internal build29. No new native upload, public
 review, production deployment, identity activation or billing change is claimed

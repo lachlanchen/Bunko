@@ -1,0 +1,106 @@
+{
+  "at": "2026-10-21T05:24:09.734247+00:00",
+  "source": "85f904c5777f17fab9fa2783b86f4a43410b1bd3",
+  "version": "1.0.14",
+  "build": 31,
+  "clientTests": 142,
+  "serverTests": 126,
+  "deliveryTests": 73,
+  "browserCaptures": 34,
+  "android": [
+    {
+      "file": "android/app/build/outputs/apk/release/app-release.apk",
+      "sha256": "fad9cfde77313bfd235758af9de4df2f0d71c716e80abe34d366ef020902084d",
+      "resourceCount": 88,
+      "version": "1.0.14",
+      "build": 31
+    },
+    {
+      "file": "android/app/build/outputs/bundle/release/app-release.aab",
+      "sha256": "5dd49bd06ed5b7c35466c4df432bc8dbfbf0f069e324c769f6435df806d61b3e",
+      "resourceCount": 88,
+      "version": "1.0.14",
+      "build": 31
+    }
+  ],
+  "apple": {
+    "state": "available-to-existing-internal-testers",
+    "uploaded": true,
+    "sourceArchiveSha256": "74909cc3eb22700c3a1e42e3a326ed5cdbcd4bc7ec7fac3401a62ca8accf1179",
+    "helperManifestSha256": "cae106cdf63aff6c5cb405367d67918a9290e7ac0783ca001f699d94ffb2e246",
+    "admission": "2a0e3a67-9eb3-41a8-a24e-71a75a771ece",
+    "testflight": [
+      {
+        "platform": "MAC_OS",
+        "id": "3d8bf98d-c53d-4592-8370-323cbee93d80",
+        "version": "1.0.14",
+        "build": "31",
+        "processing": "VALID",
+        "internal": "IN_BETA_TESTING"
+      },
+      {
+        "platform": "IOS",
+        "id": "87ec1f65-699a-481a-8750-02aa5aa70ee8",
+        "version": "1.0.14",
+        "build": "31",
+        "processing": "VALID",
+        "internal": "IN_BETA_TESTING"
+      }
+    ],
+    "cleanup": {
+      "guardReleased": true,
+      "signingRestored": true,
+      "independentObservedAt": "2026-10-21T05:12:32.438860+00:00",
+      "sourceFiles": 261,
+      "helperHashes": 17
+    }
+  },
+  "backend": {
+    "sourceDeployed": true,
+    "configUnchanged": true,
+    "accountProvidersEnabled": false,
+    "release": "login31-qualification-2a9520ad4d3a-r2"
+  },
+  "login": {
+    "implemented": [
+      "github",
+      "google-via-lazyingart",
+      "apple-via-lazyingart",
+      "lazyingart"
+    ],
+    "clientRegistrationVerified": true,
+    "liveCallbackQualified": false,
+    "remaining": [
+      "Actual approved identity browser/native round-trip per provider",
+      "Production account-deletion and comment-management qualification"
+    ],
+    "ingressInstalled": true,
+    "ingressQualified": true,
+    "advertisedProviders": [
+      "github"
+    ],
+    "qualificationVisibilitySafeguard": {
+      "deployed": true,
+      "serverTests": 126,
+      "serviceUserImportPassed": true,
+      "configUnchanged": true,
+      "firstPromotionRolledBack": "EACCES; corrected immutable package normalizes code modes to0644"
+    }
+  },
+  "productionReviewsChanged": false,
+  "androidInternal": {
+    "at": "2026-10-21T04:50:23.367027+00:00",
+    "source": "85f904c5777f17fab9fa2783b86f4a43410b1bd3",
+    "package": "art.lazying.bunko",
+    "version": "1.0.14",
+    "build": 31,
+    "track": "internal",
+    "trackId": "4701547714770281380",
+    "releaseId": "24",
+    "state": "Available to internal testers",
+    "releaseName": "1.0.14 (31) - Interactive reading guides",
+    "aabSha256": "5dd49bd06ed5b7c35466c4df432bc8dbfbf0f069e324c769f6435df806d61b3e",
+    "publicTrackChanged": false,
+    "evidence": "play-inspect.txt / play-inspect.png"
+  }
+}

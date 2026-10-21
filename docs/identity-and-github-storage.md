@@ -54,12 +54,16 @@ Ten HTTP fixture tests cover provider gates, independent PKCE/browser binding,
 cancellation, replay, concurrent completion, persistent local-ID reuse, linked
 GitHub-account reuse, author attribution, collisions, outages and revocation.
 These are synthetic protocol tests, not real provider sign-in receipts. The
-Mac Swift bridge still needs compilation and installed-app qualification.
+Mac Swift bridge compiled and was delivered in TestFlight31; actual installed-app
+provider qualification is still pending.
 
 `lazyingart.loginProviders` lists app-qualified methods advertised to readers.
 `qualificationProviders` permits a bounded operator round-trip before a button
 is advertised; it grants no alternate token, identity or repository permission.
-Both remain empty unless configured by the Bunko operator. Issuer discovery
+Both remain empty unless configured by the Bunko operator. During operator
+qualification, also set `linkEnabled: false` so Settings does not expose an
+unqualified connection. This additive server safeguard is tested and deployed with the existing
+identity configuration still disabled. Issuer discovery
 also has to advertise the requested method. Methods are qualified and enabled
 independently; a successful password route does not establish Google or Apple.
 

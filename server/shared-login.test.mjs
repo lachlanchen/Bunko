@@ -109,8 +109,13 @@ test('central outage preserves a session, while verified revocation rejects it',
  s.f.hook=null;assert.equal((await s.call('/v1/session',{})).status,401)
 })
 test('qualification entrances are testable without advertising an unqualified button',async t=>{
- const s=await setup(t,{loginProviders:[],qualificationProviders:['lazyingart']})
+ const s=await setup(t,{loginProviders:[],qualificationProviders:['lazyingart'],linkEnabled:false})
  assert.deepEqual((await(await s.call('/v1/auth/methods',{})).json()).providers,['github'])
+ assert.equal((await(await s.call('/v1/lazyingart/status',{})).json()).enabled,false)
+ await s.finish(await s.start('github'))
+ assert.equal((await(await s.call('/v1/lazyingart/status',{})).json()).enabled,false)
+ assert.equal((await s.call('/v1/lazyingart/start',{challenge:opaque(),consent:true})).status,503)
+ await s.call('/v1/logout',{});s.setToken(undefined)
  assert.equal((await s.finish(await s.start())).method,'lazyingart')
 })
 test('signing out one device preserves another authenticated device',async t=>{

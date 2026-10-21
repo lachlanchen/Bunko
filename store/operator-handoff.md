@@ -1,3 +1,24 @@
+# Current internal checkpoint · build31 · 21 October 2026 HKT
+
+Bunko **1.0.14 (31)** is VALID / IN_BETA_TESTING for iOS/Watch and universal Mac
+in the existing internal group, and available to Google Play internal testers.
+The shared Mac operation completed, cleaned up and handed back. No public review
+or release changed. Build30 was closed unused; do not reuse either admission.
+
+[Build31 delivery and remaining sign-in qualification](../docs/signin-guides31-20261021.md).
+The interactive map/graph/timeline update is included. New Google, Apple and
+LazyingArt login code is bundled, but live provider buttons remain disabled until
+actual approved-account and native-return checks pass. GitHub remains available.
+
+No host or GUI hold. Bunko noVNC6190/CDP9490 is stopped, with the saved profile
+retained. Backend login31 source and nine exact auth-route additions are active;
+identity configuration remains unchanged/disabled. The server-only Settings
+visibility gate is also deployed after service-user import and126 tests. No
+provider is activated; approved-account qualification is still required. Private evidence: `.runtime/login31-20261021/` and
+`.runtime/test31-20261021/`.
+
+## Earlier records
+
 # Current internal checkpoint · 21 October 2026 HKT
 
 Bunko **1.0.14 (29)** is available to the existing Apple iOS/Watch and Mac

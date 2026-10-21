@@ -384,7 +384,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       if(path.startsWith(`${PREFIX}/v1/lazyingart/`)){
         const action=path.split('/').pop(),input=await body(req)
         let auth;try{auth=await session(req,res,false)}catch(e){if(action!=='status'||e.status!==401)throw e}
-        if(action==='status'){json(res,{enabled:sharedProfile.enabled,points: lacBalance.enabled,signedIn:!!auth,eligible:!!auth&&auth.provider!=='demo',...(auth&&sharedProfile.status?sharedProfile.status(cloudOwner(auth.user)):{linked:false,state:'unlinked'})});return}
+        if(action==='status'){json(res,{enabled:sharedProfile.linkEnabled??sharedProfile.enabled,points: lacBalance.enabled,signedIn:!!auth,eligible:!!auth&&auth.provider!=='demo',...(auth&&sharedProfile.status?sharedProfile.status(cloudOwner(auth.user)):{linked:false,state:'unlinked'})});return}
         if(!auth||auth.provider==='demo')fail(403,'shared_account_requires_personal_login')
         if(action==='activity'){
           if(Object.keys(input).length!==1||input.kind!=='foreground')fail(400,'invalid_activity')
@@ -394,6 +394,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         if(!sharedProfile.enabled)fail(503,'shared_login_unavailable')
         const owner=cloudOwner(auth.user)
         if(action==='start'){
+          if(sharedProfile.linkEnabled===false)fail(503,'shared_login_unavailable')
           if(!validOpaque(input.challenge)||input.consent!==true)fail(400,'explicit_link_required')
           if(!Number.isSafeInteger(auth.authenticatedAt)||auth.authenticatedAt<now()-600000)fail(403,'local_reauthentication_required')
           const id=opaque(),context={owner,sessionHash:auth.sessionId,authenticatedAt:auth.authenticatedAt}
