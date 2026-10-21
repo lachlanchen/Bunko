@@ -1,74 +1,83 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
-[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+[![LazyingArt banner](https://lazying.art/media/brand/lazyingart-intro.gif)](https://lazying.art)
 
 # Bunko 文庫
 
-*本文の上に読みを添える、静かな多言語ライブラリー。*
+*言葉を越えて、物語のそばへ。*
 
-[![Reader](https://img.shields.io/badge/Open-Bunko-303F68?style=for-the-badge)](https://lachlan.lazying.art/Bunko/) [![Sponsor](https://img.shields.io/badge/GitHub-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors)](https://github.com/sponsors/lachlanchen)
+[Web / PWA](https://lachlan.lazying.art/Bunko/) · [iPhone / iPad / Apple Watch](https://apps.apple.com/app/id6815137919) · [Mac App Store](https://apps.apple.com/app/id6815137919?platform=mac) · [Google Play](https://play.google.com/store/apps/details?id=art.lazying.bunko)
 
-Bunko はパブリックドメインの中国語・日本語・英語の古典を読むアプリです。表示言語とレイアウトを選び、漢字の上のピンインやふりがなを読み、保存した章をオフラインで開けます。UI は英語・簡体字中国語・繁体字中国語・日本語に対応しています。書籍カタログは別の [bunko-books](https://github.com/lachlanchen/bunko-books) にあり、このリポジトリには書籍本文を置きません。
+Bunko は、パブリックドメインの古典と配布許可を確認したオリジナル作品を集めた多言語の本棚です。対応する文章を並べ、漢字の上にピンインやふりがなを表示し、ダウンロードした本をオフラインで読めます。文学、旅行、学習、専門書を同じリーダーで開き、図や数式も本文と一緒に読めます。
 
-本には標準の言語タグを使って任意の数の言語を収録でき、アラビア語などの右から左へ書く言語にも対応します。表示する言語を選ぶと、対応する箇所をまとめて読めます。本の言語と画面表示の翻訳は独立しています。
+## 自分に合った読み方
 
-<p align="center"><a href="../store/assets/play-phone-01.png"><img src="../store/assets/play-phone-01.png" alt="Bunko リーダーの画面" width="300"></a></p>
+- 一つの言語だけを表示したり、複数の言語を文ごとに交互表示したりできます。選択した順番で主言語が決まり、翻訳には言語ラベルが残ります。
+- 本文とルビの大きさを個別に調整できます。ライト・ダーク・システム設定に対応し、単語を長押しすると辞書を使えます。
+- 本と、英語・中国語・日本語の任意の辞書パックをダウンロードできます。オフラインでも保存した読書位置から再開できます。
+- iPhone、iPad、Android、ウェブ、Mac に対応。ルビ付きの多言語抜粋をペアリング済みの Apple Watch に送れます。
+- 本に含める言語数に制限はなく、右から左へ書く言語にも対応します。画面表示の言語は英語・簡体字中国語・繁体字中国語・日本語です。
 
-## 正式公開 · 2026-10-14
+## プレビュー：本に寄り添う読書アシスタント
 
-iOS/Watch 1.0.13 (23) は公開済みです。 Google Play 1.0.12 (22) は公開済みで、1.0.13 (23) は審査中です。 Mac 1.0.13 (23) は審査中で、承認後に自動公開されます。現在の Mac 公開版は 1.0.8 (10) です。
+次のテスト更新では、本を開いた状態から引き継ぐ文脈、本・章・段落を指定するコンパクトな @ 参照、引用元の位置へ戻るリンクをさらに活用できます。人物の関係をグラフやツリーで、地名をオフラインの地理地図で、出来事を日付付きの年表で確認できます。各ガイドから根拠となる本文を開けます。
 
-[公開の確認記録](../docs/distribution-20261014.md)
+**テスト版のプレビューであり、一般公開のお知らせではありません。** ガイドの対象は選択した抜粋や抽出した範囲で、本全体を網羅するとは限りません。不確かな地名や日付は明示します。以下は実際のコンポーネント画面です。地図と年表は、デモであることを明記した旅程を使用しています。[プレビューの詳細](../docs/reading-guides-preview.md)。
 
-## 正式公開 · 2026年10月10日
+<p>
+<a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — test preview" width="190"></a>
+<a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>
+<a href="../docs/images/reading-guides-20261021/phone-timeline.png"><img src="../docs/images/reading-guides-20261021/phone-timeline.png" alt="Calendar timeline — demonstration journey" width="190"></a>
+</p>
 
-Bunko 1.0.11 (18) は iOS/Watch と Google Play で公開済みです。Google の配信率は 100% です。Mac 1.0.11 (18) は Apple の審査中で、承認後に自動公開されます。Mac の公開版は 1.0.8 (10) です。モバイル版には承認済みの角丸アイコンが含まれます。
+## 起動とビルド
 
-[公開の確認記録](../docs/distribution-20261010.md)
-
-## 現在の状況 · 2026年10月4日
-
-iOS/Watch 1.0.10 (16) は公開済みで、承認済みのアイコンと多言語リーダーの修正を含みます。Mac 1.0.10 (16) は審査中で、承認後に自動公開されます。Mac の公開版は引き続き 1.0.8 (10) です。Android 1.0.10 (17) はプライバシーポリシーの修正後、172か国で公開され、設定のプライバシーリンクと安定した本のダウンロードを提供します。審査には GitHub のメール確認コードが不要な専用 Bunko デモアカウントを使い、更新したログイン手順も Google が受理しました。
-
-PDF 変換と AI の回答向けに、月額 US$2.99 / $14.99 / $29.99 の任意のクラウドプランを準備しています。プラン画面は利用できますが、購入は無効です。本・辞書・オフライン読書は引き続きアプリ購入に含まれます。本は GitHub、公開 CDN、容量を制限した自社キャッシュの順に取得します。
-
-[公開記録](../store/artifacts/distribution-apple-20261004.json) · [クラウドプラン](../docs/cloud-subscriptions.md)
-
-## リポジトリの内容
-
-| パス | 説明 |
-| --- | --- |
-| [`src/`](../src/) | リーダー、ルビ表示、オフラインキャッシュ、テーマ設定 |
-| [`docs/catalogue.md`](../docs/catalogue.md) | 権利調査と公開手順 |
-| [`store/`](../store/) | ストアの状態と運用引き継ぎ |
-
-## リーダーを動かす
-
-依存関係を入れ、チェックを実行し、Vite 開発サーバーを起動します。ネイティブ版は Capacitor と Git 外の非公開署名情報を使います。
+Node.js 22 を使用してください。アプリとサーバーの依存関係をインストールし、チェックを実行してからリーダーを起動します。React/TypeScript を使用し、iOS・Android は Capacitor、Mac は AppKit/WebKit で構成しています。署名用の認証情報は Git に含めません。
 
 ```sh
 npm ci
+npm ci --prefix server
 npm run check
 npm run dev
 ```
 
-## 書庫とリリース
+ネイティブアプリに同梱するウェブ資材をビルドします：
 
-公開カタログには確認済みの 185 版があります。新しい本はアプリの再ビルドなしに GitHub から公開できます。リーダーのコード変更には Web またはネイティブ版の更新が必要です。各プラットフォームの公開状況と更新審査は下記のリリース記録で確認できます。
+```sh
+npm run build:native
+npm run build:macos
+```
 
-[store/release.yaml](../store/release.yaml)
+## リポジトリの構成
 
-## Bunko を支援
+| パス | 内容 |
+| --- | --- |
+| [src/](../src/) | リーダー、言語レイアウト、ローカルキャッシュ、アシスタント画面 |
+| [server/](../server/) | アカウント、公開コメント、任意のアシスタント機能のサービス |
+| [ios/ · android/ · macos/](../ios/) | 各プラットフォームのプロジェクトと Apple Watch アプリ |
+| [docs/](../docs/) | 読書操作、書籍公開、プラットフォーム別のガイド |
 
-Bunko は LazyingArt のプロジェクトです。読書や研究に役立ったら、継続的な開発を支援できます。
 
-| Donate | PayPal | Stripe |
-| --- | --- | --- |
-| [![Donate](https://img.shields.io/badge/Donate-LazyingArt-0EA5E9?style=for-the-badge&logo=kofi&logoColor=white)](https://chat.lazying.art/donate) | [![PayPal](https://img.shields.io/badge/PayPal-RongzhouChen-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/RongzhouChen) | [![Stripe](https://img.shields.io/badge/Stripe-Donate-635BFF?style=for-the-badge&logo=stripe&logoColor=white)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |
+## 本・公開コメント・プライバシー
+
+書籍データと権利記録は、アプリのコードとは別の [bunko-books](https://github.com/lachlanchen/bunko-books) にあります。互換性のある新しい版はアプリ更新なしで追加できます。ダウンロードは GitHub を優先し、CDN と自社キャッシュを予備経路に使います。本文への公開コメントには GitHub ログインを使います。非公開メモ、未投稿の下書き、個人的なアシスタントとの会話は公開コメントにはなりません。ダウンロード済みの本を読むためにサブスクリプションは不要です。生成された学習資料には誤りがあり得るため、引用元を確認してください。現在の一般公開版と地域別の提供状況は各ストアで確認できます。
+
+[Bunko issues](https://github.com/lachlanchen/Bunko/issues) · [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues)
+
+## Bunko を支援する
+
+Bunko は LazyingArt のプロジェクトです。任意のご支援は、リーダーと公開ライブラリ用ツールの保守に役立ちます。
+
+<!-- support:start -->
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsors-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/lachlanchen)
+[![LazyingArt Support](https://img.shields.io/badge/LazyingArt-Support-0EA5E9?style=for-the-badge)](https://chat.lazying.art/donate)
+[![PayPal Support](https://img.shields.io/badge/PayPal-Support-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/RongzhouChen)
+[![Stripe Support](https://img.shields.io/badge/Stripe-Support-635BFF?style=for-the-badge&logo=stripe&logoColor=white)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400)
+<!-- support:end -->
 
 ## 引用
 
-研究で Bunko を使う場合は、このリポジトリを引用してください。GitHub は [CITATION.cff](../CITATION.cff) を読み、引用パネルを表示します。
+研究で Bunko を使用する場合は、このリポジトリを引用してください。GitHub は [CITATION.cff](../CITATION.cff) を読み取り、引用パネルを表示します。
 
 ```bibtex
 @software{chen_bunko_2026,
@@ -78,55 +87,3 @@ Bunko は LazyingArt のプロジェクトです。読書や研究に役立っ�
   url = {https://github.com/lachlanchen/Bunko}
 }
 ```
-
-## 対象と報告先
-
-AI が生成した学習用の文章には誤りがあり得ます。カタログは調査済みの完結版だけを公開し、パブリックドメインの扱いは地域で異なります。リーダーの不具合は [Bunko issues](https://github.com/lachlanchen/Bunko/issues)、書籍や権利の問題は [bunko-books issues](https://github.com/lachlanchen/bunko-books/issues) に報告してください。
-## Bunko で読む
-
-書庫には権利を確認した185版を収録しています。古典、物理学の伴読ノート、学習・金融の本、多言語の旅行ガイドを含みます。単言語・多言語に対応し、数式と図もモバイルで表示します。
-
-
-ウェブ版とインストール済みPWAでは、端末に合ったストアへのリンクを任意で利用できます。そのまま読み続けることもでき、ストアボタンは一般公開を確認してから有効になります。
-
-[Apple App Store](https://apps.apple.com/app/id6815137919) · [Google Play](https://play.google.com/store/apps/details?id=art.lazying.bunko) · [Web reader](https://lachlan.lazying.art/Bunko/)
-
-## Mac 版 Bunko
-
-1.0.8 (10) は Mac App Store で公開されています。macOS 12 以降で、ネイティブメニュー、キーボード操作、オフライン読書に対応します。ユニバーサルバイナリは Intel と Apple silicon に対応し、両方の Mac で動作確認を行っています。 [Mac App Store](https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?platform=mac)
-
-[macOS — build & test](../docs/macos.md) · [App Store — review status](../store/macos/submission.md)
-
-## アプリの更新
-
-Bunko は更新を自動確認し、新しい正式版があると、あとで表示できる案内を出します。設定から手動で確認することもできます。ウェブ版は選択するまで再読み込みせず、ネイティブ版はストアを開きます。読書、ダウンロード、保存データは維持されます。[更新ガイド](../docs/app-updates.md)をご覧ください。
-
-## 読書の操作
-
-単語を長押しし、標準の選択ハンドルで範囲を調整してから「辞書」を選びます。「文を選択」で文全体に広げられ、通常のタップでは辞書を開きません。ページ上を右へスワイプすると戻ります。左端からのスワイプにも対応します。本文とルビの大きさは設定で個別に調整でき、プレビューと設定保存に対応しています。細いスマートフォンでも、テーマと設定は書庫のタイトルと同じ行に収まります。
-
-[docs/reading-controls.md](../docs/reading-controls.md)
-
-## Bunko 内の会話
-
-GitHub でログインして、本文の箇所ごとの公開コメントを Bunko 内で読んだり書いたりできます。下書きと個人メモは、明示的に投稿するまで端末に残ります。小さなクラウドサービスが認証を処理するため、所有者のパソコンを起動しておく必要はありません。公開の会話は GitHub に保存されます。画面は英語、簡体字中国語、繁体字中国語、日本語に対応します。1.0.6 (8) では、安全な端末内保存とトークンの自動更新でログインを保持し、一時的な接続障害から復帰します。iOS **1.0.8 (10)** は Apple Watch の連携アプリを含め、2026年9月29日に一般公開されました。Mac **1.0.8 (10)** も香港時間2026年9月30日に一般公開されました。Android 1.0.9 (14) は Google Play の内部テストで利用できます。製品版の状況はリリース記録を参照してください。
-
-[ディスカッションの実装と検証](../docs/github-discussions-2026-09-26.md).
-
-## MacとApple Watch
-
-**1.0.8 (10)** ではネイティブのApple Watchアプリを追加し、Mac版を更新しました。iPhoneのリーダーから、ペアリングした時計に多言語のテキスト抜粋を送れます。最新3件をオフライン保存し、段落の移動と文字サイズの調整が可能です。図や数式はiPhone・Macの完全版で表示します。
-
-新しいアイコンと非公開の文書アシスタントは、PDF、Word（.docx）、Markdown、テキスト、TeX、論文検索、文書への質問に対応します。M5 Pro Mac miniでオフライン再表示、読書位置、数式、図を含む10項目に合格。Watchシミュレータでは実際のiPhoneアプリからの転送と切断後の再起動を検証しました。実機のWatchは未検証です。
-
-[macOS](../docs/macos.md) · [watchOS](../docs/watchos.md) · [1.0.8](../store/artifacts/release-1.0.8.json)
-
-## テスト履歴 · 2026年9月30日
-
-**2026-09-30 · 1.0.9 (14)** は、右下をより白くし、文の左上の青い線を鮮明にした承認済みアイコンを採用しています。以前のデザインはすべて保存しています。Webでは公開済みで、ビルド14はiPhone/iPad・Watch連携アプリ・MacのTestFlightとGoogle Play内部テストで利用できます。
-
-ビルド14はAppleとGoogleへ提出済みで、承認後に自動公開されます。承認はまだ待機中で、Appleの一般公開版は1.0.8 (10)です。Googleの審査手順には独立したBunkoデモアカウントを設定しました。所有者宛てのメール確認コードなしで、実際のコメントや文書の会話を利用できます。文書アシスタントのプライバシー申告も更新しました。
-
-Watchでは中国語ピンイン、日本語ふりがな、文ごとの多言語対訳と独立した本文・ルビサイズを維持しています。古い抜粋は更新後のiPhoneアプリから再送してください。今回はアイコンのみの更新のため、ビルド13のペアリング済みシミュレータでの転送・オフライン再起動検証を引き継ぎます。実機Watchでのテストは行っていません。クライアント58件、サーバー35件のテストがすべて合格しました。
-
-[リリース記録](../store/artifacts/icon-release-1.0.9-14.json) · [審査用アクセス](../store/reviewer-access.md) · [Watch検証](../evidence/watch-ruby-20260930/qa.json)
