@@ -5,6 +5,7 @@ import { loadChapter, loadIndex, loadMeta } from '../lib/library'
 import type { UILanguage } from '../i18n'
 import { Sheet } from './Sheet'
 
+import { bookCompanionCopy } from './bookCompanionCopy'
 import { referenceCopy } from './bookReferenceCopy'
 
 const plain = (line: unknown): string => Array.isArray(line) ? line.map(t => typeof t === 'string' ? t : Array.isArray(t) ? String(t[0] || '') : '').join('') : ''
@@ -36,12 +37,13 @@ export function BookReferencePicker({ initial, meta: initialMeta, ui, onClose, o
       <input type="search" value={query} placeholder={t.search} aria-label={t.search} onChange={e => setQuery(e.target.value)} />
       {query && <div className="reference-results">{matches.map(b => <button type="button" key={b.id} onClick={() => { setId(b.id); setChapter(0); setParagraph(0); setLoaded(null); setQuery(''); setQuote(''); setError(''); if (b.id === initialMeta.id) { setMeta(initialMeta); setLanguage(initial.language) } }}>{b.title[ui] || b.title[b.primary] || b.id}</button>)}</div>}
       <strong dir="auto">{meta.id === id ? meta.titleText[language] || meta.titleText[meta.primary] : id}</strong>
-      <label>{t.selected}<select aria-label={t.selected} value={scope} onChange={e => { const next = e.target.value as BookReference['scope']; setScope(next); if (next === 'book' || next === 'chapter') setParagraph(0) }}>
+      <label>{t.selected}<select aria-label={t.selected} value={scope} onChange={e => { const next = e.target.value as BookReference['scope']; setScope(next); if (next === 'chapter') setParagraph(0) }}>
         <option value="passage">{t.current}</option><option value="book">{t.whole}</option><option value="chapter">{t.chapter}</option><option value="paragraph">{t.paragraph}</option><option value="sentence">{t.sentence}</option>
       </select></label>
       <label>{t.chapter}<select aria-label={t.chapter} disabled={meta.id !== id} value={chapter} onChange={e => { setChapter(Number(e.target.value)); setParagraph(0); setLoaded(null); setQuote('') }}>
-        {meta.chapters.map((c, i) => <option key={c.file} value={i}>{c.n} · {c.title[language] || c.title[meta.primary]}</option>)}
+        {meta.chapters.map((c, i) => <option key={c.file} value={i}>{c.n} · {String(c.title[language] || c.title[meta.primary] || '').slice(0, 90)}{String(c.title[language] || c.title[meta.primary] || '').length > 90 ? '…' : ''}</option>)}
       </select></label>
+      <details className="reference-title-details"><summary>{bookCompanionCopy[ui].details}</summary><p dir="auto">{meta.chapters[chapter]?.title[language] || meta.chapters[chapter]?.title[meta.primary]}</p></details>
       {!['book', 'chapter'].includes(scope) && <label>{t.paragraph}<input aria-label={t.paragraph} type="number" min={1} max={meta.chapters[chapter]?.paras || 1} value={paragraph + 1} onChange={e => { setParagraph(Math.max(0, Math.min((meta.chapters[chapter]?.paras || 1) - 1, Number(e.target.value) - 1))); setQuote('') }} /></label>}
       {scope === 'sentence' ? <div className="reference-sentences">{sentences.map((s, i) => <button type="button" key={i} aria-pressed={quote === s} onClick={() => setQuote(s)}>{s}</button>)}</div> : <p className="reference-preview" dir="auto">{text.slice(0, 500)}</p>}
       {['book', 'chapter'].includes(scope) && <p className="agent-muted">{t.spoilers}</p>}

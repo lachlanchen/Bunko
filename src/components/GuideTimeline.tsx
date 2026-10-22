@@ -43,7 +43,7 @@ export function GuideTimeline({ events, ui, onRead }: { events: GuideEvent[]; ui
     {rows.map(({ event, index }) => <li key={index} id={`guide-event-${index}`} className={focused === index ? 'selected' : ''}>
       <span className="guide-event-number">{index + 1}</span><span className="guide-time" dir="auto">{event.when || copy.undated}</span>
       <article className="guide-card"><h2 dir="auto">{event.title}</h2><p dir="auto">{event.detail}</p>
-        {event.certainty === 'interpretation' && <span className="guide-uncertain">{copy.interpretation}</span>}
+        {event.certainty !== 'stated' && <span className="guide-uncertain">{event.certainty === 'background' ? copy.background : copy.interpretation}</span>}
         <PassageEvidence citations={event.citations} ui={ui} onRead={onRead} />
       </article>
     </li>)}

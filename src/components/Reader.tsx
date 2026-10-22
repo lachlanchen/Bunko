@@ -42,6 +42,11 @@ interface ReaderProps {
   overlayOpen?: boolean
 }
 
+function ChapterHeading({ children, label, lang, dir }: { children: ReactNode; label: string; lang: string; dir: string }) {
+  const title = <h1 lang={lang} dir={dir}>{children}</h1>
+  return [...label].length > 60 ? <details className="reader-chapter-title"><summary>{title}</summary></details> : title
+}
+
 function PassageNotes({ enabled, label, children }: { enabled: boolean; label: string; children: ReactNode }) {
   return enabled ? <details className="passage-notes"><summary>{label}</summary>{children}</details> : children
 }
@@ -227,9 +232,9 @@ export function Reader({
 
         {chapter && (
           <article>
-            <h1 lang={htmlLanguage(chapter.title?.[shown[0]] ? shown[0] : meta.primary)} dir={languageDirection(chapter.title?.[shown[0]] ? shown[0] : meta.primary)}>
+            <ChapterHeading key={chapter.id} label={plainText(chapter.title?.[shown[0]] ?? chapter.title?.[meta.primary])} lang={htmlLanguage(chapter.title?.[shown[0]] ? shown[0] : meta.primary)} dir={languageDirection(chapter.title?.[shown[0]] ? shown[0] : meta.primary)}>
               <Line line={chapter.title?.[shown[0]] ?? chapter.title?.[meta.primary]} ruby={settings.ruby} />
-            </h1>
+            </ChapterHeading>
             {chapter.p.map((paragraph, index) => (paragraph.figure || paragraph.u.some(unit => shown.some(lang => unitLine(unit, lang)?.length))) && (
               <div className={`para${paragraph.kind ? ` para-${paragraph.kind}` : ''}`} key={paragraph.id || index} data-para={index}>
                 {paragraph.figure && <BookFigure bookId={meta.id} figure={paragraph.figure} lang={shown[0]} primary={meta.primary} />}

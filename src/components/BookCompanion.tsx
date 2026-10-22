@@ -5,7 +5,7 @@ import { ArrowDown, AtSign, ArrowLeft, ArrowUp, BookOpen, Ellipsis, MapPin, Mess
 import type { UILanguage } from '../i18n'
 import { currentUser, DiscussionError, requestId, restoreSession, signIn, subscribeSession } from '../lib/discussions'
 import { initialModelPolicy, type ModelPolicy, agentCall } from '../lib/documentAgent'
-import { companionReference, referenceKey, savedGuide, saveGuide, forgetGuide, type BookCompanionContext, type BookMessage, type BookReference, type BookResponse } from '../lib/bookCompanion'
+import { companionReference, referenceKey, savedGuide, savedGuides, saveGuide, forgetGuide, type BookCompanionContext, type BookMessage, type BookReference, type BookResponse } from '../lib/bookCompanion'
 import { useBackAction } from '../lib/backNavigation'
 import { agentCopy } from './agentCopy'
 import { bookCompanionCopy } from './bookCompanionCopy'
@@ -46,10 +46,15 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
   const r = referenceCopy[ui]
   const [modelPolicy, setModelPolicy] = useState<ModelPolicy>(initialModelPolicy)
   const [tab, setTab] = useState<Tab>('chat'), [plans, setPlans] = useState(false)
-  const [guide, setGuide] = useState<BookResponse | null>(() => savedGuide(reference))
+  const artifactSelectionKey = `bunko-book-artifact-selection:${user?.id || 'guest'}:${refValue.id}`
+  const [cachedGuides, setCachedGuides] = useState(() => savedGuides(reference))
+  const [guide, setGuide] = useState<BookResponse | null>(() => {
+    try { const key = localStorage.getItem(artifactSelectionKey); const selected = savedGuides(reference).find(g => g.key === key); if (selected) return selected } catch { /* Optional view preference. */ }
+    return savedGuide(reference) || savedGuides(reference)[0] || null
+  })
   const [messages, setMessages] = useState<BookMessage[]>([])
-  const draftKey = `bunko-book-draft:${user?.id || 'guest'}:${referenceKey(refValue)}`
-  const [draft, setDraft] = useState(() => { try { return sessionStorage.getItem(draftKey) || '' } catch { return '' } })
+  const draftKey = `bunko-book-draft-v2:${user?.id || 'guest'}:${refValue.id}`
+  const [draft, setDraft] = useState(() => { try { return sessionStorage.getItem(draftKey) || sessionStorage.getItem(`bunko-book-draft:${user?.id || 'guest'}:${referenceKey(refValue)}`) || '' } catch { return '' } })
   const [busy, setBusy] = useState(false), [error, setError] = useState(''), [atBottom, setAtBottom] = useState(true)
   const [auth, setAuth] = useState(false), [demoBusy, setDemoBusy] = useState(false), [consent, setConsent] = useState(false)
   const [report, setReport] = useState<BookMessage | null>(null), [reason, setReason] = useState(''), [notice, setNotice] = useState('')
@@ -67,14 +72,20 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
   }, [a.error])
   const refresh = useCallback(async () => {
     if (!user) return
-    const response = await agentCall<{ messages: BookMessage[]; guide?: BookResponse | null; modelPolicy?: ModelPolicy }>('messages', { book: refValue, ...(referenceId !== referenceKey(refValue) ? { reference } : {}), checkGuide: true })
+    const response = await agentCall<{ messages: BookMessage[]; guide?: BookResponse | null; revision?: string; modelPolicy?: ModelPolicy }>('messages', { book: refValue, ...(referenceId !== referenceKey(refValue) ? { reference } : {}), checkGuide: true })
     if (!live.current || currentUser()?.id !== user.id || inFlight.current || activeReference.current !== referenceId) return
     setMessages(response.messages)
     setModelPolicy(response.modelPolicy || initialModelPolicy)
-    if ('guide' in response) {
-      setGuide(response.guide || null)
-      if (response.guide) saveGuide(reference, response.guide); else forgetGuide(reference)
-    }
+    const historyGuides = response.messages.flatMap(m => m.kind === 'guide' && m.bookResponse?.people ? [m.bookResponse] : [])
+    for (const artifact of historyGuides) saveGuide(artifact.reference, artifact)
+    if (response.guide) saveGuide(reference, response.guide)
+    const exact = savedGuide(reference)
+    // A cache miss at a new passage does not erase a saved artifact. Only invalidate
+    // the exact current lookup when its edition revision was actually checked.
+    if (!response.guide && exact && response.revision && exact.revision !== response.revision) forgetGuide(reference)
+    const available = savedGuides(reference)
+    setCachedGuides(available)
+    setGuide(current => current || response.guide || available[0] || null)
   }, [refValue, reference, referenceId, user])
   useEffect(() => {
     live.current = true
@@ -134,14 +145,21 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
       if (!live.current || currentUser()?.id !== owner) return
       setMessages(items => items.map(m => m.id === id ? result : m))
       if (result.state === 'failed') setError(result.error || a.error)
-      if (kind === 'guide' && result.bookResponse) { setGuide(result.bookResponse); saveGuide(reference, result.bookResponse) }
+      if (kind === 'guide' && result.bookResponse) { selectGuide(result.bookResponse) }
     } catch (e) { fail(e); if (live.current) { if (kind === 'answer') setDraft(question); await refresh().catch(() => {}) } }
     finally { inFlight.current = false; if (live.current) setBusy(false) }
   }
+  const selectGuide = (value: BookResponse) => {
+    setGuide(value); saveGuide(value.reference, value)
+    setCachedGuides(savedGuides(reference))
+    try { localStorage.setItem(artifactSelectionKey, value.key) } catch { /* Optional view preference. */ }
+  }
+  const artifacts = [...messages.flatMap(m => m.kind === 'guide' && m.bookResponse?.people ? [m.bookResponse] : []).reverse(), ...cachedGuides, ...(guide ? [guide] : [])]
+    .filter((g, i, all) => all.findIndex(v => v.key === g.key) === i)
   const buildGuide = () => withConsent(() => { void send('guide', t.guide) })
   const chooseReference = (next: BookReference, meta: typeof context.meta) => {
     try { sessionStorage.setItem(selectionKey, JSON.stringify({ reference: next, meta })) } catch { /* Optional reference persistence. */ }
-    activeReference.current = referenceKey(next); setReference(next); setReferenceMeta(meta); setGuide(savedGuide(next)); setPicking(false); setError(''); const at = mentionStart.current; setDraft(value => at >= 0 && value[at] === '@' ? value.slice(0, at) + value.slice(at + 1) : value); mentionStart.current = -1; composer.current?.focus()
+    activeReference.current = referenceKey(next); setReference(next); setReferenceMeta(meta); setGuide(savedGuide(next) || savedGuides(next)[0] || null); setCachedGuides(savedGuides(next)); setPicking(false); setError(''); const at = mentionStart.current; setDraft(value => at >= 0 && value[at] === '@' ? value.slice(0, at) + value.slice(at + 1) : value); mentionStart.current = -1; composer.current?.focus()
   }
   const waiting = busy || messages.some(m => m.state === 'processing')
   if (plans) return <CloudPlans ui={ui} onBack={() => setPlans(false)} />
@@ -166,6 +184,9 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
       {referenceId !== referenceKey(refValue) && <button type="button" title={r.current} aria-label={r.current} onClick={() => onRead(context.paragraph, refValue)}><BookOpen size={16} /></button>}
       <button type="button" aria-label={t.refresh} title={t.refresh} disabled={waiting || !user} onClick={() => { if (tab === 'chat') void refresh().catch(fail); else buildGuide() }}><RefreshCw size={16} /></button>
     </div>
+    {tab !== 'chat' && artifacts.length > 0 && <div className="book-artifact-picker"><label><span>{t.savedGuides}</span><select aria-label={t.savedGuides} value={guide?.key || ''} onChange={e => { const selected = artifacts.find(g => g.key === e.target.value); if (selected) selectGuide(selected) }}>
+      {artifacts.map((g, i) => <option key={g.key} value={g.key}>{g.title || g.reference.id} · {g.coverage.scope === 'book' ? r.whole : `${r.chapter} ${g.reference.chapter + 1} · ${r.paragraph} ${g.reference.paragraph + 1}`} · {i + 1}</option>)}
+    </select></label></div>}
     {user?.kind === 'demo' && <DemoNotice ui={ui} />}
     <section className="agent-conversation">
       <div className="agent-history">
@@ -188,8 +209,9 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
                 {m.reference && <button type="button" className="agent-message-reference" onClick={() => onRead(m.reference!.paragraph, m.reference, m.reference?.quote)}><BookOpen size={13} /><span>{m.referenceTitle || m.bookResponse?.title || m.reference.id} · {r.chapter} {m.reference.chapter + 1} · {r.paragraph} {m.reference.paragraph + 1}</span></button>}
                 <div className="agent-answer">{m.answer ? <>
                   <DocumentContent text={m.answer} preparing={a.preparing} failed={a.renderFailed} />
+                  {m.bookResponse?.knowledge && m.bookResponse.knowledge !== 'passages' && <p className="guide-uncertain">{t.background}</p>}
                   {m.bookResponse && <PassageEvidence citations={m.bookResponse.citations} ui={ui} onRead={(paragraph, citation) => onRead(paragraph, { ...m.bookResponse!.reference, ...(citation?.chapter !== undefined ? { chapter: citation.chapter, file: citation.file! } : {}) }, citation?.quote)} />}
-                  {m.kind === 'guide' && m.bookResponse && <button type="button" onClick={() => setTab('people')}><Users size={16} />{t.people} · {t.places} · {t.timeline}</button>}
+                  {m.kind === 'guide' && m.bookResponse && <button type="button" onClick={() => { selectGuide(m.bookResponse!); setTab('people') }}><Users size={16} />{t.people} · {t.places} · {t.timeline}</button>}
                   <div className="agent-answer-tools"><small title={a.ai}>Bunko · AI</small><button type="button" className="agent-report" onClick={() => { setReason(''); setReport(m) }}>{a.report}</button></div>
                 </> : <p role="status">{m.error || (m.state === 'processing' ? t.generating : a.interrupted)}</p>}</div>
               </article>)}

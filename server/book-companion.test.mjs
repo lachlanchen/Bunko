@@ -140,7 +140,7 @@ test('public guides reuse processing and allowance across accounts without shari
   assert.equal(cloud.usage(cloudOwner({ id: 2 })).usedAgentTurns, 0)
   assert.equal((await call('messages', { book: ref }, { id: 2 })).messages.length, 1)
   assert.equal((await call('messages', {})).messages.length, 0)
-  assert.equal((await call('messages', { book: { ...ref, paragraph: 0 } })).messages.length, 0)
+  assert.equal((await call('messages', { book: { ...ref, paragraph: 0 } })).messages.length, 1)
   await call('send', { ...input('private'), kind: 'answer', text: 'My private question about Ada' })
   const third = await call('send', input('three'), { id: 3 })
   assert.equal(third.bookResponse.reused, true)
@@ -195,4 +195,55 @@ test('deleted conversation cannot return after a provider answer, nor consume an
   assert.equal((await pending).state, 'failed')
   assert.equal((await call('messages', { book: ref })).messages.length, 0)
   assert.equal(cloud.usage(cloudOwner({ id: 1 })).usedAgentTurns, 0)
+})
+
+test('broader book knowledge is useful without fabricating passage evidence', async () => {
+  const context = await bookContext(ref, read)
+  const answer = validateBookResponse({ answer: 'From broader knowledge of this book: Ada and Ben are siblings.', knowledge: 'background', citations: [] }, context, 'answer')
+  assert.equal(answer.knowledge, 'background'); assert.equal(answer.insufficient, false)
+  const value = guide()
+  for (const field of ['people','relationships','places','routes','events']) for (const entry of value[field]) { entry.certainty = 'background'; entry.citations = [] }
+  value.citations = []; value.knowledge = 'background'
+  const result = validateBookResponse(value, context, 'guide')
+  assert.equal(result.people.length, 2); assert.equal(result.routes.length, 1); assert.equal(result.events.length, 2)
+  value.people[0].citations = [{ passage: 'P1', quote: 'fabricated line' }]
+  assert.throws(() => validateBookResponse(value, context, 'guide'), /quotation/)
+  value.people[0].citations = []; value.people[0].certainty = 'stated'
+  assert.throws(() => validateBookResponse(value, context, 'guide'), /verifiable/)
+})
+test('whole-book samples always include the actual current reading chapter and passage', async () => {
+  const chapters = Array.from({ length: 40 }, (_, i) => ({ file: `c${i+1}.json`, title: { en: `Chapter ${i+1}` } }))
+  let reads = 0
+  const source = async path => {
+    if (path.endsWith('reader-index.json')) return read(path)
+    if (path.endsWith('meta.json')) return { body: Buffer.from(JSON.stringify({ ...files[`books/${ref.id}/meta.json`], chapters })) }
+    reads++; return { body: bytes }
+  }
+  const result = await bookContext({ ...ref, chapter: 17, file: 'c18.json', scope: 'book' }, source)
+  assert.equal(reads, 8); assert.ok(result.coverage.chapters.includes(17))
+  assert.ok(result.passages.some(p => p.chapter === 17 && p.paragraph === ref.paragraph))
+})
+test('legacy passage chats migrate per owner; followups retain book memory across reading positions', async t => {
+  const { db, call, prompts } = setup(t)
+  const owner = cloudOwner({ id: 1 })
+  const legacy = { question: 'Earlier private context', answer: 'Earlier answer', kind: 'answer', reference: ref, bookResponse: { reference: ref, answer: 'Earlier answer', revision: 'old-edition' } }
+  db.prepare('INSERT INTO agent_messages VALUES (?,?,?,?,?,?)').run('legacy', owner, `book:${hash(JSON.stringify(ref))}`, 'completed', JSON.stringify(legacy), 1)
+  const resumed = await call('messages', { book: { ...ref, paragraph: 2 } })
+  assert.equal(resumed.messages[0].id, 'legacy')
+  assert.equal((await call('messages', { book: ref }, { id: 2 })).messages.length, 0)
+  await call('send', { ...input('followup', { ...ref, paragraph: 2 }), kind: 'answer', text: 'Explain their relationship across the whole book.' })
+  assert.ok(JSON.stringify(prompts.at(-1).messages).includes('Earlier private context'))
+  assert.match(JSON.stringify(prompts.at(-1).messages), /Do not refuse a whole-book/)
+  assert.equal((await call('messages', { book: { ...ref, replyLanguage: 'ja', paragraph: 0 } })).messages.length, 2)
+  await call('clear', { confirm: 'DELETE' })
+  assert.equal((await call('messages', { book: ref })).messages.length, 0)
+})
+
+test('the structured runner accepts explicitly labeled background answers and guide entries', async t => {
+  const value = guide(); value.knowledge = 'background'; value.citations = []
+  for (const field of ['people','relationships','places','routes','events']) for (const entry of value[field]) { entry.certainty = 'background'; entry.citations = [] }
+  const { call } = setup(t, { provider: async () => ({ choices: [{ message: { content: JSON.stringify(value) } }] }) })
+  const result = await call('send', input('background'))
+  assert.equal(result.state, 'completed'); assert.equal(result.bookResponse.knowledge, 'background')
+  assert.equal(result.bookResponse.relationships[0].certainty, 'background')
 })

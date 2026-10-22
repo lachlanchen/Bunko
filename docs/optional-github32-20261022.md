@@ -28,11 +28,17 @@ stuck showing GitHub alone.
 - 146 client tests (145 full-suite plus one focused connection test) and 137 server tests pass, plus lint and renderer checks.
 - Live password and Google browser round-trips passed; Google retained the
   existing GitHub-created Bunko ID. Central profile refresh also passed.
-- Apple browser verification is pending an interactive password step.
+- Apple accepted the provider sign-in, but the Bunko consent flow expired before
+  completion. A fresh complete app callback remains unqualified.
 - The optional GitHub connection is scoped to the approved qualification owner.
   General provider visibility and linking remain gated during qualification.
-- Build 32 native packaging and internal delivery are in progress. This document
-  does not claim upload, native OAuth return or public review completion.
+- Build 32 (1.0.14) is VALID and IN_BETA_TESTING in the existing iOS/Watch and
+  Mac internal group. Android32 is available to the existing internal testers.
+- The approved password fixture completed the Android system-browser return and
+  restored the same account after a WebView reload. This AVD used the AOSP browser;
+  iOS/Mac provider UI returns and a new real public comment were not tested here.
+- The approved owner completed the optional GitHub connection, retaining their
+  original Bunko ID. No other reader uses that owner's personal identity.
 
 Runtime evidence and credentials remain outside Git. Public release candidates,
 prices, subscriptions and reward policies are unchanged.

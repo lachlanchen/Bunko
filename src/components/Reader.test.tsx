@@ -131,7 +131,7 @@ it('folds translation notes separately and omits missing language rows in paired
   const props = { meta, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs: ['en', 'ja'], layout: 'paired' as const }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
   const { container } = render(<Reader {...props} />)
   await screen.findByText('日本語の原文')
-  const notes = container.querySelector('details')!
+  const notes = container.querySelector<HTMLDetailsElement>('details.passage-notes')!
   expect(notes.open).toBe(false)
   expect(notes.querySelector('summary')?.textContent).toBe('Translation notes')
   expect(notes.querySelectorAll('.para-line')).toHaveLength(1)

@@ -1,5 +1,16 @@
 # Bunko — product brief
 
+## Whole-book knowledge and durable reading companion · 2026-10-22
+
+Allow useful whole-book answers from reliable model knowledge alongside the current
+reading context. Label background claims separately; exact cited quotations remain
+verified. Whole-book references may include later events; ordinary passage questions
+keep their reading boundary. Preserve account-bound conversations across chapters
+and language changes, recover earlier passage threads, and retain generated graphs,
+maps, routes and timelines. Long chapter labels collapse with accessible expansion.
+Deliver the cumulative update through internal build33; preserve public reviews.
+
+
 ## Optional personal GitHub connection · 2026-10-22
 
 Readers may use qualified Google, Apple or LazyingArt sign-in without GitHub.

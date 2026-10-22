@@ -30,16 +30,16 @@ function Connections({ nodes, edges, ui, onRead, kind, guideKey }: { nodes: Guid
     {kind === 'places' && geographic ? <Suspense fallback={<p role="status">{t.generating}</p>}><GuideMap nodes={nodes} edges={edges} guideKey={guideKey} ui={ui} onSelect={select} onEdge={selectEdge} selectedEdge={edgeIndex} /></Suspense>
       : <GuideGraph nodes={nodes} edges={edges} ui={ui} selected={focused} onSelect={select} onEdge={selectEdge} label={kind === 'places' ? t.schematic : t.people} />}
     <div ref={details} className="guide-details-panel">
-      {edge && <article className="guide-connection selected" aria-live="polite"><h3><bdi>{nodes.find(n => n.id === edge.from)?.name}</bdi><span aria-hidden="true">{edge.direction === 'forward' ? '→' : '↔'}</span><bdi>{nodes.find(n => n.id === edge.to)?.name}</bdi></h3><p dir="auto">{edge.label}</p><PassageEvidence citations={edge.citations} ui={ui} onRead={onRead} /></article>}
+      {edge && <article className="guide-connection selected" aria-live="polite"><h3><bdi>{nodes.find(n => n.id === edge.from)?.name}</bdi><span aria-hidden="true">{edge.direction === 'forward' ? '→' : '↔'}</span><bdi>{nodes.find(n => n.id === edge.to)?.name}</bdi></h3><p dir="auto">{edge.label}</p>{edge.certainty !== 'stated' && <span className="guide-uncertain">{edge.certainty === 'background' ? t.background : t.interpretation}</span>}<PassageEvidence citations={edge.citations} ui={ui} onRead={onRead} /></article>}
       <div className="guide-entity-grid">{shown.map(node => <article key={node.id} className="guide-card">
         <h2 dir="auto">{node.name}</h2>{!!node.aliases.length && <p className="guide-aliases" dir="auto">{node.aliases.join(' · ')}</p>}
-        <p dir="auto">{node.detail}</p>{node.certainty === 'interpretation' && <span className="guide-uncertain">{t.interpretation}</span>}
+        <p dir="auto">{node.detail}</p>{node.certainty !== 'stated' && <span className="guide-uncertain">{node.certainty === 'background' ? t.background : t.interpretation}</span>}
         <PassageEvidence citations={node.citations} ui={ui} onRead={onRead} />
       </article>)}</div>
       {edges.length > 0 && <details className="guide-connection-list" open={!!selected}><summary>{v.list} · {edges.filter(e => !selected || e.from === selected.id || e.to === selected.id).length} {v.connections}</summary>
         {edges.filter(e => !selected || e.from === selected.id || e.to === selected.id).map((item, i) => <article key={i} className="guide-connection">
           <h3><bdi>{nodes.find(n => n.id === item.from)?.name}</bdi><span aria-hidden="true">{item.direction === 'forward' ? '→' : '↔'}</span><bdi>{nodes.find(n => n.id === item.to)?.name}</bdi></h3>
-          <p dir="auto">{item.label}</p>{item.certainty === 'interpretation' && <span className="guide-uncertain">{t.interpretation}</span>}<PassageEvidence citations={item.citations} ui={ui} onRead={onRead} />
+          <p dir="auto">{item.label}</p>{item.certainty !== 'stated' && <span className="guide-uncertain">{item.certainty === 'background' ? t.background : t.interpretation}</span>}<PassageEvidence citations={item.citations} ui={ui} onRead={onRead} />
         </article>)}
       </details>}
     </div>
@@ -52,6 +52,6 @@ export function BookGuide({ guide, tab, ui, onRead }: { guide: BookResponse; tab
     <p className="guide-coverage">{guide.coverage.scope === 'book' ? `${v.overview}${guide.coverage.chapters?.length ? ` · ${v.chapters} ${guide.coverage.chapters.map(c => c + 1).join(', ')}` : ''}` : `${t.coverage} ${guide.coverage.first + 1}–${guide.coverage.last + 1}`}{guide.coverage.partial ? ` · ${v.partial}` : ''}</p>
     {!entries?.length ? <p className="guide-empty">{t.empty}</p> : tab === 'timeline' ? <GuideTimeline key={guide.key} events={guide.events || []} ui={ui} onRead={onRead} />
       : <Connections key={`${guide.key}:${tab}`} nodes={guide[tab] || []} edges={(tab === 'people' ? guide.relationships : guide.routes) || []} kind={tab} guideKey={guide.key} ui={ui} onRead={onRead} />}
-    <p className="guide-caption">{t.ai}</p>
+    {guide.knowledge && guide.knowledge !== 'passages' && <p className="guide-uncertain">{t.background}</p>}<p className="guide-caption">{t.ai}</p>
   </section>
 }

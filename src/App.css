@@ -386,3 +386,18 @@ input[type='range'] { width: 100%; accent-color: var(--indigo); }
 
 /* Each safe-area edge is independent, including landscape and narrow panes. */
 .selection-tools, .selection-hint, .reading-panel header, .reading-panel-body { padding-left: max(18px, var(--safe-left)); padding-right: max(18px, var(--safe-right)); }
+
+/* Long chapter names keep the index compact; the adjacent disclosure preserves the full title. */
+.chapter-row { display: flex; align-items: flex-start; min-width: 0; }
+.chapter-row > button:first-child { flex: 1; min-width: 0; }
+.chapter-row .chapter-title { min-width: 0; overflow: hidden; }
+.chapter-row .chapter-title bdi,.chapter-row .chapter-title small { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; }
+.chapter-row.expanded .chapter-title bdi,.chapter-row.expanded .chapter-title small { -webkit-line-clamp: unset; }
+.chapter-row .chapter-expand { flex: 0 0 36px; width: 36px; min-height: 44px; justify-content: center; align-items: center; padding: 12px 4px; }
+.chapter-expand[aria-expanded=true] svg { transform: rotate(180deg); }
+.reader-chapter-title { margin: 0 0 1em; }
+.reader-chapter-title summary { cursor: pointer; list-style: none; position: relative; padding-inline-end: 20px; }
+.reader-chapter-title summary::after { content: '⌄'; position: absolute; inset-inline-end: 0; top: .4em; color: var(--ink-soft); font: 16px/1 sans-serif; }
+.reader-chapter-title summary::-webkit-details-marker { display: none; }
+.reader-chapter-title:not([open]) h1 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.reader-chapter-title[open] summary::after { transform: rotate(180deg); }

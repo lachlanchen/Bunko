@@ -5,12 +5,12 @@ const string = maxLength => ({ type: 'string', maxLength })
 const array = (items, maxItems) => ({ type: 'array', items, maxItems })
 const object = (properties, required = Object.keys(properties)) => ({ type: 'object', properties, required, additionalProperties: false })
 const citations = array(object({ passage: string(40), quote: string(600) }), 5)
-const certainty = { type: 'string', enum: ['stated', 'interpretation'], maxLength: 20 }
+const certainty = { type: 'string', enum: ['stated', 'interpretation', 'background'], maxLength: 20 }
 const entity = object({ id: string(40), name: string(120), detail: string(600), aliases: array(string(120), 6), certainty, citations }, ['id', 'name', 'detail', 'citations'])
 const edge = object({ from: string(120), to: string(120), label: string(160), direction: { type: 'string', enum: ['forward', 'mutual'], maxLength: 10 }, certainty, citations }, ['from', 'to', 'label', 'citations'])
 const event = object({ title: string(160), when: string(120), detail: string(600), certainty, citations }, ['title', 'detail', 'citations'])
 const guideFields = { people: array(entity, 32), relationships: array(edge, 64), places: array(entity, 24), routes: array(edge, 32), events: array(event, 48) }
-export const answerSchema = object({ answer: string(20000), insufficient: { type: 'boolean' }, citations, ...guideFields }, ['answer', 'citations'])
+export const answerSchema = object({ answer: string(20000), knowledge: { type: 'string', enum: ['passages', 'background', 'mixed'], maxLength: 20 }, insufficient: { type: 'boolean' }, citations, ...guideFields }, ['answer', 'citations'])
 export const guideSchema = object(answerSchema.properties, ['answer', 'citations', 'people', 'relationships', 'places', 'routes', 'events'])
 
 /** The app retrieves the authorized public passages deterministically, then uses
@@ -19,7 +19,7 @@ export const guideSchema = object(answerSchema.properties, ['answer', 'citations
  * The generic Lite tool loop is available for future qualified read-only tools.
  */
 export async function runStructuredReading({ messages, kind, complete, url, timeoutMs, maxTokens, onContent = () => {}, signal }) {
-  let transportError
+  let transportError, repairHint
   const runner = createRestrictedApplicationRunner({
     instructions: 'Bunko supplies a scoped reading transcript as data. Return a structured reading proposal. The host verifies every source citation before saving or displaying it.',
     tools: [],
@@ -37,9 +37,14 @@ export async function runStructuredReading({ messages, kind, complete, url, time
       const content = response.choices?.[0]?.message?.content
       onContent(typeof content === 'string' ? content.slice(0, 40000) : '')
       let value = {}
+      if (response.choices?.[0]?.finish_reason === 'length') repairHint = kind === 'answer' ? 'Output was truncated. Return ONLY answer, knowledge, insufficient and citations. Keep answer under 700 words; omit all guide arrays and the type field.' : 'Output was truncated. Return a compact complete guide: at most 16 people, 24 relationships, 10 places, 8 routes, 16 events, one short quote per entry and a short summary.'
       if (response.choices?.[0]?.finish_reason !== 'length' && !response.choices?.[0]?.message?.refusal) {
         try { value = JSON.parse(content) } catch { /* Schema rejection triggers the app's single bounded repair. */ }
       }
+      const oversized = Object.entries((kind === 'guide' ? guideSchema : answerSchema).properties)
+        .filter(([key, schema]) => schema.type === 'array' && Array.isArray(value[key]) && value[key].length > schema.maxItems)
+        .map(([key, schema]) => `${key}: received ${value[key].length}, maximum ${schema.maxItems}`)
+      if (oversized.length) repairHint = oversized.join('; ') + '. Reduce the arrays and retain only edges whose endpoints remain.'
       return { type: 'final', value }
     } },
   })
@@ -51,7 +56,7 @@ export async function runStructuredReading({ messages, kind, complete, url, time
   catch (error) {
     if (transportError instanceof AppError) throw transportError
     if (error instanceof RestrictedApplicationError && error.code === 'OUTPUT_INVALID') {
-      throw Object.assign(new AppError('The reading guide was incomplete. Please retry.', 502), { repairable: true })
+      throw Object.assign(new AppError('The reading guide was incomplete. Please retry.', 502), { repairable: true, ...(repairHint ? { repairDetails: repairHint } : {}) })
     }
     if (error instanceof RestrictedApplicationError && error.code === 'SENSITIVE_DATA') throw new AppError('Remove passwords or secret keys before sending this question.')
     if (error instanceof RestrictedApplicationError && ['CONTEXT_LIMIT', 'DATA_LIMIT', 'INVALID_INPUT'].includes(error.code)) throw new AppError('Choose a smaller reading selection.', 413)

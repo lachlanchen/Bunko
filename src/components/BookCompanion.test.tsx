@@ -80,11 +80,11 @@ it('offline public guide remains readable while private drafts are account-separ
   expect(screen.getByRole('heading', { name: 'Ada' })).toBeInTheDocument()
   expect(screen.getByRole('button', { name: 'Check for updates' })).toBeDisabled()
 })
-it('online revalidation removes a cached guide for an obsolete edition without generating', async () => {
+it('a cache miss at a new passage preserves saved artifacts without generating', async () => {
   saveGuide(reference, guide); open()
   fireEvent.click(screen.getByRole('button', { name: 'People' }))
-  await screen.findByRole('button', { name: 'Build reading guide' })
-  expect(savedGuide(reference)).toBeNull()
+  await screen.findByRole('heading', { name: 'Ada' })
+  expect(savedGuide(reference)?.key).toBe(guide.key)
   expect(fixture.call.mock.calls.some(c => c[0] === 'send')).toBe(false)
 })
 it('a slow initial history response cannot erase a question sent while it loads', async () => {
@@ -125,4 +125,26 @@ it('@ selects a compact reference without replacing the chat and survives a sour
   const send = fixture.call.mock.calls.find(c => c[0] === 'send')![1]
   expect(send.book).toEqual(reference)
   expect(send.reference).toEqual({ ...reference, scope: 'paragraph' })
+})
+
+it('reopening at another passage retains book drafts and saved artifacts with exact source navigation', async () => {
+  saveGuide(reference, guide)
+  const read = vi.fn(), props = { ui: 'en' as const, onRead: read, onBack() {}, onGeneral() {} }
+  const view = render(<BookCompanion context={context} {...props} />)
+  await waitFor(() => expect(fixture.call).toHaveBeenCalled())
+  fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Keep my book question' } })
+  view.rerender(<BookCompanion context={{ ...context, paragraph: 2 }} {...props} />)
+  expect(screen.getByRole('textbox')).toHaveValue('Keep my book question')
+  fireEvent.click(screen.getByRole('button', { name: 'People' }))
+  expect(screen.getByRole('heading', { name: 'Ada' })).toBeInTheDocument()
+  expect(screen.getByRole('combobox', { name: 'Saved guides' })).toHaveValue(guide.key)
+})
+it('opening an older guide in chat selects that artifact rather than the latest one', async () => {
+  const older = { ...guide, key: 'older', people: [{ ...guide.people![0], name: 'Earlier Ada', level: 2 }] }
+  const newer = { ...guide, key: 'newer', people: [{ ...guide.people![0], name: 'Later Ada' }] }
+  fixture.call.mockResolvedValue({ messages: [older, newer].map((g, i) => ({ id: String(i), state: 'completed', kind: 'guide', question: `Guide ${i}`, answer: g.answer, papers: [], bookResponse: g })), guide: newer })
+  open(); await screen.findByText('Guide 0')
+  fireEvent.click(screen.getAllByRole('button', { name: 'People · Places · Timeline' })[0])
+  expect(screen.getByRole('heading', { name: 'Earlier Ada', level: 2 })).toBeInTheDocument()
+  expect(screen.getByRole('combobox', { name: 'Saved guides' })).toHaveValue('older')
 })

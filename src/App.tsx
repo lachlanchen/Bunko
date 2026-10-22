@@ -1,10 +1,11 @@
+import { ChapterRow } from './components/ChapterRow'
 import {bookIdFromLink} from './lib/bookLink'
 import {observeForegroundUse} from './lib/activityRewards'
 import {App as CapacitorApp} from '@capacitor/app'
 import {Capacitor} from '@capacitor/core'
 import {ReadingShare} from './components/ReadingShare'
 import {SharedAccount} from './components/SharedAccount'
-import { baseLanguage, htmlLanguage, languageDirection } from './lib/languages'
+import { htmlLanguage, languageDirection } from './lib/languages'
 import { BUNKO_LEGAL_API } from './lib/serviceOrigins'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Paperclip as PaperclipIcon, Sparkles, BookOpen, Check, Download, Settings, RefreshCw, Search, Trash2 } from 'lucide-react'
@@ -359,22 +360,7 @@ export default function App() {
           <Sheet title={copy.chapterList} onClose={() => setShowChapters(false)} closeLabel={copy.close}>
             <ol className="chapter-list">
               {meta.chapters.map((chapter, position) => (
-                <li key={chapter.file}>
-                  <button
-                    type="button"
-                    className={position === chapterIndex ? 'active' : ''}
-                    onClick={() => {
-                      goToChapter(position)
-                      setShowChapters(false)
-                    }}
-                  >
-                    <span className="chapter-n">{chapter.n}</span>
-                    <span className="chapter-title">
-                      <bdi lang={htmlLanguage(meta.primary)} dir={languageDirection(meta.primary)}>{chapter.title[meta.primary] ?? Object.values(chapter.title)[0] ?? ''}</bdi>
-                      {Object.entries(chapter.title).filter(([lang]) => lang !== meta.primary && baseLanguage(lang) === baseLanguage(ui)).slice(0, 1).map(([lang, title]) => <small key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>{title}</small>)}
-                    </span>
-                  </button>
-                </li>
+                <ChapterRow key={chapter.file} chapter={chapter} primary={meta.primary} ui={ui} active={position === chapterIndex} onRead={() => { goToChapter(position); setShowChapters(false) }} />
               ))}
             </ol>
           </Sheet>
@@ -469,21 +455,7 @@ export default function App() {
             <TranslationRequest key={meta.id} ui={ui} book={meta} onRead={readAvailableTranslation} />
             <ol className="chapter-list flat">
               {meta.chapters.map((chapter, position) => (
-                <li key={chapter.file}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      goToChapter(position)
-                      setView('reader')
-                    }}
-                  >
-                    <span className="chapter-n">{chapter.n}</span>
-                    <span className="chapter-title">
-                      <bdi lang={htmlLanguage(meta.primary)} dir={languageDirection(meta.primary)}>{chapter.title[meta.primary] ?? Object.values(chapter.title)[0] ?? ''}</bdi>
-                      {Object.entries(chapter.title).filter(([lang]) => lang !== meta.primary && baseLanguage(lang) === baseLanguage(ui)).slice(0, 1).map(([lang, title]) => <small key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>{title}</small>)}
-                    </span>
-                  </button>
-                </li>
+                <ChapterRow key={chapter.file} chapter={chapter} primary={meta.primary} ui={ui} onRead={() => { goToChapter(position); setView('reader') }} />
               ))}
             </ol>
           </>

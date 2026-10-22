@@ -68,3 +68,11 @@
 
 .book-companion .agent-message-reference { display: flex; margin: -8px 0 12px auto; max-width: 85%; border: 0; padding: 4px 8px; min-height: 32px; font-size: 11px; color: var(--ink-soft); }
 .agent-message-reference span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.book-artifact-picker { width: 100%; max-width: 850px; margin: 2px auto 6px; min-width: 0; flex-shrink: 0; }
+.book-artifact-picker label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-soft); }
+.book-artifact-picker label > span { flex-shrink: 0; }
+.book-artifact-picker select { min-width: 0; width: 100%; max-width: 100%; padding: 7px 9px; color: var(--ink); background: var(--paper-raised); border: 1px solid var(--line); border-radius: 9px; text-overflow: ellipsis; }
+.book-reference-picker select { text-overflow: ellipsis; }
+.reference-title-details { min-width: 0; font-size: 13px; }
+.reference-title-details summary { color: var(--ink-soft); cursor: pointer; }
+.reference-title-details p { margin: 6px 0; overflow-wrap: anywhere; }

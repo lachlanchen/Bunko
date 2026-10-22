@@ -20,7 +20,7 @@ Bunko brings public-domain classics and rights-cleared original books to one mul
 
 ## Preview: a companion beside the book
 
-The next test update builds on automatic book context, compact @ references to books, chapters and passages, and links back to the exact text. Explore character relationships as graphs or trees, place names on an offline geographic map, and events on a dated timeline. Each guide keeps its supporting passages accessible.
+The next test update builds on automatic book context, compact @ references to books, chapters and passages, and links back to the exact text. Explore character relationships as graphs or trees, place names on an offline geographic map, and events on a dated timeline. Each guide keeps its supporting passages accessible. Book conversations follow you across chapters, and saved guides can be reopened from a compact picker. Whole-book questions can draw on broader book knowledge, clearly labelled separately from verified passages.
 
 **Test preview, not a public-release announcement.** Guides cover selected or sampled excerpts and may be incomplete. Uncertain places and dates remain explicit. The images below are actual component captures; the map and timeline use a labelled demonstration journey. [Preview details](docs/reading-guides-preview.md).
 
