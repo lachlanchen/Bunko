@@ -119,5 +119,124 @@
   },
   "publicReviewSubmitted": false,
   "storeScreenshotsUploaded": false,
-  "nativeDelivery": "pending"
+  "nativeDelivery": {
+    "android36": "available internally; superseded by candidate37 correction",
+    "apple36": "closed unused; never staged"
+  },
+  "realBookVisuals": {
+    "at": "2026-10-22T22:37:25.348Z",
+    "kind": "Current component displaying actual isolated-provider public-book results; mocked history transport, no customer data",
+    "captures": [
+      {
+        "file": "real-phone-people.png",
+        "sha256": "bf48cc21eb96b2cc783b29649c6e7fbdd1c9f609b4dbdbf3278c0ac3c05c57b0"
+      },
+      {
+        "file": "real-phone-timeline.png",
+        "sha256": "7571e29de006c0cfbdb4fd6861d8dab49c82dcb46f00b04ee11ec5fbe4224073"
+      },
+      {
+        "file": "real-desktop-people.png",
+        "sha256": "d753771779b52b1a86b7062767468a11536700e52be51f53dd41135a920c64df"
+      },
+      {
+        "file": "real-desktop-timeline.png",
+        "sha256": "737311461a4131f42b21d68ed6eb20d42a381124c13db37e653b36106b5251b5"
+      }
+    ],
+    "sharedComposer": true,
+    "branchParents": true,
+    "scopePreserved": true,
+    "noAutomaticGeneration": true,
+    "cleanup": true
+  },
+  "androidInstalled": {
+    "at": 1792708403.9060345,
+    "build": 36,
+    "platform": "Android API34 installed Debug",
+    "account": "guest",
+    "publicBook": "adler-what-life-should-mean-to-you",
+    "tabs": [
+      {
+        "tab": "chat",
+        "width": 390,
+        "scroll": 390,
+        "composerCount": 1,
+        "bottom": 757,
+        "height": 772,
+        "reference": "What Life Should Mean to You \u00b7 Whole book"
+      },
+      {
+        "tab": "people",
+        "width": 390,
+        "scroll": 390,
+        "composerCount": 1,
+        "bottom": 757,
+        "height": 772,
+        "reference": "What Life Should Mean to You \u00b7 Whole book"
+      },
+      {
+        "tab": "places",
+        "width": 390,
+        "scroll": 390,
+        "composerCount": 1,
+        "bottom": 757,
+        "height": 772,
+        "reference": "What Life Should Mean to You \u00b7 Whole book"
+      },
+      {
+        "tab": "timeline",
+        "width": 390,
+        "scroll": 390,
+        "composerCount": 1,
+        "bottom": 757,
+        "height": 772,
+        "reference": "What Life Should Mean to You \u00b7 Whole book"
+      }
+    ],
+    "readerReturn": true,
+    "scopeRestored": true,
+    "crashLogClean": true,
+    "authenticatedProviderTest": false
+  },
+  "backend": {
+    "at": "2026-10-22T22:34:21.419025+00:00",
+    "source": "5fdf0d8ec94b18962d019c54e6e4a4ab02ba782f",
+    "hashes": {
+      "agent/book-companion.mjs": "a897067ad4f38ff963f36b748e85dd8189695ef35eab876f2358a50696803774",
+      "agent/structured-task.mjs": "2746854f77d5af8d489d1f6ecfa461e48e32d113021abd687d99f15b6aa7ce71",
+      "agent/book-memory.mjs": "c8170b48b57eccbf738fcafdd6777139d4b56cfc359f8abdf72fac54a49b919d",
+      "agent/book-relevance.mjs": "bfe2b9798f18feb9665b3e4e217fcff0bb962a7b25d5619afe16ff174175dcd9"
+    },
+    "health": true,
+    "configUnchanged": true,
+    "publicChecks": [
+      {
+        "host": "bunko.lazying.art",
+        "health": 200,
+        "ready": true,
+        "missingOrigin": 403,
+        "anonymousClient": 401
+      },
+      {
+        "host": "llm.lazying.art",
+        "health": 200,
+        "ready": true,
+        "missingOrigin": 403,
+        "anonymousClient": 401
+      }
+    ],
+    "actualHostProvider": {
+      "pass": true,
+      "state": "completed",
+      "calls": 2,
+      "elapsedMs": 10665,
+      "events": 9,
+      "isolatedDatabase": true,
+      "seededAncestors": 2,
+      "oneActualProviderFollowup": true,
+      "reopenWithoutGeneration": true,
+      "otherAccountEmpty": true
+    }
+  }
 }

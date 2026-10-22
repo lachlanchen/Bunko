@@ -1,0 +1,86 @@
+{
+  "version": "1.0.14",
+  "build": 37,
+  "priorFeatureQualification": "reading-workspace36-qualification.json",
+  "correction": "Displayed artifact from another branch uses its own history; inherited artifact keeps newer prose",
+  "clientTests": 162,
+  "serverTests": 149,
+  "providerBackendUnchanged": true,
+  "browser": {
+    "at": "2026-10-22T22:41:36.671Z",
+    "kind": "Current component; fictional public preview book and mocked transport; local browser interaction evidence",
+    "captures": [
+      {
+        "file": "phone-ask.png",
+        "sha256": "98929fa67ab00e810babcb5b2dc31702e5e3025768fbd7479128a92020e224e6"
+      },
+      {
+        "file": "phone-people.png",
+        "sha256": "e2132258aef7a2d5bd4f30f661e408c82c4fe856b18f753869c874f62c999a8a"
+      },
+      {
+        "file": "phone-places.png",
+        "sha256": "eda00c6eb97adf6d4cf8fd21ae27dff7c4498a2b4506296052258f36c58b424e"
+      },
+      {
+        "file": "phone-timeline.png",
+        "sha256": "f34c5e143a6cfd905589c500f5edb5fa6053027b817ad3920669685ac0f977c4"
+      },
+      {
+        "file": "desktop-ask.png",
+        "sha256": "0092442d462b7ab7d587d462710969e6860748e40a01dced71c2ba7b9e602d5c"
+      },
+      {
+        "file": "desktop-people.png",
+        "sha256": "92b734f27934d5ae3fd1ed1d5af179d14a51003f40b7efc3c4283096ac1f6e0a"
+      },
+      {
+        "file": "desktop-places.png",
+        "sha256": "1cec942d63afd8f426991df544f2deae120bb963913c4d62b951b2a0a062776f"
+      },
+      {
+        "file": "desktop-timeline.png",
+        "sha256": "8795978c1c0b44cc61f889d670367e3bbc53e2ad0e3884871d8a3a95ee4b0060"
+      },
+      {
+        "file": "compact-night-ask.png",
+        "sha256": "62db30e497297f5606cb891f23cf13fb7845e3d71556404554582bb9ceaae2c8"
+      },
+      {
+        "file": "compact-night-people.png",
+        "sha256": "01d7bf470bd915aaef0bbacb651fccd099df5d17df97b54148f0c7f36dfd9106"
+      },
+      {
+        "file": "compact-night-places.png",
+        "sha256": "8c65f0db9b406883d44af5544e6df61449bf5375aa9a1b8bdffdbbbb0b46dcd8"
+      },
+      {
+        "file": "compact-night-timeline.png",
+        "sha256": "8ff441e117ff3cb13af4a68dd410050abce5c3228ffbb7fc28089a77a30d2c6f"
+      },
+      {
+        "file": "keyboard-large-ask.png",
+        "sha256": "827e94af6cac5c0b5e59904f7d3a742aaf3832653e571fc17aeb8b0fc67ec946"
+      },
+      {
+        "file": "keyboard-large-people.png",
+        "sha256": "05dec73d2f517c944772733431c383f83e622e48d8265a32edac1246eb8c8574"
+      },
+      {
+        "file": "keyboard-large-places.png",
+        "sha256": "3ad8a370110a59a34e8dfc337eecf0455923c29d1f9603b77423ebc6f1a2e737"
+      },
+      {
+        "file": "keyboard-large-timeline.png",
+        "sha256": "9a6b86079920d50c1ec1bfb9977656ae0dd41e4ad92abe8ce4a6b29f906cb0c0"
+      }
+    ],
+    "sharedComposer": true,
+    "branchParents": true,
+    "scopePreserved": true,
+    "noAutomaticGeneration": true,
+    "cleanup": true
+  },
+  "nativeDelivery": "pending",
+  "publicReviewSubmitted": false
+}

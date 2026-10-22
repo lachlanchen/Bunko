@@ -5,7 +5,7 @@ import { ArrowDown, AtSign, ArrowLeft, ArrowUp, BookOpen, CornerDownRight, Ellip
 import type { UILanguage } from '../i18n'
 import { currentUser, DiscussionError, requestId, restoreSession, signIn, subscribeSession } from '../lib/discussions'
 import { initialModelPolicy, type ModelPolicy, agentCall } from '../lib/documentAgent'
-import { companionReference, referenceKey, savedGuide, savedGuides, saveGuide, forgetGuide, readingResults, closestReadingResult, hasReadingView, type BookCompanionContext, type BookMessage, type BookReference, type BookResponse } from '../lib/bookCompanion'
+import { companionReference, referenceKey, savedGuide, savedGuides, saveGuide, forgetGuide, readingResults, closestReadingResult, readingContinuation, hasReadingView, type BookCompanionContext, type BookMessage, type BookReference, type BookResponse } from '../lib/bookCompanion'
 import { useBackAction } from '../lib/backNavigation'
 import { agentCopy } from './agentCopy'
 import { bookCompanionCopy } from './bookCompanionCopy'
@@ -58,7 +58,7 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
   const guide = viewResult?.guide || null
   // Tabs inherit visuals from earlier turns, but a follow-up keeps the selected
   // conversation tip, including newer answers that did not redraw that view.
-  const continuing = newTopic ? undefined : conversationResult
+  const continuing = newTopic ? undefined : readingContinuation(results, conversationResult, viewResult)
   const artifacts = results.filter(row => row.guide.reference.id === reference.id && hasReadingView(row.guide, tab))
   const draftKey = `bunko-book-draft-v2:${user?.id || 'guest'}:${refValue.id}`
   const [draft, setDraft] = useState(() => { try { return sessionStorage.getItem(draftKey) || sessionStorage.getItem(`bunko-book-draft:${user?.id || 'guest'}:${referenceKey(refValue)}`) || '' } catch { return '' } })

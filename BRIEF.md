@@ -9,7 +9,7 @@ independent of whole-book or selected-passage questions. Opening or refreshing a
 view never triggers generation. Personal results remain private; canonical fixed
 guides retain their existing public cache. Improve graph focus, stable colors,
 rounded links and expandable timelines with restored view state. Accumulate this
-round in internal build36; public reviews and identity/billing remain unchanged.
+round in internal build37; public reviews and identity/billing remain unchanged.
 
 ## Reading response recovery · 2026-10-23
 

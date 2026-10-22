@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { beforeEach, expect, it } from 'vitest'
-import { closestReadingResult, readingResults, saveGuide, savedGuides, type BookMessage, type BookReference, type BookResponse } from './bookCompanion'
+import { closestReadingResult, readingResults, readingContinuation, saveGuide, savedGuides, type BookMessage, type BookReference, type BookResponse } from './bookCompanion'
 const reference: BookReference = { id: 'garden', file: 'c1.json', chapter: 0, paragraph: 5, language: 'en', replyLanguage: 'en', scope: 'passage' }
 const result = (key: string, ref = reference, extra: Partial<BookResponse> = {}): BookResponse => ({ key, revision: 'edition', reference: ref, answer: key, citations: [], insufficient: false, coverage: { chapter: ref.chapter, first: 0, last: ref.paragraph, total: 50, partial: false, scope: ref.scope, language: 'en' }, ...extra })
 const message = (id: string, guide: BookResponse, parentId?: string): BookMessage => ({ id, state: 'completed', question: id, answer: guide.answer, papers: [], kind: 'explore', bookResponse: guide, parentId })
@@ -24,6 +24,9 @@ it('each view inherits its latest result along the selected branch rather than a
   expect(closestReadingResult(rows, reference, 'places', 'timeline')?.guide.key).toBe('root')
   expect(closestReadingResult(rows, reference, 'timeline', 'timeline')?.guide.key).toBe('timeline')
   expect(closestReadingResult(rows, reference, 'chat', 'timeline')?.guide.key).toBe('timeline')
+  const tip = rows.find(row => row.guide.key === 'timeline')!
+  expect(readingContinuation(rows, tip, rows.find(row => row.guide.key === 'people'))?.guide.key).toBe('timeline')
+  expect(readingContinuation(rows, rows.find(row => row.guide.key === 'unrelated'), rows.find(row => row.guide.key === 'people'))?.guide.key).toBe('people')
 })
 it('deduplicated public guides retain ancestor aliases and private results never enter the public cache', () => {
   const publicGuide = result('same', reference, { people: [], places: [] }), personal = result('private', reference, { visibility: 'private', events: [] })

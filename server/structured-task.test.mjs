@@ -22,14 +22,16 @@ test('malformed output is repairable, while secrets are rejected before provider
   assert.equal(calls, 1)
 })
 test('a timed-out provider cannot deliver late success or start a replacement call', async () => {
-  let calls = 0, aborted = false
-  await assert.rejects(runStructuredReading({ kind: 'answer', messages: [{ role: 'user', content: 'Read P1.' }], maxTokens: 1000, timeoutMs: 20,
+  let calls = 0, aborted = false, finish
+  const response = new Promise(resolve => { finish = resolve })
+  await assert.rejects(runStructuredReading({ kind: 'answer', messages: [{ role: 'user', content: 'Read P1.' }], maxTokens: 1000, timeoutMs: 500,
     complete: async (_url, options) => {
       calls++; options.signal.addEventListener('abort', () => { aborted = true })
-      await new Promise(resolve => setTimeout(resolve, 40))
+      await response
       return { choices: [{ message: { content: JSON.stringify(answer) } }] }
     } }), /could not finish/)
-  await new Promise(resolve => setTimeout(resolve, 45))
+  finish()
+  await new Promise(resolve => setImmediate(resolve))
   assert.equal(calls, 1); assert.equal(aborted, true)
 })
 

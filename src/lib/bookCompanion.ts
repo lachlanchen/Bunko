@@ -87,3 +87,19 @@ export function closestReadingResult(results: ReadingResult[], reference: BookRe
   }
   return available.filter(row => hasReadingView(row.guide, view)).sort((a, b) => bookRelevance(a.guide.reference, reference) - bookRelevance(b.guide.reference, reference))[0]
 }
+
+/** Keep newer prose on the same branch, but follow a displayed saved diagram
+ * from another branch from its own context, never an unrelated conversation. */
+export function readingContinuation(results: ReadingResult[], tip?: ReadingResult, displayed?: ReadingResult): ReadingResult | undefined {
+  if (!displayed || !tip) return tip || displayed
+  const seen = new Set<string>()
+  let cursor: ReadingResult | undefined = tip
+  while (cursor && !seen.has(cursor.guide.key)) {
+    if (cursor.guide.key === displayed.guide.key) return tip
+    seen.add(cursor.guide.key)
+    const parent: string | null | undefined = cursor.message?.parentId || cursor.guide.parentId
+    const base: string | undefined = cursor.message?.baseGuide?.key
+    cursor = parent ? results.find(row => row.messageIds?.includes(parent)) : base ? results.find(row => row.guide.key === base) : undefined
+  }
+  return displayed
+}

@@ -47,3 +47,36 @@ claim of a native purchase or physical iOS/Mac test.
 Build36 is the cumulative internal candidate. Final provider processing and
 tester availability are recorded separately after delivery. No public review,
 provider activation, subscription or reward change is part of this update.
+
+## Verified source and backend
+
+Source5fdf0d8 passes162 client tests,149 server tests, lint, renderer checks and
+web/native bundles. The actual three-step DeepSeek run returned12 people/10
+relations/4 places/6 events, then27 people/33 relations, then10 events, using
+four provider calls. Reopening made no model call; a second account saw no
+history and the public guide cache remained empty.
+
+The immutable backend was promoted at2026-10-22T22:34:21Z after an isolated
+service-user follow-up produced9 timeline events from two validated seeded
+ancestors. Both current and legacy service hosts pass health and anonymous
+access-denial checks. Existing configuration and account data were preserved.
+
+Android36 passed lint, signed package/resource checks and installed guest
+navigation on API34, including all four composers, whole-book scope restoration
+and return to the reader. Browser review covers320/390/1280 widths, dark/light
+and a short viewport, plus actual isolated-provider Chinese book results.
+Sixteen fictional preview and four actual-result captures are locally reviewed
+drafts; no store screenshot attachment has changed.
+
+Apple36 is frozen with73 passing disposable delivery regressions. The fresh
+preflight found an active EchoMind Mac115 guard; no Bunko Mac job or staging
+started at that boundary. Apple availability remains pending actual handback
+and the bounded internal delivery operation.
+
+## Final continuation correction
+
+If the displayed diagram belongs to another branch, a follow-up uses that
+diagram's own history. If it is inherited within the selected branch, later
+prose remains in context. This closes the cross-tab branch case without importing
+unrelated questions. Android36 was already available internally; the cumulative
+final candidate is37 on all platforms. Apple36 was never staged or uploaded.
