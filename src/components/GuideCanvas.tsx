@@ -5,15 +5,18 @@ import { useBackAction } from '../lib/backNavigation'
 import { guideVisualCopy } from './guideVisualCopy'
 
 /** A bounded local SVG viewport. Panning owns its gestures, never reader Back. */
-export function GuideCanvas({ width, height, label, ui, children, footer }: {
-  width: number; height: number; label: string; ui: UILanguage; children: ReactNode | ((scale: number) => ReactNode); footer?: ReactNode
+export function GuideCanvas({ width, height, label, ui, children, footer, stateKey, initialFocus }: {
+  width: number; height: number; label: string; ui: UILanguage; children: ReactNode | ((scale: number) => ReactNode); footer?: ReactNode; stateKey?: string; initialFocus?: { x: number; y: number }
 }) {
   const t = guideVisualCopy[ui], svg = useRef<SVGSVGElement>(null)
   const [expanded, setExpanded] = useState(false)
   const container = useRef<HTMLDivElement>(null)
   const [size, setSize] = useState({ width: 640, height: 420 })
   const fit = Math.min(size.width / width, size.height / height)
-  const [view, setView] = useState({ x: width / 2, y: height / 2, zoom: 0 })
+  const [view, setView] = useState(() => {
+    try { const saved = stateKey && JSON.parse(sessionStorage.getItem(`bunko-guide-camera:${stateKey}`) || 'null'); if (saved && ['x', 'y', 'zoom'].every(k => typeof saved[k] === 'number' && Number.isFinite(saved[k])) && saved.zoom >= 0 && saved.zoom <= 4 && Math.abs(saved.x) <= Math.max(width, height) * 1.5 && Math.abs(saved.y) <= Math.max(width, height) * 1.5) return { x: saved.x as number, y: saved.y as number, zoom: saved.zoom as number } } catch { /* Optional camera. */ }
+    return { x: initialFocus?.x ?? width / 2, y: initialFocus?.y ?? height / 2, zoom: initialFocus ? .9 : 0 }
+  })
   const effectiveZoom = view.zoom || fit
   useEffect(() => {
     if (!svg.current || typeof ResizeObserver === 'undefined') return
@@ -34,7 +37,8 @@ export function GuideCanvas({ width, height, label, ui, children, footer }: {
     const limit = Math.max(width, height) * 1.5
     next.x = Math.max(-limit, Math.min(limit, next.x)); next.y = Math.max(-limit, Math.min(limit, next.y))
     current.current = next; setView(next)
-  }, [width, height])
+    try { if (stateKey) sessionStorage.setItem(`bunko-guide-camera:${stateKey}`, JSON.stringify(next)) } catch { /* Optional camera. */ }
+  }, [width, height, stateKey])
   const zoom = useCallback((factor: number, clientX?: number, clientY?: number) => {
     const old = current.current, next = Math.max(fit * .6, Math.min(4, (old.zoom || fit) * factor))
     const rect = svg.current?.getBoundingClientRect()

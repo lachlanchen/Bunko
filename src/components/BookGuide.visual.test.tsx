@@ -14,7 +14,7 @@ const guide: BookResponse = { key: 'visual-fixture', revision: 'fixture', answer
   places: [entity('london', 'London'), entity('imaginary', 'The Kingdom of Invisible Clouds')], routes: [],
   events: [{ title: 'Ada arrives', when: '2000', detail: 'Ada visits London.', certainty: 'stated', citations }, { title: 'Ben arrives', when: '1990', detail: 'Ben arrives earlier.', certainty: 'stated', citations }, { title: 'A later meeting', when: 'Later', detail: 'No exact date is given.', certainty: 'interpretation', citations }],
 }
-beforeEach(() => { localStorage.clear(); vi.stubGlobal('ResizeObserver', class { observe() {} disconnect() {} }) })
+beforeEach(() => { localStorage.clear(); sessionStorage.clear(); vi.stubGlobal('ResizeObserver', class { observe() {} disconnect() {} }) })
 afterEach(() => { cleanup(); vi.unstubAllGlobals() })
 
 it('graph nodes and edges open their evidence, support keyboard and keep labels as text', () => {
@@ -40,6 +40,10 @@ it('timeline has a proportional date axis, preserves narrative view and keeps un
   expect(container.querySelector('#guide-event-0')).toHaveClass('selected')
   fireEvent.click(screen.getByRole('button', { name: 'In the text' }))
   expect(container.querySelector('.guide-timeline li')).toHaveTextContent('Ada arrives')
+  cleanup()
+  const reopened = render(<BookGuide guide={guide} tab="timeline" ui="en" onRead={() => {}} />)
+  expect(reopened.container.querySelector('#guide-event-0')).toHaveClass('selected')
+  expect(reopened.container.querySelector('.guide-timeline li')).toHaveTextContent('Ada arrives')
 })
 
 it('keeps simultaneous timeline events on separate selectable lanes', () => {

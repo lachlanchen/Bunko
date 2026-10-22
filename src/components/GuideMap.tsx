@@ -44,7 +44,7 @@ export default function GuideMap({ nodes, edges, guideKey, ui, onSelect, onEdge,
   }
   const selectedPin = pins.find(p => p.node.id === active)
   return <>
-    <GuideCanvas key={signature} width={720} height={460} label={t.map} ui={ui} footer={<><p>{t.mapNote}</p><p>{t.naturalEarth}</p></>}>
+    <GuideCanvas key={signature} stateKey={`${guideKey}:map:${signature}`} width={720} height={460} label={t.map} ui={ui} footer={<><p>{t.mapNote}</p><p>{t.naturalEarth}</p></>}>
       {scale => <>
       <rect x="-20000" y="-20000" width="40000" height="40000" className="atlas-ocean" />
       <path d={geometry.path(geoGraticule10()) || ''} className="atlas-grid" />

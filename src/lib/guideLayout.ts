@@ -1,6 +1,22 @@
 import './guideCompatibility'
 import { Graph, layout } from '@dagrejs/dagre'
 import type { GuideConnection, GuideEntity } from './bookCompanion'
+const nodeColor = (id: string) => [...id].reduce((color, char) => (color * 31 + char.codePointAt(0)!) % 6, 0)
+
+/** Rounded routed bends preserve the graph's exact endpoints. */
+export function connectionPath(points: { x: number; y: number }[]) {
+  if (!points.length) return ''
+  let path = `M${points[0].x},${points[0].y}`
+  for (let i = 1; i < points.length - 1; i++) {
+    const a = points[i - 1], b = points[i], c = points[i + 1]
+    const before = Math.hypot(b.x - a.x, b.y - a.y), after = Math.hypot(c.x - b.x, c.y - b.y)
+    if (!before || !after) continue
+    const radius = Math.min(14, before / 2, after / 2)
+    path += `L${b.x + (a.x - b.x) * radius / before},${b.y + (a.y - b.y) * radius / before}Q${b.x},${b.y} ${b.x + (c.x - b.x) * radius / after},${b.y + (c.y - b.y) * radius / after}`
+  }
+  const last = points.at(-1)!
+  return `${path}L${last.x},${last.y}`
+}
 
 /** SVG labels wrap without truncating names, including scripts without spaces. */
 export function labelLines(value: string, width = 24): string[] {
@@ -29,7 +45,7 @@ function layoutComponent(nodes: GuideEntity[], edges: GuideConnection[], tree = 
   const rows = nodes.map((node, i) => {
     const lines = labelLines(node.name, compact ? 17 : 23), height = Math.max(64, lines.length * 19 + 34), width = compact ? 140 : 188
     graph.setNode(`node${i}`, { width, height })
-    return { ...node, lines, width, height, color: i % 6 }
+    return { ...node, lines, width, height, color: nodeColor(node.id) }
   })
   const links = edges.flatMap((edge, i) => {
     const from = ids.get(edge.from), to = ids.get(edge.to)
@@ -69,7 +85,7 @@ export function relationshipLayout(nodes: GuideEntity[], edges: GuideConnection[
   const result = { width: 260, height: 200, nodes: [] as ReturnType<typeof layoutComponent>['nodes'], edges: [] as ReturnType<typeof layoutComponent>['edges'] }
   for (const group of groups.sort((a, b) => b.height - a.height)) {
     if (x && x + group.width > target) { x = 0; y += rowHeight + gap; rowHeight = 0 }
-    result.nodes.push(...group.nodes.map(n => ({ ...n, color: nodes.findIndex(row => row.id === n.id) % 6, x: n.x + x, y: n.y + y })))
+    result.nodes.push(...group.nodes.map(n => ({ ...n, x: n.x + x, y: n.y + y })))
     result.edges.push(...group.edges.map(e => ({ ...e, key: `edge${result.edges.length}-${e.key}`, x: e.x + x, y: e.y + y, points: e.points.map(p => ({ x: p.x + x, y: p.y + y })) })))
     width = Math.max(width, x + group.width); rowHeight = Math.max(rowHeight, group.height); x += group.width + gap
   }

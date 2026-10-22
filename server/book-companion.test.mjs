@@ -5,6 +5,7 @@ import { bookContext, bookReference, validateBookResponse } from './agent/book-c
 import { createDocumentAgent } from './agent/service.mjs'
 import { hash } from './agent/common.mjs'
 import { createCloudLedger, cloudOwner } from './cloud-ledger.mjs'
+import { readingBranch, readingMemory } from './agent/book-memory.mjs'
 
 const chapter = { p: [
   { id: 'one', u: [{ en: ['Ada met her brother Ben in the garden.'], ja: [['庭', 'にわ'], 'でエイダは兄のベンに会った。'] }] },
@@ -118,12 +119,13 @@ test('one repair receives every invalid citation instead of failing one quotatio
   const s = setup(t, { provider: async (_url, options) => {
     calls++
     if (calls === 1) {
-      const result = guide(); result.people[0].citations = [{ passage: 'P1', quote: 'An invented quotation' }]; result.places[0].citations = [{ passage: 'P2', quote: 'A second invented quotation' }]
+      const result = guide(); result.people[0].citations = [{ passage: 'P1', quote: 'An invented quotation' }]; result.places[0].citations = [{ passage: 'P2', quote: 'A second invented quotation' }]; result.routes[0].from = result.people[0].id
       return { choices: [{ message: { content: JSON.stringify(result) } }] }
     }
     const feedback = JSON.parse(options.body).messages.at(-1).content
     assert.match(feedback, /people\[0\]/); assert.match(feedback, /places\[0\]/)
     assert.match(feedback, /Ada met her brother Ben/); assert.match(feedback, /At sunrise/)
+    assert.match(feedback, /routes\[0\]/); assert.match(feedback, /Both endpoints must be place ids/)
     return { choices: [{ message: { content: JSON.stringify(guide()) } }] }
   } })
   const result = await s.call('send', input('multi-repair'))
@@ -274,4 +276,60 @@ test('answer repairs never request guide arrays and recovered formatting cannot 
   assert.equal(result.state, 'failed'); assert.match(result.error, /quotation/); assert.equal(calls, 2)
   assert.equal(s.cloud.usage(cloudOwner({ id: 1 })).usedAgentTurns, 0)
   assert.equal(s.db.prepare('SELECT count(*) n FROM agent_book_guides').get().n, 0)
+})
+
+test('exploration updates only requested views, branches explicitly, and stays private', async t => {
+  const prompts = []
+  const s = setup(t, { provider: async (_url, options) => {
+    const prompt = JSON.parse(options.body); prompts.push(prompt)
+    const full = guide(), focused = prompt.messages[0] // The SDK boundary is first; app instructions follow.
+    assert.ok(focused)
+    const value = prompts.length === 2 ? { answer: 'A separate idea.', knowledge: 'background', citations: [] } : { answer: full.answer, citations: full.citations, people: full.people, relationships: full.relationships }
+    const context = JSON.parse(prompt.messages.find(m => m.role === 'user').content)
+    return { choices: [{ message: { content: context.coverage.scope === 'book' ? JSON.stringify(value).replaceAll('"passage":"P', '"passage":"C1P') : JSON.stringify(value) } }] }
+  } })
+  const first = await s.call('send', { ...input('explore-first'), kind: 'explore', text: 'Explain their relationship', focus: 'people' })
+  assert.equal(first.state, 'completed'); assert.equal(first.bookResponse.visibility, 'private')
+  assert.equal(first.bookResponse.places, undefined); assert.equal(first.bookResponse.events, undefined)
+  assert.notEqual(first.bookResponse.key, (await bookContext(ref, read)).key)
+  const separate = await s.call('send', { ...input('separate-topic'), kind: 'explore', text: 'Unrelated garden symbolism', newTopic: true })
+  assert.equal(separate.state, 'completed'); assert.equal(separate.parentId, null)
+  const extended = await s.call('send', { ...input('extend-old'), kind: 'explore', text: 'Keep this family and extend it across the book', parentId: first.id, reference: { ...ref, scope: 'book' }, focus: 'people' })
+  assert.equal(extended.state, 'completed'); assert.equal(extended.parentId, first.id)
+  assert.ok(JSON.stringify(prompts[2]).includes('Explain their relationship'))
+  assert.ok(!JSON.stringify(prompts[2]).includes('Unrelated garden symbolism'))
+  const context = JSON.parse(prompts[2].messages.find(m => m.role === 'user').content)
+  assert.equal(context.previousVisuals.people.people[0].name, 'Ada')
+  assert.equal(context.previousVisuals.people.people[0].citations, undefined)
+  assert.equal(context.readingBookmark.scope, 'passage'); assert.equal(context.coverage.scope, 'book')
+  assert.equal(s.db.prepare('SELECT count(*) n FROM agent_book_guides').get().n, 0)
+  assert.equal((await s.call('messages', { book: ref }, { id: 2 })).messages.length, 0)
+  const before = prompts.length
+  await assert.rejects(s.call('send', { ...input('wrong-owner'), kind: 'explore', parentId: first.id }, { id: 2 }), /not available/)
+  assert.equal(prompts.length, before)
+  const replay = await s.call('send', { ...input('extend-old'), kind: 'explore', text: 'Keep this family and extend it across the book', parentId: first.id, reference: { ...ref, scope: 'book' }, focus: 'people' })
+  assert.equal(replay.id, extended.id); assert.equal(prompts.length, before)
+})
+
+test('a reused public guide seeds a private branch without modifying the shared result', async t => {
+  const s = setup(t), source = await s.call('send', input('public-seed'))
+  const result = await s.call('send', { ...input('private-seed'), kind: 'explore', baseGuideKey: source.bookResponse.key, text: 'Extend the timeline', focus: 'timeline' }, { id: 2 })
+  assert.equal(result.state, 'completed'); assert.equal(result.baseGuide.key, source.bookResponse.key)
+  assert.equal(result.bookResponse.visibility, 'private')
+  assert.equal(s.db.prepare('SELECT count(*) n FROM agent_book_guides').get().n, 1)
+  const publicResult = JSON.parse(s.db.prepare('SELECT data FROM agent_book_guides').get().data)
+  assert.equal(publicResult.visibility, undefined)
+  assert.ok(!JSON.stringify(publicResult).includes('Extend the timeline'))
+  const memory = JSON.parse(s.prompts.at(-1).messages.find(m => m.role === 'user').content)
+  assert.equal(memory.previousVisuals.timeline.events.length, 2)
+})
+
+test('long branches keep older visual snapshots while bounding conversational prompt memory', () => {
+  const root = { id: 'root', state: 'completed', question: 'Family tree', answer: 'Root', bookResponse: { ...guide(), reference: ref } }
+  const messages = [root]
+  for (let i = 0; i < 12; i++) messages.push({ id: String(i), state: 'completed', parentId: messages.at(-1).id, question: 'Followup '+i, answer: 'More detail', bookResponse: { answer: 'More detail', reference: ref } })
+  const memory = readingMemory(readingBranch(messages, ref, '11'))
+  assert.equal(memory.history.length, 12); assert.equal(memory.visuals.people.people.length, 2)
+  assert.ok(!JSON.stringify(memory.history).includes('Family tree'))
+  assert.deepEqual(readingBranch(messages, ref, null, true), [])
 })

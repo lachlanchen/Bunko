@@ -1,14 +1,15 @@
 import { SignInOptions } from './SignInOptions'
 import type { SignInProvider } from '../lib/discussions'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
-import { ArrowDown, AtSign, ArrowLeft, ArrowUp, BookOpen, Ellipsis, MapPin, MessageCircle, RefreshCw, Sparkles, Users, Waypoints } from 'lucide-react'
+import { ArrowDown, AtSign, ArrowLeft, ArrowUp, BookOpen, CornerDownRight, Ellipsis, MapPin, MessageCircle, RefreshCw, Sparkles, Users, Waypoints, X } from 'lucide-react'
 import type { UILanguage } from '../i18n'
 import { currentUser, DiscussionError, requestId, restoreSession, signIn, subscribeSession } from '../lib/discussions'
 import { initialModelPolicy, type ModelPolicy, agentCall } from '../lib/documentAgent'
-import { companionReference, referenceKey, savedGuide, savedGuides, saveGuide, forgetGuide, type BookCompanionContext, type BookMessage, type BookReference, type BookResponse } from '../lib/bookCompanion'
+import { companionReference, referenceKey, savedGuide, savedGuides, saveGuide, forgetGuide, readingResults, closestReadingResult, hasReadingView, type BookCompanionContext, type BookMessage, type BookReference, type BookResponse } from '../lib/bookCompanion'
 import { useBackAction } from '../lib/backNavigation'
 import { agentCopy } from './agentCopy'
 import { bookCompanionCopy } from './bookCompanionCopy'
+import { readingWorkspaceCopy } from './readingWorkspaceCopy'
 import { BookReferencePicker } from './BookReferencePicker'
 import { referenceCopy } from './bookReferenceCopy'
 import { BookGuide, PassageEvidence } from './BookGuide'
@@ -43,16 +44,22 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
   const [reference, setReference] = useState(selection.reference), [referenceMeta, setReferenceMeta] = useState(selection.meta), [picking, setPicking] = useState(false)
   const referenceId = referenceKey(reference), activeReference = useRef(referenceId)
   const mentionStart = useRef(-1)
-  const r = referenceCopy[ui]
+  const r = referenceCopy[ui], w = readingWorkspaceCopy[ui]
   const [modelPolicy, setModelPolicy] = useState<ModelPolicy>(initialModelPolicy)
   const [tab, setTab] = useState<Tab>('chat'), [plans, setPlans] = useState(false)
-  const artifactSelectionKey = `bunko-book-artifact-selection:${user?.id || 'guest'}:${refValue.id}`
+  const artifactSelectionKey = `bunko-reading-focus-v1:${user?.id || 'guest'}:${referenceId}`
   const [cachedGuides, setCachedGuides] = useState(() => savedGuides(reference))
-  const [guide, setGuide] = useState<BookResponse | null>(() => {
-    try { const key = localStorage.getItem(artifactSelectionKey); const selected = savedGuides(reference).find(g => g.key === key); if (selected) return selected } catch { /* Optional view preference. */ }
-    return savedGuide(reference) || savedGuides(reference)[0] || null
-  })
+  const [focusKey, setFocusKey] = useState(() => { try { return localStorage.getItem(artifactSelectionKey) || '' } catch { return '' } })
+  const [newTopic, setNewTopic] = useState(false)
   const [messages, setMessages] = useState<BookMessage[]>([])
+  const results = readingResults(messages, cachedGuides)
+  const conversationResult = closestReadingResult(results, reference, 'chat', focusKey)
+  const viewResult = closestReadingResult(results, reference, tab, focusKey)
+  const guide = viewResult?.guide || null
+  // Tabs inherit visuals from earlier turns, but a follow-up keeps the selected
+  // conversation tip, including newer answers that did not redraw that view.
+  const continuing = newTopic ? undefined : conversationResult
+  const artifacts = results.filter(row => row.guide.reference.id === reference.id && hasReadingView(row.guide, tab))
   const draftKey = `bunko-book-draft-v2:${user?.id || 'guest'}:${refValue.id}`
   const [draft, setDraft] = useState(() => { try { return sessionStorage.getItem(draftKey) || sessionStorage.getItem(`bunko-book-draft:${user?.id || 'guest'}:${referenceKey(refValue)}`) || '' } catch { return '' } })
   const [busy, setBusy] = useState(false), [error, setError] = useState(''), [atBottom, setAtBottom] = useState(true)
@@ -85,7 +92,6 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
     if (!response.guide && exact && response.revision && exact.revision !== response.revision) forgetGuide(reference)
     const available = savedGuides(reference)
     setCachedGuides(available)
-    setGuide(current => current || response.guide || available[0] || null)
   }, [refValue, reference, referenceId, user])
   useEffect(() => {
     live.current = true
@@ -133,33 +139,32 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
     try { if (localStorage.getItem(`bunko-book-consent-v2:${user?.id}:${modelPolicy.consentKey}`) === 'yes') { action(); return } } catch { /* Ask without persistent storage. */ }
     pending.current = action; setConsent(true)
   }
-  const send = async (kind: 'answer' | 'guide', text = draft) => {
+  const send = async (kind: 'explore' | 'guide', text = draft) => {
     if (inFlight.current || !user || !text.trim()) return
     inFlight.current = true; setBusy(true); setError('')
     const id = requestId(), question = text.trim(), owner = user.id
     following.current = true; setAtBottom(true)
-    if (kind === 'answer') setDraft('')
+    if (kind === 'explore') setDraft('')
     setMessages(items => [...items, { id, state: 'processing', question, answer: '', papers: [], kind, reference, referenceTitle: referenceMeta.titleText[reference.language] || reference.id }])
     try {
-      const result = await agentCall<BookMessage>('send', { book: refValue, ...(referenceId !== referenceKey(refValue) ? { reference } : {}), modelConsent: modelPolicy.providers, text: question, kind, requestId: id })
+      const result = await agentCall<BookMessage>('send', { book: refValue, ...(referenceId !== referenceKey(refValue) ? { reference } : {}), modelConsent: modelPolicy.providers, text: question, kind, requestId: id,
+        ...(kind === 'explore' ? { focus: tab, ...(newTopic ? { newTopic: true } : continuing?.message ? { parentId: continuing.message.id } : continuing ? { baseGuideKey: continuing.guide.key } : {}) } : {}) })
       if (!live.current || currentUser()?.id !== owner) return
       setMessages(items => items.map(m => m.id === id ? result : m))
       if (result.state === 'failed') setError(result.error || a.error)
-      if (kind === 'guide' && result.bookResponse) { selectGuide(result.bookResponse) }
-    } catch (e) { fail(e); if (live.current) { if (kind === 'answer') setDraft(question); await refresh().catch(() => {}) } }
+      if (result.bookResponse) { selectGuide(result.bookResponse) }
+    } catch (e) { fail(e); if (live.current) { if (kind === 'explore') setDraft(question); await refresh().catch(() => {}) } }
     finally { inFlight.current = false; if (live.current) setBusy(false) }
   }
   const selectGuide = (value: BookResponse) => {
-    setGuide(value); saveGuide(value.reference, value)
+    setFocusKey(value.key); setNewTopic(false); saveGuide(value.reference, value)
     setCachedGuides(savedGuides(reference))
     try { localStorage.setItem(artifactSelectionKey, value.key) } catch { /* Optional view preference. */ }
   }
-  const artifacts = [...messages.flatMap(m => m.kind === 'guide' && m.bookResponse?.people ? [m.bookResponse] : []).reverse(), ...cachedGuides, ...(guide ? [guide] : [])]
-    .filter((g, i, all) => all.findIndex(v => v.key === g.key) === i)
   const buildGuide = () => withConsent(() => { void send('guide', t.guide) })
   const chooseReference = (next: BookReference, meta: typeof context.meta) => {
     try { sessionStorage.setItem(selectionKey, JSON.stringify({ reference: next, meta })) } catch { /* Optional reference persistence. */ }
-    activeReference.current = referenceKey(next); setReference(next); setReferenceMeta(meta); setGuide(savedGuide(next) || savedGuides(next)[0] || null); setCachedGuides(savedGuides(next)); setPicking(false); setError(''); const at = mentionStart.current; setDraft(value => at >= 0 && value[at] === '@' ? value.slice(0, at) + value.slice(at + 1) : value); mentionStart.current = -1; composer.current?.focus()
+    activeReference.current = referenceKey(next); setReference(next); setReferenceMeta(meta); setFocusKey(''); setNewTopic(false); setCachedGuides(savedGuides(next)); setPicking(false); setError(''); const at = mentionStart.current; setDraft(value => at >= 0 && value[at] === '@' ? value.slice(0, at) + value.slice(at + 1) : value); mentionStart.current = -1; composer.current?.focus()
   }
   const waiting = busy || messages.some(m => m.state === 'processing')
   if (plans) return <CloudPlans ui={ui} onBack={() => setPlans(false)} />
@@ -182,10 +187,10 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
     </nav>
     <div className="book-companion-scope"><button type="button" className="book-reference-chip" title={reference.quote || r.current} onClick={() => onRead(reference.paragraph, reference, reference.quote)}><BookOpen size={14} /><span>{referenceMeta.titleText[reference.language] || reference.id} · {reference.scope === 'book' ? r.whole : reference.scope === 'sentence' ? `${r.sentence} · ${reference.quote?.slice(0, 40)}` : `${r.chapter} ${reference.chapter + 1} · ${r.paragraph} ${reference.paragraph + 1}`}</span></button>
       {referenceId !== referenceKey(refValue) && <button type="button" title={r.current} aria-label={r.current} onClick={() => onRead(context.paragraph, refValue)}><BookOpen size={16} /></button>}
-      <button type="button" aria-label={t.refresh} title={t.refresh} disabled={waiting || !user} onClick={() => { if (tab === 'chat') void refresh().catch(fail); else buildGuide() }}><RefreshCw size={16} /></button>
+      <button type="button" aria-label={t.refresh} title={t.refresh} disabled={waiting || !user} onClick={() => { void refresh().then(() => setNotice(w.update)).catch(fail) }}><RefreshCw size={16} /></button>
     </div>
-    {tab !== 'chat' && artifacts.length > 0 && <div className="book-artifact-picker"><label><span>{t.savedGuides}</span><select aria-label={t.savedGuides} value={guide?.key || ''} onChange={e => { const selected = artifacts.find(g => g.key === e.target.value); if (selected) selectGuide(selected) }}>
-      {artifacts.map((g, i) => <option key={g.key} value={g.key}>{g.title || g.reference.id} · {g.coverage.scope === 'book' ? r.whole : `${r.chapter} ${g.reference.chapter + 1} · ${r.paragraph} ${g.reference.paragraph + 1}`} · {i + 1}</option>)}
+    {tab !== 'chat' && artifacts.length > 0 && <div className="book-artifact-picker"><label><span>{w.results}</span><select aria-label={w.results} value={guide?.key || ''} onChange={e => { const selected = artifacts.find(row => row.guide.key === e.target.value); if (selected) selectGuide(selected.guide) }}>
+      {artifacts.map(({ guide: g, question }) => <option key={g.key} value={g.key}>{g.coverage.scope === 'book' ? r.whole : `${r.chapter} ${g.reference.chapter + 1} · ${r.paragraph} ${g.reference.paragraph + 1}`} · {(question || g.answer).slice(0, 100)}</option>)}
     </select></label></div>}
     {user?.kind === 'demo' && <DemoNotice ui={ui} />}
     <section className="agent-conversation">
@@ -204,18 +209,21 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
               {!messages.length && <div className="agent-empty"><Sparkles size={30} /><h1>{t.intro}</h1><p>{t.hint}</p>
                 <div className="agent-suggestions">{[t.explain, t.names].map(prompt => <button type="button" key={prompt} onClick={() => { setDraft(prompt); composer.current?.focus() }}>{prompt}</button>)}</div>
               </div>}
-              {messages.map(m => <article className="agent-exchange" key={m.id}>
+              {messages.map(m => <article className={`agent-exchange${continuing?.message?.id === m.id ? ' reading-active-result' : ''}`} key={m.id} id={`reading-message-${m.id}`}>
                 <p className="agent-question">{m.question}</p>
                 {m.reference && <button type="button" className="agent-message-reference" onClick={() => onRead(m.reference!.paragraph, m.reference, m.reference?.quote)}><BookOpen size={13} /><span>{m.referenceTitle || m.bookResponse?.title || m.reference.id} · {r.chapter} {m.reference.chapter + 1} · {r.paragraph} {m.reference.paragraph + 1}</span></button>}
                 <div className="agent-answer">{m.answer ? <>
                   <DocumentContent text={m.answer} preparing={a.preparing} failed={a.renderFailed} />
                   {m.bookResponse?.knowledge && m.bookResponse.knowledge !== 'passages' && <p className="guide-uncertain">{t.background}</p>}
                   {m.bookResponse && <PassageEvidence citations={m.bookResponse.citations} ui={ui} onRead={(paragraph, citation) => onRead(paragraph, { ...m.bookResponse!.reference, ...(citation?.chapter !== undefined ? { chapter: citation.chapter, file: citation.file! } : {}) }, citation?.quote)} />}
-                  {m.kind === 'guide' && m.bookResponse && <button type="button" onClick={() => { selectGuide(m.bookResponse!); setTab('people') }}><Users size={16} />{t.people} · {t.places} · {t.timeline}</button>}
+                  {m.bookResponse && <div className="reading-result-actions">
+                    <button type="button" onClick={() => { selectGuide(m.bookResponse!); composer.current?.focus() }}><CornerDownRight size={14} />{w.continue}</button>
+                    {(['people', 'places', 'timeline'] as const).filter(view => hasReadingView(m.bookResponse!, view)).map(view => <button type="button" key={view} onClick={() => { selectGuide(m.bookResponse!); setTab(view) }}>{t[view]}</button>)}
+                  </div>}
                   <div className="agent-answer-tools"><small title={a.ai}>Bunko · AI</small><button type="button" className="agent-report" onClick={() => { setReason(''); setReport(m) }}>{a.report}</button></div>
                 </> : <p role="status">{m.error || (m.state === 'processing' ? t.generating : a.interrupted)}</p>}</div>
               </article>)}
-            </> : guide ? <><BookGuide guide={guide} tab={tab} ui={ui} onRead={(paragraph, citation) => onRead(paragraph, { ...guide.reference, ...(citation?.chapter !== undefined ? { chapter: citation.chapter, file: citation.file! } : {}) }, citation?.quote)} /><p className="guide-saved">{t.cached}</p>
+            </> : guide ? <><BookGuide guide={guide} tab={tab} ui={ui} onRead={(paragraph, citation) => onRead(paragraph, { ...guide.reference, ...(citation?.chapter !== undefined ? { chapter: citation.chapter, file: citation.file! } : {}) }, citation?.quote)} /><p className="guide-saved">{guide.visibility === 'private' ? w.saved : t.cached}</p>
               {messages.some(m => m.bookResponse?.key === guide.key) && <button type="button" className="agent-report" onClick={() => { setReason(''); setReport(messages.find(m => m.bookResponse?.key === guide.key) || null) }}>{t.report}</button>}
             </> : <div className="agent-empty">
               <Sparkles size={30} /><h1>{t[tab]}</h1><p>{t.hint}</p><button type="button" className="guide-build" disabled={!user || waiting} onClick={buildGuide}>{waiting ? t.generating : t.guide}</button><p className="guide-caption">{t.savedHint}</p>
@@ -227,12 +235,17 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
       <div className="agent-composer-area">
         {error && !(tab === 'chat' && messages.some(m => m.state === 'failed' && m.error === error)) && <p role="alert">{error}</p>}
         {notice && <p role="status">{notice}</p>}
-        {tab === 'chat' && <form className="agent-composer" onSubmit={e => { e.preventDefault(); withConsent(() => { void send('answer') }) }}>
+        <div className="reading-followup-context">
+          <button type="button" className="reading-continuation" title={continuing?.question || w.fresh} onClick={() => { setTab('chat'); if (continuing?.message) setTimeout(() => document.getElementById(`reading-message-${continuing.message!.id}`)?.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' }), 0) }}><CornerDownRight size={13} /><span>{continuing ? `${w.continuing} · ${continuing.question || w.earlier}` : w.fresh}</span></button>
+          {continuing && <button type="button" aria-label={w.restart} title={w.restart} onClick={() => { setNewTopic(true); setFocusKey(''); composer.current?.focus() }}><X size={14} /></button>}
+          <select aria-label={w.scope} value={reference.scope === 'book' ? 'book' : 'local'} onChange={e => { const next = { ...reference, scope: e.target.value === 'book' ? 'book' as const : 'passage' as const }; activeReference.current = referenceKey(next); setReference(next); setCachedGuides(savedGuides(next)); try { sessionStorage.setItem(selectionKey, JSON.stringify({ reference: next, meta: referenceMeta })) } catch { /* Optional scope preference. */ } }}><option value="local">{w.current}</option><option value="book">{r.whole}</option></select>
+        </div>
+        <form className="agent-composer" onSubmit={e => { e.preventDefault(); withConsent(() => { void send('explore') }) }}>
           <button type="button" className="reference-add" disabled={waiting} aria-label={r.title} title={r.title} onClick={() => setPicking(true)}><AtSign size={20} /></button>
-          <textarea ref={composer} value={draft} rows={1} maxLength={8000} aria-label={t.placeholder} placeholder={t.placeholder} onChange={e => { setDraft(e.target.value); if (e.target.value.endsWith('@') && !waiting) { mentionStart.current = e.target.value.length - 1; setPicking(true) } }}
-            onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing && (e.ctrlKey || e.metaKey)) { e.preventDefault(); withConsent(() => { void send('answer') }) } }} />
+          <textarea ref={composer} value={draft} rows={1} maxLength={8000} aria-label={t.placeholder} placeholder={tab === 'chat' && !continuing ? t.placeholder : w.prompt} onChange={e => { setDraft(e.target.value); if (e.target.value.endsWith('@') && !waiting) { mentionStart.current = e.target.value.length - 1; setPicking(true) } }}
+            onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing && (e.ctrlKey || e.metaKey)) { e.preventDefault(); withConsent(() => { void send('explore') }) } }} />
           <button type="submit" className="agent-send" disabled={!user || waiting || !draft.trim()} aria-label={a.send}><ArrowUp size={20} /></button>
-        </form>}
+        </form>
       </div>
     </section>
     {picking && <BookReferencePicker initial={reference} meta={referenceMeta} ui={ui} onClose={() => { mentionStart.current = -1; setPicking(false) }} onChoose={chooseReference} />}

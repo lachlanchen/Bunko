@@ -76,3 +76,15 @@
 .reference-title-details { min-width: 0; font-size: 13px; }
 .reference-title-details summary { color: var(--ink-soft); cursor: pointer; }
 .reference-title-details p { margin: 6px 0; overflow-wrap: anywhere; }
+
+.reading-followup-context { display: flex; align-items: center; gap: 3px; min-width: 0; margin: 0 3px 5px; color: var(--ink-soft); }
+.agent-page .reading-followup-context button { border: 0; background: transparent; min-height: 36px; padding: 5px; color: inherit; }
+.reading-followup-context .reading-continuation { flex: 1; min-width: 0; justify-content: flex-start; font-size: 11px; }
+.reading-continuation span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.reading-continuation svg { flex-shrink: 0; }
+.reading-followup-context select { min-width: 0; max-width: 36%; border: 1px solid var(--line); border-radius: 9px; padding: 7px 4px; font: inherit; font-size: 11px; color: var(--ink-soft); background: var(--paper-raised); }
+.reading-result-actions { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+.agent-page .reading-result-actions button { font-size: 12px; padding: 7px 10px; border-radius: 12px; color: var(--indigo); }
+.reading-active-result .reading-result-actions button:first-child { background: var(--indigo-soft); }
+.book-companion .agent-composer-area { flex-shrink: 0; }
+@media(max-height:540px) { .reading-followup-context { margin-bottom: 2px; }.agent-page .reading-followup-context button { min-height: 30px; }.book-artifact-picker { margin-bottom: 2px; } }

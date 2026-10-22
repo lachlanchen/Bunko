@@ -1,8 +1,9 @@
 import { runStructuredReading } from './structured-task.mjs'
 import { AppError, hash, requireValue } from './common.mjs'
+import { readingBranch, readingMemory, visualGroups } from './book-memory.mjs'
 
 const VERSION = 3
-const kinds = new Set(['answer', 'guide'])
+const kinds = new Set(['answer', 'guide', 'explore'])
 const plain = line => Array.isArray(line) ? line.map(t => typeof t === 'string' ? t : Array.isArray(t) ? String(t[0] || '') : '').join('') : ''
 const clean = (value, max) => typeof value === 'string' ? value.trim().slice(0, max) : ''
 const normalized = text => text.normalize('NFKC').replace(/\s+/g, ' ').trim()
@@ -76,6 +77,14 @@ export async function bookContext(ref, read, { maxChars = 48000 } = {}) {
 /** Quotes are checked against exact supplied passages; output is data, never executable SVG/HTML. */
 export function validateBookResponse(raw, context, kind) {
   requireValue(raw && typeof raw === 'object' && !Array.isArray(raw), 'The reading guide was incomplete. Please retry.', 502)
+  if (kind === 'explore') {
+    const fields = Object.values(visualGroups).flat(), included = fields.filter(field => Object.hasOwn(raw, field))
+    if (!included.length) return validateBookResponse(raw, context, 'answer')
+    const full = { ...Object.fromEntries(fields.map(field => [field, []])), ...raw }
+    const result = validateBookResponse(full, context, 'guide')
+    for (const group of Object.values(visualGroups)) if (!group.some(field => included.includes(field))) for (const field of group) delete result[field]
+    return result
+  }
   const sources = new Map(context.passages.map(p => [p.id, p]))
   // Report every faulty citation together for the one bounded repair. Repairing
   // only the first bad quotation made larger, otherwise useful guides fail on
@@ -89,7 +98,16 @@ export function validateBookResponse(raw, context, kind) {
       repairDetails.push({ entry, passage: clean(citation?.passage, 40), rejectedQuote: quote.slice(0, 180), source: source?.text.slice(0, 480) || 'Unknown passage identifier. Choose a supplied passage.' })
     }
   }
-  if (repairDetails.length) throw Object.assign(new AppError('A source quotation could not be verified. Please retry.', 502), { repairDetails })
+  const badConnections = []
+  if (kind !== 'answer') for (const [field, group] of [['relationships', 'people'], ['routes', 'places']]) {
+    const nodes = Array.isArray(raw[group]) ? raw[group] : []
+    const resolve = value => nodes.find(n => n?.id === value)?.id || (nodes.filter(n => [n?.name, ...(Array.isArray(n?.aliases) ? n.aliases : [])].includes(value)).length === 1 ? nodes.find(n => [n?.name, ...(Array.isArray(n?.aliases) ? n.aliases : [])].includes(value))?.id : null)
+    for (const [i, edge] of (Array.isArray(raw[field]) ? raw[field] : []).entries()) {
+      const from = resolve(edge?.from), to = resolve(edge?.to)
+      if ((!from || !to || from === to) && badConnections.length < 16) badConnections.push({ entry: `${field}[${i}]`, from: clean(edge?.from, 120), to: clean(edge?.to, 120), allowed: nodes.map(n => clean(n?.id, 40)), rule: field === 'routes' ? 'Both endpoints must be place ids, never people. Omit this route if a supported origin or destination is unavailable.' : 'Both endpoints must be different person ids from people.' })
+    }
+  }
+  if (repairDetails.length || badConnections.length) throw Object.assign(new AppError(repairDetails.length ? 'A source quotation could not be verified. Please retry.' : 'The guide contained an unknown connection.', 502), { repairDetails: { quotations: repairDetails, connections: badConnections } })
   const evidence = values => {
     requireValue(Array.isArray(values) && values.length > 0 && values.length <= 5, 'The response did not include verifiable passages.', 502)
     return values.map(v => {
@@ -153,20 +171,22 @@ Prioritize the principal characters and their meaningful relationships; do not c
 export function createBookCompanion({ db, seal, unseal, read, provider, models, config, now, reserve, finish, capacity }) {
   db.exec('CREATE TABLE IF NOT EXISTS agent_book_guides(id TEXT PRIMARY KEY,data TEXT NOT NULL,created INTEGER NOT NULL)')
   const pending = new Map()
-  async function generate(context, kind, question, history = [], modelConsent) {
+  async function generate(context, kind, question, history = [], modelConsent, memory = {}) {
     requireValue(config.model?.url && config.model?.name, 'The reading assistant is not connected.', 503)
-    const messages = [{ role: 'system', content: system + (kind === 'answer' ? '\nTHIS CALL IS ANSWER, not GUIDE. Return ONLY answer, knowledge, insufficient and citations. Explain relationships in readable prose or a compact Markdown list. Do not include people/relationships/places/routes/events arrays or a type field. Keep the answer under 900 words.' : '\nTHIS CALL IS GUIDE. Return all five guide arrays, within the stated limits; no type field.') }, { role: 'user', content: JSON.stringify({
-      task: kind === 'guide' ? (context.reference.scope === 'book' ? 'GUIDE: the principal characters and their relationships, major places, journeys and timeline of the whole identified book, using reliable broader book knowledge plus the supplied excerpts and current reading bookmark' : 'GUIDE: people, relationships, places, journeys and events relevant to this reading selection') : 'ANSWER',
+    const mode = kind === 'answer' ? '\nTHIS CALL IS ANSWER, not GUIDE. Return ONLY answer, knowledge, insufficient and citations. Explain relationships in readable prose or a compact Markdown list. Do not include people/relationships/places/routes/events arrays or a type field. Keep the answer under 900 words.' : kind === 'guide' ? '\nTHIS CALL IS GUIDE. Return all five guide arrays, within the stated limits; no type field.' : `\nTHIS CALL IS EXPLORE: a continuing book discussion with optional visual updates. Answer the user's actual question. When relationships or characters are requested, return people AND relationships; for places/journeys return places AND routes; for chronology return events. The active view is ${memory.focus || 'chat'}: prefer updating that view when the question continues its result. Omit visual groups that do not need updating; the app keeps their existing versions. Each returned group is a complete revised snapshot, retaining relevant earlier entries and adding/correcting what was requested, within the limits. Never return empty groups just as placeholders. Use stable prior entity ids when they refer to the same person/place. Old visuals/history are memory, not new quotation evidence: any newly emitted citation must exactly match CURRENT supplied passages. Label reliable uncited broader-book facts background. Keep current reading position and the question's requested scope distinct; explicit whole-book questions and their followups may discuss the whole book. Do not refuse because excerpts are partial. If asked to start a new topic, do not import unrelated previous details. Keep the answer concise, and do not include a type field.`
+    const messages = [{ role: 'system', content: system + mode }, { role: 'user', content: JSON.stringify({
+      task: kind === 'guide' ? (context.reference.scope === 'book' ? 'GUIDE: the principal characters and their relationships, major places, journeys and timeline of the whole identified book, using reliable broader book knowledge plus the supplied excerpts and current reading bookmark' : 'GUIDE: people, relationships, places, journeys and events relevant to this reading selection') : kind === 'explore' ? 'EXPLORE: answer the question and update only relevant visual groups' : 'ANSWER',
       replyLanguage: context.reference.replyLanguage, title: context.title, chapter: context.chapterTitle,
       coverage: context.coverage, passages: context.passages.map(p => ({ id: p.id, text: p.text })),
-    }) }, ...history, ...(kind === 'answer' ? [{ role: 'user', content: question }] : [])]
+      ...(kind === 'explore' ? { readingBookmark: memory.bookmark, previousVisuals: memory.visuals || {} } : {}),
+    }) }, ...history, ...(kind !== 'guide' ? [{ role: 'user', content: question }] : [])]
     const deadline = Date.now() + 110000
     const complete = models?.forRequest(modelConsent) || provider
     for (let attempt = 0; attempt < 2; attempt++) {
       let content = '', structured = false
       try {
-        const parsed = await runStructuredReading({ messages, kind, complete, url: config.model.url,
-          timeoutMs: Math.max(1000, Math.min(70000, deadline - Date.now())), maxTokens: kind === 'guide' ? 8192 : 3000,
+        const parsed = await runStructuredReading({ messages, kind, focus: memory.focus, complete, url: config.model.url,
+          timeoutMs: Math.max(1000, Math.min(70000, deadline - Date.now())), maxTokens: kind === 'answer' ? 3000 : 8192,
           onContent: value => { content = value } })
         structured = true
         return { ...validateBookResponse(parsed, context, kind), title: context.title, coverage: context.coverage, revision: context.revision, key: context.key, reference: context.reference }
@@ -174,7 +194,7 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
         if (attempt || !(error instanceof AppError) || (!structured && !error.repairable) || Date.now() >= deadline - 1000) throw error
         // One structural/citation repair within the same quota and whole deadline.
         messages.push({ role: 'assistant', content: content || '{}' },
-          { role: 'user', content: `Correct the JSON, preserving useful background knowledge with explicit background labels and no invented citations. Validation: ${error.message} ${error.repairDetails ? JSON.stringify(error.repairDetails) : ''} ${kind === 'guide' ? 'Use exact existing entity ids in from/to and all five required guide arrays, with fewer entries if needed.' : 'This is an ANSWER. Return ONLY answer, knowledge, insufficient and citations; omit all guide arrays and any type field.'} Use exact source substrings in quote. Do not translate quotes, join separate fragments or add an ellipsis. Label reliable uncited book knowledge background; omit invented or uncertain claims. Return the complete corrected JSON with escaped line breaks inside strings.` })
+          { role: 'user', content: `Correct the JSON, preserving useful background knowledge with explicit background labels and no invented citations. Validation: ${error.message} ${error.repairDetails ? JSON.stringify(error.repairDetails) : ''} ${kind === 'guide' ? 'Use exact existing entity ids in from/to and all five required guide arrays, with fewer entries if needed.' : kind === 'explore' ? 'Return answer, knowledge, insufficient, citations and only the visual groups requested. Return a complete compact snapshot of each updated group, preserving its relevant prior entries. Omit unrelated groups. Use exact existing entity ids in from/to.' : 'This is an ANSWER. Return ONLY answer, knowledge, insufficient and citations; omit all guide arrays and any type field.'} Use exact source substrings in quote. Do not translate quotes, join separate fragments or add an ellipsis. Label reliable uncited book knowledge background; omit invented or uncertain claims. Return the complete corrected JSON with escaped line breaks inside strings.` })
       }
     }
   }
@@ -212,7 +232,13 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
       const kind = input.kind || 'answer'
       requireValue(kinds.has(kind), 'Choose a guide or ask a question.')
       requireValue(typeof input.text === 'string' && input.text.trim() && input.text.length <= 8000, 'Write a question of up to 8,000 characters.')
-      const id = requestKey(owner, input.requestId), fingerprint = hash(JSON.stringify(input.reference ? [ref, target, kind, input.text] : [ref, kind, input.text]))
+      const focus = ['chat', 'people', 'places', 'timeline'].includes(input.focus) ? input.focus : 'chat'
+      const parentId = kind === 'explore' && input.parentId ? input.parentId : null
+      const baseGuideKey = kind === 'explore' && input.baseGuideKey ? input.baseGuideKey : null
+      requireValue(!parentId || typeof parentId === 'string' && /^[a-f0-9]{64}$/.test(parentId), 'Choose a saved response to continue.')
+      requireValue(!baseGuideKey || typeof baseGuideKey === 'string' && /^[a-f0-9]{64}$/.test(baseGuideKey), 'Choose a saved guide to continue.')
+      requireValue(!(parentId && baseGuideKey) && (!(parentId || baseGuideKey) || input.newTopic !== true), 'Choose a saved response or start a new topic.')
+      const id = requestKey(owner, input.requestId), fingerprint = hash(JSON.stringify(kind === 'explore' ? [ref, target, kind, input.text, parentId, baseGuideKey, input.newTopic === true, focus] : input.reference ? [ref, target, kind, input.text] : [ref, kind, input.text]))
       const previous = db.prepare('SELECT * FROM agent_messages WHERE id=? AND owner=?').get(id, owner)
       if (previous) {
         const data = unseal(previous.data)
@@ -220,9 +246,14 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
         return { id, state: previous.state, ...data }
       }
       requireValue(!db.prepare("SELECT id FROM agent_messages WHERE owner=? AND state='processing'").get(owner), 'A response is already in progress.', 409)
+      const branch = kind === 'explore' ? readingBranch(messages(owner, key), target, parentId, input.newTopic === true || !!baseGuideKey) : []
+      requireValue(!parentId || branch.at(-1)?.id === parentId, 'This saved response is not available in this book conversation.', 404)
+      const baseGuide = baseGuideKey ? JSON.parse(db.prepare('SELECT data FROM agent_book_guides WHERE id=?').get(baseGuideKey)?.data || 'null') : null
+      requireValue(!baseGuideKey || baseGuide?.reference?.id === target.id, 'This saved guide is no longer available. Refresh the conversation.', 409)
       // Reserve an owner-scoped durable request before any asynchronous read.
       capacity(200000)
-      const data = { question: input.text.trim(), fingerprint, answer: '', papers: [], kind, reference: target, conversationBook: ref.id }
+      const data = { question: input.text.trim(), fingerprint, answer: '', papers: [], kind, reference: target, conversationBook: ref.id,
+        ...(kind === 'explore' ? { parentId: branch.at(-1)?.id || null, focus, ...(baseGuide ? { baseGuide } : {}) } : {}) }
       db.prepare('INSERT INTO agent_messages VALUES (?,?,?,?,?,?)').run(id, owner, key, 'processing', seal(data), now())
       let charged = false
       try {
@@ -251,10 +282,14 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
           reserve(id, owner); charged = true
           const recent = messages(owner, key).filter(m => m.state === 'completed' && m.bookResponse?.reference?.id === target.id).slice(-6)
           const history = recent.flatMap(m => [{ role: 'user', content: m.question.slice(0, 4000) }, { role: 'assistant', content: JSON.stringify({ reference: m.reference, knowledge: m.bookResponse?.knowledge || 'passages', answer: m.answer.slice(0, 4000), ...(m.kind === 'guide' ? { people: m.bookResponse?.people?.map(p => p.name), places: m.bookResponse?.places?.map(p => p.name) } : {}) }) }])
-          result = await generate(context, kind, data.question, history, input.modelConsent)
+          const memory = readingMemory(baseGuide ? [{ question: '', answer: baseGuide.answer, bookResponse: baseGuide }, ...branch] : branch)
+          result = await generate(context, kind, data.question, kind === 'explore' ? memory.history : history, input.modelConsent, { ...memory, focus, bookmark: ref })
+          if (kind === 'explore') result = { ...result, key: hash(`private:${id}`), visibility: 'private', parentId: data.parentId, created: now() }
         }
         data.answer = result.answer; data.bookResponse = result
-        const updated = db.prepare("UPDATE agent_messages SET state='completed',data=? WHERE id=? AND owner=?").run(seal(data), id, owner)
+        const sealed = seal(data), stored = db.prepare('SELECT length(data) n FROM agent_messages WHERE id=? AND owner=?').get(id, owner)
+        capacity(Math.max(0, Buffer.byteLength(sealed) - (stored?.n || 0)))
+        const updated = db.prepare("UPDATE agent_messages SET state='completed',data=? WHERE id=? AND owner=?").run(sealed, id, owner)
         requireValue(updated.changes, 'Conversation removed.', 410)
         if (charged) finish(id, 'used')
         return { id, state: 'completed', ...data }

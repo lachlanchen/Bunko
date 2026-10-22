@@ -6,12 +6,18 @@ import { PassageEvidence } from './PassageEvidence'
 import { bookCompanionCopy } from './bookCompanionCopy'
 import { guideVisualCopy } from './guideVisualCopy'
 
-export function GuideTimeline({ events, ui, onRead }: { events: GuideEvent[]; ui: UILanguage; onRead: (paragraph: number, citation?: BookCitation) => void }) {
+export function GuideTimeline({ guideKey, events, ui, onRead }: { guideKey: string; events: GuideEvent[]; ui: UILanguage; onRead: (paragraph: number, citation?: BookCitation) => void }) {
   const t = guideVisualCopy[ui], copy = bookCompanionCopy[ui]
   const indexed = events.map((event, index) => ({ event, index, date: quotedCalendar(event) }))
   const dated = indexed.filter(row => row.date).sort((a, b) => a.date!.start - b.date!.start || a.index - b.index)
   const undated = indexed.filter(row => !row.date)
-  const [order, setOrder] = useState<'date' | 'text'>(dated.length > 1 ? 'date' : 'text'), [focused, setFocused] = useState<number | null>(null)
+  const storageKey = `bunko-guide-timeline:${guideKey}`
+  const [saved] = useState(() => {
+    try { return JSON.parse(sessionStorage.getItem(storageKey) || 'null') as { order?: string; focused?: number } | null } catch { return null }
+  })
+  const [order, setOrder] = useState<'date' | 'text'>(saved?.order === 'text' || saved?.order === 'date' ? saved.order : dated.length > 1 ? 'date' : 'text')
+  const [focused, setFocused] = useState<number | null>(Number.isInteger(saved?.focused) && saved!.focused! >= 0 && saved!.focused! < events.length ? saved!.focused! : null)
+  useEffect(() => { try { sessionStorage.setItem(storageKey, JSON.stringify({ order, focused })) } catch { /* Optional view state. */ } }, [storageKey, order, focused])
   const chronological = order === 'date' && dated.length > 0
   const chart = useRef<HTMLDivElement>(null), [chartWidth, setChartWidth] = useState(600)
   useEffect(() => {
@@ -38,13 +44,13 @@ export function GuideTimeline({ events, ui, onRead }: { events: GuideEvent[]; ui
     const date = new Date(0); date.setUTCFullYear(year, month, 1)
     return new Intl.DateTimeFormat(ui, { month: 'short', year: 'numeric', timeZone: 'UTC' }).format(date)
   }
-  const choose = (index: number) => { setFocused(index); document.getElementById(`guide-event-${index}`)?.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' }) }
+  const choose = (index: number) => { setFocused(index); requestAnimationFrame(() => document.getElementById(`guide-event-${index}`)?.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' })) }
   const cards = (rows: typeof indexed, calendar: boolean) => <ol className={`guide-timeline${calendar ? ' calendar' : ''}`}>
     {rows.map(({ event, index }) => <li key={index} id={`guide-event-${index}`} className={focused === index ? 'selected' : ''}>
       <span className="guide-event-number">{index + 1}</span><span className="guide-time" dir="auto">{event.when || copy.undated}</span>
-      <article className="guide-card"><h2 dir="auto">{event.title}</h2><p dir="auto">{event.detail}</p>
+      <article className="guide-card"><details open={events.length <= 8 || focused === index}><summary><h2 dir="auto">{event.title}</h2></summary><p dir="auto">{event.detail}</p>
         {event.certainty !== 'stated' && <span className="guide-uncertain">{event.certainty === 'background' ? copy.background : copy.interpretation}</span>}
-        <PassageEvidence citations={event.citations} ui={ui} onRead={onRead} />
+        <PassageEvidence citations={event.citations} ui={ui} onRead={onRead} /></details>
       </article>
     </li>)}
   </ol>
@@ -69,6 +75,7 @@ export function GuideTimeline({ events, ui, onRead }: { events: GuideEvent[]; ui
         })}
       </svg></div><p>{t.dateNote}</p>
     </div>}
+    {!chronological && events.length > 3 && <nav className="guide-story-sequence" aria-label={t.summary} data-no-swipe="true">{events.map((event, index) => <button type="button" key={index} aria-pressed={focused === index} onClick={() => choose(index)} title={event.title}><b>{index + 1}</b><span dir="auto">{event.title}</span></button>)}</nav>}
     {cards(chronological ? dated : indexed, chronological)}
     {chronological && undated.length > 0 && <><h3 className="guide-undated-title">{t.unknown}</h3><p className="guide-caption">{copy.textOrder}</p>{cards(undated, false)}</>}
   </>

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
-import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { BookCompanion } from './BookCompanion'
 import { BookGuide } from './BookGuide'
 import { companionReference, savedGuide, saveGuide, type BookCompanionContext, type BookResponse } from '../lib/bookCompanion'
@@ -137,16 +137,16 @@ it('reopening at another passage retains book drafts and saved artifacts with ex
   expect(screen.getByRole('textbox')).toHaveValue('Keep my book question')
   fireEvent.click(screen.getByRole('button', { name: 'People' }))
   expect(screen.getByRole('heading', { name: 'Ada' })).toBeInTheDocument()
-  expect(screen.getByRole('combobox', { name: 'Saved guides' })).toHaveValue(guide.key)
+  expect(screen.getByRole('combobox', { name: 'Saved results' })).toHaveValue(guide.key)
 })
 it('opening an older guide in chat selects that artifact rather than the latest one', async () => {
   const older = { ...guide, key: 'older', people: [{ ...guide.people![0], name: 'Earlier Ada', level: 2 }] }
   const newer = { ...guide, key: 'newer', people: [{ ...guide.people![0], name: 'Later Ada' }] }
   fixture.call.mockResolvedValue({ messages: [older, newer].map((g, i) => ({ id: String(i), state: 'completed', kind: 'guide', question: `Guide ${i}`, answer: g.answer, papers: [], bookResponse: g })), guide: newer })
   open(); await screen.findByText('Guide 0')
-  fireEvent.click(screen.getAllByRole('button', { name: 'People · Places · Timeline' })[0])
+  fireEvent.click(within(screen.getByText('Guide 0').closest('article')!).getByRole('button', { name: 'People' }))
   expect(screen.getByRole('heading', { name: 'Earlier Ada', level: 2 })).toBeInTheDocument()
-  expect(screen.getByRole('combobox', { name: 'Saved guides' })).toHaveValue('older')
+  expect(screen.getByRole('combobox', { name: 'Saved results' })).toHaveValue('older')
 })
 
 it('a failed response appears once in chat, including after switching views', async () => {
@@ -174,4 +174,51 @@ it('a guide failure is still shown when its chat message is in another view', as
   await waitFor(() => expect(screen.getByRole('alert')).toHaveTextContent(error))
   fireEvent.click(screen.getByRole('button', { name: 'Ask' }))
   expect(screen.getAllByText(error)).toHaveLength(1)
+})
+
+it('all tabs keep a composer and reuse results; a visual followup points to the selected saved answer', async () => {
+  localStorage.setItem('bunko-book-consent-v2:1:DeepSeek', 'yes')
+  const old = { id: 'earlier', state: 'completed', kind: 'explore', question: 'Our first family tree', answer: guide.answer, papers: [], bookResponse: { ...guide, visibility: 'private' } }
+  fixture.call.mockImplementation(async action => action === 'messages' ? { messages: [old], guide: null } : { ...old, id: 'continued' })
+  open(); await screen.findByText('Our first family tree')
+  for (const name of ['People', 'Places', 'Timeline']) {
+    fireEvent.click(within(screen.getByRole('navigation')).getByRole('button', { name }))
+    expect(document.querySelector('.agent-composer textarea')).toBeInTheDocument()
+  }
+  fireEvent.click(screen.getByRole('button', { name: 'Check for updates' }))
+  await waitFor(() => expect(fixture.call.mock.calls.filter(c => c[0] === 'messages').length).toBe(2))
+  expect(fixture.call.mock.calls.filter(c => c[0] === 'send')).toHaveLength(0)
+  fireEvent.change(screen.getByRole('combobox', { name: 'Reading scope' }), { target: { value: 'book' } })
+  fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Extend the timeline across the whole book' } })
+  fireEvent.click(screen.getByRole('button', { name: 'Send message' }))
+  await waitFor(() => expect(fixture.call.mock.calls.filter(c => c[0] === 'send')).toHaveLength(1))
+  const input = fixture.call.mock.calls.find(c => c[0] === 'send')![1]
+  expect(input).toMatchObject({ kind: 'explore', focus: 'timeline', parentId: 'earlier', reference: { scope: 'book' } })
+  expect(savedGuide(reference)).toBeNull()
+})
+
+it('an explicit new topic does not silently attach the latest private answer', async () => {
+  localStorage.setItem('bunko-book-consent-v2:1:DeepSeek', 'yes')
+  const old = { id: 'old', state: 'completed', kind: 'explore', question: 'Old topic', answer: guide.answer, papers: [], bookResponse: { ...guide, visibility: 'private' } }
+  fixture.call.mockImplementation(async action => action === 'messages' ? { messages: [old], guide: null } : { ...old, id: 'fresh' })
+  open(); await screen.findByText('Old topic')
+  fireEvent.click(screen.getByRole('button', { name: 'Start a new topic' }))
+  fireEvent.change(screen.getByRole('textbox'), { target: { value: 'A different question' } })
+  fireEvent.click(screen.getByRole('button', { name: 'Send message' }))
+  await waitFor(() => expect(fixture.call.mock.calls.some(c => c[0] === 'send')).toBe(true))
+  const input = fixture.call.mock.calls.find(c => c[0] === 'send')![1]
+  expect(input.newTopic).toBe(true); expect(input.parentId).toBeUndefined(); expect(input.baseGuideKey).toBeUndefined()
+})
+
+it('an inherited diagram keeps the later prose conversation as the followup parent', async () => {
+  localStorage.setItem('bunko-book-consent-v2:1:DeepSeek', 'yes')
+  const root = { id: 'root', state: 'completed', kind: 'explore', question: 'Family tree', answer: guide.answer, papers: [], bookResponse: { ...guide, visibility: 'private' } }
+  const tip = { ...root, id: 'tip', parentId: 'root', question: 'Explain their motives', bookResponse: { ...guide, key: 'prose', parentId: 'root', visibility: 'private', people: undefined, relationships: undefined, places: undefined, routes: undefined, events: undefined } }
+  fixture.call.mockImplementation(async action => action === 'messages' ? { messages: [root, tip], guide: null } : { ...tip, id: 'next' })
+  open(); await screen.findByText('Explain their motives')
+  fireEvent.click(within(screen.getByRole('navigation')).getByRole('button', { name: 'People' }))
+  fireEvent.change(document.querySelector('.agent-composer textarea')!, { target: { value: 'Add those motives to the graph' } })
+  fireEvent.click(screen.getByRole('button', { name: 'Send message' }))
+  await waitFor(() => expect(fixture.call.mock.calls.some(c => c[0] === 'send')).toBe(true))
+  expect(fixture.call.mock.calls.find(c => c[0] === 'send')![1]).toMatchObject({ parentId: 'tip', focus: 'people' })
 })

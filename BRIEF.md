@@ -1,5 +1,16 @@
 # Bunko — product brief
 
+## Continuing reading workspace · 2026-10-23
+
+Ask, People, Places and Timeline share one account-bound conversation with explicit
+branches. Reopen the closest saved result, allow continuation from an earlier turn,
+and retain unchanged visual groups across follow-ups. Keep the reading bookmark
+independent of whole-book or selected-passage questions. Opening or refreshing a
+view never triggers generation. Personal results remain private; canonical fixed
+guides retain their existing public cache. Improve graph focus, stable colors,
+rounded links and expandable timelines with restored view state. Accumulate this
+round in internal build36; public reviews and identity/billing remain unchanged.
+
 ## Reading response recovery · 2026-10-23
 
 Recover complete model answers containing literal line breaks inside JSON strings

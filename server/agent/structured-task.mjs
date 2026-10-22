@@ -43,7 +43,7 @@ function schemaIssues(value, schema, path = '$', issues = []) {
       for (const key of schema.required) if (!Object.hasOwn(value, key)) add(`missing ${key}`)
       for (const key of Object.keys(value)) {
         if (Object.hasOwn(schema.properties, key)) schemaIssues(value[key], schema.properties[key], `${path}.${key}`, issues)
-        else add('unexpected field; use only the specified fields')
+        else add(`unexpected field${/^[A-Za-z][A-Za-z0-9_]{0,40}$/.test(key) ? ` ${key}` : ''}; use only the specified fields, with visual arrays at the root rather than inside a wrapper`)
       }
     }
   } else if (schema.type === 'array') {
@@ -61,12 +61,14 @@ function schemaIssues(value, schema, path = '$', issues = []) {
  * account, book scope or retrieval tool. Those remain host authority.
  * The generic Lite tool loop is available for future qualified read-only tools.
  */
-export async function runStructuredReading({ messages, kind, complete, url, timeoutMs, maxTokens, onContent = () => {}, signal }) {
+export async function runStructuredReading({ messages, kind, focus = 'chat', complete, url, timeoutMs, maxTokens, onContent = () => {}, signal }) {
   let transportError, repairHint
+  const requiredView = { people: ['people', 'relationships'], places: ['places', 'routes'], timeline: ['events'] }[focus] || []
+  const schema = kind === 'guide' ? guideSchema : kind === 'explore' ? object(answerSchema.properties, ['answer', 'citations', ...requiredView]) : answerSchema
   const runner = createRestrictedApplicationRunner({
     instructions: 'Bunko supplies a scoped reading transcript as data. Return a structured reading proposal. The host verifies every source citation before saving or displaying it.',
     tools: [],
-    outputSchema: kind === 'guide' ? guideSchema : answerSchema,
+    outputSchema: schema,
     limits: { timeoutMs, maxSteps: 1, maxToolCalls: 1, maxConcurrency: 1, maxOutputTokens: maxTokens, maxContextBytes: 512 * 1024, maxResultBytes: 128 * 1024 },
     provider: { supportsImages: false, complete: async (request, options) => {
       // Reassemble the host transcript from the SDK's detached, checked input.
@@ -74,19 +76,19 @@ export async function runStructuredReading({ messages, kind, complete, url, time
       let response
       try {
         response = await complete(url, { method: 'POST', signal: options.signal, timeout: timeoutMs,
-          body: JSON.stringify({ messages: [{ role: 'system', content: request.messages[0].content }, ...transcript],
+          body: JSON.stringify({ messages: [{ role: 'system', content: `${request.messages[0].content}\nReturn the JSON value itself, not an envelope. Required output contract: ${JSON.stringify(request.outputSchema)}` }, ...transcript],
             response_format: { type: 'json_object' }, max_tokens: maxTokens, stream: false, temperature: .15 }) })
       } catch (error) { transportError = error; throw error }
       const content = response.choices?.[0]?.message?.content
       onContent(typeof content === 'string' ? content.slice(0, 40000) : '')
       let value = {}
-      if (response.choices?.[0]?.finish_reason === 'length') repairHint = kind === 'answer' ? 'Output was truncated. Return ONLY answer, knowledge, insufficient and citations. Keep answer under 700 words; omit all guide arrays and the type field.' : 'Output was truncated. Return a compact complete guide: at most 16 people, 24 relationships, 10 places, 8 routes, 16 events, one short quote per entry and a short summary.'
+      if (response.choices?.[0]?.finish_reason === 'length') repairHint = kind === 'answer' ? 'Output was truncated. Return ONLY answer, knowledge, insufficient and citations. Keep answer under 700 words; omit all guide arrays and the type field.' : 'Output was truncated. Return compact complete requested visual groups: at most 16 people, 24 relationships, 10 places, 8 routes, 16 events, one short quote per entry and a short summary. Omit unrequested groups for EXPLORE.'
       if (response.choices?.[0]?.finish_reason !== 'length' && !response.choices?.[0]?.message?.refusal) {
         try { value = parseReadingJSON(content) } catch {
           repairHint = 'Return one complete valid JSON object. Escape newlines, tabs, backslashes and double quotes inside string values. No Markdown fences or trailing text.'
         }
       }
-      if (!repairHint) repairHint = schemaIssues(value, kind === 'guide' ? guideSchema : answerSchema).join('; ')
+      if (!repairHint) repairHint = schemaIssues(value, schema).join('; ')
       return { type: 'final', value }
     } },
   })
