@@ -1,3 +1,24 @@
+# Current internal checkpoint · build35 · 23 October 2026 HKT
+
+Bunko **1.0.14 (35)** is VALID / IN_BETA_TESTING for iOS/Watch and universal
+Mac in the existing internal group, and available to Google internal testers.
+Chapter rows and reader headings stay compact with full-title expansion. The
+library remembers Recently read, Newest added, Title or Author order.
+
+[Build35 qualification and delivery](../docs/library-order34-20261022.md).
+The whole-book companion/history/artifact changes from33 remain included.
+Google, Apple and LazyingArt provider entrances remain public-gated; the owner
+Apple callback still requires full qualification. This delivery does not activate
+providers, subscriptions, shared rewards, public reviews or a PWA deployment.
+The companion33 backend remains active and unchanged.
+
+Both build34 and35 shared-Mac operations are closed with independent cleanup
+proof. No Mac/GUI hold remains. Bunko noVNC6190/CDP9490, source preview19534 and
+Android emulator5598 are stopped, with their saved profiles/data retained.
+Private evidence: `.runtime/test35-20261022/` and `.runtime/library35-20261022/`.
+
+## Earlier records
+
 # Current internal checkpoint · build31 · 21 October 2026 HKT
 
 Bunko **1.0.14 (31)** is VALID / IN_BETA_TESTING for iOS/Watch and universal Mac

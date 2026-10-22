@@ -26,6 +26,16 @@
       "file": "native35-chapters.png",
       "sha256": "9f1280f97aee9c360fa8b2d416912fcfeff49ae8df771918c30f1029a7a788f9",
       "channel": "installed Android Debug35"
+    },
+    {
+      "file": "ruby-long/reader-dream-red-chamber-collapsed.png",
+      "sha256": "7ca61f8db5ccee99dbcbb532f07856150ccd894be3df05b48f390f19f84c7e42",
+      "channel": "Chrome, actual packaged build35 reader and public Dream of the Red Chamber chapter with ruby"
+    },
+    {
+      "file": "ruby-long/reader-dream-red-chamber-expanded.png",
+      "sha256": "3e99373cb5ce3fd6ccaaccae158b973462817ce5046bdd5b8756dfad3b178ecb",
+      "channel": "Chrome, actual packaged build35 reader and public Dream of the Red Chamber chapter with ruby"
     }
   ],
   "privatePath": ".runtime/library35-20261022",

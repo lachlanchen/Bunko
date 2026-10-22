@@ -47,3 +47,16 @@ Installed Android Debug35 additionally verified the corrected heading at 36px
 (one line), the 24px chapter-row text, native preference reload, reading recency
 and no horizontal overflow. Both signed Android packages contain all88 expected
 resources. This successor retains all build34 changes.
+
+## Final internal delivery · 23 October 2026 HKT
+
+Build35 is VALID / IN_BETA_TESTING for iOS/Watch and universal Mac in the
+existing internal TestFlight group, and available to Google internal testers.
+Both Apple packages passed provider validation, upload, signature, resource,
+Watch identity/version and actual Mac arm64/x86_64 minimum12.0 checks. All four
+localized beta notes and group membership were read back.
+
+The shared Mac guard and owned processes were released, original signing state
+and six profiles restored, and the local browser/emulator/preview stopped.
+No new iOS/Mac GUI test or public review/PWA deployment is claimed.
+`store/testflight/library-order35-receipt.json` records the final evidence.
