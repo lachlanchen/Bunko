@@ -1,5 +1,14 @@
 # Bunko — product brief
 
+## Reading response recovery · 2026-10-23
+
+Recover complete model answers containing literal line breaks inside JSON strings
+without changing their text or relaxing evidence validation. Keep repair prompts
+specific to answers or visual guides, and show each failed response once in chat.
+The backend correction is live for existing clients; the small client display
+correction accumulates in the next internal candidate. See
+`docs/reading-response-recovery-20261023.md` for qualification and delivery status.
+
 ## Compact chapters and library order · 2026-10-22
 
 Keep chapter titles on one line with explicit full-title/translation expansion,

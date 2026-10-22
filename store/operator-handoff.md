@@ -10,7 +10,10 @@ The whole-book companion/history/artifact changes from33 remain included.
 Google, Apple and LazyingArt provider entrances remain public-gated; the owner
 Apple callback still requires full qualification. This delivery does not activate
 providers, subscriptions, shared rewards, public reviews or a PWA deployment.
-The companion33 backend remains active and unchanged.
+The reading-response recovery backend is now live for these clients. See
+[the correction and qualification](../docs/reading-response-recovery-20261023.md).
+The accompanying duplicate-error display correction is source-tested, pending
+the next cumulative native/PWA delivery; build35 binaries remain unchanged.
 
 Both build34 and35 shared-Mac operations are closed with independent cleanup
 proof. No Mac/GUI hold remains. Bunko noVNC6190/CDP9490, source preview19534 and
