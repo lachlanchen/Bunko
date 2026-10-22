@@ -16,7 +16,7 @@ async function setup(t,overrides={}){
   if(url.includes('/access_tokens'))return Response.json({token:'installation-fixture',expires_at:new Date(f.time+3600000).toISOString()})
   if(url.includes('/search/issues'))return Response.json({items:issue?[issue]:[]})
   if(options.method==='POST'){
-   const body=JSON.parse(options.body);writes.push({url,body})
+   const body=JSON.parse(options.body);writes.push({url,body,authorization:options.headers.Authorization})
    const value={id:500+writes.length,...body,user:{id:999,login:'bunko-bot'},html_url:'https://github.com/lachlanchen/bunko-books/issues/1',created_at:'2030-03-17T00:00:00Z'}
    if(url.endsWith('/comments'))comments.push(value);else issue={...value,number:1,labels:['passage']}
    return Response.json(url.endsWith('/comments')?value:issue)
@@ -124,4 +124,65 @@ test('signing out one device preserves another authenticated device',async t=>{
  s.setToken(first.token);assert.equal((await s.call('/v1/logout',{})).status,200)
  s.setToken(second.token);assert.equal((await s.call('/v1/session',{})).status,200)
  s.setToken(first.token);assert.equal((await s.call('/v1/session',{})).status,401)
+})
+test('hidden linking qualification accepts only the exact approved local owner',async t=>{
+ const owner=createHash('sha256').update('bunko-agent:7').digest('hex')
+ const s=await setup(t,{loginProviders:[],linkEnabled:false,qualificationLinkOwners:[owner]})
+ assert.equal((await(await s.call('/v1/lazyingart/status',{})).json()).enabled,false)
+ await s.finish(await s.start('github'))
+ assert.equal((await(await s.call('/v1/lazyingart/status',{})).json()).enabled,true)
+ assert.equal((await s.call('/v1/lazyingart/start',{challenge:opaque(),consent:true})).status,200)
+ assert.deepEqual((await(await s.call('/v1/auth/methods',{})).json()).providers,['github'])
+ const other=await setup(t,{linkEnabled:false,qualificationLinkOwners:['f'.repeat(64)]})
+ await other.finish(await other.start('github'))
+ assert.equal((await(await other.call('/v1/lazyingart/status',{})).json()).enabled,false)
+ assert.equal((await other.call('/v1/lazyingart/start',{challenge:opaque(),consent:true})).status,503)
+})
+
+async function connectGitHub(s){
+ const verifier=opaque(),response=await s.call('/v1/auth/start',{challenge:hash(verifier),platform:'native',storage:'secure',connectGithub:true,consent:true})
+ assert.equal(response.status,200,await response.clone().text());const flow=await response.json()
+ await s.call('/oauth/callback?code=fixture&state='+new URL(flow.url).searchParams.get('state'))
+ return{...flow,verifier}
+}
+test('central-first GitHub connection preserves the account and uses the personal GitHub author',async t=>{
+ const s=await setup(t),first=await s.finish(await s.start()),flow=await connectGitHub(s)
+ assert.equal((await s.call('/v1/auth/complete',{flow:flow.flow,verifier:opaque()})).status,403)
+ const connected=await s.finish(flow);assert.equal(connected.user.id,first.user.id)
+ const status=await(await s.call('/v1/lazyingart/status',{})).json();assert.equal(status.github.login,'original-reader');assert.equal(status.github.connected,true)
+ await s.call('/v1/discussions/post',{passage:'book/en/0/0',excerpt:'Excerpt',body:'Personal comment',requestId:opaque()})
+ assert.doesNotMatch(s.writes[0].body.body,/Bunko reader|Posted through Bunko/)
+ assert.equal(s.writes[0].authorization,'Bearer github-fixture')
+ await s.call('/v1/logout',{});s.setToken(undefined)
+ assert.equal((await s.finish(await s.start('github'))).user.id,first.user.id)
+ await s.call('/v1/logout',{});s.setToken(undefined)
+ assert.equal((await s.finish(await s.start('google'))).user.id,first.user.id)
+ await s.call('/v1/discussions/post',{passage:'book/en/0/0',excerpt:'Excerpt',body:'From Google, posted as GitHub',requestId:opaque()})
+ assert.equal(s.writes.at(-1).authorization,'Bearer github-fixture');assert.doesNotMatch(s.writes.at(-1).body.body,/Bunko reader/)
+})
+test('a GitHub account with an existing Bunko account cannot be silently attached to another',async t=>{
+ const s=await setup(t),legacy=await s.finish(await s.start('github'));await s.call('/v1/logout',{});s.setToken(undefined)
+ const central=await s.finish(await s.start()),flow=await connectGitHub(s)
+ const rejected=await s.call('/v1/auth/complete',{flow:flow.flow,verifier:flow.verifier});assert.equal(rejected.status,409);assert.equal((await rejected.json()).error,'account_already_linked')
+ assert.equal((await(await s.call('/v1/session',{})).json()).user.id,central.user.id)
+ await s.call('/v1/logout',{});s.setToken(undefined)
+ assert.equal((await s.finish(await s.start('github'))).user.id,legacy.user.id)
+})
+test('GitHub connection requires consent, fresh local proof, and the original active session',async t=>{
+ const s=await setup(t);await s.finish(await s.start());
+ const input={challenge:opaque(),platform:'native',storage:'secure',connectGithub:true}
+ assert.equal((await s.call('/v1/auth/start',input)).status,400)
+ s.f.time+=601000;assert.equal((await s.call('/v1/auth/start',{...input,consent:true})).status,403)
+ s.f.time-=601000;const a=await connectGitHub(s);await s.call('/v1/logout',{});s.setToken(undefined)
+ assert.equal((await s.call('/v1/auth/complete',{flow:a.flow,verifier:a.verifier})).status,401)
+})
+test('parallel or cancelled GitHub completion cannot attach a provider after cancellation',async t=>{
+ const s=await setup(t),first=await s.finish(await s.start()),a=await connectGitHub(s)
+ let entered,release;const blocked=new Promise(r=>entered=r)
+ s.f.hook=async url=>{if(url.endsWith('/introspect')){entered();await new Promise(r=>release=r)}}
+ const pending=s.call('/v1/auth/complete',{flow:a.flow,verifier:a.verifier});await blocked
+ assert.deepEqual(await(await s.call('/v1/auth/complete',{flow:a.flow,verifier:a.verifier})).json(),{pending:true})
+ await s.call('/v1/auth/cancel',{flow:a.flow,verifier:a.verifier});release();assert.notEqual((await pending).status,200);s.f.hook=null
+ const status=await(await s.call('/v1/lazyingart/status',{})).json();assert.equal(status.github.connected,false)
+ assert.equal((await(await s.call('/v1/session',{})).json()).user.id,first.user.id)
 })

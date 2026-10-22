@@ -6,6 +6,26 @@ import { discussionOrigin } from './serviceOrigins'
 
 export const DISCUSSION_API = discussionOrigin(Capacitor.isNativePlatform() || (typeof window !== 'undefined' && !!window.__BUNKO_DESKTOP__))
 export type SignInProvider = 'github' | 'google' | 'apple' | 'lazyingart'
+// Discovery is public and independent of the current account. In particular,
+// an anonymous /session 401 must not cancel this request during first launch.
+export async function signInMethods(signal?: AbortSignal): Promise<SignInProvider[]> {
+  const controller = new AbortController()
+  const abort = () => controller.abort()
+  if (signal?.aborted) controller.abort()
+  signal?.addEventListener('abort', abort, { once: true })
+  const timeout = setTimeout(abort, 15000)
+  try {
+    const response = await fetch(DISCUSSION_API + '/v1/auth/methods', {
+      method: 'POST', mode: 'cors', credentials: 'omit', cache: 'no-store',
+      headers: { 'Content-Type': 'application/json', 'X-Bunko-Client': '1' },
+      body: '{}', signal: controller.signal,
+    })
+    if (!response.ok) throw new Error('Method discovery unavailable')
+    const result = await response.json()
+    if (!Array.isArray(result.providers)) throw new Error('Invalid method discovery')
+    return (['github', 'google', 'apple', 'lazyingart'] as SignInProvider[]).filter(p => result.providers.includes(p))
+  } finally { clearTimeout(timeout); signal?.removeEventListener('abort', abort) }
+}
 export interface DiscussionUser { id: number | string; login: string; kind?: 'demo' | 'lazyingart' }
 export interface DiscussionComment { id: number; body: string; user: DiscussionUser; html_url?: string; created_at?: string }
 export interface DiscussionIssue extends DiscussionComment { number: number; locked: boolean }
@@ -101,7 +121,7 @@ export function isBunkoAuthorizationURL(value: string, flow: string, provider: S
     : url.origin === 'https://llm.lazying.art' && url.pathname === '/bunko/oauth/lazyingart'
       && [...url.searchParams.keys()].join(' ') === 'ticket' && url.searchParams.get('ticket') === flow
 }
-function beginSignIn(demo?: { username: string; password: string }, reauthenticate = false, provider: SignInProvider = 'github') {
+function beginSignIn(demo?: { username: string; password: string }, reauthenticate = false, provider: SignInProvider = 'github', connectGithub = false) {
   const hadSession = !!session
   generation++
   const revision = generation
@@ -124,7 +144,7 @@ function beginSignIn(demo?: { username: string; password: string }, reauthentica
     const verifier = requestId()
     const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier)))
     const challenge = btoa(String.fromCharCode(...digest)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-    const flow = await api<{ flow: string; url: string }>(demo ? '/v1/auth/demo' : '/v1/auth/start', { challenge, platform: native || desktop ? 'native' : 'web', storage: native || desktop ? 'secure' : 'cookie', ...demo, ...(!demo&&provider!=='github'?{provider}:{}), ...(reauthenticate ? { reauthenticate:true } : {}) }, controller.signal)
+    const flow = await api<{ flow: string; url: string }>(demo ? '/v1/auth/demo' : '/v1/auth/start', { challenge, platform: native || desktop ? 'native' : 'web', storage: native || desktop ? 'secure' : 'cookie', ...demo, ...(!demo&&provider!=='github'?{provider}:{}), ...(reauthenticate ? { reauthenticate:true } : {}), ...(connectGithub ? {connectGithub:true,consent:true} : {}) }, controller.signal)
     attempt={flow:flow.flow,verifier}
     if (stop || generation !== revision) throw new DiscussionError('authorization_cancelled')
     if (!demo) {
@@ -182,3 +202,6 @@ export const signIn = (provider: SignInProvider = 'github') => beginSignIn(undef
 export const signInDemo = (username: string, password: string) => beginSignIn({ username, password })
 
 export const reauthenticateAccount = () => beginSignIn(undefined, true, session?.method==='lazyingart'?'lazyingart':'github')
+
+/** Explicitly connects GitHub to the signed-in reader; never creates another reader. */
+export const connectGitHubAccount = () => beginSignIn(undefined,false,'github',true)

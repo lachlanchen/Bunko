@@ -146,6 +146,7 @@ export function createProfileStore(store,config,{transport,now=()=>Date.now()}={
   }
   function remove(owner) {transaction(store,()=>{const row=current(owner);if(row)deferRevoke(decrypt('link',owner,row.body));db.prepare('DELETE FROM profile_links WHERE owner=?').run(owner);db.prepare('DELETE FROM profile_accounts WHERE owner=?').run(owner)})}
   const linkEnabled=adapter.enabled&&config.linkEnabled!==false;
-  const status=owner=>{const row=current(owner);return {enabled:linkEnabled,linked:row?.state==='active',state:row?.state||'unlinked'}};
-  return {enabled:adapter.enabled,linkEnabled,loginProviders,begin,complete,proof,authorizeSession,disconnect,remove,flushRevocations,status,connection:owner=>{const row=current(owner);return row?{issuer:row.issuer,subject:row.subject,generation:row.generation,state:row.state}:null}};
+  const canLink=owner=>linkEnabled||(adapter.enabled&&typeof owner==='string'&&/^[a-f0-9]{64}$/.test(owner)&&Array.isArray(config.qualificationLinkOwners)&&config.qualificationLinkOwners.includes(owner));
+  const status=owner=>{const row=current(owner);return {enabled:canLink(owner),linked:row?.state==='active',state:row?.state||'unlinked'}};
+  return {enabled:adapter.enabled,linkEnabled,canLink,loginProviders,begin,complete,proof,authorizeSession,disconnect,remove,flushRevocations,status,connection:owner=>{const row=current(owner);return row?{issuer:row.issuer,subject:row.subject,generation:row.generation,state:row.state}:null}};
 }

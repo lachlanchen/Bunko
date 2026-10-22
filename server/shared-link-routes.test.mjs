@@ -2,7 +2,7 @@ import test from 'node:test';import assert from 'node:assert/strict';import {cre
 import {request as httpRequest} from 'node:http';
 const opaque=()=>randomBytes(32).toString('base64url'),hash=x=>createHash('sha256').update(x).digest('base64url');
 async function setup(t){
- let githubId=7;const f=fixture(t),service=createService({publicUrl:'https://llm.lazying.art/bunko',clientId:'test',clientSecret:'test',encryptionKey:randomBytes(32).toString('base64'),lazyingart:sharedConfig,lacPoints:{enabled:true}},{now:()=>f.time,profileOptions:f.options,fetchImpl:async url=>Response.json(url.endsWith('/user')?{id:githubId,login:'local-reader'}:{access_token:'fixture-token',expires_in:28800})});
+ let githubId=7;const f=fixture(t),service=createService({publicUrl:'https://llm.lazying.art/bunko',clientId:'test',clientSecret:'test',encryptionKey:randomBytes(32).toString('base64'),lazyingart:sharedConfig,lacPoints:{enabled:true}},{now:()=>f.time,profileOptions:f.options,fetchImpl:async (url,options={})=>Response.json(url.endsWith('/user')?{id:Number(options.headers.Authorization.split('-').at(-1)),login:'local-reader'}:{access_token:'fixture-token-'+githubId,expires_in:28800})});
  await new Promise(r=>service.listen(0,'127.0.0.1',r));t.after(()=>new Promise(r=>{service.close(r);service.closeAllConnections()}));const root=`http://127.0.0.1:${service.address().port}`;let token;
  const request=(path,body,extra={})=>new Promise((resolve,reject)=>{
   const req=httpRequest(root+'/bunko'+path,{method:body?'POST':'GET',headers:{Host:'llm.lazying.art',...(body?{Origin:'https://lachlan.lazying.art','X-Bunko-Client':'1','Content-Type':'application/json'}:{}),...(token?{Authorization:'Bearer '+token}:{}),...extra}},res=>{

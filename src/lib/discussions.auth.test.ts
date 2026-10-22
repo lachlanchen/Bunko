@@ -157,3 +157,15 @@ it('cancelled reauthentication preserves the existing session across restoration
  const api=await import('./discussions');await api.restoreSession();const flow=api.reauthenticateAccount();const rejected=expect(flow.promise).rejects.toBeDefined();flow.cancel();await rejected;
  expect(api.currentUser()?.id).toBe(3);expect(localStorage.getItem('bunko:signed-out')).not.toBe('1');await api.restoreSession();expect(api.currentUser()?.id).toBe(3);
 });
+
+it('optional GitHub connection sends explicit consent and preserves the current reader', async () => {
+  const popup={opener:window,location:{href:''},close:vi.fn()};vi.spyOn(window,'open').mockReturnValue(popup as unknown as Window)
+  const user={id:'bunko_existing',login:'Reader',kind:'lazyingart'}
+  const request=vi.fn<typeof fetch>(async (url,init)=>{
+    if(String(url).endsWith('/auth/start')){expect(JSON.parse(String(init?.body))).toMatchObject({connectGithub:true,consent:true});return Response.json({flow:'f'.repeat(43),url:'https://github.com/login/oauth/authorize?client_id=fixture'})}
+    return Response.json({user,expires:Date.now()+86400000,method:'lazyingart'})
+  });vi.stubGlobal('fetch',request)
+  const api=await import('./discussions');await api.restoreSession();localStorage.setItem('bunko:discussion-draft:fixture','Keep this note')
+  await api.connectGitHubAccount().promise
+  expect(api.currentUser()?.id).toBe(user.id);expect(localStorage.getItem('bunko:discussion-draft:fixture')).toBe('Keep this note')
+})

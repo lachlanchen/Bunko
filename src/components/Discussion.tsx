@@ -1,3 +1,4 @@
+import githubCopy from '../github-connection-copy.json'
 import { SignInOptions } from './SignInOptions'
 import type { SignInProvider } from '../lib/discussions'
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
@@ -99,7 +100,7 @@ export function Discussion({ passage, excerpt, ui }: { passage: string; excerpt:
       {thread.issue?.locked && <p className="panel-hint">{t.locked}</p>}
       {user && <small className="panel-hint">{t.session}</small>}
     </div>
-    {error && <p className="discussion-error" role="alert">{specificErrors[ui][error as keyof typeof specificErrors.en] ?? message}</p>}
+    {error && <p className="discussion-error" role="alert">{specificErrors[ui][error as keyof typeof specificErrors.en] ?? (error==='github_reconnect_required'?githubCopy[ui].github_reconnect_required:message)}</p>}
     {posted && <p className="discussion-success" role="status">{t.posted}</p>}
   </section>
 }

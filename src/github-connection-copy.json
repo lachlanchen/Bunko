@@ -1,0 +1,42 @@
+{
+  "en": {
+    "title": "GitHub · optional",
+    "connect": "Connect GitHub",
+    "reconnect": "Reconnect GitHub",
+    "note": "Use your GitHub identity for public comments. You can read and comment without connecting.",
+    "connected": "Comments use",
+    "manage": "GitHub permissions",
+    "different_github_already_linked": "Reconnect the GitHub account already connected here. Your Bunko account is unchanged.",
+    "github_reconnect_required": "Reconnect GitHub in Settings to post through your GitHub account. Your draft is safe."
+  },
+  "zh-Hans": {
+    "title": "GitHub · 可选",
+    "connect": "连接 GitHub",
+    "reconnect": "重新连接 GitHub",
+    "note": "使用自己的 GitHub 身份发表评论。不连接也能阅读和评论。",
+    "connected": "评论使用",
+    "manage": "GitHub 授权",
+    "different_github_already_linked": "请重新连接已关联的 GitHub 账号。你的 Bunko 账号未变。",
+    "github_reconnect_required": "请在设置中重新连接 GitHub，以使用该账号发表评论。草稿已保留。"
+  },
+  "zh-Hant": {
+    "title": "GitHub · 選用",
+    "connect": "連接 GitHub",
+    "reconnect": "重新連接 GitHub",
+    "note": "使用自己的 GitHub 身分發表評論。不連接也能閱讀和評論。",
+    "connected": "評論使用",
+    "manage": "GitHub 授權",
+    "different_github_already_linked": "請重新連接已連結的 GitHub 帳號。你的 Bunko 帳號未變。",
+    "github_reconnect_required": "請在設定中重新連接 GitHub，以使用該帳號發表評論。草稿已保留。"
+  },
+  "ja": {
+    "title": "GitHub · 任意",
+    "connect": "GitHub に接続",
+    "reconnect": "GitHub に再接続",
+    "note": "自分の GitHub アカウントで公開コメントを投稿できます。接続しなくても読書とコメントを利用できます。",
+    "connected": "投稿アカウント",
+    "manage": "GitHub のアクセス許可",
+    "different_github_already_linked": "すでに接続済みの GitHub アカウントに再接続してください。Bunko アカウントは変わりません。",
+    "github_reconnect_required": "自分の GitHub アカウントで投稿するには、設定から再接続してください。下書きは保存されています。"
+  }
+}

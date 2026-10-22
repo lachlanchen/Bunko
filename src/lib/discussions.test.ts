@@ -1,7 +1,20 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it, vi } from 'vitest'
-import { api, readDiscussion, signOut } from './discussions'
+import { api, readDiscussion, signOut, signInMethods } from './discussions'
 afterEach(() => vi.unstubAllGlobals())
+it('keeps public login methods after anonymous session restoration changes the account generation', async () => {
+  let finish!: (value: Response) => void
+  const request = vi.fn<typeof fetch>(async url => String(url).endsWith('/auth/methods')
+    ? new Promise<Response>(resolve => { finish = resolve })
+    : Response.json({ error: 'sign_in_again' }, { status: 401 }))
+  vi.stubGlobal('fetch', request)
+  const methods = signInMethods()
+  await expect(api('/v1/session', {})).rejects.toThrow('sign_in_again')
+  finish(Response.json({ providers: ['github', 'apple', 'google', 'lazyingart', 'untrusted'] }))
+  await expect(methods).resolves.toEqual(['github', 'google', 'apple', 'lazyingart'])
+  expect(request.mock.calls[0][1]?.credentials).toBe('omit')
+  expect(request.mock.calls[0][1]?.headers).not.toHaveProperty('Authorization')
+})
 it('works without AbortSignal.timeout on macOS 12 and sends only the declared contract', async () => {
   const original = AbortSignal.timeout
   Object.defineProperty(AbortSignal, 'timeout', { configurable: true, value: undefined })

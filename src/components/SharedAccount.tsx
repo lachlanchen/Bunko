@@ -1,9 +1,10 @@
 import {useEffect,useRef,useState,useSyncExternalStore} from 'react'
-import {api,currentUser,currentSignInMethod,restoreSession,subscribeSession,reauthenticateAccount} from '../lib/discussions'
+import {api,currentUser,currentSignInMethod,restoreSession,subscribeSession,reauthenticateAccount,connectGitHubAccount} from '../lib/discussions'
 import {sharedStatus,connectSharedAccount,type SharedStatus} from '../lib/sharedAccount'
 import {SharedPoints,type SharedPointsState} from './SharedPoints'
 import pointsCopy from '../shared-points-locales.json'
 import linkCopy from '../account-link-copy.json'
+import githubCopy from '../github-connection-copy.json'
 import type {UILanguage} from '../i18n'
 const words={
  en:['LazyingArt account','Linking leaves your books, notes and purchases in Bunko.','Account connected','Connect LazyingArt','Disconnect LazyingArt','Cancel','Checking account connection…','Could not load account connection.','Retry','Sign in to Bunko before connecting your personal account.','Sign in','Sign in again to connect your account.','Connection did not finish. Please try again.','This Mac connection needs an app update.','Updating account connection…'],
@@ -18,7 +19,7 @@ export function SharedAccount({ui,onLogin}:{ui:UILanguage;onLogin:()=>void}) {
 }
 function AccountConnection({ui,onLogin}:{ui:UILanguage;onLogin:()=>void}) {
  const [status,setStatus]=useState<SharedStatus|null>(null),[error,setError]=useState(''),[linkError,setLinkError]=useState(''),[attempt,setAttempt]=useState(0),[busy,setBusy]=useState(false)
- const epoch=useRef(0),pending=useRef<{cancel:()=>void}|null>(null),copy=words[ui],help=linkCopy[ui]
+ const epoch=useRef(0),pending=useRef<{cancel:()=>void}|null>(null),copy=words[ui],help=linkCopy[ui],github=githubCopy[ui]
  useEffect(()=>{
   let active=true
   void sharedStatus().then(v=>{if(active){setStatus(v);setError('')}}).catch(()=>{if(active)setError(copy[7])})
@@ -29,6 +30,11 @@ function AccountConnection({ui,onLogin}:{ui:UILanguage;onLogin:()=>void}) {
  if(!status?.enabled)return null
  const refresh=()=>setAttempt(v=>v+1)
  async function connect(){if(pending.current)return;const id=epoch.current;setBusy(true);setError('');setLinkError('');const flow=connectSharedAccount();pending.current=flow;try{await flow.promise;if(epoch.current===id)refresh()}catch(e){if(epoch.current===id)setLinkError((e as {code?:string}).code||'unavailable')}finally{if(epoch.current===id){setBusy(false);pending.current=null}}}
+ async function connectGitHub(){
+  if(pending.current)return
+  const id=epoch.current;setBusy(true);setLinkError('');const flow=connectGitHubAccount();pending.current=flow
+  try{await flow.promise;if(id===epoch.current)refresh()}catch(e){if(id===epoch.current)setLinkError((e as {code?:string}).code||'unavailable')}finally{if(id===epoch.current){setBusy(false);pending.current=null}}
+ }
  async function reauthenticate(){
   if(pending.current)return
   const id=epoch.current;setBusy(true);setLinkError('');const flow=reauthenticateAccount();pending.current=flow
@@ -39,11 +45,15 @@ function AccountConnection({ui,onLogin}:{ui:UILanguage;onLogin:()=>void}) {
  const balance=async():Promise<SharedPointsState>=>{try{return await api<SharedPointsState>('/v1/lazyingart/balance',{})}catch(e){const code=(e as {code?:string}).code;return {state:code==='points_consent_required'?'consent-required':code==='points_link_required'?'link-required':'unavailable'}}}
  return <section className="shared-account">
   <h3>{copy[0]}</h3><p className="hint">{help.intro}</p><p>{help.methods}: {currentSignInMethod()==='lazyingart'?'LazyingArt':'GitHub'}</p><p className="hint">{copy[1]}</p>
-  {linkError&&<div role="status"><p>{(help as Record<string,string>)[linkError]||copy[12]}</p>{linkError==='local_reauthentication_required'&&<button disabled={busy} onClick={()=>void reauthenticate()}>{copy[10]}</button>}<button disabled={busy} onClick={()=>setLinkError('')}>{copy[5]}</button></div>}
+  {linkError&&<div role="status"><p>{(help as Record<string,string>)[linkError]||(github as Record<string,string>)[linkError]||copy[12]}</p>{linkError==='local_reauthentication_required'&&<button disabled={busy} onClick={()=>void reauthenticate()}>{copy[10]}</button>}<button disabled={busy} onClick={()=>setLinkError('')}>{copy[5]}</button></div>}
   {error&&<><p role="status">{error}</p><button disabled={busy} onClick={refresh}>{copy[8]}</button></>}
   {!status.eligible?<><p>{copy[9]}</p><button onClick={onLogin}>{copy[10]}</button></>:status.state==='refreshing'?<><p role="status">{copy[14]}</p><button onClick={refresh}>{copy[8]}</button></>:status.linked?<><p>{copy[2]}</p>{currentSignInMethod()!=='lazyingart'&&<button disabled={busy} onClick={()=>void disconnect()}>{copy[4]}</button>}</>:<button disabled={busy} onClick={()=>void (currentSignInMethod()==='lazyingart'?reauthenticate():connect())}>{linkError==='account_already_linked'?help.choose:copy[3]}</button>}
   {busy&&<button onClick={()=>{pending.current?.cancel();setLinkError('authorization_cancelled');setBusy(false)}}>{copy[5]}</button>}
   {status.linked&&<details><summary>{help.manage}</summary><p className="hint">{help.manageNote}</p><a href="https://chat.lazying.art/account#sign-in-methods" target="_blank" rel="noopener noreferrer">{help.manage} ↗</a></details>}
+  {status.github?.available&&<div className="github-connection">
+   <h4>{github.title}</h4>
+   {status.github.connected&&status.github.state==='active'?<><p>{github.connected} <strong>@{status.github.login}</strong></p><a href="https://github.com/settings/apps/authorizations" target="_blank" rel="noopener noreferrer">{github.manage} ↗</a></>:<><p className="hint">{github.note}</p><button disabled={busy} onClick={()=>void connectGitHub()}>{status.github.connected?github.reconnect:github.connect}</button></>}
+  </div>}
   {status.linked&&status.points&&<SharedPoints load={balance} text={text}/>}
  </section>
 }

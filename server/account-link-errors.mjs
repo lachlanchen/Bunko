@@ -1,5 +1,7 @@
 /** Safe, app-owned connection failures. Never include target account details. */
 export const linkFailures = Object.freeze({
+  different_github_already_linked: {status:409,action:'reconnect_original',message:'Reconnect the GitHub account already connected here. Your Bunko account is unchanged.'},
+  github_reconnect_required: {status:409,action:'reconnect_github',message:'Reconnect GitHub in Settings to post through your GitHub account. Your comment draft is safe.'},
   account_already_linked: {status:409,action:'choose_account',message:"This login belongs to another app account. Linking was refused. Your current data and plan are unchanged. Choose another login or cancel."},
   different_account_already_linked: {status:409,action:'reconnect_original',message:"Reconnect the LazyingArt account already linked here. Your data and plan are unchanged."},
   local_reauthentication_required: {status:403,action:'reauthenticate',message:"Sign in again with the same app account, then retry connecting. Your data and plan are unchanged."},

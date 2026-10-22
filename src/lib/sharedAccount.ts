@@ -1,7 +1,7 @@
 import {Capacitor} from '@capacitor/core'
 import {Browser} from '@capacitor/browser'
 import {api,requestId,sessionRevision,DiscussionError} from './discussions'
-export type SharedStatus={enabled:boolean;points:boolean;signedIn:boolean;eligible:boolean;linked:boolean;state:string}
+export type SharedStatus={enabled:boolean;points:boolean;signedIn:boolean;eligible:boolean;linked:boolean;state:string;github?:{available:boolean;connected:boolean;state:string;login?:string}}
 export const sharedStatus=()=>api<SharedStatus>('/v1/lazyingart/status',{})
 // Only profile linking uses this browser. Points requires its own SDK consent.
 export function connectSharedAccount(){

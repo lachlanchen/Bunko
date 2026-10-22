@@ -4,10 +4,10 @@ import {afterEach,expect,it,vi} from 'vitest'
 import {cleanup,fireEvent,render,screen} from '@testing-library/react'
 import {SignInOptions} from './SignInOptions'
 const call=vi.hoisted(()=>vi.fn())
-vi.mock('../lib/discussions',()=>({api:call}))
+vi.mock('../lib/discussions',()=>({signInMethods:call}))
 afterEach(cleanup)
 it('shows only server-qualified methods and sends the selected provider',async()=>{
- call.mockResolvedValue({providers:['github','google','apple','lazyingart','unknown']})
+ call.mockResolvedValue(['github','google','apple','lazyingart'])
  const select=vi.fn();render(<SignInOptions ui="en" onSelect={select}/>)
  fireEvent.click(await screen.findByRole('button',{name:'Continue with Apple'}))
  expect(select).toHaveBeenCalledWith('apple');expect(screen.getAllByRole('button')).toHaveLength(4)

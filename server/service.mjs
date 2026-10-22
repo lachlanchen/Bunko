@@ -2,6 +2,7 @@ import {linkFailures,linkFailure} from './account-link-errors.mjs'
 import {sharePage} from './share-page.mjs'
 import {createRewardSourceRoutes} from './reward-source-routes.mjs'
 import {createProfileStore} from './shared-link-store.mjs'
+import {createGitHubConnections} from './github-connection.mjs'
 import {PROFILE_BINDING,ProfileLinkError} from './lazyingart-profile.mjs'
 import {createLacBalance,LacReadError} from './lac-balance.mjs'
 import { createDocumentAgent, agentPaths } from './agent/service.mjs'
@@ -90,6 +91,24 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     return {owner:cloudOwner(auth.user),user:auth.user,authenticatedAt:auth.authenticatedAt}
   }
   const activeOwner=owner=>db.prepare('SELECT id FROM sessions WHERE expires>?').all(now()).some(row=>localSession(row.id)?.owner===owner)
+  db.exec('CREATE TABLE IF NOT EXISTS bunko_local_accounts(owner TEXT PRIMARY KEY,user TEXT NOT NULL)')
+  for(const row of db.prepare('SELECT data FROM sessions').all()){
+    try{const auth=unseal(row.data);if(auth.provider!=='demo'&&auth.user)db.prepare('INSERT OR IGNORE INTO bunko_local_accounts VALUES(?,?)').run(cloudOwner(auth.user),seal(auth.user))}catch{/* Preserve unreadable historical rows. */}
+  }
+  const legacyOwnerExists=owner=>{
+    for(const {name} of db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all()){
+      if(!/^(?:agent_|cloud_|profile_|lac_|discussion_|github_|bunko_)[a-z_]+$/.test(name))continue
+      if(db.prepare('PRAGMA table_info('+name+')').all().some(c=>c.name==='owner')&&db.prepare('SELECT 1 FROM '+name+' WHERE owner=? LIMIT 1').get(owner))return true
+    }
+    return false
+  }
+  const githubConnections=createGitHubConnections({db,seal,unseal,now,legacyOwnerExists,active:activeOwner,refresh:async(data,expected)=>{
+    const response=await fetchImpl('https://github.com/login/oauth/access_token',{method:'POST',headers:{Accept:'application/json','Content-Type':'application/json'},body:JSON.stringify({client_id:config.clientId,client_secret:config.clientSecret,grant_type:'refresh_token',refresh_token:data.refreshToken}),signal:AbortSignal.timeout(12000),redirect:'error'})
+    const value=await response.json()
+    if(!response.ok||!value.access_token||!value.refresh_token||!Number.isFinite(value.expires_in)||!Number.isFinite(value.refresh_token_expires_in))throw new ProfileLinkError('github_reconnect_required')
+    const user=safeUser(await github('/user',value.access_token));if(user.id!==expected.id)throw new ProfileLinkError('identity_invalid')
+    return{token:value.access_token,refreshToken:value.refresh_token,accessExpires:now()+Math.min(SESSION_MS,value.expires_in*1000),refreshExpires:now()+value.refresh_token_expires_in*1000}
+  }})
   const profileStore={db,localSession,active:activeOwner,requireActive:owner=>{if(!activeOwner(owner))throw new ProfileLinkError('local_session_changed')},flowActive:id=>!!db.prepare('SELECT 1 FROM flows WHERE id=? AND expires>?').get(id,now())}
   const sharedProfile=createProfileStore(profileStore,config.lazyingart,{...profileOptions,now})
   if(sharedProfile.enabled&&config.publicUrl+'/oauth/lazyingart/callback'!==PROFILE_BINDING.redirectUri)throw new Error('Shared callback binding mismatch')
@@ -175,6 +194,13 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     const latest = db.prepare('SELECT * FROM sessions WHERE id=? AND expires>?').get(row.id, now())
     if (!latest) fail(401, 'sign_in_again')
     let auth = unseal(latest.data)
+    if(auth.provider==='github-linked'){
+      const connection=await githubConnections.credential(cloudOwner(auth.user))
+      if(!connection||connection.epoch!==auth.githubEpoch||!db.prepare('SELECT id FROM sessions WHERE id=?').get(row.id))fail(401,'sign_in_again')
+      const expires=now()+PERSISTENT_MS;db.prepare('UPDATE sessions SET expires=? WHERE id=?').run(expires,row.id)
+      if(auth.storage==='cookie'&&res)cookie(res,value,expires)
+      return{...auth,token:connection.token,githubUser:connection.github,expires,sessionId:row.id}
+    }
     if (auth.provider === 'lazyingart') {
       try { await sharedProfile.authorizeSession(cloudOwner(auth.user), {fresh:refresh,epoch:auth.profileEpoch}) }
       catch(error) { if(['reconnect_required','authorization_rejected'].includes(error.code)){db.prepare('DELETE FROM sessions WHERE id=?').run(row.id);fail(401,'sign_in_again')} throw error }
@@ -328,6 +354,14 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
           callbackPage(res,flow.platform,result.flow);return
         }
         db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({...flow,completed:true}),result.flow)
+        // GitHub-first readers already granted the repository-scoped connection.
+        // Keep that identity available when they later sign in through a central provider.
+        const original=db.prepare('SELECT data FROM sessions WHERE id=?').get(flow.context.sessionHash)
+        const local=original&&unseal(original.data)
+        if(local&&local.provider!=='lazyingart'&&local.provider!=='demo'&&local.provider!=='github-linked'&&Number.isSafeInteger(local.user.id)){
+          const connected=githubConnections.connect(local.user,local.user,local)
+          db.prepare('UPDATE sessions SET data=? WHERE id=?').run(seal({provider:'github-linked',user:local.user,githubEpoch:connected.epoch,storage:local.storage,authenticatedAt:local.authenticatedAt}),flow.context.sessionHash)
+        }
         res.setHeader('Set-Cookie','__Host-bunko-link=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0')
         if(flow.platform==='native'){callbackPage(res,flow.platform,result.flow);return}
         res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Content-Security-Policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"})
@@ -353,17 +387,20 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
           if (!response.ok || !token.access_token || token.error) fail(502, 'exchange_failed')
           const user = safeUser(await github('/user', token.access_token))
           if (!Number.isSafeInteger(user.id) || typeof user.login !== 'string') fail(502, 'invalid_user')
-          if(flow.reauth&&(cloudOwner(user)!==flow.reauth.owner||localSession(flow.reauth.sessionHash)?.owner!==flow.reauth.owner))throw new ProfileLinkError('local_session_changed')
+          const linked=githubConnections.lookup(user.id),canonical=linked?.user||user
+          if(flow.reauth&&(cloudOwner(canonical)!==flow.reauth.owner||localSession(flow.reauth.sessionHash)?.owner!==flow.reauth.owner))throw new ProfileLinkError('local_session_changed')
+          if(flow.connectGithub&&localSession(flow.connectGithub.sessionHash)?.owner!==flow.connectGithub.owner)throw new ProfileLinkError('local_session_changed')
           const accessExpires = now() + Math.min(SESSION_MS, (token.expires_in ?? 28800) * 1000)
           const persistent = !!flow.storage && typeof token.refresh_token === 'string' && Number.isFinite(token.refresh_token_expires_in)
           flow.auth = { token: token.access_token, user, authenticatedAt:now(), accessExpires, expires: accessExpires, persistent, storage: flow.storage,
             ...(persistent ? { refreshToken: token.refresh_token, refreshExpires: now() + token.refresh_token_expires_in * 1000 } : {}) }
           // Refresh tokens stay encrypted on the cloud; only Bunko's opaque session reaches native storage.
+          if(linked)flow.canonical=canonical
           delete flow.githubVerifier
           db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal(flow), row.id)
           callbackPage(res, flow.platform, row.id)
         } catch(error) {
-          db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({ ...flow, error: true, reauthError:flow.reauth&&error instanceof ProfileLinkError?error.code:undefined, githubVerifier: undefined }), row.id)
+          db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({ ...flow, error: true, reauthError:(flow.reauth||flow.connectGithub)&&error instanceof ProfileLinkError?error.code:undefined, githubVerifier: undefined }), row.id)
           callbackPage(res, flow.platform, row.id, true)
         }
         return
@@ -384,7 +421,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       if(path.startsWith(`${PREFIX}/v1/lazyingart/`)){
         const action=path.split('/').pop(),input=await body(req)
         let auth;try{auth=await session(req,res,false)}catch(e){if(action!=='status'||e.status!==401)throw e}
-        if(action==='status'){json(res,{enabled:sharedProfile.linkEnabled??sharedProfile.enabled,points: lacBalance.enabled,signedIn:!!auth,eligible:!!auth&&auth.provider!=='demo',...(auth&&sharedProfile.status?sharedProfile.status(cloudOwner(auth.user)):{linked:false,state:'unlinked'})});return}
+        if(action==='status'){const owner=auth&&cloudOwner(auth.user);json(res,{enabled:sharedProfile.linkEnabled??sharedProfile.enabled,points: lacBalance.enabled,signedIn:!!auth,eligible:!!auth&&auth.provider!=='demo',...(auth&&sharedProfile.status?sharedProfile.status(owner):{linked:false,state:'unlinked'}),github:auth&&auth.provider!=='demo'?{available:sharedProfile.canLink?.(owner)===true,...githubConnections.status(owner),...(!['lazyingart','github-linked'].includes(auth.provider)?{connected:true,state:'active',login:auth.user.login}:{})}:undefined});return}
         if(!auth||auth.provider==='demo')fail(403,'shared_account_requires_personal_login')
         if(action==='activity'){
           if(Object.keys(input).length!==1||input.kind!=='foreground')fail(400,'invalid_activity')
@@ -394,7 +431,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         if(!sharedProfile.enabled)fail(503,'shared_login_unavailable')
         const owner=cloudOwner(auth.user)
         if(action==='start'){
-          if(sharedProfile.linkEnabled===false)fail(503,'shared_login_unavailable')
+          if(!sharedProfile.canLink(owner))fail(503,'shared_login_unavailable')
           if(!validOpaque(input.challenge)||input.consent!==true)fail(400,'explicit_link_required')
           if(!Number.isSafeInteger(auth.authenticatedAt)||auth.authenticatedAt<now()-600000)fail(403,'local_reauthentication_required')
           const id=opaque(),context={owner,sessionHash:auth.sessionId,authenticatedAt:auth.authenticatedAt}
@@ -466,9 +503,16 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         if (storage !== undefined && !['cookie', 'secure'].includes(storage)) fail(400, 'invalid_flow')
         if (storage === 'cookie' && (origin !== 'https://lachlan.lazying.art' || input.platform !== 'web')) fail(400, 'invalid_flow')
         if (storage === 'secure' && input.platform !== 'native') fail(400, 'invalid_flow')
-        const local=input.reauthenticate===true?await session(req,res,false):null
+        const local=input.reauthenticate===true||input.connectGithub===true?await session(req,res,input.connectGithub===true):null
         if(local?.provider==='demo')fail(403,'shared_account_requires_personal_login')
-        const reauth=local?{owner:cloudOwner(local.user),sessionHash:local.sessionId}:null
+        let connectGithub
+        if(input.connectGithub===true){
+          if(provider!=='github'||input.consent!==true||input.reauthenticate===true)fail(400,'explicit_link_required')
+          if(!sharedProfile.canLink?.(cloudOwner(local.user)))fail(503,'shared_login_unavailable')
+          if(!Number.isSafeInteger(local.authenticatedAt)||local.authenticatedAt<now()-600000)throw new ProfileLinkError('local_reauthentication_required')
+          connectGithub={owner:cloudOwner(local.user),sessionHash:local.sessionId,user:local.user}
+        }
+        const reauth=local&&!connectGithub?{owner:cloudOwner(local.user),sessionHash:local.sessionId}:null
         if(provider!=='github'){
           if(!(await sharedProfile.loginProviders?.()||[]).includes(provider))fail(503,'provider_unavailable')
           if(!local&&credential(req))fail(409,'sign_out_before_login')
@@ -477,7 +521,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
           json(res,{flow:id,url:config.publicUrl+'/oauth/lazyingart?ticket='+id});return
         }
         const id = opaque(), state = opaque(), verifier = opaque()
-        db.prepare('INSERT INTO flows VALUES (?,?,?,?)').run(id, hash(state), seal({ challenge: input.challenge, platform: input.platform, storage, githubVerifier: verifier,...(reauth?{reauth}:{}) }), now() + FLOW_MS)
+        db.prepare('INSERT INTO flows VALUES (?,?,?,?)').run(id, hash(state), seal({ challenge: input.challenge, platform: input.platform, storage, githubVerifier: verifier,...(reauth?{reauth}:{}),...(connectGithub?{connectGithub}:{}) }), now() + FLOW_MS)
         json(res, { flow: id, url: `https://github.com/login/oauth/authorize?${new URLSearchParams({ client_id: config.clientId, redirect_uri: `${config.publicUrl}/oauth/callback`, state, code_challenge: hash(verifier), code_challenge_method: 'S256' })}` }); return
       }
       if (path === `${PREFIX}/v1/auth/complete` || path===`${PREFIX}/v1/auth/cancel`) {
@@ -504,21 +548,34 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         if (flow.error) { db.prepare('DELETE FROM flows WHERE id=?').run(row.id); if(flow.reauthError)throw new ProfileLinkError(flow.reauthError);fail(400, 'authorization_cancelled') }
         if(flow.completing){json(res,{pending:true});return}
         if (!flow.auth) { json(res, { pending: true }); return }
-        if(flow.reauth){const local=await session(req,res,false);if(local.sessionId!==flow.reauth.sessionHash||cloudOwner(local.user)!==flow.reauth.owner)throw new ProfileLinkError('local_session_changed')}
         const token = opaque()
+        db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({...flow,completing:token}),row.id)
+        const requireFlow=()=>{const current=db.prepare('SELECT data FROM flows WHERE id=? AND expires>?').get(row.id,now());if(!current||unseal(current.data).completing!==token)fail(410,'flow_expired')}
+        try {
+        if(flow.reauth){const local=await session(req,res,false);if(local.sessionId!==flow.reauth.sessionHash||cloudOwner(local.user)!==flow.reauth.owner)throw new ProfileLinkError('local_session_changed')}
+        if(flow.connectGithub||flow.canonical){
+          if(flow.connectGithub){const local=await session(req,res,true);if(local.sessionId!==flow.connectGithub.sessionHash||cloudOwner(local.user)!==flow.connectGithub.owner)throw new ProfileLinkError('local_session_changed')}
+          requireFlow()
+          const linked=githubConnections.connect(flow.connectGithub?.user||flow.canonical,flow.auth.user,flow.auth)
+          flow.auth={provider:'github-linked',user:linked.user,githubEpoch:linked.epoch,storage:flow.storage,authenticatedAt:now(),expires:now()+PERSISTENT_MS}
+        }
+        requireFlow()
         const expires = flow.auth.persistent ? Math.min(now() + PERSISTENT_MS, flow.auth.refreshExpires) : flow.auth.expires
         db.prepare('INSERT INTO sessions VALUES (?,?,?)').run(hash(token), seal(flow.auth), expires)
-        if(flow.auth.provider==='lazyingart'){
-          db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({...flow,completing:token}),row.id)
-          try{await sharedProfile.authorizeSession(cloudOwner(flow.auth.user),{fresh:true,epoch:flow.auth.profileEpoch})
-            if(!db.prepare('SELECT id FROM flows WHERE id=? AND expires>?').get(row.id,now()))fail(410,'flow_expired')
-          }catch(error){db.prepare('DELETE FROM sessions WHERE id=?').run(hash(token));db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal(flow),row.id);throw error}
-        }
+        if(flow.auth.provider!=='demo')db.prepare('INSERT OR IGNORE INTO bunko_local_accounts VALUES(?,?)').run(cloudOwner(flow.auth.user),seal(flow.auth.user))
+        if(flow.auth.provider==='lazyingart')await sharedProfile.authorizeSession(cloudOwner(flow.auth.user),{fresh:true,epoch:flow.auth.profileEpoch})
+        requireFlow()
         const completed = { token, user: flow.auth.user, expires, ...(flow.auth.provider==='lazyingart'?{method:'lazyingart'}:{}) }
         // A lost completion response can be recovered with the same bound verifier.
         db.prepare('UPDATE flows SET data=?, expires=? WHERE id=?').run(seal({ challenge: flow.challenge, storage: flow.storage, demoVersion: flow.demoVersion, completed }), now() + 60000, row.id)
         if (flow.storage === 'cookie') cookie(res, token, expires)
         json(res, { ...completed, ...(flow.storage === 'cookie' ? { token: undefined } : {}) }); return
+        }catch(error){
+          db.prepare('DELETE FROM sessions WHERE id=?').run(hash(token))
+          const current=db.prepare('SELECT data FROM flows WHERE id=?').get(row.id)
+          if(current&&unseal(current.data).completing===token)db.prepare('UPDATE flows SET data=? WHERE id=?').run(row.data,row.id)
+          throw error
+        }
       }
       if (path === `${PREFIX}/v1/discussions/read`) {
         const key = passage(input.passage), page = input.page ?? 1
@@ -545,7 +602,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       }
       const auth = await session(req, res)
       if (path === `${PREFIX}/v1/session`) {
-        try { if (!['demo','lazyingart'].includes(auth.provider)) await github('/user', auth.token) } catch (error) {
+        try { if (!['demo','lazyingart'].includes(auth.provider)){const providerUser=await github('/user',auth.token);if(providerUser.id!==(auth.githubUser||auth.user).id)fail(401,'sign_in_again')} } catch (error) {
           if (error.status === 401) { db.prepare('DELETE FROM sessions WHERE id=?').run(auth.sessionId); cookie(res, '') }
           throw error
         }
@@ -567,14 +624,15 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         try {
           const issue = await findThread(key, await publicReadToken())
           if (issue?.locked) fail(423, 'thread_locked')
-          const serviceAuthor=['demo','lazyingart'].includes(auth.provider)
-          const token = serviceAuthor ? await installationToken('write') : auth.token
+          const personal=auth.provider==='lazyingart'?await githubConnections.credential(cloudOwner(auth.user)):null
+          const serviceAuthor=auth.provider==='demo'||(auth.provider==='lazyingart'&&!personal)
+          const token = personal?.token||(serviceAuthor ? await installationToken('write') : auth.token)
           if(serviceAuthor&&!token)fail(503,'discussion_posting_unavailable')
           // This remains a real public post, visibly attributed to the demo
           // account. Never impersonate the owner or a GitHub reviewer identity.
-          const attribution=auth.provider==='lazyingart'?`**${auth.user.login.replace(/[\r\n\\`*_\[\]<>#]/g,' ').slice(0,128)}** · Bunko reader · Posted through Bunko\n\n`:auth.provider==='demo'?'**Bunko demo account** · Posted through Bunko\n\n':''
+          const attribution=auth.provider==='lazyingart'&&serviceAuthor?`**${auth.user.login.replace(/[\r\n\\`*_\[\]<>#]/g,' ').slice(0,128)}** · Bunko reader · Posted through Bunko\n\n`:auth.provider==='demo'?'**Bunko demo account** · Posted through Bunko\n\n':''
           const commentBody = attribution + input.body.trim()
-          const rememberAuthor=(kind,item)=>{if(auth.provider==='lazyingart')db.prepare('INSERT INTO discussion_authors VALUES(?,?,?,?)').run(kind,item.id,cloudOwner(auth.user),JSON.stringify({...auth.user,kind:'lazyingart'}))}
+          const rememberAuthor=(kind,item)=>{if(auth.provider==='lazyingart'&&serviceAuthor)db.prepare('INSERT INTO discussion_authors VALUES(?,?,?,?)').run(kind,item.id,cloudOwner(auth.user),JSON.stringify({...auth.user,kind:'lazyingart'}))}
           const marker = `\n<!-- bunko-post:${id} -->`
           db.prepare('INSERT INTO posts VALUES (?,?,NULL,?)').run(id, fingerprint, now() + 7 * 86400000)
           let result

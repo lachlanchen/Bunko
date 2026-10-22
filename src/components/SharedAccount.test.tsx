@@ -3,8 +3,8 @@ import '@testing-library/jest-dom/vitest'
 import {afterEach,beforeEach,expect,it,vi} from 'vitest'
 import {act,cleanup,fireEvent,render,screen,waitFor} from '@testing-library/react'
 import {SharedAccount} from './SharedAccount'
-const state=vi.hoisted(()=>({user:{id:1,login:'reader'},listeners:new Set<()=>void>(),status:vi.fn(),connect:vi.fn(),reauth:vi.fn(),api:vi.fn()}))
-vi.mock('../lib/discussions',()=>({currentUser:()=>state.user,currentSignInMethod:()=> 'github',subscribeSession:(fn:()=>void)=>{state.listeners.add(fn);return()=>state.listeners.delete(fn)},restoreSession:async()=>{},api:state.api,reauthenticateAccount:state.reauth}))
+const state=vi.hoisted(()=>({user:{id:1,login:'reader'},listeners:new Set<()=>void>(),status:vi.fn(),connect:vi.fn(),reauth:vi.fn(),github:vi.fn(),api:vi.fn()}))
+vi.mock('../lib/discussions',()=>({currentUser:()=>state.user,currentSignInMethod:()=> 'github',subscribeSession:(fn:()=>void)=>{state.listeners.add(fn);return()=>state.listeners.delete(fn)},restoreSession:async()=>{},api:state.api,reauthenticateAccount:state.reauth,connectGitHubAccount:state.github}))
 vi.mock('../lib/sharedAccount',()=>({sharedStatus:state.status,connectSharedAccount:state.connect}))
 const status={enabled:true,points:false,signedIn:true,eligible:true,linked:false,state:'unlinked'}
 beforeEach(()=>{state.user={id:1,login:'reader'};state.status.mockReset().mockResolvedValue(status);state.connect.mockReset();state.api.mockReset();window.__BUNKO_DESKTOP__=false})
@@ -33,3 +33,18 @@ it.each(['account_already_linked','different_account_already_linked','local_reau
  if(code==='local_reauthentication_required')expect(screen.getByText('Sign in')).toBeInTheDocument();
  expect(screen.queryByText(/merge accounts/i)).not.toBeInTheDocument();
 });
+
+it('offers optional GitHub connection without replacing the reader or draft',async()=>{
+ state.status.mockResolvedValue({...status,linked:true,state:'active',github:{available:true,connected:false,state:'unlinked'}})
+ state.github.mockReturnValue({cancel:vi.fn(),promise:Promise.resolve()})
+ render(<><textarea aria-label="draft" defaultValue="Keep my note"/><SharedAccount ui="en" onLogin={()=>{}}/></>)
+ fireEvent.click(await screen.findByText('Connect GitHub'))
+ await waitFor(()=>expect(state.github).toHaveBeenCalledOnce())
+ expect(state.connect).not.toHaveBeenCalled();expect(state.user.id).toBe(1);expect(screen.getByRole('textbox')).toHaveValue('Keep my note')
+})
+it('shows the connected GitHub author and a reconnect action after expiry',async()=>{
+ state.status.mockResolvedValue({...status,github:{available:true,connected:true,state:'active',login:'reader-seven'}})
+ render(<SharedAccount ui="en" onLogin={()=>{}}/>);await screen.findByText('@reader-seven');expect(screen.queryByText('Connect GitHub')).not.toBeInTheDocument()
+ state.status.mockResolvedValue({...status,github:{available:true,connected:true,state:'reauthorize',login:'reader-seven'}})
+ fireEvent(window,new Event('online'));await screen.findByText('Reconnect GitHub')
+})
