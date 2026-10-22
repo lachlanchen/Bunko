@@ -81,6 +81,130 @@
     "noAutomaticGeneration": true,
     "cleanup": true
   },
-  "nativeDelivery": "pending",
-  "publicReviewSubmitted": false
+  "nativeDelivery": {
+    "android": {
+      "at": "2026-10-22T22:52:10.590079+00:00",
+      "build": 37,
+      "version": "1.0.14",
+      "track": "internal",
+      "available": true,
+      "title": "1.0.14 (37) - Continuing reading conversations",
+      "aabSha256": "53db063ca3d1b07c0fdff04180be12713b5099da33d9de2fb7e73e830d49e101",
+      "publicReviewChanged": false
+    },
+    "apple": [
+      {
+        "platform": "IOS",
+        "id": "575c264d-48ed-48d7-b74b-8768029b801b",
+        "version": "1.0.14",
+        "build": "37",
+        "processing": "VALID",
+        "internal": "IN_BETA_TESTING"
+      },
+      {
+        "platform": "MAC_OS",
+        "id": "ab009c9b-7d07-4aa8-b0f1-fb840c742c02",
+        "version": "1.0.14",
+        "build": "37",
+        "processing": "VALID",
+        "internal": "IN_BETA_TESTING"
+      }
+    ]
+  },
+  "publicReviewSubmitted": false,
+  "source": "7a3767d1b76c99a99b3ba1a36e2f9194be722ddc",
+  "realBookVisuals": {
+    "at": "2026-10-22T22:41:41.196Z",
+    "kind": "Current component displaying actual isolated-provider public-book results; mocked history transport, no customer data",
+    "captures": [
+      {
+        "file": "real-phone-people.png",
+        "sha256": "bf48cc21eb96b2cc783b29649c6e7fbdd1c9f609b4dbdbf3278c0ac3c05c57b0"
+      },
+      {
+        "file": "real-phone-timeline.png",
+        "sha256": "7571e29de006c0cfbdb4fd6861d8dab49c82dcb46f00b04ee11ec5fbe4224073"
+      },
+      {
+        "file": "real-desktop-people.png",
+        "sha256": "d753771779b52b1a86b7062767468a11536700e52be51f53dd41135a920c64df"
+      },
+      {
+        "file": "real-desktop-timeline.png",
+        "sha256": "737311461a4131f42b21d68ed6eb20d42a381124c13db37e653b36106b5251b5"
+      }
+    ],
+    "noAutomaticGeneration": true,
+    "cleanup": true,
+    "noOverflow": true
+  },
+  "androidInstalled": {
+    "at": 1792709175.9763443,
+    "build": 37,
+    "platform": "Android API34 installed Debug",
+    "account": "guest",
+    "publicBook": "adler-what-life-should-mean-to-you",
+    "tabs": [
+      {
+        "tab": "chat",
+        "width": 390,
+        "scroll": 390,
+        "composerCount": 1,
+        "bottom": 757,
+        "height": 772,
+        "reference": "What Life Should Mean to You \u00b7 Chapter 1 \u00b7 Paragraph 1"
+      },
+      {
+        "tab": "people",
+        "width": 390,
+        "scroll": 390,
+        "composerCount": 1,
+        "bottom": 757,
+        "height": 772,
+        "reference": "What Life Should Mean to You \u00b7 Chapter 1 \u00b7 Paragraph 1"
+      },
+      {
+        "tab": "places",
+        "width": 390,
+        "scroll": 390,
+        "composerCount": 1,
+        "bottom": 757,
+        "height": 772,
+        "reference": "What Life Should Mean to You \u00b7 Chapter 1 \u00b7 Paragraph 1"
+      },
+      {
+        "tab": "timeline",
+        "width": 390,
+        "scroll": 390,
+        "composerCount": 1,
+        "bottom": 757,
+        "height": 772,
+        "reference": "What Life Should Mean to You \u00b7 Chapter 1 \u00b7 Paragraph 1"
+      }
+    ],
+    "readerReturn": true,
+    "scopeRestored": true,
+    "crashLogClean": true,
+    "authenticatedProviderTest": false
+  },
+  "androidArtifacts": [
+    {
+      "file": "android/app/build/outputs/apk/release/app-release.apk",
+      "sha256": "0b7f1c04838363b8c03d66e355f0d7b03904b3c607b643b310420ac0d9a384dd",
+      "resourceCount": 88,
+      "version": "1.0.14",
+      "build": 37
+    },
+    {
+      "file": "android/app/build/outputs/bundle/release/app-release.aab",
+      "sha256": "53db063ca3d1b07c0fdff04180be12713b5099da33d9de2fb7e73e830d49e101",
+      "resourceCount": 88,
+      "version": "1.0.14",
+      "build": 37
+    }
+  ],
+  "webBuild": true,
+  "nativeWebBuild": true,
+  "macosWebBuild": true,
+  "deliveryTests": 73
 }

@@ -144,11 +144,9 @@
         "sha256": "737311461a4131f42b21d68ed6eb20d42a381124c13db37e653b36106b5251b5"
       }
     ],
-    "sharedComposer": true,
-    "branchParents": true,
-    "scopePreserved": true,
     "noAutomaticGeneration": true,
-    "cleanup": true
+    "cleanup": true,
+    "noOverflow": true
   },
   "androidInstalled": {
     "at": 1792708403.9060345,

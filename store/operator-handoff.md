@@ -1,3 +1,28 @@
+# Current internal checkpoint · build 37 · 23 October 2026 HKT
+
+Bunko **1.0.14 (37)** is VALID / IN_BETA_TESTING for iOS/Watch and universal
+Mac in the existing internal group, and available to Google internal testers.
+Ask, People, Places and Timeline share continuing, selectable conversation
+branches and saved visual results. Nearby results reopen without generation.
+Whole-book questions preserve the reading bookmark. Graph and timeline view
+state, focused layouts and stable colors improve navigation.
+
+[Qualification and delivery](../docs/continuing-reading-workspace36-20261023.md).
+The new reading workspace backend is live; original reading-json recovery remains
+included. Existing auth-provider gates, billing, rewards and public reviews stay
+unchanged. No new physical iOS/Mac UI qualification or PWA deployment is claimed.
+
+Apple 36 was closed unused. Android 36 was internally delivered, then superseded
+by 37's correction for a displayed artifact from a different conversation branch.
+The build 37 shared Mac round is closed with independent source, signing,
+process and guard reconciliation. No Mac or GUI hold remains. Bunko noVNC 6190,
+CDP 9490, Android emulator 5598 and WebView 19524 are stopped; saved profiles
+and device data retained.
+Private evidence: `.runtime/test37-20261023/`,
+`.runtime/reading-workspace37-20261023/` and the earlier36 qualification directory.
+
+## Earlier records
+
 # Current internal checkpoint · build35 · 23 October 2026 HKT
 
 Bunko **1.0.14 (35)** is VALID / IN_BETA_TESTING for iOS/Watch and universal

@@ -44,13 +44,14 @@ expansion. No customer history was edited. Browser captures use a fictional
 preview book and mocked transport; they are layout/interaction evidence, not a
 claim of a native purchase or physical iOS/Mac test.
 
-Build36 is the cumulative internal candidate. Final provider processing and
-tester availability are recorded separately after delivery. No public review,
-provider activation, subscription or reward change is part of this update.
+Build 37 is available to the existing iOS/Watch and Mac TestFlight internal
+group and Google Play internal testers. Build 36 was the initial candidate;
+the final continuation correction and delivery are recorded below. No public
+review, provider activation, subscription or reward change is part of this update.
 
 ## Verified source and backend
 
-Source5fdf0d8 passes162 client tests,149 server tests, lint, renderer checks and
+Source 5fdf0d8 passes 162 client tests, 149 server tests, lint, renderer checks and
 web/native bundles. The actual three-step DeepSeek run returned12 people/10
 relations/4 places/6 events, then27 people/33 relations, then10 events, using
 four provider calls. Reopening made no model call; a second account saw no
@@ -68,10 +69,10 @@ and a short viewport, plus actual isolated-provider Chinese book results.
 Sixteen fictional preview and four actual-result captures are locally reviewed
 drafts; no store screenshot attachment has changed.
 
-Apple36 is frozen with73 passing disposable delivery regressions. The fresh
+Apple 36 was frozen with 73 passing disposable delivery regressions. The fresh
 preflight found an active EchoMind Mac115 guard; no Bunko Mac job or staging
-started at that boundary. Apple availability remains pending actual handback
-and the bounded internal delivery operation.
+started at that boundary. That candidate was closed unused and superseded by
+build 37 after the continuation correction below.
 
 ## Final continuation correction
 
@@ -80,3 +81,16 @@ diagram's own history. If it is inherited within the selected branch, later
 prose remains in context. This closes the cross-tab branch case without importing
 unrelated questions. Android36 was already available internally; the cumulative
 final candidate is37 on all platforms. Apple36 was never staged or uploaded.
+
+## Final internal delivery · build 37
+
+Bunko 1.0.14 (37) is VALID / IN_BETA_TESTING for iOS/Watch and universal Mac in
+the existing TestFlight internal group, and available to Google internal testers.
+Both Apple packages passed provider validation, upload, exported signatures and
+bundled-resource checks, including embedded Watch identity/version and actual
+Mac arm64/x86_64 minimum macOS 12.0 checks. Beta notes and group membership were read
+back. No new physical iOS/Mac UI test, public review or PWA deployment is claimed.
+
+The shared Mac guard and owned processes were released, original signing state
+and six profiles restored, and local browser/emulator stopped. See
+`store/testflight/reading-workspace37-receipt.json` for final delivery evidence.
