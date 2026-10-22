@@ -148,3 +148,30 @@ it('opening an older guide in chat selects that artifact rather than the latest 
   expect(screen.getByRole('heading', { name: 'Earlier Ada', level: 2 })).toBeInTheDocument()
   expect(screen.getByRole('combobox', { name: 'Saved guides' })).toHaveValue('older')
 })
+
+it('a failed response appears once in chat, including after switching views', async () => {
+  const error = 'The reading answer could not be completed. Please retry.'
+  localStorage.setItem('bunko-book-consent-v2:1:DeepSeek', 'yes')
+  fixture.call.mockImplementation(async action => action === 'messages' ? { messages: [], guide: null } : { id: 'failed', state: 'failed', kind: 'answer', question: 'Relationships', answer: '', papers: [], error })
+  open(); await waitFor(() => expect(fixture.call).toHaveBeenCalled())
+  fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Relationships' } })
+  fireEvent.click(screen.getByRole('button', { name: 'Send message' }))
+  await screen.findByText(error)
+  expect(screen.getAllByText(error)).toHaveLength(1)
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  fireEvent.click(screen.getByRole('button', { name: 'People' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Ask' }))
+  expect(screen.getAllByText(error)).toHaveLength(1)
+})
+
+it('a guide failure is still shown when its chat message is in another view', async () => {
+  const error = 'The reading guide could not be completed. Please retry.'
+  localStorage.setItem('bunko-book-consent-v2:1:DeepSeek', 'yes')
+  fixture.call.mockImplementation(async action => action === 'messages' ? { messages: [], guide: null } : { id: 'failed', state: 'failed', kind: 'guide', question: 'Build reading guide', answer: '', papers: [], error })
+  open(); await waitFor(() => expect(fixture.call).toHaveBeenCalled())
+  fireEvent.click(screen.getByRole('button', { name: 'People' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Build reading guide' }))
+  await waitFor(() => expect(screen.getByRole('alert')).toHaveTextContent(error))
+  fireEvent.click(screen.getByRole('button', { name: 'Ask' }))
+  expect(screen.getAllByText(error)).toHaveLength(1)
+})

@@ -247,3 +247,31 @@ test('the structured runner accepts explicitly labeled background answers and gu
   assert.equal(result.state, 'completed'); assert.equal(result.bookResponse.knowledge, 'background')
   assert.equal(result.bookResponse.relationships[0].certainty, 'background')
 })
+
+test('multiline answers recover in one call, keep owner history and use only one allowance', async t => {
+  let calls = 0
+  const text = 'From broader book knowledge:\n\nAda and Ben are siblings.'
+  const s = setup(t, { provider: async () => { calls++; return { choices: [{ message: { content: JSON.stringify({ answer: text, knowledge: 'background', citations: [] }).replaceAll('\\n', '\n') } }] } } })
+  const result = await s.call('send', { ...input('multiline'), kind: 'answer', text: 'Whole-book relationships' })
+  assert.equal(result.state, 'completed'); assert.equal(result.answer, text); assert.equal(calls, 1)
+  assert.equal(s.cloud.usage(cloudOwner({ id: 1 })).usedAgentTurns, 1)
+  assert.equal((await s.call('messages', { book: ref })).messages[0].answer, text)
+  assert.equal((await s.call('messages', { book: ref }, { id: 2 })).messages.length, 0)
+})
+
+test('answer repairs never request guide arrays and recovered formatting cannot bypass quotation checks', async t => {
+  let calls = 0
+  const s = setup(t, { provider: async (_url, options) => {
+    calls++
+    if (calls === 2) {
+      const repair = JSON.parse(options.body).messages.at(-1).content
+      assert.match(repair, /This is an ANSWER/); assert.match(repair, /omit all guide arrays/)
+      assert.ok(!repair.includes('all required arrays'))
+    }
+    return { choices: [{ message: { content: JSON.stringify({ answer: 'An answer\nwith a fabricated quote.', citations: [{ passage: 'P1', quote: 'Not in this book' }] }).replaceAll('\\n', '\n') } }] }
+  } })
+  const result = await s.call('send', { ...input('still-invalid'), kind: 'answer', text: 'Explain the passage' })
+  assert.equal(result.state, 'failed'); assert.match(result.error, /quotation/); assert.equal(calls, 2)
+  assert.equal(s.cloud.usage(cloudOwner({ id: 1 })).usedAgentTurns, 0)
+  assert.equal(s.db.prepare('SELECT count(*) n FROM agent_book_guides').get().n, 0)
+})

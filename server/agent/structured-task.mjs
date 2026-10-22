@@ -13,6 +13,49 @@ const guideFields = { people: array(entity, 32), relationships: array(edge, 64),
 export const answerSchema = object({ answer: string(20000), knowledge: { type: 'string', enum: ['passages', 'background', 'mixed'], maxLength: 20 }, insufficient: { type: 'boolean' }, citations, ...guideFields }, ['answer', 'citations'])
 export const guideSchema = object(answerSchema.properties, ['answer', 'citations', 'people', 'relationships', 'places', 'routes', 'events'])
 
+// Some JSON-mode providers emit literal Markdown newlines inside JSON strings.
+// Escape only those control characters: preserve the text, quotes and structure.
+// Never complete truncated objects, drop fields or invent missing evidence.
+function parseReadingJSON(content) {
+  if (typeof content !== 'string') throw new SyntaxError('Missing JSON text')
+  try { return JSON.parse(content) } catch { /* Try lossless string escaping only. */ }
+  let quoted = false, escaped = false, normalized = ''
+  for (const char of content) {
+    if (quoted && !escaped && char.charCodeAt(0) < 32) {
+      normalized += `\\u${char.charCodeAt(0).toString(16).padStart(4, '0')}`
+      continue
+    }
+    normalized += char
+    if (escaped) escaped = false
+    else if (quoted && char === '\\') escaped = true
+    else if (char === '"') quoted = !quoted
+  }
+  return JSON.parse(normalized)
+}
+
+// Give the bounded repair actionable schema paths, without echoing model text.
+function schemaIssues(value, schema, path = '$', issues = []) {
+  if (issues.length >= 12) return issues
+  const add = message => { if (issues.length < 12) issues.push(`${path}: ${message}`) }
+  if (schema.type === 'object') {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) add('expected object')
+    else {
+      for (const key of schema.required) if (!Object.hasOwn(value, key)) add(`missing ${key}`)
+      for (const key of Object.keys(value)) {
+        if (Object.hasOwn(schema.properties, key)) schemaIssues(value[key], schema.properties[key], `${path}.${key}`, issues)
+        else add('unexpected field; use only the specified fields')
+      }
+    }
+  } else if (schema.type === 'array') {
+    if (!Array.isArray(value)) add('expected array')
+    else if (value.length > schema.maxItems) add(`maximum ${schema.maxItems} entries; retain only edges whose endpoints remain`)
+    else value.forEach((item, i) => schemaIssues(item, schema.items, `${path}[${i}]`, issues))
+  } else if (typeof value !== schema.type) add(`expected ${schema.type}`)
+  else if (schema.type === 'string' && Array.from(value).length > schema.maxLength) add(`maximum ${schema.maxLength} characters`)
+  if (schema.enum && !schema.enum.includes(value)) add(`choose ${schema.enum.join(' / ')}`)
+  return issues
+}
+
 /** The app retrieves the authorized public passages deterministically, then uses
  * AgInTiLite as a bounded structured task. No model turn is spent choosing an
  * account, book scope or retrieval tool. Those remain host authority.
@@ -39,12 +82,11 @@ export async function runStructuredReading({ messages, kind, complete, url, time
       let value = {}
       if (response.choices?.[0]?.finish_reason === 'length') repairHint = kind === 'answer' ? 'Output was truncated. Return ONLY answer, knowledge, insufficient and citations. Keep answer under 700 words; omit all guide arrays and the type field.' : 'Output was truncated. Return a compact complete guide: at most 16 people, 24 relationships, 10 places, 8 routes, 16 events, one short quote per entry and a short summary.'
       if (response.choices?.[0]?.finish_reason !== 'length' && !response.choices?.[0]?.message?.refusal) {
-        try { value = JSON.parse(content) } catch { /* Schema rejection triggers the app's single bounded repair. */ }
+        try { value = parseReadingJSON(content) } catch {
+          repairHint = 'Return one complete valid JSON object. Escape newlines, tabs, backslashes and double quotes inside string values. No Markdown fences or trailing text.'
+        }
       }
-      const oversized = Object.entries((kind === 'guide' ? guideSchema : answerSchema).properties)
-        .filter(([key, schema]) => schema.type === 'array' && Array.isArray(value[key]) && value[key].length > schema.maxItems)
-        .map(([key, schema]) => `${key}: received ${value[key].length}, maximum ${schema.maxItems}`)
-      if (oversized.length) repairHint = oversized.join('; ') + '. Reduce the arrays and retain only edges whose endpoints remain.'
+      if (!repairHint) repairHint = schemaIssues(value, kind === 'guide' ? guideSchema : answerSchema).join('; ')
       return { type: 'final', value }
     } },
   })
@@ -56,7 +98,7 @@ export async function runStructuredReading({ messages, kind, complete, url, time
   catch (error) {
     if (transportError instanceof AppError) throw transportError
     if (error instanceof RestrictedApplicationError && error.code === 'OUTPUT_INVALID') {
-      throw Object.assign(new AppError('The reading guide was incomplete. Please retry.', 502), { repairable: true, ...(repairHint ? { repairDetails: repairHint } : {}) })
+      throw Object.assign(new AppError(kind === 'guide' ? 'The reading guide could not be completed. Please retry.' : 'The reading answer could not be completed. Please retry.', 502), { repairable: true, ...(repairHint ? { repairDetails: repairHint } : {}) })
     }
     if (error instanceof RestrictedApplicationError && error.code === 'SENSITIVE_DATA') throw new AppError('Remove passwords or secret keys before sending this question.')
     if (error instanceof RestrictedApplicationError && ['CONTEXT_LIMIT', 'DATA_LIMIT', 'INVALID_INPUT'].includes(error.code)) throw new AppError('Choose a smaller reading selection.', 413)

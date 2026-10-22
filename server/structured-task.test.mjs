@@ -32,3 +32,31 @@ test('a timed-out provider cannot deliver late success or start a replacement ca
   await new Promise(resolve => setTimeout(resolve, 45))
   assert.equal(calls, 1); assert.equal(aborted, true)
 })
+
+test('literal Markdown line breaks in JSON strings are recovered without altering the answer or evidence', async () => {
+  const value = { answer: '人物关系\n\n- Ada → Ben\r\n\tHe said "hello". A literal \\n stays literal. 😀', knowledge: 'background', citations: [] }
+  const raw = JSON.stringify(value).replaceAll('\\n', '\n').replaceAll('\\r', '\r').replaceAll('\\t', '\t')
+  // Keep the intentionally escaped backslash in this valid part of the answer.
+  const content = raw.replace('\\\n stays literal', '\\\\n stays literal')
+  let calls = 0
+  const result = await runStructuredReading({ kind: 'answer', messages: [{ role: 'user', content: 'Relationships' }], maxTokens: 1000, timeoutMs: 500,
+    complete: async () => { calls++; return { choices: [{ finish_reason: 'stop', message: { content } }] } } })
+  assert.deepEqual(JSON.parse(JSON.stringify(result)), value)
+  assert.equal(calls, 1)
+})
+
+test('format recovery does not accept truncation, extra JSON, bad escapes, or wrong field types', async () => {
+  const valid = JSON.stringify(answer)
+  for (const content of [valid.slice(0, -1), valid + '{}', '{"answer":"bad\\q","citations":[]}', '{"answer":[],"citations":[]}']) {
+    await assert.rejects(runStructuredReading({ kind: 'answer', messages: [{ role: 'user', content: 'Read P1' }], maxTokens: 1000, timeoutMs: 500,
+      complete: async () => ({ choices: [{ message: { content } }] }) }), e => e.repairable === true && /reading answer/.test(e.message) && !!e.repairDetails)
+  }
+  await assert.rejects(runStructuredReading({ kind: 'answer', messages: [{ role: 'user', content: 'Read P1' }], maxTokens: 1000, timeoutMs: 500,
+    complete: async () => ({ choices: [{ finish_reason: 'length', message: { content: valid } }] }) }), e => e.repairable === true && /truncated/.test(e.repairDetails))
+})
+
+test('nested schema faults give bounded field-specific repair hints without model text', async () => {
+  const value = { ...answer, people: [{ id: 'a', name: 'Ada', detail: 'PRIVATE MODEL TEXT', aliases: [], citations: [], certainty: 'certain' }], relationships: [], places: [], routes: [], events: [] }
+  await assert.rejects(runStructuredReading({ kind: 'guide', messages: [{ role: 'user', content: 'Build guide' }], maxTokens: 1000, timeoutMs: 500,
+    complete: async () => ({ choices: [{ message: { content: JSON.stringify(value) } }] }) }), e => e.repairable === true && e.repairDetails.includes('$.people[0].certainty') && !e.repairDetails.includes('PRIVATE MODEL TEXT'))
+})

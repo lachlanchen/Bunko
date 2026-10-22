@@ -225,7 +225,7 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
         {tab === 'chat' && !atBottom && <button type="button" className="agent-jump" aria-label={a.latest} onClick={() => { following.current = true; manualScroll.current = false; if (scroller.current) scroller.current.scrollTop = scroller.current.scrollHeight; setAtBottom(true) }}><ArrowDown size={18} /></button>}
       </div>
       <div className="agent-composer-area">
-        {error && <p role="alert">{error}</p>}
+        {error && !(tab === 'chat' && messages.some(m => m.state === 'failed' && m.error === error)) && <p role="alert">{error}</p>}
         {notice && <p role="status">{notice}</p>}
         {tab === 'chat' && <form className="agent-composer" onSubmit={e => { e.preventDefault(); withConsent(() => { void send('answer') }) }}>
           <button type="button" className="reference-add" disabled={waiting} aria-label={r.title} title={r.title} onClick={() => setPicking(true)}><AtSign size={20} /></button>
