@@ -33,9 +33,16 @@ headings can expand without navigating away.
   Compact guide instructions, format-specific answers and actionable bounded
   repair feedback address those failures; original failed evidence is retained.
 - Seven browser layouts passed: phone, 320px, desktop, keyboard-height, dark,
-  Japanese and enlarged text. Captures use labelled synthetic content.
+  Japanese and enlarged text. Captures use labelled synthetic content. A separate
+  320px long-title check confirmed two-line collapse, full expansion and no
+  unintended navigation.
 - The Bunko-owned backend update is live with its previous release and consistent
   SQLite backup retained. Identity configuration, subscriptions and rewards are
-  unchanged. Internal build33 delivery is being qualified separately.
+  unchanged. Build33 (1.0.14) is VALID / IN_BETA_TESTING for iOS/Watch and Mac
+  in the existing internal group; Android33 is available on the internal track.
+- Installed Android33 smoke checks passed for the public book index, saved-guide
+  selector, background labels, graph/map/timeline tabs and horizontal containment.
+  No new iOS/Mac device GUI session ran; both actual signed bundles passed their
+  resource, identity, Watch, universal-Mac and minimum-OS checks.
 
 This is internal-test evidence, not a new public-store release announcement.

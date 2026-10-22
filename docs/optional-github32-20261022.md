@@ -40,5 +40,10 @@ stuck showing GitHub alone.
 - The approved owner completed the optional GitHub connection, retaining their
   original Bunko ID. No other reader uses that owner's personal identity.
 
+The password fixture completed normal web/native signout. Its exact local profile
+and account registry were removed through the profile-removal path; credential
+revocation drained and no fixture content or sessions remained. Central erasure
+is handed back to the issuer owner. The permanent owner account is preserved.
+
 Runtime evidence and credentials remain outside Git. Public release candidates,
 prices, subscriptions and reward policies are unchanged.

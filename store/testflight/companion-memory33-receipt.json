@@ -1,0 +1,52 @@
+{
+  "at": "2026-10-22T14:45:29.320850+00:00",
+  "source": "666da63fc92165d323dc3e0fdb4819658bfd52d8",
+  "version": "1.0.14",
+  "build": 33,
+  "apple": [
+    {
+      "platform": "MAC_OS",
+      "id": "f4093e7f-dd5c-4642-8235-430702ce262e",
+      "version": "1.0.14",
+      "build": "33",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    },
+    {
+      "platform": "IOS",
+      "id": "54b6b14b-7df3-4fef-8b63-0b4037c02731",
+      "version": "1.0.14",
+      "build": "33",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    }
+  ],
+  "android": {
+    "track": "internal",
+    "available": true,
+    "aabSha256": "53c1f002e47a3dd1494a10cdc2742829fcf8512b319c2916fec46e4300056f75"
+  },
+  "tests": {
+    "client": 148,
+    "server": 141,
+    "deliveryHelpers": 73,
+    "androidInstalledSmoke": true,
+    "realDeepSeekBookAnswer": true,
+    "browserLayouts": 7
+  },
+  "publicReviewSubmitted": false,
+  "newIosMacGuiTest": false,
+  "cleanup": {
+    "macGuardReleased": true,
+    "signingRestored": true,
+    "ownedGroupsAbsent": true
+  },
+  "backend": {
+    "live": true,
+    "files": {
+      "agent/book-companion.mjs": "7f0122d908c2eb8cc7065a126a04e4945babcb6e8b7f55eed96383c8c4c9e79c",
+      "agent/structured-task.mjs": "54bddbddc6c73f50827fcd54e61f82b61d3d84b86e573ff891b76415f46d3b4c"
+    },
+    "authConfigUnchanged": true
+  }
+}
