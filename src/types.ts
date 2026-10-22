@@ -22,6 +22,8 @@ export interface BookRow {
   cat?: 'chinese' | 'japanese' | 'world' | 'physics' | 'learning' | 'finance' | 'travel'
   cover?: string
   edition?: 'multilingual' | 'original-only'
+  /** First publication in Bunko's catalog, never the last content refresh. */
+  addedAt?: string
 }
 
 export interface ReaderIndex {
@@ -95,4 +97,5 @@ export interface ReadingSettings {
 export interface Place {
   chapter: number
   paragraph: number
+  lastReadAt?: number
 }

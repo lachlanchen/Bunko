@@ -43,8 +43,17 @@ interface ReaderProps {
 }
 
 function ChapterHeading({ children, label, lang, dir }: { children: ReactNode; label: string; lang: string; dir: string }) {
-  const title = <h1 lang={lang} dir={dir}>{children}</h1>
-  return [...label].length > 60 ? <details className="reader-chapter-title"><summary>{title}</summary></details> : title
+  const ref = useRef<HTMLHeadingElement>(null)
+  const [overflow, setOverflow] = useState(false), [expanded, setExpanded] = useState(false)
+  useEffect(() => {
+    const measure = () => { if (!expanded && ref.current) setOverflow(ref.current.scrollWidth > ref.current.clientWidth + 1) }
+    const frame = requestAnimationFrame(measure)
+    const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(measure) : null
+    if (ref.current) observer?.observe(ref.current)
+    return () => { cancelAnimationFrame(frame); observer?.disconnect() }
+  }, [label, expanded, overflow])
+  const title = <h1 ref={ref} className={expanded ? undefined : 'compact-chapter-heading'} lang={lang} dir={dir}>{children}</h1>
+  return overflow || expanded ? <details className="reader-chapter-title" open={expanded} onToggle={event => setExpanded(event.currentTarget.open)}><summary title={label}>{title}</summary></details> : title
 }
 
 function PassageNotes({ enabled, label, children }: { enabled: boolean; label: string; children: ReactNode }) {
@@ -163,6 +172,14 @@ export function Reader({
     onPlace(0)
     visibleParagraph.current = 0
   }, [chapter, onPlace])
+
+  // Opening an already-saved passage counts as a reading visit even when the
+  // restored position is zero and the browser emits no scroll event.
+  useEffect(() => {
+    if (!chapter) return
+    const frame = requestAnimationFrame(handleScroll)
+    return () => cancelAnimationFrame(frame)
+  }, [chapter, handleScroll])
 
   const title =
     plainText(chapter?.title?.[shown[0]] ?? chapter?.title?.[meta.primary]) ||

@@ -11,8 +11,9 @@ export function ChapterRow({ chapter, primary, ui, active, onRead }: {
   const [expanded, setExpanded] = useState(false), [overflow, setOverflow] = useState(false)
   const label = useRef<HTMLSpanElement>(null)
   const title = chapter.title[primary] ?? Object.values(chapter.title)[0] ?? ''
+  const translation = Object.entries(chapter.title).find(([lang, text]) => lang !== primary && baseLanguage(lang) === baseLanguage(ui) && text && text !== title)
   useEffect(() => {
-    const measure = () => { if (!expanded && label.current) setOverflow([...label.current.children].some(el => el.scrollHeight > el.clientHeight + 1)) }
+    const measure = () => { if (!expanded && label.current) setOverflow([...label.current.children].some(el => el.scrollWidth > el.clientWidth + 1 || el.scrollHeight > el.clientHeight + 1)) }
     const frame = requestAnimationFrame(measure)
     const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(measure) : null
     if (label.current) observer?.observe(label.current)
@@ -23,9 +24,9 @@ export function ChapterRow({ chapter, primary, ui, active, onRead }: {
       <span className="chapter-n">{chapter.n}</span>
       <span ref={label} className="chapter-title">
         <bdi lang={htmlLanguage(primary)} dir={languageDirection(primary)}>{title}</bdi>
-        {Object.entries(chapter.title).filter(([lang]) => lang !== primary && baseLanguage(lang) === baseLanguage(ui)).slice(0, 1).map(([lang, text]) => <small key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>{text}</small>)}
+        {expanded && translation && <small lang={htmlLanguage(translation[0])} dir={languageDirection(translation[0])}>{translation[1]}</small>}
       </span>
     </button>
-    {(overflow || expanded) && <button type="button" className="chapter-expand" aria-label={bookCompanionCopy[ui].details} aria-expanded={expanded} onClick={() => setExpanded(value => !value)}><ChevronDown size={16} /></button>}
+    {(overflow || expanded || translation) && <button type="button" className="chapter-expand" aria-label={`${bookCompanionCopy[ui].details} · ${chapter.n}`} aria-expanded={expanded} onClick={() => setExpanded(value => !value)}><ChevronDown size={16} /></button>}
   </li>
 }

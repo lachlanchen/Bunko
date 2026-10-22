@@ -12,6 +12,15 @@ import type { LangCode, Place, ReadingSettings } from '../types'
 const SETTINGS_KEY = 'bunko.settings.v1'
 const PLACE_KEY = 'bunko.place.v1'
 const UI_KEY = 'bunko.ui.v1'
+const LIBRARY_KEY = 'bunko.library.v1'
+export const LIBRARY_SORTS = ['recent', 'added', 'title', 'author'] as const
+export type LibrarySort = typeof LIBRARY_SORTS[number]
+
+export async function loadLibrarySort(): Promise<LibrarySort> {
+  const saved = await read<{ sort: LibrarySort }>(LIBRARY_KEY, { sort: 'recent' })
+  return LIBRARY_SORTS.includes(saved.sort) ? saved.sort : 'recent'
+}
+export const saveLibrarySort = (sort: LibrarySort) => write(LIBRARY_KEY, { sort })
 
 export const DEFAULT_SETTINGS: ReadingSettings = {
   langs: [],
@@ -55,11 +64,18 @@ export async function loadPlaces(): Promise<Record<string, Place>> {
   }
 }
 
-export async function savePlace(bookId: string, place: Place): Promise<Record<string, Place>> {
-  const places = await loadPlaces()
-  const next = { ...places, [bookId]: place }
-  await write(PLACE_KEY, next)
-  return next
+// Sequential writes keep rapid chapter changes from overwriting another book's
+// bookmark while native Preferences is still finishing the previous write.
+let placeWrite: Promise<unknown> = Promise.resolve()
+export function savePlace(bookId: string, place: Place): Promise<Record<string, Place>> {
+  const operation = placeWrite.then(async () => {
+    const places = await loadPlaces()
+    const next = { ...places, [bookId]: place }
+    await write(PLACE_KEY, next)
+    return next
+  })
+  placeWrite = operation.catch(() => {})
+  return operation
 }
 
 export interface UIState {

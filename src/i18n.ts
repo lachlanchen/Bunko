@@ -51,6 +51,8 @@ export interface UICopy {
   rubySize: string
   books: string
   refreshLibrary: string
+  sortBooks: string
+  librarySort: Record<'recent' | 'added' | 'title' | 'author', string>
   theme: string
   themePaper: string
   themeNight: string
@@ -131,6 +133,8 @@ const en: UICopy = {
   rubySize: 'Ruby size',
   books: 'books',
   refreshLibrary: 'Refresh library',
+  sortBooks: 'Sort books',
+  librarySort: { recent: 'Recently read', added: 'Newest added', title: 'Title', author: 'Author' },
   theme: 'Theme',
   themePaper: 'Light',
   themeNight: 'Dark',
@@ -214,6 +218,8 @@ const zhHans: UICopy = {
   rubySize: '注音字号',
   books: '本书',
   refreshLibrary: '刷新书库',
+  sortBooks: '书籍排序',
+  librarySort: { recent: '最近阅读', added: '最新加入', title: '书名', author: '作者' },
   theme: '主题',
   themePaper: '纸色',
   themeNight: '夜间',
@@ -295,6 +301,8 @@ const zhHant: UICopy = {
   rubySize: '注音字號',
   books: '本書',
   refreshLibrary: '重新整理書庫',
+  sortBooks: '書籍排序',
+  librarySort: { recent: '最近閱讀', added: '最新加入', title: '書名', author: '作者' },
   theme: '主題',
   themePaper: '紙色',
   themeNight: '夜間',
@@ -378,6 +386,8 @@ const ja: UICopy = {
   rubySize: 'ルビの大きさ',
   books: '冊',
   refreshLibrary: 'ライブラリを更新',
+  sortBooks: '本の並び順',
+  librarySort: { recent: '最近読んだ順', added: '追加が新しい順', title: 'タイトル順', author: '著者順' },
   theme: 'テーマ',
   themePaper: '紙',
   themeNight: '夜',

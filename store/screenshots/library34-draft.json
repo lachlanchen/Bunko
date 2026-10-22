@@ -1,0 +1,25 @@
+{
+  "build": 34,
+  "state": "locally captured and reviewed; not uploaded",
+  "channel": "Chrome rendering actual Bunko native-web bundle with a three-book public-data QA catalog",
+  "captures": [
+    {
+      "file": "library-320-paper.png",
+      "sha256": "f7149c9a18050a903727ec09e4adb848c56ee7163aa6b696e372b6525c502325"
+    },
+    {
+      "file": "library-390-paper.png",
+      "sha256": "b49da0302a15f3bb22a4731a5fa7f385a13c5b3b336133a412c038c805f671e4"
+    },
+    {
+      "file": "library-1280-paper.png",
+      "sha256": "77aa539d09dd28a425534664b76de29fd12229d87367c0354a3be132783fa60b"
+    },
+    {
+      "file": "library-390-night.png",
+      "sha256": "b3222f05938f61c6e56c9e67933228a1d11d76e4139bff0ba3372f9afe3c9bec"
+    }
+  ],
+  "privatePath": ".runtime/library34-20261022/",
+  "storeSubmission": false
+}

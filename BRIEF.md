@@ -1,5 +1,14 @@
 # Bunko — product brief
 
+## Compact chapters and library order · 2026-10-22
+
+Keep chapter titles on one line with explicit full-title/translation expansion,
+including the reader heading and chapter drawer. Default library order to recently
+read, with persistent newest-added, title and author alternatives. Use actual
+catalog publication dates and device-local reading visits; preserve legacy
+bookmarks, companion source detours and offline access. Accumulate in internal
+build34 without changing public reviews or account-provider activation.
+
 ## Whole-book knowledge and durable reading companion · 2026-10-22
 
 Allow useful whole-book answers from reliable model knowledge alongside the current

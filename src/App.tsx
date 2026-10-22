@@ -31,7 +31,9 @@ import {
   savePlace,
   saveSettings,
   saveUI,
+  loadLibrarySort, saveLibrarySort, LIBRARY_SORTS, type LibrarySort,
 } from './lib/settings'
+import { orderBooks } from './lib/libraryOrder'
 import { DocumentAgent } from './components/DocumentAgent'
 import { BookCompanion } from './components/BookCompanion'
 import { companionReference, referenceKey, type BookCompanionContext, type BookReference } from './lib/bookCompanion'
@@ -73,6 +75,7 @@ export default function App() {
   const [view, setView] = useState<View>(() => ['success', 'cancel', 'return'].includes(new URLSearchParams(window.location.search).get('billing') ?? '') ? 'cloud' : 'library')
   const [filter, setFilter] = useState<Filter>('all')
   const [query, setQuery] = useState('')
+  const [librarySort, setLibrarySort] = useState<LibrarySort>('recent')
   const [meta, setMeta] = useState<BookMeta | null>(null)
   const [places, setPlaces] = useState<Record<string, Place>>({})
   const [chapterIndex, setChapterIndex] = useState(0)
@@ -90,6 +93,7 @@ export default function App() {
   const [request, setRequest] = useState('')
   const downloadRef = useRef<AbortController | null>(null)
   const linkedBookOpened = useRef(false)
+  const readingVisit = useRef<string | null>(null)
   const copy = copies[ui]
   const librarySearch = useRef<HTMLInputElement>(null)
   const updates = useUpdates()
@@ -98,13 +102,15 @@ export default function App() {
   useBackNavigation()
   useBackAction(() => setView(view === 'reader' ? (companionPeek ? 'book-agent' : 'book') : 'library'), view !== 'library')
   useBackAction(() => { if (showSettings) setShowSettings(false); else setShowChapters(false) }, showSettings || showChapters, 40)
+  useEffect(() => { if (view !== 'reader') readingVisit.current = null }, [view])
 
   useEffect(() => {
     void (async () => {
-      const [uiState, saved, savedPlaces] = await Promise.all([loadUI(), loadSettings(), loadPlaces()])
+      const [uiState, saved, savedPlaces, sort] = await Promise.all([loadUI(), loadSettings(), loadPlaces(), loadLibrarySort()])
       setUI(uiState.language)
       setSettings(saved)
       setPlaces(savedPlaces)
+      setLibrarySort(sort)
     })()
     const unsubscribe = subscribeIndex(setIndex)
     loadIndex()
@@ -148,14 +154,14 @@ export default function App() {
   const books = useMemo(() => {
     const all = index?.books ?? []
     const text = query.trim().toLowerCase()
-    return all.filter((book) => {
+    return orderBooks(all.filter((book) => {
       if (filter === 'device' && !onDevice[book.id]) return false
       if (filter !== 'all' && filter !== 'device' && categoryOf(book) !== filter) return false
       if (!text) return true
       const haystack = [book.id, book.author, ...Object.values(book.title)].join(' ').toLowerCase()
       return haystack.includes(text)
-    })
-  }, [index, filter, query, onDevice])
+    }), librarySort, places, ui)
+  }, [index, filter, query, onDevice, librarySort, places, ui])
 
   const openBook = useCallback(
     async (book: BookRow) => {
@@ -243,11 +249,13 @@ export default function App() {
   const handlePlace = useCallback(
     (paragraph: number) => {
       if (!meta) return
-      const place = { chapter: chapterIndex, paragraph }
+      const place = { chapter: chapterIndex, paragraph, lastReadAt: Date.now() }
       if (companionPeek) { setPeekPlace(place); return }
+      const sameVisit = readingVisit.current === meta.id
+      readingVisit.current = meta.id
       setPlaces((current) => {
         const existing = current[meta.id]
-        if (existing && existing.chapter === place.chapter && existing.paragraph === place.paragraph) {
+        if (sameVisit && existing && existing.chapter === place.chapter && existing.paragraph === place.paragraph) {
           return current
         }
         void savePlace(meta.id, place)
@@ -259,7 +267,7 @@ export default function App() {
 
   const goToChapter = useCallback((next: number) => {
     if (!meta || next < 0 || next >= meta.chapters.length) return
-    const place = { chapter: next, paragraph: 0 }
+    const place = { chapter: next, paragraph: 0, lastReadAt: Date.now() }
     setChapterIndex(next)
     if (companionPeek) { setPeekPlace(place); return }
     setPlaces((current) => ({ ...current, [meta.id]: place }))
@@ -304,7 +312,7 @@ export default function App() {
   />
 
   if (view === 'book-agent' && companionContext) return <BookCompanion context={companionContext} ui={ui}
-    onBack={() => { setCompanionPeek(false); setPeekPlace(null); setReferenceQuote(''); setMeta(companionContext.meta); setChapterIndex(companionContext.chapter); setPlaces(current => ({ ...current, [companionContext.meta.id]: { chapter: companionContext.chapter, paragraph: companionContext.paragraph } })); setView(companionContext.returnTo) }}
+    onBack={() => { setCompanionPeek(false); setPeekPlace(null); setReferenceQuote(''); setMeta(companionContext.meta); setChapterIndex(companionContext.chapter); setPlaces(current => ({ ...current, [companionContext.meta.id]: { ...current[companionContext.meta.id], chapter: companionContext.chapter, paragraph: companionContext.paragraph } })); setView(companionContext.returnTo) }}
     onGeneral={() => { setGeneralReturn(companionContext.returnTo === 'agent' ? 'library' : 'book-agent'); setView('agent') }}
     onRead={(paragraph, reference?: BookReference, quote?: string) => {
       const open = async () => {
@@ -520,10 +528,14 @@ export default function App() {
 
       {index && <div className="library-status">
         <span>{index.count} {copy.books}</span>
-        <button type="button" disabled={refreshing} onClick={async () => {
+        <select className="library-sort" aria-label={copy.sortBooks} value={librarySort} onChange={event => {
+          const sort = event.target.value as LibrarySort
+          setLibrarySort(sort); void saveLibrarySort(sort)
+        }}>{LIBRARY_SORTS.map(sort => <option key={sort} value={sort}>{copy.librarySort[sort]}</option>)}</select>
+        <button type="button" aria-label={copy.refreshLibrary} title={copy.refreshLibrary} disabled={refreshing} onClick={async () => {
           setRefreshing(true)
           try { setIndex(await loadIndex({ refresh: true })) } finally { setRefreshing(false) }
-        }}><RefreshCw size={14} className={refreshing ? 'spinning' : ''} /> {copy.refreshLibrary}</button>
+        }}><RefreshCw size={16} className={refreshing ? 'spinning' : ''} /></button>
       </div>}
       <section className="grid">
         {books.map((book) => (
