@@ -25,9 +25,25 @@ title until the catalog refreshes. No extra book-body download is required.
   reading recency after reload; filtering; actual public book data; no horizontal
   page overflow. Synthetic extreme-title QA measured 24px collapsed text height
   and verified expansion does not open a chapter.
+- Installed Android API34 Debug34: native preference reload, actual public Adler
+  chapters (12 rows, maximum 24px text height), expansion without navigation,
+  and most-recent reading order passed. Screenshots remain internal QA drafts.
 - Catalog: nine tests and full validation of 186 books passed. Existing book
   content hashes and chapter payloads are unchanged.
 
-Internal build34 delivery is tracked separately; this source checkpoint does not
-claim an uploaded or publicly released binary. Public reviews and provider-login
+Build34 is VALID / IN_BETA_TESTING for iOS/Watch and Mac, and available on the
+Google internal track. Its delivery and cleanup receipt is in
+`store/testflight/library-order34-receipt.json`. Public reviews and provider-login
 gates remain unchanged.
+
+## Reader-heading correction · build35
+
+The nested ruby line had its own whitespace rule, so a reader heading could still
+wrap despite its parent clamp. Build35 applies the collapsed whitespace rule to
+that line too. Actual English and Chinese reader QA verifies a single base-text
+line, intact ruby, full expansion and collapse, with saved order and bookmarks.
+Both the expanded and collapsed layouts were visually reviewed at 320px.
+Installed Android Debug35 additionally verified the corrected heading at 36px
+(one line), the 24px chapter-row text, native preference reload, reading recency
+and no horizontal overflow. Both signed Android packages contain all88 expected
+resources. This successor retains all build34 changes.

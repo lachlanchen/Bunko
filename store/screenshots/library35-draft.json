@@ -1,0 +1,33 @@
+{
+  "build": 35,
+  "state": "locally captured and reviewed; no store upload",
+  "captures": [
+    {
+      "file": "reader-adler-what-life-should-mean-to-you-collapsed.png",
+      "sha256": "124df22df35c5ea9e15395a4aff77e81cb208d5128c603670441b73233aa4f74",
+      "channel": "Chrome actual Bunko source and public book data"
+    },
+    {
+      "file": "reader-adler-what-life-should-mean-to-you-expanded.png",
+      "sha256": "ac5d07919db769bcb996d887d794247e3c606bd4ab5dd340ca6d64bf4c98fe0f",
+      "channel": "Chrome actual Bunko source and public book data"
+    },
+    {
+      "file": "ruby/reader-romance-three-kingdoms-collapsed.png",
+      "sha256": "cca8eeec41eabd60da7d94cdd773394b2a5531a80d47bb984abb580f8c7e90ba",
+      "channel": "Chrome actual Bunko source and public book data"
+    },
+    {
+      "file": "native35-reader.png",
+      "sha256": "8f7527b2714e7c2d5e86eea794158b2e774d74e64ec21ef1405647652d4cc75f",
+      "channel": "installed Android Debug35"
+    },
+    {
+      "file": "native35-chapters.png",
+      "sha256": "9f1280f97aee9c360fa8b2d416912fcfeff49ae8df771918c30f1029a7a788f9",
+      "channel": "installed Android Debug35"
+    }
+  ],
+  "privatePath": ".runtime/library35-20261022",
+  "publicListingChanged": false
+}

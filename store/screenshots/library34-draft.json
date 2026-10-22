@@ -21,5 +21,24 @@
     }
   ],
   "privatePath": ".runtime/library34-20261022/",
-  "storeSubmission": false
+  "storeSubmission": false,
+  "nativeCaptures": [
+    {
+      "file": "native34-library.png",
+      "sha256": "c2fba9627e3e8ea80c037676a5d177a11a39422ef047bd4f2dd5206cb5096195",
+      "channel": "Installed Android API34 Debug build34; actual public catalog/book",
+      "storeReady": false,
+      "note": "Cover image loading placeholders visible; UI QA only."
+    },
+    {
+      "file": "native34-chapters.png",
+      "sha256": "137a4902c112c159ac30636c7f05281915ad8ea203611811c22fe3aa3e4c5391",
+      "channel": "Installed Android API34 Debug build34; actual public catalog/book",
+      "storeReady": false,
+      "note": "Chapter-list QA capture, not a full store treatment."
+    }
+  ],
+  "excluded": {
+    "native34-reader.png": "Native screenshot caught a compositor loading frame; not selected as release evidence."
+  }
 }

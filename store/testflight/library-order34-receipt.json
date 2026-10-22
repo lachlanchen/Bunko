@@ -1,0 +1,51 @@
+{
+  "at": "2026-10-22T15:55:22.635159+00:00",
+  "source": "15cddae3fef1a6ed52dc508367c5849eb0506dc3",
+  "version": "1.0.14",
+  "build": 34,
+  "apple": [
+    {
+      "platform": "MAC_OS",
+      "id": "ff531db9-b6ce-4f9c-b70c-da5111b7af9e",
+      "version": "1.0.14",
+      "build": "34",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    },
+    {
+      "platform": "IOS",
+      "id": "55acdcea-1b95-4333-8573-f1db7f4ac911",
+      "version": "1.0.14",
+      "build": "34",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    }
+  ],
+  "android": {
+    "at": "2026-10-22T15:35:22.690799+00:00",
+    "version": "1.0.14",
+    "build": 34,
+    "track": "internal",
+    "release": 27,
+    "available": true,
+    "uiEvidenceSha256": "9da439f91e11696dd0b1cf29f9d6353d43714d86bbca6ab1d00e920041536276",
+    "aabSha256": "47b1bb864697ca7e7305d0f4ac56694da0a1214eab255e43438441cc20dfa440",
+    "publicReviewChanged": false
+  },
+  "tests": {
+    "client": 153,
+    "server": 141,
+    "deliveryHelpers": 73,
+    "androidInstalledSmoke": true,
+    "browserLayouts": 4,
+    "newestCatalogDates": 186
+  },
+  "publicReviewSubmitted": false,
+  "newIosMacGuiTest": false,
+  "cleanup": {
+    "macGuardReleased": true,
+    "signingRestored": true,
+    "ownedGroupsAbsent": true
+  },
+  "supersededByCandidate": "35: nested ruby-heading whitespace correction"
+}

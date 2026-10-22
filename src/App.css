@@ -399,6 +399,7 @@ input[type='range'] { width: 100%; accent-color: var(--indigo); }
 .chapter-expand[aria-expanded=true] svg { transform: rotate(180deg); }
 .reader-chapter-title { margin: 0 0 1em; }
 .page .compact-chapter-heading { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: .8em; }
+.compact-chapter-heading .line { white-space: nowrap; }
 .reader-chapter-title h1 { margin-bottom: 0; }
 .reader-chapter-title summary { cursor: pointer; list-style: none; position: relative; padding-inline-end: 20px; }
 .reader-chapter-title summary::after { content: '⌄'; position: absolute; inset-inline-end: 0; top: .4em; color: var(--ink-soft); font: 16px/1 sans-serif; }
