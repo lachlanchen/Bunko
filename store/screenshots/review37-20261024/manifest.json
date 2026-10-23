@@ -1,0 +1,280 @@
+{
+  "at": "2026-10-23T23:04:22.674589+00:00",
+  "version": "1.0.14",
+  "build": 37,
+  "source": "7a3767d1b76c99a99b3ba1a36e2f9194be722ddc",
+  "capture": "Chromium rendering exact packaged build37 iOS web assets at each responsive layout; public books and live demo companion. Not physical iOS/Mac or simulator captures. Platform payload equality is recorded in the build receipt.",
+  "content": "Sanshiro reader; public library; genuine saved Dream of the Red Chamber response. No private reader content or credentials.",
+  "locales": "English captures serve as the fallback for en-US, zh-Hans, zh-Hant and ja listings. Descriptions are localized.",
+  "preserved": [
+    "Apple Watch: two existing current screenshots",
+    "Mac: existing equations screenshot",
+    "Google current icon and centered-ruby feature graphic"
+  ],
+  "images": [
+    {
+      "target": "apple-phone",
+      "order": 1,
+      "file": "en-phone-reader37.png",
+      "pixels": [
+        1242,
+        2688
+      ],
+      "sha256": "2b872221360b69c2d903b56d6fa5470aa331fcb4f50901a685089e8cfbcb4615",
+      "bytes": 420925,
+      "reviewed": true
+    },
+    {
+      "target": "apple-phone",
+      "order": 2,
+      "file": "en-phone-library37.png",
+      "pixels": [
+        1242,
+        2688
+      ],
+      "sha256": "85fdba1f75cfceb578e483bad7b2c6b29ebd23fdfc2ca57428fcfaaee5afcc13",
+      "bytes": 1078872,
+      "reviewed": true
+    },
+    {
+      "target": "apple-phone",
+      "order": 3,
+      "file": "en-phone-chapters37.png",
+      "pixels": [
+        1242,
+        2688
+      ],
+      "sha256": "33672a98f33db2e00370fc94988ffccca22aa7f90891c3ad63b9063019c81f12",
+      "bytes": 399719,
+      "reviewed": true
+    },
+    {
+      "target": "apple-phone",
+      "order": 4,
+      "file": "en-phone-people-expanded37.png",
+      "pixels": [
+        1242,
+        2688
+      ],
+      "sha256": "af4925941c4ea7c4a05f6f3073b088662e06165f2b9fb020dc9705aa0492338b",
+      "bytes": 211029,
+      "reviewed": true
+    },
+    {
+      "target": "apple-phone",
+      "order": 5,
+      "file": "en-phone-places-expanded37.png",
+      "pixels": [
+        1242,
+        2688
+      ],
+      "sha256": "a8dc0b0e274912b3af87a1a63a11ce6bbb17a94c7d9309a97bd1999657efb2da",
+      "bytes": 160973,
+      "reviewed": true
+    },
+    {
+      "target": "apple-ipad",
+      "order": 1,
+      "file": "en-ipad-reader37.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "sha256": "5341da49b06c145ee7c2c1976dbf45b43c6013f63f7d4910f2cf84cf6650659e",
+      "bytes": 634504,
+      "reviewed": true
+    },
+    {
+      "target": "apple-ipad",
+      "order": 2,
+      "file": "en-ipad-library37.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "sha256": "b2bc50e357a977a5d0d0fea460937570f174b16f50f70e87f4caf9dac1a5aabb",
+      "bytes": 1327542,
+      "reviewed": true
+    },
+    {
+      "target": "apple-ipad",
+      "order": 3,
+      "file": "en-ipad-people-expanded37.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "sha256": "bef19faffb8573e59a55aa7ecee859511da220323c04f9ee06d703484e4c11a6",
+      "bytes": 167607,
+      "reviewed": true
+    },
+    {
+      "target": "apple-ipad",
+      "order": 4,
+      "file": "en-ipad-places-expanded37.png",
+      "pixels": [
+        2048,
+        2732
+      ],
+      "sha256": "56c8aaf5f784d7e4c899d213e6fff1ba459352386c8e4b07292192c67c2e9820",
+      "bytes": 127294,
+      "reviewed": true
+    },
+    {
+      "target": "apple-mac",
+      "order": 1,
+      "file": "en-mac-reader37.png",
+      "pixels": [
+        2560,
+        1600
+      ],
+      "sha256": "511633bbea9917743defab513c6e8f1572d07fac183a625b2ced4da0bff6559d",
+      "bytes": 385873,
+      "reviewed": true
+    },
+    {
+      "target": "apple-mac",
+      "order": 2,
+      "file": "en-mac-library37.png",
+      "pixels": [
+        2560,
+        1600
+      ],
+      "sha256": "c1f4ee08ccce106be0353ff2d54d7ad9a16b74d29e598d72b230541b3745e67a",
+      "bytes": 291933,
+      "reviewed": true
+    },
+    {
+      "target": "apple-mac",
+      "order": 3,
+      "file": "en-mac-people-expanded37.png",
+      "pixels": [
+        2560,
+        1600
+      ],
+      "sha256": "ae53e4a1dc20e0c70d588e3fb94953ebb676e0a3e5696cf128df8612d96a2286",
+      "bytes": 193700,
+      "reviewed": true
+    },
+    {
+      "target": "apple-mac",
+      "order": 4,
+      "file": "en-mac-places-expanded37.png",
+      "pixels": [
+        2560,
+        1600
+      ],
+      "sha256": "334df0d345db0bb8d08cd37ac36cd50fe3016e2d2bf1712f4cd7bb7745250f5c",
+      "bytes": 138682,
+      "reviewed": true
+    },
+    {
+      "target": "apple-mac",
+      "order": 5,
+      "file": "en-mac-timeline37.png",
+      "pixels": [
+        2560,
+        1600
+      ],
+      "sha256": "73734af47aae8bd44b0862eb11ceb543234218e1320415ea70b2c38d0e933b98",
+      "bytes": 230282,
+      "reviewed": true
+    },
+    {
+      "target": "google-phone",
+      "order": 1,
+      "file": "en-android-reader37.png",
+      "pixels": [
+        1080,
+        1920
+      ],
+      "sha256": "4585ed90bccc61386681e969e8ccccf8921838f58b96505942881c1ce113055c",
+      "bytes": 240658,
+      "reviewed": true
+    },
+    {
+      "target": "google-phone",
+      "order": 2,
+      "file": "en-android-library37.png",
+      "pixels": [
+        1080,
+        1920
+      ],
+      "sha256": "794c00d43a74b717d9705610cef5b4ec89c7b1e31c06512001cf81a4c3c744e5",
+      "bytes": 537229,
+      "reviewed": true
+    },
+    {
+      "target": "google-phone",
+      "order": 3,
+      "file": "en-android-chapters37.png",
+      "pixels": [
+        1080,
+        1920
+      ],
+      "sha256": "c96f470d1ce8e74cbc49b22722a35d5130cd345f745f0c771dee1454f405c5cc",
+      "bytes": 381047,
+      "reviewed": true
+    },
+    {
+      "target": "google-phone",
+      "order": 4,
+      "file": "en-android-people-expanded37.png",
+      "pixels": [
+        1080,
+        1920
+      ],
+      "sha256": "9263127299ede75c0f5728df541ab144ea6ff63c0b6e14da60beec69bba73c84",
+      "bytes": 159233,
+      "reviewed": true
+    },
+    {
+      "target": "google-phone",
+      "order": 5,
+      "file": "en-android-places-expanded37.png",
+      "pixels": [
+        1080,
+        1920
+      ],
+      "sha256": "a55b9a4fa1c92fbe154fec5af15b4db9da8570ebfc6f1367a36e8c2e2a033430",
+      "bytes": 141078,
+      "reviewed": true
+    },
+    {
+      "target": "google-tablet",
+      "order": 1,
+      "file": "en-android-tablet-reader37.png",
+      "pixels": [
+        1440,
+        2560
+      ],
+      "sha256": "633d2a2b9d17b89d34e81e611f76ac7c7d62974d6dd6b1b090298ce705802b0e",
+      "bytes": 586096,
+      "reviewed": true
+    },
+    {
+      "target": "google-tablet",
+      "order": 2,
+      "file": "en-android-tablet-library37.png",
+      "pixels": [
+        1440,
+        2560
+      ],
+      "sha256": "5c4069d11a4cc7f80f06992f7df9ff906b03693f2466f40ea3aa4bc359282116",
+      "bytes": 1226925,
+      "reviewed": true
+    },
+    {
+      "target": "google-tablet",
+      "order": 3,
+      "file": "en-android-tablet-people-expanded37.png",
+      "pixels": [
+        1440,
+        2560
+      ],
+      "sha256": "1a5d5cbbe99b8abed971d47b7a984dfb7957746aaef5e7c42470b5182cbe0735",
+      "bytes": 121081,
+      "reviewed": true
+    }
+  ]
+}

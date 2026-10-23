@@ -1,5 +1,16 @@
 # Bunko — product brief
 
+## Build37 formal submission · 2026-10-24
+
+The owner requests the latest qualified Bunko update submitted for review, with
+current screenshots and reader-facing descriptions. Reuse the delivered build37
+binaries after source, live companion, reviewer-access and store checks. Refresh
+the four localized descriptions and affected device screenshots; keep required
+provider and accuracy disclosures clear. iOS/Watch, Mac and Google submissions
+are now confirmed in review, with release after approval. No provider, billing,
+reward or sibling-app activation is part of this submission. See
+`docs/latest-review37-20261024.md` for exact evidence and remaining public-release status.
+
 ## Continuing reading workspace · 2026-10-23
 
 Ask, People, Places and Timeline share one account-bound conversation with explicit

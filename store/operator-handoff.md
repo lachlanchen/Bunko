@@ -1,3 +1,19 @@
+# Bunko 1.0.14 (37) submitted · 24 October 2026
+
+Apple iOS/Watch and universal Mac are **Waiting for Review**. Google production
+is **Changes in review**, with eight changes sent and no unsent submission button.
+Automatic release/full rollout after approval is retained. Approved23 remains
+available; the former Mac23 review is complete.
+
+Four localized descriptions and current phone/tablet/desktop screenshots are
+saved and verified. 311 client/server tests, renderer/build checks, live no-code
+Demo access, a real whole-book companion answer and saved-result reuse passed.
+Both public legal-page hosts now serve the current provider/book-guide disclosure.
+No new binary, price/billing/provider change, PWA deployment or physical Apple
+UI test was made. Exact evidence: [build37 receipt](../docs/latest-review37-20261024.md).
+
+## Earlier records
+
 # Current internal checkpoint · build 37 · 23 October 2026 HKT
 
 Bunko **1.0.14 (37)** is VALID / IN_BETA_TESTING for iOS/Watch and universal
