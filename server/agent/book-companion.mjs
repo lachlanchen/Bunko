@@ -1,3 +1,4 @@
+import { readingGeography, geographyContext } from './reading-geography.mjs'
 import { runStructuredReading } from './structured-task.mjs'
 import { AppError, hash, requireValue } from './common.mjs'
 import { readingBranch, readingMemory, visualGroups } from './book-memory.mjs'
@@ -165,7 +166,7 @@ const system = `You are Bunko's helpful reading companion. Combine the supplied 
 Knowledge and spoilers: prefer the supplied edition for precise details. Explain clearly which claims come from the passages and which come from broader book knowledge. If the question explicitly requests the whole book, complete relationships, later events or the ending, answer that request and briefly flag spoilers. Otherwise keep plot developments within the current reading boundary. A book-scoped GUIDE may use broader knowledge and include later events. Never pretend the sampled excerpts are the entire book. For an unfamiliar work, provide what you can support and state what remains uncertain; do not invent characters, relationships, quotations, coordinates or dates. Conversation history is memory, not verified evidence for a new quotation.
 Return one valid JSON object (no fences) with answer (concise Markdown), knowledge:"passages"|"background"|"mixed", insufficient (boolean), citations:[{passage:"P1",quote:"exact short substring in the supplied source language"}]. Escape line breaks and double quotes inside JSON strings. Background answers may have citations:[]; explain in the answer that they use broader book knowledge. Use insufficient=true only when you cannot give a useful reliable answer.
 For a GUIDE also include people:[{id,name,detail,aliases:[],certainty:"stated"|"interpretation"|"background",citations}], relationships:[{from,to,label,direction:"forward"|"mutual",certainty,citations}], places:[{id,name,detail,aliases:[],certainty,citations}], routes:[{from,to,label,direction,certainty,citations}], events:[{title,when,detail,certainty,citations}].
-Use stated for facts in exact supplied quotes, interpretation for an interpretation of those quotes, and background for reliable broader book knowledge not established by the supplied passages. Each stated/interpretation entry needs 1–3 exact short quotations. Background entries may have citations:[]; never manufacture a quote to satisfy the schema. Mark mixed entries background if the quotation does not establish the whole claim. A route represents a known journey or spatial connection, never assumed distance or coordinates.
+Use stated for facts in exact supplied quotes, interpretation for an interpretation of those quotes, and background for reliable broader book knowledge not established by the supplied passages. Each stated/interpretation entry needs 1–3 exact short quotations. Background entries may have citations:[]; never manufacture a quote to satisfy the schema. Mark mixed entries background if the quotation does not establish the whole claim. A route represents a known journey or spatial connection, never assumed distance or coordinates. Keep the map and answer consistent: a request about a different journey or section must update places AND routes together, not retain an unrelated earlier map. Do not connect places merely because they appear consecutively in a list. Use historical names with known modern aliases; do not turn a kingdom into its modern capital. Do not claim exact historical paths from endpoint connections.
 Prioritize the principal characters and their meaningful relationships; do not crowd a whole-book overview with every incidental name from a sampled chapter. Aim for 12–20 people, 16–28 relationships, 6–10 places, 4–10 routes and 10–16 major events, expanding only when useful. Keep each detail under 100 characters where possible, one short quotation per entry, and the summary under 700 characters. Stay within the output budget. Hard limits: 32 people, 64 relationships, 24 places, 32 routes, 48 events. All arrays are required for guides, empty if unavailable. Every from/to MUST exactly equal an id in its people/places list. Use forward for a directional relation (parent to child, teacher to pupil, journey start to destination), mutual for symmetric relations. A tree layout alone does not establish ancestry. Aliases must be known, not invented. For passage-grounded events, when is an EXACT time phrase from the quote, or empty if unstated; background events may use a reliably known time, labeled background. Do not infer calendar years from publication dates or chapter numbers. Put events in narrative order; Bunko plots quoted calendar dates separately. Answer citations: up to 5, each at most 240 characters. Do not output raw HTML.`;
 
 export function createBookCompanion({ db, seal, unseal, read, provider, models, config, now, reserve, finish, capacity }) {
@@ -177,6 +178,7 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
     const messages = [{ role: 'system', content: system + mode }, { role: 'user', content: JSON.stringify({
       task: kind === 'guide' ? (context.reference.scope === 'book' ? 'GUIDE: the principal characters and their relationships, major places, journeys and timeline of the whole identified book, using reliable broader book knowledge plus the supplied excerpts and current reading bookmark' : 'GUIDE: people, relationships, places, journeys and events relevant to this reading selection') : kind === 'explore' ? 'EXPLORE: answer the question and update only relevant visual groups' : 'ANSWER',
       replyLanguage: context.reference.replyLanguage, title: context.title, chapter: context.chapterTitle,
+      ...(kind !== 'answer' ? { geography: geographyContext(context.reference.id) } : {}),
       coverage: context.coverage, passages: context.passages.map(p => ({ id: p.id, text: p.text })),
       ...(kind === 'explore' ? { readingBookmark: memory.bookmark, previousVisuals: memory.visuals || {} } : {}),
     }) }, ...history, ...(kind !== 'guide' ? [{ role: 'user', content: question }] : [])]
@@ -189,7 +191,7 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
           timeoutMs: Math.max(1000, Math.min(70000, deadline - Date.now())), maxTokens: kind === 'answer' ? 3000 : 8192,
           onContent: value => { content = value } })
         structured = true
-        return { ...validateBookResponse(parsed, context, kind), title: context.title, coverage: context.coverage, revision: context.revision, key: context.key, reference: context.reference }
+        return readingGeography({ ...validateBookResponse(parsed, context, kind), title: context.title, coverage: context.coverage, revision: context.revision, key: context.key, reference: context.reference })
       } catch (error) {
         if (attempt || !(error instanceof AppError) || (!structured && !error.repairable) || Date.now() >= deadline - 1000) throw error
         // One structural/citation repair within the same quota and whole deadline.
@@ -217,7 +219,7 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
     } catch (error) { db.exec('ROLLBACK'); throw error }
   }
   const messages = (owner, key) => db.prepare('SELECT * FROM agent_messages WHERE owner=? AND document=? ORDER BY created,rowid').all(owner, key)
-    .map(r => ({ id: r.id, state: r.state, created: r.created, ...unseal(r.data) }))
+    .map(r => { const data = unseal(r.data); return { id: r.id, state: r.state, created: r.created, ...data, ...(data.bookResponse ? { bookResponse: readingGeography(data.bookResponse) } : {}), ...(data.baseGuide ? { baseGuide: readingGeography(data.baseGuide) } : {}) } })
   return {
     async handle(path, input, owner, requestKey) {
       const ref = bookReference(input.book), target = input.reference ? bookReference(input.reference) : ref, key = conversation(ref)
@@ -226,7 +228,7 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
         if (!input.checkGuide) return { messages: messages(owner, key), modelPolicy: models?.policy() }
         const context = await bookContext(target, read)
         const cached = db.prepare('SELECT data FROM agent_book_guides WHERE id=?').get(context.key)
-        return { modelPolicy: models?.policy(), messages: messages(owner, key), guide: cached ? JSON.parse(cached.data) : null, revision: context.revision }
+        return { modelPolicy: models?.policy(), messages: messages(owner, key), guide: cached ? readingGeography(JSON.parse(cached.data)) : null, revision: context.revision }
       }
       requireValue(path === 'send', 'Unknown book companion action.', 404)
       const kind = input.kind || 'answer'
@@ -286,6 +288,7 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
           result = await generate(context, kind, data.question, kind === 'explore' ? memory.history : history, input.modelConsent, { ...memory, focus, bookmark: ref })
           if (kind === 'explore') result = { ...result, key: hash(`private:${id}`), visibility: 'private', parentId: data.parentId, created: now() }
         }
+        result = readingGeography(result)
         data.answer = result.answer; data.bookResponse = result
         const sealed = seal(data), stored = db.prepare('SELECT length(data) n FROM agent_messages WHERE id=? AND owner=?').get(id, owner)
         capacity(Math.max(0, Buffer.byteLength(sealed) - (stored?.n || 0)))

@@ -3,6 +3,11 @@
   "license": "Public domain / CC0 names",
   "sources": [
     {
+      "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/ca96624a56bd078437bca8184e78163e5039ad19/geojson/ne_110m_admin_0_countries.geojson",
+      "sha256": "6866c877d39cba9c357620878839b336d569f8c662d3cfab4cb1dbe2d39c977f",
+      "bytes": 838726
+    },
+    {
       "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/ca96624a56bd078437bca8184e78163e5039ad19/geojson/ne_50m_land.geojson",
       "sha256": "e874b27a51d146452be360cafb3cc50c86001074a67d534113e6534682f9826b",
       "bytes": 1636166
@@ -23,6 +28,11 @@
       "path": "src/data/atlas-land.json",
       "sha256": "2665256c49d268cbc67658039c86cf5e45523b6e063f68a8ce78cad820bd9373",
       "bytes": 1208755
+    },
+    {
+      "path": "src/data/atlas-countries.json",
+      "sha256": "45a9ed23bd44f467f19cd2a30607d1d4d72f2e1d71bb5fecc37ebf37a899de44",
+      "bytes": 217463
     }
   ]
 }

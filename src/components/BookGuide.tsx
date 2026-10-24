@@ -11,7 +11,7 @@ import './guideVisuals.css'
 export { PassageEvidence } from './PassageEvidence'
 const GuideMap = lazy(() => import('./GuideMap'))
 
-function Connections({ nodes, edges, ui, onRead, kind, guideKey }: { nodes: GuideEntity[]; edges: GuideConnection[]; ui: UILanguage; onRead: (paragraph: number, citation?: BookCitation) => void; kind: 'people' | 'places'; guideKey: string }) {
+function Connections({ nodes, edges, ui, onRead, kind, guideKey, bookId }: { nodes: GuideEntity[]; edges: GuideConnection[]; ui: UILanguage; onRead: (paragraph: number, citation?: BookCitation) => void; kind: 'people' | 'places'; guideKey: string; bookId: string }) {
   const [focused, setFocused] = useState(() => {
     try { const saved = sessionStorage.getItem(`bunko-guide-focus:${guideKey}:${kind}`); if (saved === '' || nodes.some(n => n.id === saved)) return saved || '' } catch { /* Optional selection. */ }
     if (kind !== 'people' || nodes.length <= 8) return ''
@@ -28,7 +28,7 @@ function Connections({ nodes, edges, ui, onRead, kind, guideKey }: { nodes: Guid
       <button type="button" aria-pressed={geographic} onClick={() => setGeographic(true)}>{v.map}</button>
       <button type="button" aria-pressed={!geographic} onClick={() => setGeographic(false)}>{v.story}</button>
     </div>}
-    {kind === 'places' && geographic ? <Suspense fallback={<p role="status">{t.generating}</p>}><GuideMap nodes={nodes} edges={edges} guideKey={guideKey} ui={ui} onSelect={select} onEdge={selectEdge} selectedEdge={edgeIndex} /></Suspense>
+    {kind === 'places' && geographic ? <Suspense fallback={<p role="status">{t.generating}</p>}><GuideMap nodes={nodes} edges={edges} guideKey={guideKey} bookId={bookId} ui={ui} onSelect={select} onEdge={selectEdge} selectedEdge={edgeIndex} /></Suspense>
       : <GuideGraph nodes={nodes} edges={edges} guideKey={`${guideKey}:${kind}`} ui={ui} selected={focused} onSelect={select} onEdge={selectEdge} label={kind === 'places' ? t.schematic : t.people} />}
     <div ref={details} className="guide-details-panel">
       {edge && <article className="guide-connection selected" aria-live="polite"><h3><bdi>{nodes.find(n => n.id === edge.from)?.name}</bdi><span aria-hidden="true">{edge.direction === 'forward' ? '→' : '↔'}</span><bdi>{nodes.find(n => n.id === edge.to)?.name}</bdi></h3><p dir="auto">{edge.label}</p>{edge.certainty !== 'stated' && <span className="guide-uncertain">{edge.certainty === 'background' ? t.background : t.interpretation}</span>}<PassageEvidence citations={edge.citations} ui={ui} onRead={onRead} /></article>}
@@ -52,7 +52,7 @@ export function BookGuide({ guide, tab, ui, onRead }: { guide: BookResponse; tab
   return <section className="book-guide">
     <p className="guide-coverage">{guide.coverage.scope === 'book' ? `${v.overview}${guide.coverage.chapters?.length ? ` · ${v.chapters} ${guide.coverage.chapters.map(c => c + 1).join(', ')}` : ''}` : `${t.coverage} ${guide.coverage.first + 1}–${guide.coverage.last + 1}`}{guide.coverage.partial ? ` · ${v.partial}` : ''}</p>
     {!entries?.length ? <p className="guide-empty">{t.empty}</p> : tab === 'timeline' ? <GuideTimeline key={guide.key} guideKey={guide.key} events={guide.events || []} ui={ui} onRead={onRead} />
-      : <Connections key={`${guide.key}:${tab}`} nodes={guide[tab] || []} edges={(tab === 'people' ? guide.relationships : guide.routes) || []} kind={tab} guideKey={guide.key} ui={ui} onRead={onRead} />}
+      : <Connections key={`${guide.key}:${tab}`} nodes={guide[tab] || []} edges={(tab === 'people' ? guide.relationships : guide.routes) || []} kind={tab} guideKey={guide.key} bookId={guide.reference.id} ui={ui} onRead={onRead} />}
     {guide.knowledge && guide.knowledge !== 'passages' && <p className="guide-uncertain">{t.background}</p>}<p className="guide-caption">{t.ai}</p>
   </section>
 }

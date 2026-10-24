@@ -1,0 +1,390 @@
+{
+  "schema": 1,
+  "books": {
+    "foguoji": {
+      "locations": [
+        {
+          "id": "changan",
+          "atlasId": "1159151363",
+          "name": "Chang’an · Xi’an",
+          "names": [
+            "長安",
+            "长安",
+            "Chang'an",
+            "Changan",
+            "Chʽang-gan",
+            "Ch’ang-gan",
+            "Cháng’ān"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html"
+          ],
+          "modernName": "Xian"
+        },
+        {
+          "id": "zhangye",
+          "atlasId": "1159149767",
+          "name": "Zhangye",
+          "names": [
+            "張掖",
+            "张掖",
+            "Chang-yih",
+            "Zhangye"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html"
+          ],
+          "modernName": "Zhangye"
+        },
+        {
+          "id": "dunhuang",
+          "atlasId": "1159149773",
+          "name": "Dunhuang",
+          "names": [
+            "燉煌",
+            "炖煌",
+            "敦煌",
+            "Dunhuang",
+            "Tun-hwang"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html"
+          ],
+          "modernName": "Dunhuang"
+        },
+        {
+          "id": "khotan",
+          "atlasId": "1159150883",
+          "name": "Khotan · Hotan",
+          "names": [
+            "于闐",
+            "于阗",
+            "於闐",
+            "于闐國",
+            "于阗国",
+            "Khotan",
+            "Khoten",
+            "和田"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html"
+          ],
+          "modernName": "Hotan"
+        },
+        {
+          "id": "purushapura",
+          "atlasId": "1159150651",
+          "name": "Purushapura · Peshawar",
+          "names": [
+            "弗樓沙",
+            "弗楼沙",
+            "Purushapura",
+            "Purushapûra",
+            "Peshawar"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html"
+          ],
+          "modernName": "Peshawar"
+        },
+        {
+          "id": "nagarahara",
+          "atlasId": "1159144633",
+          "name": "Nagarahara · Jalalabad area",
+          "names": [
+            "那竭",
+            "那竭國",
+            "那竭国",
+            "Nagarahara",
+            "Nagarahāra"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html"
+          ],
+          "modernName": "Jalalabad"
+        },
+        {
+          "id": "mathura",
+          "atlasId": "1159130833",
+          "name": "Mathura",
+          "names": [
+            "摩頭羅",
+            "摩头罗",
+            "摩頭羅國",
+            "Mathura",
+            "Mathurâ",
+            "マトゥラー"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html"
+          ],
+          "modernName": "Mathura"
+        },
+        {
+          "id": "pataliputra",
+          "atlasId": "1159151429",
+          "name": "Pataliputra · Patna",
+          "names": [
+            "巴連弗邑",
+            "巴连弗邑",
+            "華氏城",
+            "华氏城",
+            "Pataliputra",
+            "Pâṭaliputtra",
+            "Pataliputta",
+            "Patna",
+            "パータリプトラ"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html"
+          ],
+          "modernName": "Patna"
+        },
+        {
+          "id": "varanasi",
+          "atlasId": "1159150979",
+          "name": "Benares · Varanasi",
+          "names": [
+            "波羅㮏",
+            "波羅奈",
+            "波罗奈",
+            "波羅捺",
+            "Benares",
+            "Varanasi",
+            "ベナレス"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html"
+          ],
+          "modernName": "Varanasi"
+        },
+        {
+          "id": "nanjing",
+          "atlasId": "1159151385",
+          "name": "Jiankang · Nanjing",
+          "names": [
+            "建康",
+            "建鄴",
+            "建业",
+            "金陵",
+            "Jiankang",
+            "Nanking",
+            "Kin-ling"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html"
+          ],
+          "modernName": "Nanjing"
+        },
+        {
+          "id": "sravasti",
+          "name": "Sravasti",
+          "country": "India",
+          "region": "Uttar Pradesh",
+          "longitude": 82.0333,
+          "latitude": 27.5167,
+          "names": [
+            "舍衛",
+            "舍卫",
+            "舍衛城",
+            "舍卫城",
+            "Sravasti",
+            "Śrāvastī",
+            "Shravasti",
+            "舎衛"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html",
+            "https://whc.unesco.org/en/tentativelists/5492/"
+          ]
+        },
+        {
+          "id": "kushinagar",
+          "name": "Kushinagar",
+          "country": "India",
+          "region": "Uttar Pradesh",
+          "longitude": 83.9167,
+          "latitude": 26.75,
+          "names": [
+            "拘夷那竭",
+            "拘尸那",
+            "Kusinagara",
+            "Kushinagar",
+            "クシナガラ"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html",
+            "https://whc.unesco.org/en/tentativelists/5492/"
+          ]
+        },
+        {
+          "id": "vaishali",
+          "name": "Vaishali",
+          "country": "India",
+          "region": "Bihar",
+          "longitude": 85.1,
+          "latitude": 25.9833,
+          "names": [
+            "毗舍離",
+            "毗舍离",
+            "Vaisali",
+            "Vaiśālī",
+            "Vaishali",
+            "ヴァイシャーリー"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html",
+            "https://whc.unesco.org/en/tentativelists/5492/"
+          ]
+        },
+        {
+          "id": "bodhgaya",
+          "name": "Bodh Gaya",
+          "country": "India",
+          "region": "Bihar",
+          "longitude": 84.99389,
+          "latitude": 24.69528,
+          "names": [
+            "菩提道場",
+            "菩提道场",
+            "Bodh Gaya",
+            "Bodhgaya",
+            "菩提伽耶"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html",
+            "https://whc.unesco.org/en/list/1056/"
+          ]
+        },
+        {
+          "id": "lumbini",
+          "name": "Lumbini",
+          "country": "Nepal",
+          "region": "Rupandehi",
+          "longitude": 83.27611,
+          "latitude": 27.46889,
+          "names": [
+            "藍毗尼",
+            "蓝毗尼",
+            "Lumbini",
+            "Lumbinī",
+            "ルンビニ"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html",
+            "https://whc.unesco.org/en/list/666/"
+          ]
+        },
+        {
+          "id": "tamralipti",
+          "name": "Tamralipti · Tamluk area",
+          "country": "India",
+          "region": "West Bengal",
+          "longitude": 87.92,
+          "latitude": 22.3,
+          "names": [
+            "多摩梨帝",
+            "多摩梨帝國",
+            "Tamralipti",
+            "Tamalipti",
+            "Tamralipta",
+            "ターマラリプティ"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html",
+            "https://purbamedinipur.gov.in/history/",
+            "https://en.wikipedia.org/wiki/Tamluk"
+          ]
+        },
+        {
+          "id": "rajgir",
+          "name": "Rajagriha · Rajgir area",
+          "country": "India",
+          "region": "Bihar",
+          "longitude": 85.43,
+          "latitude": 24.99,
+          "names": [
+            "王舍城",
+            "王舎城",
+            "Rajagriha",
+            "Rājagṛha",
+            "Rajgir"
+          ],
+          "precision": "approximate",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html",
+            "https://nalanda.nic.in/en/tourist-place/cyclopean-wall/",
+            "https://commons.wikimedia.org/wiki/File:Cyclopean_Wall_of_Rajgir.jpg"
+          ]
+        }
+      ],
+      "unresolvedNames": [
+        "中國",
+        "中国",
+        "中天竺",
+        "天竺",
+        "北天竺",
+        "南天竺",
+        "Central Kingdom",
+        "Middle Kingdom",
+        "India",
+        "師子國",
+        "师子国",
+        "Sinhala",
+        "Singhala",
+        "Ceylon",
+        "Sri Lanka",
+        "師子",
+        "耶婆提",
+        "Yavadvipa",
+        "Java-dvipa",
+        "Java-dvîpa",
+        "Java",
+        "鄯鄯",
+        "Shanshan",
+        "Shen-shen",
+        "竭叉",
+        "Jiesha",
+        "Kie-chha",
+        "葱嶺",
+        "蔥嶺",
+        "葱岭",
+        "Pamir",
+        "Pamir Mountains",
+        "Gandhara",
+        "犍陀衛",
+        "犍陀卫",
+        "烏萇",
+        "乌苌",
+        "Udyana",
+        "Kapilavastu",
+        "迦維羅衛",
+        "迦维罗卫",
+        "Taxila",
+        "Takshashila",
+        "Takshasila",
+        "Takshaśilâ",
+        "竺剎尸羅",
+        "竺刹尸罗",
+        "Zhuchashiluo",
+        "Chu-cha-shi-lo"
+      ]
+    }
+  }
+}

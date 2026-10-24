@@ -459,3 +459,14 @@ Entrepreneur display names. All existing book, dictionary and offline-reading
 access stays included. Existing product IDs, prices, quotas and purchase gates
 remain unchanged; these labels do not activate billing or alter store products.
 Accumulate the qualified source for a subsequent internal candidate.
+
+## Historical map accuracy · 2026-10-24
+
+The owner reports that the Foguoji map appears unchanged despite different
+answers. Map geometry must follow the selected response's actual places and
+connections. Resolve historical names from documented book-specific references,
+show approximate locations and unresolved gaps explicitly, and preserve saved
+conversations and deliberate manual pin choices. Modern country outlines are
+orientation only; do not invent ancient roads, borders or precise positions for
+disputed kingdoms. The historical-name server adapter can improve restored
+results in existing builds; the new renderer requires native delivery.

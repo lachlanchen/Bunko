@@ -10,6 +10,7 @@ REVISION = 'ca96624a56bd078437bca8184e78163e5039ad19'
 BASE = f'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/{REVISION}/geojson/'
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_HASHES = {
+    'ne_110m_admin_0_countries.geojson': '6866c877d39cba9c357620878839b336d569f8c662d3cfab4cb1dbe2d39c977f',
     'ne_50m_land.geojson': 'e874b27a51d146452be360cafb3cc50c86001074a67d534113e6534682f9826b',
     'ne_10m_populated_places.geojson': '9b8e3de09048ef00dfc70357dbb9fa324493f214b5e0ae4daf1aa79a8d10116b',
 }
@@ -27,7 +28,7 @@ def main():
     args = parser.parse_args()
     manifest = {'sourceRevision': REVISION, 'license': 'Public domain / CC0 names', 'sources': [], 'outputs': []}
     sources = {}
-    for name in ['ne_50m_land.geojson', 'ne_10m_populated_places.geojson']:
+    for name in SOURCE_HASHES:
         if args.source_directory:
             raw = (args.source_directory / name).read_bytes()
         else:
@@ -48,7 +49,12 @@ def main():
     for feature in land['features']:
         feature['properties'] = {}
         feature['geometry']['coordinates'] = rounded(feature['geometry']['coordinates'])
-    for name, data in [('atlas-places.json', rows), ('atlas-land.json', land)]:
+    countries = sources['ne_110m_admin_0_countries.geojson']
+    for feature in countries['features']:
+        p = feature['properties']
+        feature['properties'] = {k: p[k] for k in ['NAME_EN', 'NAME_ZH', 'NAME_JA', 'LABEL_X', 'LABEL_Y']}
+        feature['geometry']['coordinates'] = rounded(feature['geometry']['coordinates'])
+    for name, data in [('atlas-places.json', rows), ('atlas-land.json', land), ('atlas-countries.json', countries)]:
         path = ROOT / 'src/data' / name
         raw = (json.dumps(data, ensure_ascii=False, separators=(',', ':')) + '\n').encode()
         path.write_bytes(raw)

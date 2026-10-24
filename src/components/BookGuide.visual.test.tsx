@@ -57,7 +57,8 @@ it('keeps simultaneous timeline events on separate selectable lanes', () => {
 
 it('ambiguous geography requires a choice, never places fiction, and remembers a device-only pin', async () => {
   const { container } = render(<BookGuide guide={guide} tab="places" ui="en" onRead={() => {}} />)
-  await screen.findByText('Map data: Natural Earth · public domain', {}, { timeout: 5000 })
+  await screen.findByText(/These places have no confirmed geographic match/, {}, { timeout: 5000 })
+  expect(container.querySelector('.atlas-land')).toBeNull()
   expect(container.querySelectorAll('.atlas-pin')).toHaveLength(0)
   const results = container.querySelector('.guide-location-results')!
   const options = within(results as HTMLElement).getAllByRole('button')
@@ -69,6 +70,35 @@ it('ambiguous geography requires a choice, never places fiction, and remembers a
   cleanup()
   const again = render(<BookGuide guide={guide} tab="places" ui="en" onRead={() => {}} />)
   await waitFor(() => expect(again.container.querySelectorAll('.atlas-pin.confirmed')).toHaveLength(1))
+  fireEvent.click(screen.getByRole('button', { name: 'Reset location suggestion' }))
+  await waitFor(() => expect(again.container.querySelectorAll('.atlas-pin')).toHaveLength(0))
+  expect(JSON.parse(localStorage.getItem('bunko-atlas-v1:visual-fixture')!)).not.toHaveProperty('london')
   fireEvent.click(screen.getByRole('button', { name: 'Story map' }))
   expect(again.container.querySelectorAll('.graph-person')).toHaveLength(2)
 }, 15000)
+
+
+it('renders the current Foguoji stops and routes, exposes gaps, and changes the map with the result', async () => {
+  const reference = { ...guide.reference, id: 'foguoji' }
+  const places = [entity('start', '長安'), entity('desert', '燉煌'), entity('khotan', '于闐'), entity('unknown', '竭叉')]
+  const routes = [{ from: 'start', to: 'desert', label: 'Westward', direction: 'forward' as const, certainty: 'background' as const, citations: [] },
+    { from: 'desert', to: 'khotan', label: 'Onward', certainty: 'background' as const, citations: [] },
+    { from: 'khotan', to: 'unknown', label: 'Uncertain location', certainty: 'background' as const, citations: [] }]
+  const { container, rerender } = render(<BookGuide guide={{ ...guide, reference, places, routes }} tab="places" ui="en" onRead={() => {}} />)
+  await waitFor(() => expect(container.querySelectorAll('.atlas-pin')).toHaveLength(3))
+  expect(container.querySelectorAll('.atlas-route-control')).toHaveLength(2)
+  expect(screen.getByText('Located places: 3/4')).toBeInTheDocument()
+  expect(screen.getByText('Mapped connections: 2/3')).toBeInTheDocument()
+  expect(container.querySelector('.atlas-unresolved')).toHaveTextContent('竭叉')
+  expect(container.querySelector('.atlas-route[marker-end]')).not.toBeNull()
+  const coast = container.querySelector('.atlas-land')!.getAttribute('d')
+  fireEvent.click(container.querySelector('.atlas-route-control')!)
+  expect(container.querySelector('.guide-connection.selected')).toHaveTextContent('Westward')
+  rerender(<BookGuide guide={{ ...guide, key: 'next-result', reference, places: [entity('patna','巴連弗邑'),entity('port','多摩梨帝')], routes: [] }} tab="places" ui="en" onRead={() => {}} />)
+  await waitFor(() => expect(container.querySelectorAll('.atlas-pin')).toHaveLength(2))
+  expect(container.querySelectorAll('.atlas-route-control')).toHaveLength(0)
+  expect(container.querySelector('.atlas-land')!.getAttribute('d')).not.toBe(coast)
+  expect(container.querySelector('.atlas-pin')?.getAttribute('aria-label')).toContain('Patna')
+  fireEvent.click(screen.getByText('Find a location ·', { exact: false, selector: 'summary' }))
+  expect(screen.getByRole('link', {name:'Location source 1'})).toHaveAttribute('href','https://www.gutenberg.org/cache/epub/64535/pg64535-images.html')
+})

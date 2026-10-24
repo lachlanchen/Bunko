@@ -69,3 +69,17 @@
 .agent-page .guide-story-sequence button[aria-pressed=true] { border-color: var(--indigo); background: var(--indigo-soft); }
 .guide-timeline .guide-card details > summary { cursor: pointer; color: var(--ink-soft); }
 .guide-timeline .guide-card details > summary h2 { display: inline; color: var(--ink); font-size: 18px; }
+
+.atlas-coverage { display: flex; flex-wrap: wrap; gap: .35rem 1rem; margin: .5rem 0; font-size: .85rem; }
+.atlas-unresolved { margin: .4rem 0 .7rem; color: var(--muted); font-size: .85rem; overflow-wrap: anywhere; }
+.atlas-pin.approximate circle { stroke-dasharray: 3 2; }
+.atlas-arrow { fill: #597f9e; }
+.atlas-index-number { display: inline-grid; place-items: center; min-width: 1.4em; height: 1.4em; margin-inline-end: .3rem; border-radius: 50%; background: #e9f0f4; color: #244761; font-size: .8em; }
+.atlas-sources { display: flex; flex-wrap: wrap; gap: .6rem; margin-block: .5rem; font-size: .85rem; }
+.atlas-borders { fill: none; stroke: #9bada5; stroke-width: .7; vector-effect: non-scaling-stroke; pointer-events: none; }
+.atlas-country { font: 500 11px system-ui, sans-serif; fill: #687c73; letter-spacing: .6px; paint-order: stroke; stroke: #f8f6e9; stroke-width: 3px; pointer-events: none; }
+[data-theme=night] .atlas-borders { stroke: #697e73; }
+[data-theme=night] .atlas-country { fill: #a8beb1; stroke: #39443c; }
+
+[data-theme=night] .atlas-index-number { background: #294854; color: #e0edf0; }
+[data-theme=night] .atlas-arrow { fill: #9dc0d6; }
