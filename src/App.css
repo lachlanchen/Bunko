@@ -173,6 +173,7 @@
 .math-inline { max-width: 100%; }
 .math-error { overflow-wrap: anywhere; }
 .book-figure { margin: 1.4em auto; max-width: 38em; }
+.book-figure > div { min-height: 3rem; }
 .book-figure img { display: block; width: 100%; height: auto; border-radius: 9px; }
 .book-figure figcaption { margin-top: .55em; color: var(--ink-soft); font: .75em/1.5 var(--sans); }
 [data-reading] { -webkit-user-select: text; user-select: text; cursor: text; }

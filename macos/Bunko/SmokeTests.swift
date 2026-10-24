@@ -28,7 +28,7 @@ final class MacSmokeTests {
             if let result = try? await js("Boolean(\(expression))"), result as? Bool == true { return }
             try await Task.sleep(nanoseconds: 500_000_000)
         }
-        let body = (try? await js("document.body.innerText.slice(0, 2500)")) ?? "no document"
+        let body = (try? await js("JSON.stringify({text:document.body.innerText.slice(0,1500), math:document.querySelectorAll('.katex').length, figures:document.querySelectorAll('.book-figure').length, image:document.querySelector('.book-figure img')?.outerHTML, rect:document.querySelector('.book-figure')?.getBoundingClientRect().toJSON(), visibility:document.visibilityState})")) ?? "no document"
         throw NSError(domain: "BunkoQA", code: 1, userInfo: [NSLocalizedDescriptionKey: "Timed out: \(expression)\n\(body)"])
     }
     private func command(_ name: String) async throws {
