@@ -219,3 +219,20 @@ test('foreground rewards require the existing session and origin, and remain dis
  assert.deepEqual((await s.request('/v1/lazyingart/activity',{kind:'foreground'},token)).body,{enabled:false});
  assert.equal(s.writes(),0);
 });
+
+test('regional generation denial precedes providers and preserves sessions/discussions/history access', async t => {
+  const s = await setup(t), token = await s.login()
+  const mainland = { platform: 'macos', storefront: 'CHN', deviceRegion: 'US' }
+  const probe = await s.request('/v1/auth/methods', { clientRegion: mainland })
+  assert.equal(probe.status, 200); assert.equal(probe.body.companion.reason, 'mainland'); assert.deepEqual(probe.body.providers, ['github'])
+  for (const action of ['send','upload','import','resume']) {
+    const r = await s.request('/v1/agent/'+action, { clientRegion: mainland }, token)
+    assert.equal(r.status,403); assert.equal(r.body.error,'companion_region_unavailable')
+    const legacy = await s.request('/v1/agent/'+action, {}, token, {'X-Bunko-Client-Address':'114.114.114.114'})
+    assert.equal(legacy.status,403); assert.equal(legacy.body.error,'companion_region_unavailable')
+  }
+  assert.equal((await s.request('/v1/session', {}, token)).status,200)
+  assert.equal((await s.request('/v1/discussions/read', { passage: key }, token, {'X-Bunko-Client-Address':'114.114.114.114'})).status,200)
+  assert.equal((await s.request('/v1/agent/messages', {clientRegion:mainland},token)).status,503) // Fixture companion disabled, not region-denied.
+  assert.equal(s.writes(),0)
+})

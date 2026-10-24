@@ -2,6 +2,7 @@ import AppKit
 import WebKit
 import AuthenticationServices
 import Security
+import StoreKit
 #if DEBUG
 import Network
 #endif
@@ -19,6 +20,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     private(set) var webView: WKWebView!
     private var pendingBookLink:URL?
     private var readerLoaded=false
+    private var storefrontTask: Task<Void, Never>?
+    #if DEBUG
+    private var qaStorefront: String?
+    #endif
     private var authSession: ASWebAuthenticationSession?
     private let schemeHandler = BundleSchemeHandler()
 
@@ -57,6 +62,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         window.center()
         window.isReleasedWhenClosed = false
         createMenus()
+        storefrontTask = Task { [weak self] in
+            for await _ in Storefront.updates {
+                await MainActor.run { self?.webView.evaluateJavaScript("window.dispatchEvent(new Event('bunko-region-changed'))", completionHandler: nil) }
+            }
+        }
         #if DEBUG
         if CommandLine.arguments.contains("--bunko-smoke-test") {
             window.orderBack(nil)
@@ -103,9 +113,34 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
               message.frameInfo.request.url?.scheme == "bunko",
               message.frameInfo.request.url?.host == "localhost",
               let body = message.body as? [String: Any] else { replyHandler(nil, "Denied"); return }
+        #if DEBUG
+        // Explicit synthetic country fixtures exist only in the isolated Debug harness.
+        if CommandLine.arguments.contains("--bunko-smoke-test"), let fixture = body["qaRegion"] as? String {
+            qaStorefront = fixture == "actual" ? nil : fixture
+            replyHandler(true, nil)
+            return
+        }
+        #endif
+        if body["region"] as? Bool == true {
+            Task {
+                let storefront = await Storefront.current
+                await MainActor.run {
+                    var country = storefront?.countryCode ?? ""
+                    #if DEBUG
+                    country = self.qaStorefront ?? country
+                    #endif
+                    replyHandler(["storefront": country, "deviceRegion": Locale.current.regionCode ?? ""], nil)
+                }
+            }
+            return
+        }
         if let action = body["storage"] as? String {
+            var storageService = "art.lazying.bunko.discussions"
+            #if DEBUG
+            if CommandLine.arguments.contains("--bunko-smoke-test") { storageService += ".qa39" }
+            #endif
             let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                kSecAttrService as String: "art.lazying.bunko.discussions",
+                kSecAttrService as String: storageService,
                 kSecAttrAccount as String: "session", kSecUseDataProtectionKeychain as String: true]
             switch action {
             case "read":

@@ -1,3 +1,4 @@
+import { companionAvailability, companionClientAddress, generatesContent } from './companion-region.mjs'
 import {linkFailures,linkFailure} from './account-link-errors.mjs'
 import {sharePage} from './share-page.mjs'
 import {createRewardSourceRoutes} from './reward-source-routes.mjs'
@@ -465,13 +466,15 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         const input = await body(req, path.endsWith('/upload') ? 27_000_000 : 18000)
         // Sign-out during a large upload invalidates this operation.
         if (!db.prepare('SELECT id FROM sessions WHERE id=?').get(auth.sessionId)) fail(401, 'sign_in_again')
-        json(res, await agent.handle(path.split('/').pop(), input, auth.user)); return
+        const action = path.split('/').pop()
+        if (generatesContent(action) && !companionAvailability(input.clientRegion, companionClientAddress(req)).available) fail(403, 'companion_region_unavailable')
+        json(res, await agent.handle(action, input, auth.user)); return
       }
       const input = await body(req)
       if(path===`${PREFIX}/v1/auth/methods`){
         let additional=[]
         try{additional=await sharedProfile.loginProviders?.({advertised:true})||[]}catch{ /* Existing GitHub remains available during an issuer outage. */ }
-        json(res,{providers:[...(config.clientId&&config.clientSecret?['github']:[]),...additional]});return
+        json(res,{providers:[...(config.clientId&&config.clientSecret?['github']:[]),...additional],companion:companionAvailability(input.clientRegion,companionClientAddress(req))});return
       }
       if (path === `${PREFIX}/v1/auth/demo`) {
         if (!demo.enabled) fail(503, 'demo_unavailable')

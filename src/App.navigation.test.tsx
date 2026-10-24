@@ -9,8 +9,10 @@ import App from './App'
 
 const fixture = vi.hoisted(() => ({
   save: vi.fn(),
+  available: true,
   meta: { schema: 1, id: 'garden', mode: 'interlinear', primary: 'en', langs: ['en', 'ja'], title: { en: ['Garden'] }, titleText: { en: 'Garden' }, author: { name: 'Example author' }, bytes: 200, paras: 20, chapters: [{ n: 1, file: 'c0001.json', bytes: 200, paras: 20, title: { en: 'Arrival' } }] },
 }))
+vi.mock('./lib/companionRegion', () => ({ useCompanionAvailability: () => ({ available: fixture.available, reason: fixture.available ? '' : 'mainland', policy: 'mainland-v1' }), refreshCompanionAvailability: vi.fn() }))
 vi.mock('./lib/activityRewards', () => ({ observeForegroundUse: () => {} }))
 vi.mock('./lib/backNavigation', () => ({ useBackAction: () => {}, useBackNavigation: () => {} }))
 vi.mock('./lib/updateService', () => ({ useUpdates: () => ({ check: () => {} }) }))
@@ -40,7 +42,7 @@ vi.mock('./components/BookCompanion', () => ({ BookCompanion: (p: ComponentProps
   <button onClick={() => p.onRead(2, { id: 'garden', chapter: 0, paragraph: 2, file: 'c0001.json', language: 'ja', replyLanguage: 'en', scope: 'paragraph' })}>Open source</button>
   <button onClick={p.onBack}>Return to original reading</button>
 </section> }))
-afterEach(() => { cleanup(); fixture.save.mockClear(); window.history.replaceState({}, '', '/') })
+afterEach(() => { cleanup(); fixture.available=true; fixture.save.mockClear(); window.history.replaceState({}, '', '/') })
 
 it('source detours keep the saved bookmark and temporarily show the citation language', async () => {
   window.history.replaceState({}, '', '/?book=garden')
@@ -59,4 +61,16 @@ it('source detours keep the saved bookmark and temporarily show the citation lan
   expect(screen.getByLabelText('Reader position')).toHaveTextContent('7')
   expect(screen.getByLabelText('Main language')).toHaveTextContent('en')
   expect(fixture.save).not.toHaveBeenCalled()
+})
+
+it('mainland readers retain their bookmark and book access without a companion entry', async () => {
+  fixture.available=false
+  window.history.replaceState({}, '', '/?book=garden')
+  const {container}=render(<App />)
+  fireEvent.click(await screen.findByRole('button', { name: /continue/i }))
+  expect(screen.getByLabelText('Reader position')).toHaveTextContent('7')
+  fireEvent.click(screen.getByText('Ask from bookmark'))
+  expect(screen.queryByText('Open source')).not.toBeInTheDocument()
+  expect(screen.getByLabelText('Reader position')).toHaveTextContent('7')
+  expect(container.querySelector('.companion-entry')).toBeNull()
 })

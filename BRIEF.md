@@ -1,5 +1,19 @@
 # Bunko — product brief
 
+## Mainland storefront correction · 2026-10-25
+
+Apple rejected Mac1.0.14(37) under Guideline5 for mainland China generative-service
+availability and provider references in store metadata. The owner chooses to retain
+China availability with an automatic regional restriction. Keep books, offline
+reading, dictionaries and discussions available. Disable companion generation and
+uploads for a mainland Apple storefront/device region or CN-registered network;
+unknown Apple storefronts keep the companion closed until resolved. Do not infer
+region from reading language, erase saved history, or alter account/billing rights.
+Keep public descriptions concise and remove the rejected provider brand references;
+retain truthful in-app consent/privacy disclosures. Qualify the regional matrix,
+reader regression, actual Mac runtime and signed package before formal resubmission.
+OnlyIdeas iOS39 is already publicly released; its Mac39 review is preserved.
+
 ## Build37 formal submission · 2026-10-24
 
 The owner requests the latest qualified Bunko update submitted for review, with

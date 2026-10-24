@@ -7,8 +7,9 @@ import WebKit
 @MainActor
 final class MacSmokeTests {
     private let webView: WKWebView
-    private let output = FileManager.default.temporaryDirectory.appendingPathComponent("Bunko-Mac-QA", isDirectory: true)
+    private let output = URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("tmp/Bunko-Mac-QA", isDirectory: true)
     private var checks: [String] = []
+    private var actualRegion: Any = [:]
     init(webView: WKWebView) { self.webView = webView }
 
     private func js(_ source: String) async throws -> Any? {
@@ -40,12 +41,31 @@ final class MacSmokeTests {
         try png.write(to: output.appendingPathComponent(name + ".png"))
     }
     private func check(_ name: String) { checks.append(name); print("BUNKO_QA PASS: \(name)"); fflush(stdout) }
+    private func region(_ country: String) async throws {
+        _ = try await webView.callAsyncJavaScript("await window.webkit.messageHandlers.bunkoAuth.postMessage({qaRegion: country}); window.dispatchEvent(new Event('bunko-region-changed')); return true", arguments: ["country": country], in: nil, contentWorld: .page)
+    }
 
     func run() async {
         do {
             try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
             try await wait("document.querySelectorAll('.card').length >= 183")
             check("live 183-book catalogue in bundled macOS WebKit")
+            actualRegion = try await webView.callAsyncJavaScript("return await window.webkit.messageHandlers.bunkoAuth.postMessage({region:true})", arguments: [:], in: nil, contentWorld: .page) ?? [:]
+            check("actual StoreKit storefront bridge returned; country matrix below uses explicit synthetic fixtures")
+            try await region("CHN")
+            try await command("settings")
+            try await wait("document.querySelector('.companion-region-notice')?.textContent.includes('mainland China') && !document.querySelector('.companion-entry')")
+            try await screenshot("00-mainland-settings")
+            _ = try await js("document.querySelector('.sheet header button').click()")
+            try await region("")
+            try await command("settings")
+            try await wait("document.querySelector('.companion-region-notice')?.textContent.includes('region can be confirmed')")
+            _ = try await js("document.querySelector('.sheet header button').click()")
+            for country in ["USA", "HKG"] {
+                try await region(country)
+                try await wait("document.querySelector('.companion-entry')")
+            }
+            check("synthetic CHN/unknown disable companion; USA/HKG restore entry without changing library")
             try await wait("Array.from(document.querySelectorAll('.card .cover img')).slice(0, 5).length === 5 && Array.from(document.querySelectorAll('.card .cover img')).slice(0, 5).every(img => img.complete && img.naturalWidth > 0)")
             check("visible library cover artwork loaded")
             try await screenshot("01-library")
@@ -85,6 +105,15 @@ final class MacSmokeTests {
                 try await wait("window.__qaPoint().id === window.__qaBefore.id && Math.abs(window.__qaPoint().fraction - window.__qaBefore.fraction) < 0.04", timeout: 5)
             }
             check("reading passage and ruby survive four native window resizes")
+            let savedPlace = try await js("localStorage.getItem('CapacitorStorage.bunko.place.v1')") as? String
+            try await region("CHN")
+            try await command("settings")
+            try await wait("document.querySelector('.companion-region-notice')?.textContent.includes('mainland China')")
+            _ = try await js("document.querySelector('.sheet header button').click()")
+            guard savedPlace == (try await js("localStorage.getItem('CapacitorStorage.bunko.place.v1')") as? String) else { throw URLError(.cannotParseResponse) }
+            try await wait("document.querySelectorAll('ruby').length > 20")
+            try await region("USA")
+            check("storefront change preserves downloaded book, ruby and exact saved reading position")
             try await screenshot("02-resized-reading")
             try await command("larger-text")
             try await wait("document.querySelector('.page').style.fontSize !== '1rem'")
@@ -123,7 +152,7 @@ final class MacSmokeTests {
             if (try await js("document.querySelectorAll('.katex-error,.math-error').length")) as? Int != 0 { throw URLError(.cannotParseResponse) }
             check("physics equations and figures render without TeX errors")
             try await screenshot("04-physics-figures")
-            let report: [String: Any] = ["passed": true, "checks": checks, "system": ProcessInfo.processInfo.operatingSystemVersionString]
+            let report: [String: Any] = ["passed": true, "checks": checks, "actualRegion": actualRegion, "countryMatrix": "synthetic Debug fixtures; not physical China network", "system": ProcessInfo.processInfo.operatingSystemVersionString]
             try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]).write(to: output.appendingPathComponent("result.json"))
             print("BUNKO_QA COMPLETE \(output.path)")
         } catch {
