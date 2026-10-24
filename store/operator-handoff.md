@@ -1,3 +1,25 @@
+# Bunko Mac39 submitted · 25 October 2026
+
+Mac **1.0.15 (39)** is **Waiting for Review**, automatic release after approval,
+and **VALID / IN_BETA_TESTING** in the existing internal group. This replaces the
+rejected Mac37 item with the mainland companion restriction, reliable figure
+loading and cumulative historical-map fixes. Four localized descriptions and the
+library screenshot were corrected; Apple received the review reply and notes.
+
+[Qualification and exact delivery](../docs/mac-review39-20261025.md).
+The backend regional policy and Flash→Pro repair routing are live. The requested
+OpenAI model IDs are not available in the checked API account; no OpenAI route
+was activated. Existing reader/account data is preserved.
+
+Mac QA, signing, export and exact cleanup passed. No Mac hold remains. The owned
+Bunko noVNC6190/CDP9490 store desktop is stopped; its saved profile is retained.
+Private receipts: `.runtime/mac-review39-20261025/`.
+
+Public iOS/Watch and Android37, internal38, pricing and billing remain unchanged.
+OnlyIdeas iOS39 is publicly available; Mac39 is still IN_REVIEW.
+
+## Earlier records
+
 # Bunko build 38 available internally · 24 October 2026
 
 - Apple **1.0.15 (38)**: iOS/Watch and universal Mac are VALID / IN_BETA_TESTING

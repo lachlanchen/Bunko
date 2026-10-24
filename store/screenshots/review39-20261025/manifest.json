@@ -1,0 +1,16 @@
+{
+  "source": "5f0b09647cce668d3edb4d03d928d610ff702e01",
+  "build": "Mac1.0.15(39)",
+  "capture": "Actual Mac WebKit Debug screenshot, isolated synthetic QA account. The original1280x763 pixels are centered unchanged on1440x900 neutral frame.",
+  "sourceCaptureSha256": "9c0c1c8315218a324e6635d3bf77e134bba6152bdd8f431531f995df124c1ff9",
+  "file": "en-mac-library39.png",
+  "sha256": "12b1c766a28fa21db44717554c2049778d81f671b4c044aeae7b90bf156012e4",
+  "size": [
+    1440,
+    900
+  ],
+  "reviewed": true,
+  "replaces": "en-mac-library37.png (tiled capture defect)",
+  "providerState": "COMPLETE",
+  "position": 2
+}

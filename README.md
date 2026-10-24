@@ -24,7 +24,7 @@ The reading companion brings together automatic book context, compact @ referenc
 
 Chapter titles stay on one line and expand when needed. Sort the library by recently read, newest added, title or author; the app remembers your choice on each device.
 
-**Available in iOS and Android 1.0.14 (37). Mac build37 is still in review; the public Mac version is 1.0.13 (23). The web reader has its own release schedule.** Guides cover selected or sampled excerpts and may be incomplete. Uncertain places and dates remain explicit. The images below are actual component captures; the map and timeline use a labelled demonstration journey. [Preview details](docs/reading-guides-preview.md).
+**Available in iOS and Android 1.0.14 (37). Mac 1.0.15 (39) is in review; the public Mac version is 1.0.13 (23). The web reader has its own release schedule.** Guides cover selected or sampled excerpts and may be incomplete. Uncertain places and dates remain explicit. The images below are actual component captures; the map and timeline use a labelled demonstration journey. [Preview details](docs/reading-guides-preview.md).
 
 <p>
 <a href="docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>

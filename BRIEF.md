@@ -14,6 +14,10 @@ retain truthful in-app consent/privacy disclosures. Qualify the regional matrix,
 reader regression, actual Mac runtime and signed package before formal resubmission.
 OnlyIdeas iOS39 is already publicly released; its Mac39 review is preserved.
 
+Mac1.0.15(39) is now VALID/IN_BETA_TESTING and Waiting for Review, with automatic
+release after approval. Native reader/regional checks and signed universal package
+checks passed. See `docs/mac-review39-20261025.md`.
+
 ## Build37 formal submission · 2026-10-24
 
 The owner requests the latest qualified Bunko update submitted for review, with

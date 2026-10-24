@@ -22,7 +22,7 @@ Bunko vereint gemeinfreie Klassiker und zur Verbreitung freigegebene Originalwer
 
 Der Lesebegleiter verbindet den automatisch übernommenen Buchkontext, kompakte @-Verweise auf Bücher, Kapitel und Passagen sowie die Rückkehr zur genauen Textstelle. Erkunde Figurenbeziehungen als Graph oder Baum, Orte auf einer geografischen Offlinekarte und Ereignisse auf einer datierten Zeitleiste. Die belegenden Passagen bleiben in jedem Leseführer erreichbar.
 
-**Verfügbar in iOS und Android 1.0.14 (37). Mac37 wird noch geprüft; die öffentliche Mac-Version ist 1.0.13 (23). Der Webreader wird separat aktualisiert.** Die Leseführer behandeln ausgewählte oder stichprobenartig erfasste Auszüge und können unvollständig sein. Unsichere Orte und Daten werden gekennzeichnet. Die Bilder zeigen echte Komponenten; Karte und Zeitleiste verwenden eine ausdrücklich gekennzeichnete Beispielreise. [Details zur Vorschau](../docs/reading-guides-preview.md).
+**Verfügbar in iOS und Android 1.0.14 (37). Mac39 wird noch geprüft; die öffentliche Mac-Version ist 1.0.13 (23). Der Webreader wird separat aktualisiert.** Die Leseführer behandeln ausgewählte oder stichprobenartig erfasste Auszüge und können unvollständig sein. Unsichere Orte und Daten werden gekennzeichnet. Die Bilder zeigen echte Komponenten; Karte und Zeitleiste verwenden eine ausdrücklich gekennzeichnete Beispielreise. [Details zur Vorschau](../docs/reading-guides-preview.md).
 
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
