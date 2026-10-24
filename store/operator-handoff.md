@@ -1,23 +1,28 @@
-# Bunko 1.0.14 (38) Android internal delivery · 24 October 2026
+# Bunko build 38 available internally · 24 October 2026
 
-Google Play confirms **1.0.14 (38) — Historical reading maps** available to
-the existing internal testers. It includes improved historical-name matching,
-region outlines, explicit uncertain journey sections and separated touch targets.
-The backend fix is live and saved conversations are preserved.
+- Apple **1.0.15 (38)**: iOS/Watch and universal Mac are VALID / IN_BETA_TESTING
+  in the existing TestFlight internal group.
+- Android **1.0.14 (38)**: available to the existing Google Play internal testers.
 
-Source `996ae31334bc99e0d924392f25b9f4d5ff7e357a` remains the frozen candidate.
-170 client and 152 server tests, 13 final map tests, release lint, signatures,
-88 packaged Android resources and installed Android debug upgrade checks passed.
-Release notes cover four existing languages.
+Historical reading maps recognize compound names, distinguish regions from
+cities, mark uncertain journey sections and separate nearby touch targets.
+The backend fix is live; saved conversations are preserved.
 
-Apple iOS/Watch and Mac38 are accepted and placed, **not admitted or uploaded**.
-Preserve the accepted source and 17 delivery helpers while awaiting the separate
-Mac admission. No public review, production release or PWA deployment changed
-in this internal delivery. See the [build38 record](testflight/historical-map38-20261024.json)
-and [map qualification](../docs/historical-reading-maps.md).
+Apple source `ec6d1e55557ca6a80cccbead4973ca2bb44f196e` contains the same map
+update as Android source `996ae31334bc99e0d924392f25b9f4d5ff7e357a`, with the
+Apple marketing version advanced because iOS 1.0.14 is already public.
+170 client and 152 server tests, 13 final map tests, four browser layouts,
+Android lint/signature/resource checks and installed Android upgrade QA passed.
+Both Apple packages passed processing, signatures, bundled-resource and embedded
+Watch checks. Mac arm64/x86_64 binaries retain a macOS 12 minimum. Internal group
+membership and four-language beta notes were read back.
 
-The owned store desktop is stopped after evidence capture, with its saved
-profile retained. No Bunko Mac job, GUI or emulator remains running.
+The clean Apple build includes all tracked Watch and shared reading files.
+Original signing/profile state was restored, the temporary signer removed, and
+the owned build processes and guard released. No Bunko desktop/emulator remains.
+No new physical Apple UI test, public review or PWA deployment is claimed.
+See the [build38 record](testflight/historical-map38-20261024.json) and
+[map qualification](../docs/historical-reading-maps.md).
 
 ## Earlier records
 

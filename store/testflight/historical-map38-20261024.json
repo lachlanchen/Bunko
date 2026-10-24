@@ -1,8 +1,8 @@
 {
-  "version": "1.0.14",
+  "version": "1.0.15",
   "build": 38,
-  "at": "2026-10-24T08:20:13.976291+00:00",
-  "status": "Android available to internal testers; Apple accepted and placed, not admitted or uploaded",
+  "at": "2026-10-24T09:42:57.791168+00:00",
+  "status": "Available to existing TestFlight and Google Play internal testers",
   "backend": {
     "live": true,
     "releaseHash": "8f4523c078fd",
@@ -23,11 +23,11 @@
     "isolatedProviderCalls": 1
   },
   "internalUploads": {
-    "apple": false,
+    "apple": true,
     "android": true
   },
   "publicReviewChanged": false,
-  "source": "996ae31334bc99e0d924392f25b9f4d5ff7e357a",
+  "source": "ec6d1e55557ca6a80cccbead4973ca2bb44f196e",
   "android": {
     "state": "Available to internal testers",
     "version": "1.0.14",
@@ -46,13 +46,135 @@
     "verifiedAt": "2026-10-24T08:20:13.976291+00:00"
   },
   "apple": {
-    "coordinatorAccepted": true,
-    "admitted": false,
-    "archived": false,
-    "uploaded": false,
-    "sourceArchiveSha256": "b6967d4ea952be08959ddc62cf35e665f14fb0f52a8f5bdd28f150e95d80d381",
-    "helperManifestSha256": "b2573304788d42924955dfd4a08d622fc4aab40b90e299c3e335b1d7e9887502",
-    "deliveryHelperTests": 73,
-    "qualificationLimit": "Local source/helper qualification; no build38 native Apple archive or UI execution"
+    "version": "1.0.15",
+    "build": 38,
+    "source": "ec6d1e55557ca6a80cccbead4973ca2bb44f196e",
+    "admitted": true,
+    "authorization": "Owner-authorized alternate Mac; isolated serial internal delivery",
+    "archived": true,
+    "uploaded": true,
+    "sourceArchiveSha256": "1b7027eae357ea4e7dc0a55e31520d175056131faa99259c9bbdd8fe5b22cc6d",
+    "helperManifestSha256": "47961f014d5aaac9be121b260049d3b2c38e5f2dcd35bb813ebac9882c65b418",
+    "deliveryHelperTests": 82,
+    "sourceFilesVerified": 292,
+    "watchAndSharedSourcesIncluded": true,
+    "sdk": "Xcode27.0",
+    "builds": [
+      {
+        "platform": "MAC_OS",
+        "id": "05223802-4588-4e80-8aa4-a0659237798d",
+        "version": "1.0.15",
+        "build": "38",
+        "processing": "VALID",
+        "internal": "IN_BETA_TESTING"
+      },
+      {
+        "platform": "IOS",
+        "id": "d6a731c7-bb2c-42da-9fe0-ef68d76f2ba5",
+        "version": "1.0.15",
+        "build": "38",
+        "processing": "VALID",
+        "internal": "IN_BETA_TESTING"
+      }
+    ],
+    "artifacts": [
+      {
+        "platform": "ios",
+        "source": "ec6d1e55557ca6a80cccbead4973ca2bb44f196e",
+        "version": "1.0.15",
+        "build": "38",
+        "sha256": "4ff75734039c1250e42b20f147833d3565ff3af091aaf2546936515c6ee25b16",
+        "bytes": 12086807,
+        "archive": {
+          "bundle": "art.lazying.bunko",
+          "resources": 88,
+          "signer": "Q8M2S2FY77",
+          "watch": {
+            "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+            "CFBundleShortVersionString": "1.0.15",
+            "CFBundleVersion": "38",
+            "WKCompanionAppBundleIdentifier": "art.lazying.bunko"
+          }
+        },
+        "exported": {
+          "bundle": "art.lazying.bunko",
+          "resources": 88,
+          "signer": "Q8M2S2FY77",
+          "watch": {
+            "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+            "CFBundleShortVersionString": "1.0.15",
+            "CFBundleVersion": "38",
+            "WKCompanionAppBundleIdentifier": "art.lazying.bunko"
+          }
+        }
+      },
+      {
+        "platform": "macos",
+        "source": "ec6d1e55557ca6a80cccbead4973ca2bb44f196e",
+        "version": "1.0.15",
+        "build": "38",
+        "sha256": "ae5c5e59910e84f69a15851cc5f8a0e01871a11bd7a99cb4b40514748e2e2c21",
+        "bytes": 6473696,
+        "archive": {
+          "bundle": "art.lazying.bunko",
+          "resources": 86,
+          "signer": "Q8M2S2FY77",
+          "machO": {
+            "arm64": "12.0",
+            "x86_64": "12.0"
+          }
+        },
+        "exported": {
+          "bundle": "art.lazying.bunko",
+          "resources": 86,
+          "signer": "Q8M2S2FY77",
+          "machO": {
+            "arm64": "12.0",
+            "x86_64": "12.0"
+          }
+        }
+      }
+    ],
+    "uploadMethod": "Official App Store Connect upload API; reused existing records after reconciled altool connection failures",
+    "uploadReceipts": [
+      {
+        "platform": "IOS",
+        "buildUploadId": "d6a731c7-bb2c-42da-9fe0-ef68d76f2ba5",
+        "buildUploadFileId": "1966b344-3a9b-44cb-aa12-09d5e5d617ef",
+        "sha256": "4ff75734039c1250e42b20f147833d3565ff3af091aaf2546936515c6ee25b16",
+        "fileCommit": "COMPLETE"
+      },
+      {
+        "platform": "MAC_OS",
+        "buildUploadId": "05223802-4588-4e80-8aa4-a0659237798d",
+        "buildUploadFileId": "0edf7a7e-8088-49a3-ac9f-7c995a94aa51",
+        "sha256": "ae5c5e59910e84f69a15851cc5f8a0e01871a11bd7a99cb4b40514748e2e2c21",
+        "fileCommit": "COMPLETE"
+      }
+    ],
+    "apiTransferPlanTests": 7,
+    "watchLocalizationKeys": {
+      "en": 11,
+      "ja": 11,
+      "zh-Hans": 11,
+      "zh-Hant": 11
+    },
+    "internalGroupVerified": true,
+    "betaNoteLocales": [
+      "en-US",
+      "zh-Hans",
+      "zh-Hant",
+      "ja"
+    ],
+    "cleanup": {
+      "guardReleased": true,
+      "ownedToolsAbsent": true,
+      "temporarySignerRemoved": true,
+      "originalSearchRestored": true,
+      "profilesVerified": 6,
+      "temporaryUploadConnectionClosed": true
+    },
+    "qualificationLimit": "Signed archives/exports and provider/internal availability verified; no new physical iOS, Watch or Mac UI test",
+    "versionReason": "iOS1.0.14 already public; Apple38 uses1.0.15. Android38 remains1.0.14."
   }
 }

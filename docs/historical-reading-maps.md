@@ -76,7 +76,14 @@ bookmark-return, saved-scope and crash checks. Google Play confirmed build 38
 available to internal testers on 24 October 2026, with release notes in English,
 Simplified Chinese, Traditional Chinese and Japanese.
 
-The iOS/Watch and Mac source candidate is accepted in the shared build queue.
-Its build slot has not been admitted, so Apple build 38 has not been archived,
-uploaded or made available in TestFlight. See the [build 38 record](../store/testflight/historical-map38-20261024.json)
-for the delivery state and test coverage.
+Bunko **1.0.15 (38)** is VALID / IN_BETA_TESTING for iOS/Watch and universal
+Mac in the existing TestFlight internal group. Apple processed both packages;
+archive and exported-payload checks verified the signatures, map resources,
+embedded Watch identity/version, and both Mac architectures with a macOS 12
+minimum. The complete Watch and shared reading source was included in the clean
+build package. Beta notes in four languages and group membership were read back.
+
+Apple uses version 1.0.15 because iOS 1.0.14 is already public; Android build 38
+remains 1.0.14. No new physical Apple UI test or public review is claimed. Signing
+state was restored and the build host released. See the [build 38 record](../store/testflight/historical-map38-20261024.json)
+for the artifacts, delivery state and test coverage.
