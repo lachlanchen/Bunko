@@ -47,7 +47,7 @@ HTTPS health checks; configuration and stored messages were unchanged. Restoring
 an existing guide can now supply its documented modern-name aliases without
 regenerating it or charging for another guide.
 
-The renderer passed 167 client and 151 server tests, lint/type checks, document
+The renderer passed 170 client and 152 server tests, lint/type checks, document
 renderer checks and a production web build. Safari 15-targeted native web assets
 also built. Four Chromium layouts covered 320px/390px phones, desktop and a
 large-text tablet, including dark appearance, zoom/fit, selection, expansion and
@@ -57,15 +57,26 @@ in generated prose.
 
 [Qualification record](../store/testflight/historical-maps-20261024.json) and
 [component screenshot drafts](../store/screenshots/historical-maps-20261024/manifest.json)
-record the evidence and limitations. The renderer has not been uploaded in a new
-native binary or deployed to the public PWA. Current store releases and reviews
-are unchanged.
+record the evidence and limitations. Android 1.0.14 (38) is available to the
+existing Google Play internal testers. The public PWA and current production
+releases are unchanged.
 
-### Internal build 38 preparation
+### Internal build 38
 
 The account-scoped reproduction confirmed that saved responses already contained
 places and routes. Name matching and map coverage caused the missing display;
 the saved conversation was preserved. The backend prompt now avoids claiming
 that it can inspect a client screen or that existing visual data was omitted.
 The follow-up backend passed an isolated live model request and both public
-health probes. Native build 38 is being prepared for internal testing only.
+health probes.
+
+The signed Android bundle passed release lint, signature and packaged-resource
+checks. An installed debug upgrade passed companion-tab, reading-context,
+bookmark-return, saved-scope and crash checks. Google Play confirmed build 38
+available to internal testers on 24 October 2026, with release notes in English,
+Simplified Chinese, Traditional Chinese and Japanese.
+
+The iOS/Watch and Mac source candidate is accepted in the shared build queue.
+Its build slot has not been admitted, so Apple build 38 has not been archived,
+uploaded or made available in TestFlight. See the [build 38 record](../store/testflight/historical-map38-20261024.json)
+for the delivery state and test coverage.

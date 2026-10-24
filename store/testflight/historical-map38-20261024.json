@@ -1,8 +1,8 @@
 {
   "version": "1.0.14",
   "build": 38,
-  "at": "2026-10-24T07:56:27.716839+00:00",
-  "status": "local source and signed Android qualified; Apple delivery not admitted; Google login required",
+  "at": "2026-10-24T08:20:13.976291+00:00",
+  "status": "Android available to internal testers; Apple accepted and placed, not admitted or uploaded",
   "backend": {
     "live": true,
     "releaseHash": "8f4523c078fd",
@@ -24,7 +24,35 @@
   },
   "internalUploads": {
     "apple": false,
-    "android": false
+    "android": true
   },
-  "publicReviewChanged": false
+  "publicReviewChanged": false,
+  "source": "996ae31334bc99e0d924392f25b9f4d5ff7e357a",
+  "android": {
+    "state": "Available to internal testers",
+    "version": "1.0.14",
+    "build": 38,
+    "aabSha256": "223105defe11931d02f2e76209124d9e6646704e6f35bc4dccc2e49bca2a8068",
+    "releaseNoteLocales": [
+      "en-US",
+      "zh-CN",
+      "zh-TW",
+      "ja-JP"
+    ],
+    "releaseLint": "passed",
+    "packagedResources": 88,
+    "signatureChecks": "passed",
+    "installedDebugUpgradeQa": "passed",
+    "verifiedAt": "2026-10-24T08:20:13.976291+00:00"
+  },
+  "apple": {
+    "coordinatorAccepted": true,
+    "admitted": false,
+    "archived": false,
+    "uploaded": false,
+    "sourceArchiveSha256": "b6967d4ea952be08959ddc62cf35e665f14fb0f52a8f5bdd28f150e95d80d381",
+    "helperManifestSha256": "b2573304788d42924955dfd4a08d622fc4aab40b90e299c3e335b1d7e9887502",
+    "deliveryHelperTests": 73,
+    "qualificationLimit": "Local source/helper qualification; no build38 native Apple archive or UI execution"
+  }
 }

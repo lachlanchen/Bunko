@@ -1,3 +1,26 @@
+# Bunko 1.0.14 (38) Android internal delivery · 24 October 2026
+
+Google Play confirms **1.0.14 (38) — Historical reading maps** available to
+the existing internal testers. It includes improved historical-name matching,
+region outlines, explicit uncertain journey sections and separated touch targets.
+The backend fix is live and saved conversations are preserved.
+
+Source `996ae31334bc99e0d924392f25b9f4d5ff7e357a` remains the frozen candidate.
+170 client and 152 server tests, 13 final map tests, release lint, signatures,
+88 packaged Android resources and installed Android debug upgrade checks passed.
+Release notes cover four existing languages.
+
+Apple iOS/Watch and Mac38 are accepted and placed, **not admitted or uploaded**.
+Preserve the accepted source and 17 delivery helpers while awaiting the separate
+Mac admission. No public review, production release or PWA deployment changed
+in this internal delivery. See the [build38 record](testflight/historical-map38-20261024.json)
+and [map qualification](../docs/historical-reading-maps.md).
+
+The owned store desktop is stopped after evidence capture, with its saved
+profile retained. No Bunko Mac job, GUI or emulator remains running.
+
+## Earlier records
+
 # Bunko 1.0.14 (37) submitted · 24 October 2026
 
 Apple iOS/Watch and universal Mac are **Waiting for Review**. Google production
