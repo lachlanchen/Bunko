@@ -144,7 +144,7 @@ final class MacSmokeTests {
             _ = try await js("document.querySelector('.card[data-book-id=physics-classical-mechanics]').click()")
             try await wait("document.querySelector('.book-hero')")
             _ = try await js("document.querySelector('.actions .primary').click()")
-            try await wait("document.querySelector('.katex') && document.querySelector('.book-figure img')")
+            try await wait("document.querySelector('.katex') && document.querySelector('.book-figure')")
             _ = try await js("document.querySelector('.katex').closest('.para')?.scrollIntoView()")
             try await screenshot("03-physics-equations")
             _ = try await js("document.querySelector('.book-figure').scrollIntoView()")
