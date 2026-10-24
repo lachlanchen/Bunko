@@ -56,3 +56,28 @@ test('no silent cross-provider disclosure, no fallback after invalid output or c
   await assert.rejects(next.router.forRequest(['DeepSeek', 'OpenAI'])('', { body: '{}' }), /invalid structured output/)
   next.db.close()
 })
+
+test('host validation escalates one repair while ordinary questions remain on Flash', async () => {
+  const calls = [], db = new DatabaseSync(':memory:')
+  const router = createModelRouter({ db, config: { models: { adminUserIds: [7], capable: 'deepseek-v4-pro', providers: { deepseek: { token: 'private', qualifiedModels: ['deepseek-flash', 'deepseek-v4-pro'] } } } }, provider: async (url, options) => { calls.push({ url, ...options, body: JSON.parse(options.body) }); return {} } })
+  const request = router.forRequest(['DeepSeek'])
+  await request('', { body: JSON.stringify({ quality: 'repair', model: 'gpt-6-astra', messages: [] }) })
+  await request('', { quality: 'repair', body: JSON.stringify({ messages: [] }) })
+  assert.deepEqual(calls.map(c => c.body.model), ['deepseek-flash', 'deepseek-v4-pro'])
+  assert.equal('quality' in calls[1], false)
+  const settings = router.admin({ id: 7 })
+  assert.equal(settings.capable, 'deepseek-v4-pro')
+  assert.equal(router.admin({ id: 7 }, { save: true, revision: 0, primary: 'deepseek-flash', fallback: '' }).capable, 'deepseek-v4-pro')
+  assert.throws(() => router.admin({ id: 7 }, { save: true, revision: 1, primary: 'deepseek-flash', capable: 'unconfigured' }), /Qualify/)
+  db.close()
+})
+
+test('repair escalation requires consent and freezes configuration for the existing request', async () => {
+  const { db, router } = setup(async () => ({}))
+  router.admin({ id: 7 }, { save: true, revision: 0, primary: 'deepseek-flash', capable: 'gpt-6.1-sol' })
+  const pending = router.forRequest(['DeepSeek'])
+  assert.deepEqual(router.policy().providers, ['DeepSeek', 'OpenAI'])
+  router.admin({ id: 7 }, { save: true, revision: 1, primary: 'deepseek-flash', capable: '' })
+  await assert.rejects(pending('', { quality: 'repair', body: '{}' }), /provider notice/)
+  db.close()
+})

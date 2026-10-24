@@ -61,7 +61,7 @@ function schemaIssues(value, schema, path = '$', issues = []) {
  * account, book scope or retrieval tool. Those remain host authority.
  * The generic Lite tool loop is available for future qualified read-only tools.
  */
-export async function runStructuredReading({ messages, kind, focus = 'chat', complete, url, timeoutMs, maxTokens, onContent = () => {}, signal }) {
+export async function runStructuredReading({ messages, kind, focus = 'chat', complete, url, timeoutMs, maxTokens, onContent = () => {}, signal, repairAttempt = 0 }) {
   let transportError, repairHint
   const requiredView = { people: ['people', 'relationships'], places: ['places', 'routes'], timeline: ['events'] }[focus] || []
   const schema = kind === 'guide' ? guideSchema : kind === 'explore' ? object(answerSchema.properties, ['answer', 'citations', ...requiredView]) : answerSchema
@@ -75,7 +75,7 @@ export async function runStructuredReading({ messages, kind, focus = 'chat', com
       const transcript = JSON.parse(request.messages.at(-1).content.map(part => part.text).join(''))
       let response
       try {
-        response = await complete(url, { method: 'POST', signal: options.signal, timeout: timeoutMs,
+        response = await complete(url, { method: 'POST', signal: options.signal, timeout: timeoutMs, quality: repairAttempt ? 'repair' : 'standard',
           body: JSON.stringify({ messages: [{ role: 'system', content: `${request.messages[0].content}\nReturn the JSON value itself, not an envelope. Required output contract: ${JSON.stringify(request.outputSchema)}` }, ...transcript],
             response_format: { type: 'json_object' }, max_tokens: maxTokens, stream: false, temperature: .15 }) })
       } catch (error) { transportError = error; throw error }

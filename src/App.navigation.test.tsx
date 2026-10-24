@@ -67,7 +67,9 @@ it('mainland readers retain their bookmark and book access without a companion e
   fixture.available=false
   window.history.replaceState({}, '', '/?book=garden')
   const {container}=render(<App />)
-  fireEvent.click(await screen.findByRole('button', { name: /continue/i }))
+  const continueReading = await screen.findByRole('button', { name: /continue/i })
+  expect(screen.queryByRole('button', { name: 'Reading companion' })).not.toBeInTheDocument()
+  fireEvent.click(continueReading)
   expect(screen.getByLabelText('Reader position')).toHaveTextContent('7')
   fireEvent.click(screen.getByText('Ask from bookmark'))
   expect(screen.queryByText('Open source')).not.toBeInTheDocument()

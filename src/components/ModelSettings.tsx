@@ -5,12 +5,12 @@ import { useBackAction } from '../lib/backNavigation'
 import type { UILanguage } from '../i18n'
 
 const copy = {
-  en: ['Assistant models', 'Primary model', 'Fallback model', 'None', 'Save', 'Configured and qualified models only. Fallback is limited to temporary provider failures.', 'Saved', 'Refresh'],
-  'zh-Hans': ['助手模型', '主要模型', '备用模型', '无', '保存', '仅可选择已配置并验证的模型。仅在服务商临时故障时使用备用模型。', '已保存', '刷新'],
-  'zh-Hant': ['助手模型', '主要模型', '備用模型', '無', '儲存', '僅可選擇已設定並驗證的模型。僅在服務商暫時故障時使用備用模型。', '已儲存', '重新整理'],
-  ja: ['アシスタントのモデル', '優先モデル', '代替モデル', 'なし', '保存', '設定・確認済みのモデルのみ選択できます。一時的なプロバイダー障害時のみ代替を使います。', '保存しました', '再読み込み'],
+  en: ['Assistant models', 'Default', 'For harder questions', 'None', 'Save', 'Starts with the default. Uses the stronger model if an answer needs repair or the service is busy.', 'Saved', 'Refresh'],
+  'zh-Hans': ['助手模型', '默认', '更复杂的问题', '无', '保存', '先使用默认模型。答案需要修正或服务繁忙时，再使用更强的模型。', '已保存', '刷新'],
+  'zh-Hant': ['助手模型', '預設', '較複雜的問題', '無', '儲存', '先使用預設模型。答案需要修正或服務繁忙時，再使用更強的模型。', '已儲存', '重新整理'],
+  ja: ['アシスタントのモデル', '通常', '難しい質問', 'なし', '保存', '通常のモデルから開始し、回答の修正が必要なときや混雑時に高性能モデルを使います。', '保存しました', '再読み込み'],
 }
-interface Configuration { primary: string; fallback: string; revision: number; catalog: { id: string; label: string; use: string; available: boolean }[] }
+interface Configuration { primary: string; fallback: string; capable: string; revision: number; catalog: { id: string; label: string; use: string; available: boolean }[] }
 export function ModelSettings({ ui, onBack }: { ui: UILanguage; onBack: () => void }) {
   const t = copy[ui], [value, setValue] = useState<Configuration | null>(null), [busy, setBusy] = useState(false), [notice, setNotice] = useState('')
   useBackAction(onBack, true, 40)
@@ -24,12 +24,12 @@ export function ModelSettings({ ui, onBack }: { ui: UILanguage; onBack: () => vo
     <p>{t[5]}</p>
     {value && <form onSubmit={e => {
       e.preventDefault(); setBusy(true); setNotice('')
-      void agentCall<Configuration>('models', { save: true, primary: value.primary, fallback: value.fallback, revision: value.revision })
+      void agentCall<Configuration>('models', { save: true, primary: value.primary, fallback: value.capable, capable: value.capable, revision: value.revision })
         .then(v => { setValue(v); setNotice(t[6]) }).catch((e: Error & { detail?: string }) => setNotice(e.detail || e.message)).finally(() => setBusy(false))
     }}>
-      {(['primary', 'fallback'] as const).map((field, i) => <label className="guide-scope" key={field}>{t[i + 1]}
+      {(['primary', 'capable'] as const).map((field, i) => <label className="guide-scope" key={field}>{t[i + 1]}
         <select value={value[field]} disabled={busy} onChange={e => setValue({ ...value, [field]: e.target.value })}>
-          {field === 'fallback' && <option value="">{t[3]}</option>}
+          {field === 'capable' && <option value="">{t[3]}</option>}
           {value.catalog.map(m => <option key={m.id} value={m.id} disabled={!m.available}>{m.label}{m.available ? '' : ' · unavailable'}</option>)}
         </select>
       </label>)}

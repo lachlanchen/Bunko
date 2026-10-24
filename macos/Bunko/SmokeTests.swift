@@ -85,7 +85,7 @@ final class MacSmokeTests {
             _ = try await js("document.querySelector('.card[data-book-id=sanshiro]').click()")
             try await wait("document.querySelector('.book-hero')")
             if (try await js("Boolean(document.querySelector('.ready'))")) as? Bool != true {
-                _ = try await js("document.querySelectorAll('.actions button')[1].click()")
+                _ = try await js("Array.from(document.querySelectorAll('.actions button')).find(b => b.textContent.includes('Download for offline')).click()")
                 try await wait("document.querySelector('.ready')", timeout: 180)
             }
             check("complete book downloaded to IndexedDB")

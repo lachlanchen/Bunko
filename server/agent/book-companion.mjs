@@ -187,7 +187,7 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
     for (let attempt = 0; attempt < 2; attempt++) {
       let content = '', structured = false
       try {
-        const parsed = await runStructuredReading({ messages, kind, focus: memory.focus, complete, url: config.model.url,
+        const parsed = await runStructuredReading({ messages, kind, focus: memory.focus, complete, url: config.model.url, repairAttempt: attempt,
           timeoutMs: Math.max(1000, Math.min(70000, deadline - Date.now())), maxTokens: kind === 'answer' ? 3000 : 8192,
           onContent: value => { content = value } })
         structured = true

@@ -431,12 +431,12 @@ export default function App() {
               <button type="button" className="primary" onClick={() => startReading(!places[meta.id])}>
                 <BookOpen size={17} /> {places[meta.id] ? copy.continueReading : copy.start}
               </button>
-              <button type="button" onClick={() => {
+              {companionAvailability.available && <button type="button" onClick={() => {
                 const place = places[meta.id] || { chapter: 0, paragraph: 0 }
                 setChapterIndex(place.chapter)
                 setCompanionContext({ meta, ...place, language: settings.langs.find(lang => meta.langs.includes(lang)) || meta.primary, returnTo: 'book' })
                 setView('book-agent')
-              }}><Sparkles size={17} />{agentCopy[ui].name}</button>
+              }}><Sparkles size={17} />{agentCopy[ui].name}</button>}
               {downloading?.id === meta.id ? (
                 <button type="button" onClick={() => downloadRef.current?.abort()}>
                   {copy.downloading} {downloading.done}/{downloading.total}
