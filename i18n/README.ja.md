@@ -18,14 +18,14 @@ Bunko は、パブリックドメインの古典と配布許可を確認した�
 - iPhone、iPad、Android、ウェブ、Mac に対応。ルビ付きの多言語抜粋をペアリング済みの Apple Watch に送れます。
 - 本に含める言語数に制限はなく、右から左へ書く言語にも対応します。画面表示の言語は英語・簡体字中国語・繁体字中国語・日本語です。
 
-## プレビュー：本に寄り添う読書アシスタント
+## 本に寄り添う読書アシスタント
 
-次のテスト更新では、本を開いた状態から引き継ぐ文脈、本・章・段落を指定するコンパクトな @ 参照、引用元の位置へ戻るリンクをさらに活用できます。人物の関係をグラフやツリーで、地名をオフラインの地理地図で、出来事を日付付きの年表で確認できます。各ガイドから根拠となる本文を開けます。
+読書アシスタントでは、本を開いた状態から引き継ぐ文脈、本・章・段落を指定するコンパクトな @ 参照、引用元の位置へ戻るリンクをさらに活用できます。人物の関係をグラフやツリーで、地名をオフラインの地理地図で、出来事を日付付きの年表で確認できます。各ガイドから根拠となる本文を開けます。
 
-**テスト版のプレビューであり、一般公開のお知らせではありません。** ガイドの対象は選択した抜粋や抽出した範囲で、本全体を網羅するとは限りません。不確かな地名や日付は明示します。以下は実際のコンポーネント画面です。地図と年表は、デモであることを明記した旅程を使用しています。[プレビューの詳細](../docs/reading-guides-preview.md)。
+**iOS・Android 1.0.14 (37) で利用できます。Mac37 は審査中で、Mac の公開版は 1.0.13 (23) です。Web 版は別途更新されます。** ガイドの対象は選択した抜粋や抽出した範囲で、本全体を網羅するとは限りません。不確かな地名や日付は明示します。以下は実際のコンポーネント画面です。地図と年表は、デモであることを明記した旅程を使用しています。[プレビューの詳細](../docs/reading-guides-preview.md)。
 
 <p>
-<a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — test preview" width="190"></a>
+<a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-timeline.png"><img src="../docs/images/reading-guides-20261021/phone-timeline.png" alt="Calendar timeline — demonstration journey" width="190"></a>
 </p>

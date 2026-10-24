@@ -1,0 +1,246 @@
+{
+  "verifiedAt": "2026-10-24T02:25:26.124020+00:00",
+  "app": "Bunko",
+  "version": "1.0.14",
+  "build": 37,
+  "source": "7a3767d1b76c99a99b3ba1a36e2f9194be722ddc",
+  "apple": {
+    "IOS": {
+      "versionID": "16001aac-ff44-4719-9583-8ae4209a598d",
+      "buildID": "575c264d-48ed-48d7-b74b-8768029b801b",
+      "reviewID": "a86e2530-f78e-4505-8f67-7ff2fec4cd9c",
+      "version": {
+        "platform": "IOS",
+        "versionString": "1.0.14",
+        "appStoreState": "READY_FOR_SALE",
+        "appVersionState": "READY_FOR_DISTRIBUTION",
+        "copyright": "2026 LazyingArt LLC",
+        "reviewType": "APP_STORE",
+        "releaseType": "AFTER_APPROVAL",
+        "earliestReleaseDate": null,
+        "usesIdfa": null,
+        "downloadable": true,
+        "createdDate": "2026-10-23T15:35:54-07:00"
+      },
+      "buildNumber": "37",
+      "buildProcessing": "VALID",
+      "review": {
+        "platform": "IOS",
+        "submittedDate": "2026-10-23T23:01:40.276Z",
+        "state": "COMPLETE"
+      },
+      "phased": null,
+      "exactSubmittedBuild": true
+    },
+    "MAC_OS": {
+      "versionID": "c850234b-0721-432b-aaf9-7155dd6e62eb",
+      "buildID": "ab009c9b-7d07-4aa8-b0f1-fb840c742c02",
+      "reviewID": "875dc997-6cad-421a-a1f1-0e9c0be25fc5",
+      "version": {
+        "platform": "MAC_OS",
+        "versionString": "1.0.14",
+        "appStoreState": "WAITING_FOR_REVIEW",
+        "appVersionState": "WAITING_FOR_REVIEW",
+        "copyright": "2026 LazyingArt LLC",
+        "reviewType": "APP_STORE",
+        "releaseType": "AFTER_APPROVAL",
+        "earliestReleaseDate": null,
+        "usesIdfa": null,
+        "downloadable": true,
+        "createdDate": "2026-10-23T15:36:13-07:00"
+      },
+      "buildNumber": "37",
+      "buildProcessing": "VALID",
+      "review": {
+        "platform": "MAC_OS",
+        "submittedDate": "2026-10-23T23:01:52.622Z",
+        "state": "WAITING_FOR_REVIEW"
+      },
+      "phased": null,
+      "exactSubmittedBuild": true
+    }
+  },
+  "publicApple": {
+    "us": {
+      "version": "1.0.14",
+      "price": 0.99,
+      "currency": "USD",
+      "currentVersionReleaseDate": "2026-10-24T02:12:06Z",
+      "trackViewUrl": "https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?uo=4"
+    },
+    "hk": {
+      "version": "1.0.14",
+      "price": 8.0,
+      "currency": "HKD",
+      "currentVersionReleaseDate": "2026-10-24T02:12:06Z",
+      "trackViewUrl": "https://apps.apple.com/hk/app/bunko-%E6%96%87%E5%BA%AB-%E7%B6%93%E5%85%B8%E8%88%87%E6%B3%A8%E9%9F%B3/id6815137919?uo=4"
+    }
+  },
+  "publicPages": {
+    "iphone": {
+      "intent": {
+        "storefront": "us",
+        "language": "en-US",
+        "isDefaultLanguage": true,
+        "$kind": "ProductPageIntent",
+        "id": "6815137919"
+      },
+      "version": "Version 1.0.14",
+      "releaseDate": "Sat Oct 24 2026 02:12:06 GMT+0000 (Coordinated Universal Time)",
+      "releaseNotes": "Continue a reading conversation across Ask, People, Places and Timeline. Reopen nearby saved results, continue from an earlier answer, or explore the whole book without losing your place. Follow-up questions can extend one diagram while keeping the others. Clearer focused graphs, stable character colors and expandable timelines remember your view.",
+      "screenshotShelves": {}
+    },
+    "mac": {
+      "intent": {
+        "storefront": "us",
+        "language": "en-US",
+        "isDefaultLanguage": true,
+        "$kind": "ProductPageIntent",
+        "id": "6815137919",
+        "platform": "mac"
+      },
+      "version": "Version 1.0.13",
+      "releaseDate": "Fri Oct 23 2026 18:35:12 GMT+0000 (Coordinated Universal Time)",
+      "releaseNotes": "Open passage discussions from translations as well as the main text. Translation comment bubbles can be hidden in Settings. This update adds direct access to Bunko services and improves cached book downloads. Includes current-book translation requests, direct reading of existing languages, selection-ordered languages, ruby, improved Settings dismissal and right-swipe navigation, Watch excerpts and the latest rounded icon.",
+      "screenshotShelves": {}
+    }
+  },
+  "publicAssets": {
+    "iphone": {
+      "descriptionSha256": "73d86cb198a2159bf83b99f468248c436f9e5b9770d88427bbc38bbe32f833b3",
+      "media": {
+        "product_media_phone_": {
+          "count": 5,
+          "files": [
+            "en-phone-reader37.png",
+            "en-phone-library37.png",
+            "en-phone-chapters37.png",
+            "en-phone-people-expanded37.png",
+            "en-phone-places-expanded37.png"
+          ]
+        },
+        "product_media_pad_": {
+          "count": 4,
+          "files": [
+            "en-ipad-reader37.png",
+            "en-ipad-library37.png",
+            "en-ipad-people-expanded37.png",
+            "en-ipad-places-expanded37.png"
+          ]
+        },
+        "product_media_mac_": {
+          "count": 6,
+          "files": [
+            "macos-01-library.png",
+            "macos-03-equations.png",
+            "macos-02-reading.png",
+            "en-mac-translation21.png",
+            "en-mac-reader22.png",
+            "en-mac-reader23.png"
+          ]
+        },
+        "product_media_watch_": {
+          "count": 2,
+          "files": [
+            "watch-01-library.png",
+            "watch-02-reading.png"
+          ]
+        }
+      }
+    },
+    "mac": {
+      "descriptionSha256": "40d94dcaaedd168811398115847945d70a3dd406f210dff32d3cbbd7718dc86f",
+      "media": {
+        "product_media_mac_": {
+          "count": 6,
+          "files": [
+            "macos-01-library.png",
+            "macos-03-equations.png",
+            "macos-02-reading.png",
+            "en-mac-translation21.png",
+            "en-mac-reader22.png",
+            "en-mac-reader23.png"
+          ]
+        },
+        "product_media_pad_": {
+          "count": 4,
+          "files": [
+            "en-ipad-reader37.png",
+            "en-ipad-library37.png",
+            "en-ipad-people-expanded37.png",
+            "en-ipad-places-expanded37.png"
+          ]
+        },
+        "product_media_phone_": {
+          "count": 5,
+          "files": [
+            "en-phone-reader37.png",
+            "en-phone-library37.png",
+            "en-phone-chapters37.png",
+            "en-phone-people-expanded37.png",
+            "en-phone-places-expanded37.png"
+          ]
+        },
+        "product_media_watch_": {
+          "count": 2,
+          "files": [
+            "watch-01-library.png",
+            "watch-02-reading.png"
+          ]
+        }
+      }
+    }
+  },
+  "availability": {
+    "at": "2026-10-24T02:19:51.720629+00:00",
+    "territories": 175,
+    "available": 175,
+    "availableInNewTerritories": true
+  },
+  "publicMacBuild": {
+    "versionID": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+    "version": "1.0.13",
+    "state": "READY_FOR_DISTRIBUTION",
+    "build": "23",
+    "buildID": "6db0c006-f129-4dc4-a634-041243aa50be"
+  },
+  "google": {
+    "version": "1.0.14",
+    "build": 37,
+    "status": "AVAILABLE_ON_GOOGLE_PLAY",
+    "countries": 172,
+    "releaseDisplay": "Released on Oct 24 7:38 AM",
+    "productionEvidenceSha256": "400e8a3fd39298ca239d0c22c81d9ec51aaab56684a4c69d683895971095daaf",
+    "publicDescriptionAndNotesVisible": true
+  },
+  "actions": {
+    "manualReleaseRequired": false,
+    "storeMutation": false,
+    "updateFeed": {
+      "schema": 1,
+      "ios": {
+        "version": "1.0.14",
+        "build": "37"
+      },
+      "android": {
+        "version": "1.0.14",
+        "build": "37"
+      },
+      "macos": {
+        "version": "1.0.13",
+        "build": "23"
+      }
+    },
+    "newBinary": false,
+    "mac37ReviewPreserved": true,
+    "pricesProvidersBillingRewardsUnchanged": true,
+    "googleNoUnpublishedChanges": true
+  },
+  "submissionReceipt": "latest-review37-20261024.json",
+  "feedDeployment": "prepared; awaiting main Pages deployment",
+  "checks": {
+    "clientTests": 162,
+    "serverTests": 149,
+    "lintTypecheckRendererBuild": true
+  }
+}

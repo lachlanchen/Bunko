@@ -18,14 +18,14 @@ Bunko reúne clásicos de dominio público y libros originales con autorización
 - Lee en iPhone, iPad, Android, web y Mac. Envía fragmentos multilingües con ruby a un Apple Watch enlazado.
 - Los libros admiten cualquier número de idiomas, incluidas escrituras de derecha a izquierda. La interfaz ofrece inglés, chino simplificado, chino tradicional y japonés.
 
-## Avance: un compañero junto al libro
+## Un compañero junto al libro
 
-La próxima actualización de prueba amplía el contexto automático del libro, las referencias @ compactas a libros, capítulos y pasajes, y el regreso al texto exacto. Explora relaciones entre personajes en gráficos o árboles, lugares en un mapa geográfico sin conexión y acontecimientos en una línea temporal con fechas. Los pasajes que sustentan cada guía quedan a mano.
+El compañero de lectura reúne el contexto automático del libro, las referencias @ compactas a libros, capítulos y pasajes, y el regreso al texto exacto. Explora relaciones entre personajes en gráficos o árboles, lugares en un mapa geográfico sin conexión y acontecimientos en una línea temporal con fechas. Los pasajes que sustentan cada guía quedan a mano.
 
-**Avance de prueba; no anuncia una publicación general.** Las guías abarcan fragmentos seleccionados o muestreados y pueden ser incompletas. Los lugares y fechas inciertos se indican expresamente. Las imágenes son capturas reales de los componentes; el mapa y la cronología usan un recorrido de demostración identificado como tal. [Detalles del avance](../docs/reading-guides-preview.md).
+**Disponible en iOS y Android 1.0.14 (37). Mac37 sigue en revisión; la versión pública para Mac es 1.0.13 (23). El lector web se actualiza por separado.** Las guías abarcan fragmentos seleccionados o muestreados y pueden ser incompletas. Los lugares y fechas inciertos se indican expresamente. Las imágenes son capturas reales de los componentes; el mapa y la cronología usan un recorrido de demostración identificado como tal. [Detalles del avance](../docs/reading-guides-preview.md).
 
 <p>
-<a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — test preview" width="190"></a>
+<a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-timeline.png"><img src="../docs/images/reading-guides-20261021/phone-timeline.png" alt="Calendar timeline — demonstration journey" width="190"></a>
 </p>

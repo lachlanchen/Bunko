@@ -6,8 +6,9 @@ The owner requests the latest qualified Bunko update submitted for review, with
 current screenshots and reader-facing descriptions. Reuse the delivered build37
 binaries after source, live companion, reviewer-access and store checks. Refresh
 the four localized descriptions and affected device screenshots; keep required
-provider and accuracy disclosures clear. iOS/Watch, Mac and Google submissions
-are now confirmed in review, with release after approval. No provider, billing,
+provider and accuracy disclosures clear. iOS/Watch and Android build37 are now publicly released. Mac37 remains waiting
+for review with release after approval. The exact builds, public listings and
+update feed are recorded in `docs/distribution37-20261024.md`. No provider, billing,
 reward or sibling-app activation is part of this submission. See
 `docs/latest-review37-20261024.md` for exact evidence and remaining public-release status.
 

@@ -1,5 +1,9 @@
 # Bunko 1.0.14 (37) submitted · 24 October 2026
 
+**Distribution update:** iOS/Watch and Android37 are now public; Mac37 is still
+waiting for review. See the [24 October release receipt](distribution37-20261024.md).
+The submission state below is preserved as dated evidence.
+
 The owner requested the latest qualified build, current screenshots and concise
 reader-facing descriptions. Build37 was already available in the existing
 TestFlight and Google internal groups. The same binaries are now submitted.

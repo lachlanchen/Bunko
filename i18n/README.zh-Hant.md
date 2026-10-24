@@ -18,14 +18,14 @@ Bunko 將公版經典與已獲散布許可的原創書籍收進同一個多語�
 - 支援 iPhone、iPad、Android、網頁和 Mac。可將附注音的多語言摘錄傳送到已配對的 Apple Watch。
 - 一本書可包含任意數量的語言，也支援從右向左書寫的文字。應用程式介面提供英語、簡體中文、繁體中文和日語。
 
-## 預覽：陪你讀書的助手
+## 陪你讀書的助手
 
-下一次測試更新延續開啟助手時自動帶入書籍脈絡的體驗，支援用精簡的 @ 參照指定書籍、章節和段落，並返回原文的準確位置。人物關係可用網絡圖或樹狀圖查看，地名可放到離線地理地圖上，事件可按日期排列成時間軸。每份導讀都能開啟相應的原文依據。
+閱讀助手延續開啟助手時自動帶入書籍脈絡的體驗，支援用精簡的 @ 參照指定書籍、章節和段落，並返回原文的準確位置。人物關係可用網絡圖或樹狀圖查看，地名可放到離線地理地圖上，事件可按日期排列成時間軸。每份導讀都能開啟相應的原文依據。
 
-**這是測試預覽，不是正式版發布公告。** 導讀涵蓋選定或抽樣的文本，未必涵蓋全書；不確定的地點和日期會明確標示。下方圖片來自實際元件畫面，其中地圖和時間軸使用明確標示的示範旅程。[查看預覽說明](../docs/reading-guides-preview.md)。
+**iOS 和 Android 1.0.14 (37) 已正式發布。Mac37 仍在審核，Mac 目前正式版為 1.0.13 (23)。網頁版單獨更新。** 導讀涵蓋選定或抽樣的文本，未必涵蓋全書；不確定的地點和日期會明確標示。下方圖片來自實際元件畫面，其中地圖和時間軸使用明確標示的示範旅程。[查看預覽說明](../docs/reading-guides-preview.md)。
 
 <p>
-<a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — test preview" width="190"></a>
+<a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-timeline.png"><img src="../docs/images/reading-guides-20261021/phone-timeline.png" alt="Calendar timeline — demonstration journey" width="190"></a>
 </p>

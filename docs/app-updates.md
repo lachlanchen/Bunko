@@ -22,14 +22,11 @@ Added 2026-09-26 in **1.0.4 (6)**. Update prompts and Settings controls are tran
 3. Set only that platform's `version` and `build` strings in `public/updates.json`. Use `null` for a platform with no public release. Do not add a testing build to this feed. For a staged or territory-limited release, wait until the advertised rollout is available to the intended users.
 4. Run `npm run check`, commit, push, wait for the Pages deployment and fetch the live JSON with caching disabled. Record the public release evidence in `store/`.
 
-Verified state (2026-10-10 HKT): iOS/Watch **1.0.11 (18)** and Android
-**1.0.11 (18)** are publicly released. Apple confirms the exact build and completed
-review; US/Hong Kong listings and the iPhone page show 1.0.11. All 175 Apple
-territories are available, with no phased release. Google production18 is active
-at 100% in 172 countries with no unpublished changes. Mac remains on public
-**1.0.8 (10)**; Mac 1.0.11 (18) is IN_REVIEW with automatic release after approval.
-The feed advances only the two released mobile platforms. See the
-[distribution receipt](distribution-20261010.md).
+Verified state (24 October 2026 HKT): iOS/Watch and Android **1.0.14 (37)**
+are public. Mac **1.0.13 (23)** is public; Mac1.0.14(37) remains waiting for
+review. The feed advertises only those released versions. The Mac entry was
+corrected from build10 after independent storefront and exact-build checks.
+See the [release receipt](distribution37-20261024.md).
 **The feed is updated as part of release publication; it does not scrape stores
 or promote internal builds automatically.**
 

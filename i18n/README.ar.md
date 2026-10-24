@@ -18,14 +18,14 @@
 - اقرأ على iPhone وiPad وAndroid والويب وMac. أرسل مقتطفات متعددة اللغات مع علامات النطق إلى Apple Watch المقترنة.
 - يمكن أن يحتوي الكتاب أي عدد من اللغات، ومنها اللغات المكتوبة من اليمين إلى اليسار. تتوفر الواجهة بالإنجليزية والصينية المبسطة والتقليدية واليابانية.
 
-## معاينة: مساعد بجانب الكتاب
+## مساعد بجانب الكتاب
 
-يوسّع التحديث التجريبي القادم سياق الكتاب التلقائي وإشارات @ المختصرة إلى الكتب والفصول والمقاطع، مع العودة إلى النص المحدد. استكشف علاقات الشخصيات عبر شبكة أو شجرة، والأماكن على خريطة جغرافية دون اتصال، والأحداث على خط زمني مؤرّخ. تظل المقاطع الداعمة متاحة في كل دليل.
+يجمع مساعد القراءة سياق الكتاب التلقائي وإشارات @ المختصرة إلى الكتب والفصول والمقاطع، مع العودة إلى النص المحدد. استكشف علاقات الشخصيات عبر شبكة أو شجرة، والأماكن على خريطة جغرافية دون اتصال، والأحداث على خط زمني مؤرّخ. تظل المقاطع الداعمة متاحة في كل دليل.
 
-**هذه معاينة تجريبية، وليست إعلان إصدار عام.** تغطي الأدلة مقتطفات مختارة أو عيّنات، وقد لا تكون شاملة. تظهر الأماكن والتواريخ غير المؤكدة بوضوح. الصور أدناه لقطات فعلية للمكوّنات؛ تستخدم الخريطة والخط الزمني رحلة توضيحية موسومة بذلك. [تفاصيل المعاينة](../docs/reading-guides-preview.md).
+**متاح في iOS وAndroid بالإصدار 1.0.14 (37). لا يزال Mac37 قيد المراجعة؛ إصدار Mac العام هو 1.0.13 (23). يُحدَّث قارئ الويب بصورة مستقلة.** تغطي الأدلة مقتطفات مختارة أو عيّنات، وقد لا تكون شاملة. تظهر الأماكن والتواريخ غير المؤكدة بوضوح. الصور أدناه لقطات فعلية للمكوّنات؛ تستخدم الخريطة والخط الزمني رحلة توضيحية موسومة بذلك. [تفاصيل المعاينة](../docs/reading-guides-preview.md).
 
 <p>
-<a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — test preview" width="190"></a>
+<a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-timeline.png"><img src="../docs/images/reading-guides-20261021/phone-timeline.png" alt="Calendar timeline — demonstration journey" width="190"></a>
 </p>

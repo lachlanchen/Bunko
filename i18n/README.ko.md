@@ -18,14 +18,14 @@ Bunko는 퍼블릭 도메인 고전과 배포 허가를 확인한 창작 도서�
 - iPhone, iPad, Android, 웹, Mac에서 읽고, 루비가 포함된 다국어 발췌문을 연결된 Apple Watch로 보낼 수 있습니다.
 - 책에는 오른쪽에서 왼쪽으로 쓰는 언어를 포함해 여러 언어를 제한 없이 담을 수 있습니다. 인터페이스는 영어, 중국어 간체·번체, 일본어를 지원합니다.
 
-## 미리 보기: 책 곁의 독서 도우미
+## 책 곁의 독서 도우미
 
-다음 테스트 업데이트는 자동으로 이어지는 책 문맥, 책·장·구절을 지정하는 간결한 @ 참조, 정확한 원문 위치로 돌아가는 링크를 바탕으로 발전합니다. 인물 관계는 그래프나 트리로, 장소는 오프라인 지리 지도로, 사건은 날짜가 있는 타임라인으로 살펴볼 수 있습니다. 각 가이드의 근거 구절도 열어 볼 수 있습니다.
+독서 도우미는 자동으로 이어지는 책 문맥, 책·장·구절을 지정하는 간결한 @ 참조, 정확한 원문 위치로 돌아가는 링크를 바탕으로 발전합니다. 인물 관계는 그래프나 트리로, 장소는 오프라인 지리 지도로, 사건은 날짜가 있는 타임라인으로 살펴볼 수 있습니다. 각 가이드의 근거 구절도 열어 볼 수 있습니다.
 
-**테스트 미리 보기이며 정식 공개 안내가 아닙니다.** 가이드는 선택하거나 표본으로 뽑은 발췌문을 다루므로 전체를 포괄하지 않을 수 있습니다. 불확실한 장소와 날짜는 명확히 표시합니다. 아래 이미지는 실제 컴포넌트 화면이며 지도와 타임라인은 데모임을 표시한 여정을 사용합니다. [미리 보기 자세히](../docs/reading-guides-preview.md).
+**iOS와 Android 1.0.14 (37)에서 사용할 수 있습니다. Mac37은 심사 중이며 Mac 공개 버전은 1.0.13 (23)입니다. 웹 리더는 별도로 업데이트됩니다.** 가이드는 선택하거나 표본으로 뽑은 발췌문을 다루므로 전체를 포괄하지 않을 수 있습니다. 불확실한 장소와 날짜는 명확히 표시합니다. 아래 이미지는 실제 컴포넌트 화면이며 지도와 타임라인은 데모임을 표시한 여정을 사용합니다. [미리 보기 자세히](../docs/reading-guides-preview.md).
 
 <p>
-<a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — test preview" width="190"></a>
+<a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-timeline.png"><img src="../docs/images/reading-guides-20261021/phone-timeline.png" alt="Calendar timeline — demonstration journey" width="190"></a>
 </p>

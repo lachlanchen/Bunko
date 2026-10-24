@@ -1,3 +1,18 @@
+# Bunko release verified · 24 October 2026
+
+iOS/Watch and Android **1.0.14 (37)** are public. The exact approved iOS build
+matches the submission; Apple released it automatically at 02:12:06 UTC.
+Google production37 is active in 172 regions. Mac **1.0.13 (23)** remains public;
+Mac37 is waiting for review with automatic release selected.
+
+The public iPhone description and current phone/iPad screenshots are verified.
+Update prompts now target only those verified public builds. No new binary,
+store release mutation, pricing, identity or billing change was required.
+
+[Release receipt](../../docs/distribution37-20261024.md).
+
+## Submission history
+
 # Bunko 1.0.14 (37) submitted · 24 October 2026
 
 Apple iOS/Watch and universal Mac are **Waiting for Review**. Google production
