@@ -24,7 +24,10 @@ reading-conversation release notes. No manual release action was needed.
 
 The update feed now targets iOS37, Android37 and Mac23. The Mac entry previously
 pointed to build10 and has been corrected to the verified public release.
-Publishing the feed changes no application code or stored reading data.
+Pages deployment completed successfully, and the live feed matches the verified
+versions with cross-origin access enabled. The eleven README translations also
+show current availability. Publishing changed no application code or stored
+reading data.
 
 [Exact release evidence](distribution37-20261024.json) ·
 [Submission and test record](latest-review37-20261024.md)

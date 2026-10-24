@@ -237,10 +237,42 @@
     "googleNoUnpublishedChanges": true
   },
   "submissionReceipt": "latest-review37-20261024.json",
-  "feedDeployment": "prepared; awaiting main Pages deployment",
+  "feedDeployment": {
+    "at": "2026-10-24T02:30:18.906813+00:00",
+    "url": "https://lachlan.lazying.art/Bunko/updates.json",
+    "body": {
+      "schema": 1,
+      "ios": {
+        "version": "1.0.14",
+        "build": "37"
+      },
+      "android": {
+        "version": "1.0.14",
+        "build": "37"
+      },
+      "macos": {
+        "version": "1.0.13",
+        "build": "23"
+      }
+    },
+    "cors": "*",
+    "pagesRun": {
+      "conclusion": "success",
+      "headSha": "da2074d2e4440fb6f39ebc113d7997aeff472103",
+      "status": "completed",
+      "url": "https://github.com/lachlanchen/Bunko/actions/runs/40054254487"
+    },
+    "applicationCodeChanged": false
+  },
   "checks": {
     "clientTests": 162,
     "serverTests": 149,
     "lintTypecheckRendererBuild": true
+  },
+  "cleanup": {
+    "at": "2026-10-24T02:27:40.461874+00:00",
+    "ownedTabClosed": true,
+    "sharedBrowserPreserved": true,
+    "noNewGuiStack": true
   }
 }
