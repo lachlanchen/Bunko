@@ -17,6 +17,13 @@ disputed locations remain listed and available in the story graph. It does not
 substitute a modern capital for an ancient kingdom or island. Readers can make
 an explicit location choice, remove it, or reset it to the current suggestion.
 
+Parenthesized names such as 巴连弗邑（华氏城） are matched as aliases.
+Sri Lanka is shaded as a region, with a square region label rather than a city pin.
+Dotted links can summarize explicit journey connections across unlocated stops;
+their named intermediate stops and original connection evidence remain available.
+They never imply a direct journey or guessed intermediate coordinates. Nearby
+markers are separated for touch selection, with leader lines to their map positions.
+
 ## Geographic sources
 
 - [Faxian, translated and annotated by James Legge (1886)](https://www.gutenberg.org/cache/epub/64535/pg64535-images.html): historical names and identifications. Legge explicitly disputes identifying Faxian's Takshasila with the archaeological Taxila site; this remains unpinned, alongside Kapilavastu, Jiesha and Java-dvipa.
@@ -24,6 +31,7 @@ an explicit location choice, remove it, or reset it to the current suggestion.
 - [UNESCO: Mahabodhi Temple](https://whc.unesco.org/en/list/1056/) and [Lumbini](https://whc.unesco.org/en/list/666/): reference coordinates for those named sites.
 - [Purba Medinipur district history](https://purbamedinipur.gov.in/history/) and [Tamluk geographic reference](https://en.wikipedia.org/wiki/Tamluk): Tamralipti's approximate modern location. The map does not identify an ancient shoreline or dock.
 - [Nalanda district: Rajgir](https://nalanda.nic.in/en/tourist-place/cyclopean-wall/) and [geolocated Cyclopean Wall photograph](https://commons.wikimedia.org/wiki/File:Cyclopean_Wall_of_Rajgir.jpg): approximate Rajgir-area reference.
+- [UNESCO: Site of Yumen Pass](https://whc.unesco.org/en/list/1442/maps): coordinates for the historical pass, distinct from modern Yumen city.
 - Natural Earth public-domain land, populated-place coordinates, and modern country outlines. Exact source revision and checksums are in [the atlas manifest](reading-atlas-provenance.json); `tools/build-reading-atlas.py` reproduces the data.
 
 The gazetteer supplies name identifications, not evidence that a journey occurred.
@@ -52,3 +60,12 @@ in generated prose.
 record the evidence and limitations. The renderer has not been uploaded in a new
 native binary or deployed to the public PWA. Current store releases and reviews
 are unchanged.
+
+### Internal build 38 preparation
+
+The account-scoped reproduction confirmed that saved responses already contained
+places and routes. Name matching and map coverage caused the missing display;
+the saved conversation was preserved. The backend prompt now avoids claiming
+that it can inspect a client screen or that existing visual data was omitted.
+The follow-up backend passed an isolated live model request and both public
+health probes. Native build 38 is being prepared for internal testing only.

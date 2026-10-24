@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
 import { historicalPlaces, readingPlaceChoices, suggestedReadingPlace } from './guideAtlas'
-import { guideMapGeometry } from './guideMapGeometry'
+import { guideMapGeometry, mapMarkerPositions } from './guideMapGeometry'
 
 it('locates historical Foguoji names without inferring a route or borrowing another book context', () => {
   const names = ['長安', '張掖', '燉煌', '于闐', '弗樓沙', '巴連弗邑', '多摩梨帝']
@@ -16,7 +16,7 @@ it('locates historical Foguoji names without inferring a route or borrowing anot
 })
 
 it('does not turn disputed places, regions, islands or kingdoms into exact city pins', () => {
-  for (const names of [['師子國', 'Colombo'], ['Java-dvîpa', 'Jakarta'], ['中國', 'Beijing'], ['竭叉'], ['迦維羅衛'], ['竺剎尸羅', 'Taxila']]) {
+  for (const names of [['Java-dvîpa', 'Jakarta'], ['中國', 'Beijing'], ['竭叉'], ['迦維羅衛'], ['竺剎尸羅', 'Taxila'], ['中天竺（印度）', 'Beijing']]) {
     expect(suggestedReadingPlace(names, 'foguoji')).toBeNull()
   }
   expect(suggestedReadingPlace(['Kingdom of Invisible Clouds'], 'foguoji')).toBeNull()
@@ -26,12 +26,23 @@ it('does not turn disputed places, regions, islands or kingdoms into exact city 
 
 it('keeps reviewed historical coordinates finite and provenance available offline', () => {
   const places = historicalPlaces('foguoji')
-  expect(new Set(places.map(p => p.id)).size).toBe(17)
+  expect(new Set(places.map(p => p.id)).size).toBe(19)
   for (const p of places) {
     expect(Math.abs(p.longitude)).toBeLessThanOrEqual(180)
     expect(Math.abs(p.latitude)).toBeLessThan(85)
     expect(p.sources?.every(s => s.startsWith('https://'))).toBe(true)
   }
+})
+
+it('resolves parenthesized historical names and represents an island as an area, never its capital', () => {
+  expect(suggestedReadingPlace(['多摩梨帝（耽摩栗底）', '耽摩栗底'], 'foguoji')?.longitude).toBe(87.92)
+  expect(suggestedReadingPlace(['巴连弗邑（华氏城）'], 'foguoji')?.country).toBe('India')
+  expect(suggestedReadingPlace(['巴连弗邑（建康）'], 'foguoji')).toBeNull()
+  expect(suggestedReadingPlace(['玉门关'], 'foguoji')?.longitude).toBeCloseTo(93.864, 2)
+  const region = suggestedReadingPlace(['师子国（斯里兰卡）', 'Colombo'], 'foguoji')!
+  expect(region.area).toBeDefined(); expect(region.bounds).toHaveLength(2)
+  expect(region.name).not.toContain('Colombo')
+  expect(suggestedReadingPlace(['师子国'], 'another-book')).toBeNull()
 })
 
 it('fits every actual stop despite clusters, outliers, or crossing the date line', () => {
@@ -51,4 +62,13 @@ it('fits every actual stop despite clusters, outliers, or crossing the date line
   }
   const west=guideMapGeometry(routes[0]).projection([85,25]), east=guideMapGeometry(routes[1]).projection([85,25])
   expect(west).not.toEqual(east)
+})
+
+it('separates coincident and nearby touch targets at phone and desktop zoom levels', () => {
+  const points: [number, number][] = [[200,200],[200,200],[203,205],[205,202],[202,208]]
+  for (const scale of [.3,1,2]) {
+    const markers = mapMarkerPositions(points,scale)
+    markers.forEach((p,i) => markers.slice(i+1).forEach(q => expect(Math.hypot(p[0]-q[0],p[1]-q[1])*scale).toBeGreaterThanOrEqual(35)))
+  }
+  expect(points[1]).toEqual([200,200])
 })

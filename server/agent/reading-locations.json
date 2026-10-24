@@ -303,7 +303,9 @@
             "Tamralipti",
             "Tamalipti",
             "Tamralipta",
-            "ターマラリプティ"
+            "ターマラリプティ",
+            "耽摩栗底",
+            "耽摩栗帝"
           ],
           "precision": "approximate",
           "sources": [
@@ -331,6 +333,44 @@
             "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html",
             "https://nalanda.nic.in/en/tourist-place/cyclopean-wall/",
             "https://commons.wikimedia.org/wiki/File:Cyclopean_Wall_of_Rajgir.jpg"
+          ]
+        },
+        {
+          "id": "yumen-pass",
+          "name": "Yumen Pass",
+          "names": [
+            "玉門關",
+            "玉门关",
+            "Yumen Pass",
+            "Yumenguan"
+          ],
+          "country": "China",
+          "region": "Gansu",
+          "longitude": 93.86389,
+          "latitude": 40.35361,
+          "precision": "approximate",
+          "sources": [
+            "https://whc.unesco.org/en/list/1442/maps"
+          ]
+        },
+        {
+          "id": "sinhala",
+          "name": "Sinhala · Sri Lanka",
+          "names": [
+            "師子國",
+            "师子国",
+            "Sinhala",
+            "Singhala",
+            "Ceylon",
+            "Sri Lanka",
+            "斯里蘭卡",
+            "斯里兰卡"
+          ],
+          "countryArea": "Sri Lanka",
+          "precision": "region",
+          "sources": [
+            "https://www.gutenberg.org/cache/epub/64535/pg64535-images.html",
+            "https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-countries/"
           ]
         }
       ],
@@ -383,7 +423,15 @@
         "竺剎尸羅",
         "竺刹尸罗",
         "Zhuchashiluo",
-        "Chu-cha-shi-lo"
+        "Chu-cha-shi-lo",
+        "鄯善",
+        "河西走廊",
+        "沙河",
+        "塔克拉玛干沙漠",
+        "烏夷",
+        "乌夷",
+        "北天竺",
+        "中天竺"
       ]
     }
   }

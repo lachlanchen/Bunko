@@ -83,3 +83,15 @@
 
 [data-theme=night] .atlas-index-number { background: #294854; color: #e0edf0; }
 [data-theme=night] .atlas-arrow { fill: #9dc0d6; }
+
+.atlas-region { fill: #ddae73; fill-opacity: .5; stroke: #b17a45; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.atlas-pin rect { fill: #fbf0dc; stroke: #9a713a; stroke-width: 2; stroke-dasharray: 3 2; }
+.atlas-pin.selected rect,.atlas-pin:focus-visible rect { stroke: #c27760; stroke-width: 3; }
+.atlas-route.atlas-route-gap { stroke: #9a713a; stroke-dasharray: 1 7; stroke-linecap: round; }
+.atlas-route-gaps { margin: .7rem 0; font-size: .85rem; overflow-wrap: anywhere; }
+.atlas-route-gaps > div { padding: .6rem; margin: .4rem 0; border-left: 2px solid var(--line); }
+.atlas-route-gaps > div.selected { border-color: #b17a45; }
+.atlas-route-gaps button { font-size: inherit; margin: .25rem .4rem 0 0; padding: .3rem .5rem; }
+[data-theme=night] .atlas-region { fill: #b88c54; stroke: #d5b17e; }
+.atlas-marker-leader { fill: none; stroke: #607989; stroke-width: 1; vector-effect: non-scaling-stroke; pointer-events: none; }
+.atlas-place-label { pointer-events: none; }

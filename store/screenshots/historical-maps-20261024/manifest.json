@@ -1,24 +1,24 @@
 {
-  "at": "2026-10-24T07:28:32.443815+00:00",
+  "at": "2026-10-24T07:58:21.091685+00:00",
   "status": "component QA drafts; not uploaded to any store",
   "content": "Actual DeepSeek response about the public Foguoji edition, isolated test account; no private reader history",
   "source": "Current BookGuide component in a local preview wrapper, not an installed native-app capture",
   "images": [
     {
       "file": "phone-expanded.png",
-      "sha256": "00de1ea6b333e9d14f44369b9eb3197edad1c072b335a73d95e0b485f71c5cfc"
+      "sha256": "99ae4c83532c1a5ff6e822935833b62edf1670af2d0d92fe90c3ab20fd087dbb"
     },
     {
       "file": "desktop-expanded.png",
-      "sha256": "58ae8038a2d66207d141c073792ff419ab7202e42beffb8b63c9d508971b4bd4"
+      "sha256": "327d1aaea96cd162422602f3332b6df03f5db9bd9e52b1093e26ec1da22a8a6e"
     },
     {
       "file": "compact-night-expanded.png",
-      "sha256": "96e71d35f6d9af1a595309abaec93a215345962feab4c596f5ce9386dfbdd3a5"
+      "sha256": "b600375634b070ec6eb7ad21fe86ce014f703a204ea7c9f883608d07f80a6b35"
     },
     {
       "file": "tablet-large-expanded.png",
-      "sha256": "f05c5c154a173c7b3d418f5bbb442bbd4b7851266c4d84cef4e723a2b1906241"
+      "sha256": "8b6fa8371de22d013a4fc1b4ded392c339556e46dbcac94f11424cb3a72d0f15"
     }
   ]
 }

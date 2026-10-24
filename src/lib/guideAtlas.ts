@@ -1,7 +1,9 @@
 import cities from '../data/atlas-places.json'
 import historical from '../../server/agent/reading-locations.json'
+import countries from '../data/atlas-countries.json'
+import { geoBounds, type GeoPermissibleObjects } from 'd3-geo'
 
-export interface AtlasPlace { id: string; name: string; country: string; region: string; longitude: number; latitude: number; names: string[]; approximate?: boolean; sources?: string[]; atlasId?: string }
+export interface AtlasPlace { id: string; name: string; country: string; region: string; longitude: number; latitude: number; names: string[]; approximate?: boolean; sources?: string[]; atlasId?: string; area?: GeoPermissibleObjects; bounds?: number[][] }
 const normalize = (value: string) => value.normalize('NFKD').replace(/\p{M}/gu, '').toLocaleLowerCase().replace(/[’'‘ʽʼ\s-]/gu, '').trim()
 export const atlas: AtlasPlace[] = (cities as [string, string, string, string, number, number, string[]][]).map(([id, name, country, region, longitude, latitude, names]) => ({ id, name, country, region, longitude, latitude, names }))
 const atlasById = new Map(atlas.map(place => [place.id, place]))
@@ -20,10 +22,16 @@ export function suggestedPlace(names: string[]): AtlasPlace | null {
   return results.length === 1 ? results[0] : null
 }
 
-type HistoricalRow = { id: string; name: string; names: string[]; sources: string[]; atlasId?: string; country?: string; region?: string; longitude?: number; latitude?: number }
+type HistoricalRow = { id: string; name: string; names: string[]; sources: string[]; atlasId?: string; country?: string; region?: string; longitude?: number; latitude?: number; countryArea?: string }
 const books = historical.books as Record<string, { locations: HistoricalRow[]; unresolvedNames: string[] }>
 export function historicalPlaces(bookId: string): AtlasPlace[] {
-  return (books[bookId]?.locations || []).flatMap(row => {
+  return (books[bookId]?.locations || []).flatMap<AtlasPlace>(row => {
+    if (row.countryArea) {
+      const feature = countries.features.find(f => f.properties.NAME_EN === row.countryArea)
+      if (!feature) return []
+      const area = feature as GeoPermissibleObjects
+      return [{ id: `historical-${bookId}-${row.id}`, name: row.name, country: row.countryArea, region: '', longitude: feature.properties.LABEL_X, latitude: feature.properties.LABEL_Y, names: row.names, approximate: true, sources: row.sources, area, bounds: geoBounds(area) }]
+    }
     const modern = row.atlasId ? atlasById.get(row.atlasId) : undefined
     if (row.atlasId && !modern) return []
     return [{ ...modern, id: `historical-${bookId}-${row.id}`, name: row.name, country: modern?.country || row.country!, region: modern?.region || row.region!,
@@ -34,11 +42,16 @@ export function historicalPlaces(bookId: string): AtlasPlace[] {
 // Exact names only. Book-scoped historical names must not silently become a
 // namesake town, a country's capital, or an invented coordinate from the model.
 export function suggestedReadingPlace(names: string[], bookId: string): AtlasPlace | null {
+  // Parenthesized historical/modern names are aliases, not a fuzzy substring match.
+  const variants = (name: string) => { const text = name.normalize('NFKC'); return [text, ...text.split(/[()]/u).filter(Boolean)].map(normalize) }
   const blocked = new Set((books[bookId]?.unresolvedNames || []).map(normalize))
-  if (blocked.has(normalize(names[0] || ''))) return null
   const historic = historicalPlaces(bookId)
+  const primary = variants(names[0] || '')
+  const regions = historic.filter(p => p.area && p.names.some(n => primary.includes(normalize(n))))
+  if (regions.length === 1) return regions[0]
+  if (primary.some(n => blocked.has(n))) return null
   const candidates = names.flatMap(name => {
-    const known = historic.filter(p => p.names.some(n => normalize(n) === normalize(name)))
+    const known = historic.filter(p => p.names.some(n => variants(name).includes(normalize(n))))
     return known.length ? known : findPlaces(name, true)
   })
   const unique = new Map<string, AtlasPlace>()

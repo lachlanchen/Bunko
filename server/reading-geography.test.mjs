@@ -14,3 +14,10 @@ test('disputed regions are not geocoded to a guessed capital and geography conte
  assert.deepEqual(readingGeography(guide),guide)
  const context=geographyContext('foguoji');assert.match(context.purpose,/not evidence/);assert.ok(context.noExactPin.includes('中國'));assert.equal(geographyContext('other'),undefined)
 })
+test('saved composite names gain safe aliases, conflicting names and regions do not',()=>{
+ const guide={reference:{id:'foguoji'},places:[{name:'巴连弗邑（华氏城）',aliases:[]},{name:'中天竺（印度）',aliases:['Patna']},{name:'巴连弗邑（建康）',aliases:[]}]}
+ const result=readingGeography(guide)
+ assert.deepEqual(result.places[0].aliases,['Patna'])
+ assert.deepEqual(result.places[1],guide.places[1]);assert.deepEqual(result.places[2],guide.places[2])
+ assert.ok(!geographyContext('foguoji').approximateLocations.some(p=>p.names.includes('Sri Lanka')))
+})

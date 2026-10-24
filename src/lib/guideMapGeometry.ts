@@ -1,5 +1,20 @@
 import { geoMercator, geoPath } from 'd3-geo'
 
+/** Keep touch targets distinct; leader lines retain the actual geographic point. */
+export function mapMarkerPositions(points: [number, number][], scale: number) {
+  const placed: [number, number][] = []
+  for (const point of points) {
+    let chosen = point
+    search: for (let ring = 0; ring <= 8; ring++) for (let step = 0; step < (ring ? 12 : 1); step++) {
+      const angle = step * Math.PI / 6
+      const candidate: [number, number] = [point[0] + Math.cos(angle) * ring * 36 / scale, point[1] + Math.sin(angle) * ring * 36 / scale]
+      if (placed.every(p => Math.hypot(p[0] - candidate[0], p[1] - candidate[1]) * scale >= 35)) { chosen = candidate; break search }
+    }
+    placed.push(chosen)
+  }
+  return placed
+}
+
 /** Fit the actual projected bounds, not the arithmetic mean of clustered pins. */
 export function guideMapGeometry(locations: { longitude: number; latitude: number }[]) {
   const lons = locations.map(p => (p.longitude + 360) % 360).sort((a, b) => a - b)

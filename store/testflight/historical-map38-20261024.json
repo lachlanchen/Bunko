@@ -1,0 +1,30 @@
+{
+  "version": "1.0.14",
+  "build": 38,
+  "at": "2026-10-24T07:56:27.716839+00:00",
+  "status": "local source and signed Android qualified; Apple delivery not admitted; Google login required",
+  "backend": {
+    "live": true,
+    "releaseHash": "8f4523c078fd",
+    "savedMessagesUnchanged": true
+  },
+  "features": [
+    "Historical compound-name matching",
+    "Offline region outlines and honest unresolved journey sections",
+    "Separated nearby touch targets",
+    "Existing saved guide reuse"
+  ],
+  "privacy": "Authorized private account replay retained outside Git; public screenshot drafts use isolated public-book response",
+  "tests": {
+    "fullClient": 170,
+    "fullServer": 152,
+    "finalMapFocused": 13,
+    "browserLayouts": 4,
+    "isolatedProviderCalls": 1
+  },
+  "internalUploads": {
+    "apple": false,
+    "android": false
+  },
+  "publicReviewChanged": false
+}
