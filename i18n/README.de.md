@@ -18,14 +18,14 @@ Bunko vereint gemeinfreie Klassiker und zur Verbreitung freigegebene Originalwer
 - Lies auf iPhone, iPad, Android, im Web und auf dem Mac. Sende mehrsprachige Auszüge mit Ruby an eine gekoppelte Apple Watch.
 - Bücher können beliebig viele Sprachen enthalten, auch Schriften von rechts nach links. Die Oberfläche unterstützt Englisch, vereinfachtes und traditionelles Chinesisch sowie Japanisch.
 
-## Vorschau: ein Begleiter beim Lesen
+## Ein Begleiter beim Lesen
 
-Das nächste Testupdate erweitert den automatisch übernommenen Buchkontext, kompakte @-Verweise auf Bücher, Kapitel und Passagen sowie die Rückkehr zur genauen Textstelle. Erkunde Figurenbeziehungen als Graph oder Baum, Orte auf einer geografischen Offlinekarte und Ereignisse auf einer datierten Zeitleiste. Die belegenden Passagen bleiben in jedem Leseführer erreichbar.
+Der Lesebegleiter verbindet den automatisch übernommenen Buchkontext, kompakte @-Verweise auf Bücher, Kapitel und Passagen sowie die Rückkehr zur genauen Textstelle. Erkunde Figurenbeziehungen als Graph oder Baum, Orte auf einer geografischen Offlinekarte und Ereignisse auf einer datierten Zeitleiste. Die belegenden Passagen bleiben in jedem Leseführer erreichbar.
 
-**Testvorschau, keine Ankündigung einer öffentlichen Veröffentlichung.** Die Leseführer behandeln ausgewählte oder stichprobenartig erfasste Auszüge und können unvollständig sein. Unsichere Orte und Daten werden gekennzeichnet. Die Bilder zeigen echte Komponenten; Karte und Zeitleiste verwenden eine ausdrücklich gekennzeichnete Beispielreise. [Details zur Vorschau](../docs/reading-guides-preview.md).
+**Verfügbar in iOS und Android 1.0.14 (37). Mac37 wird noch geprüft; die öffentliche Mac-Version ist 1.0.13 (23). Der Webreader wird separat aktualisiert.** Die Leseführer behandeln ausgewählte oder stichprobenartig erfasste Auszüge und können unvollständig sein. Unsichere Orte und Daten werden gekennzeichnet. Die Bilder zeigen echte Komponenten; Karte und Zeitleiste verwenden eine ausdrücklich gekennzeichnete Beispielreise. [Details zur Vorschau](../docs/reading-guides-preview.md).
 
 <p>
-<a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — test preview" width="190"></a>
+<a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-timeline.png"><img src="../docs/images/reading-guides-20261021/phone-timeline.png" alt="Calendar timeline — demonstration journey" width="190"></a>
 </p>

@@ -18,14 +18,16 @@ Bunko brings public-domain classics and rights-cleared original books to one mul
 - Read on iPhone, iPad, Android, the web and Mac. Send multilingual excerpts with ruby to a paired Apple Watch.
 - Books can contain any number of languages, including right-to-left scripts. The interface supports English, Simplified Chinese, Traditional Chinese and Japanese.
 
-## Preview: a companion beside the book
+## A companion beside the book
 
-The next test update builds on automatic book context, compact @ references to books, chapters and passages, and links back to the exact text. Explore character relationships as graphs or trees, place names on an offline geographic map, and events on a dated timeline. Each guide keeps its supporting passages accessible.
+The reading companion brings together automatic book context, compact @ references to books, chapters and passages, and links back to the exact text. Explore character relationships as graphs or trees, place names on an offline geographic map, and events on a dated timeline. Each guide keeps its supporting passages accessible. Book conversations follow you across chapters, and saved guides can be reopened from a compact picker. Whole-book questions can draw on broader book knowledge, clearly labelled separately from verified passages.
 
-**Test preview, not a public-release announcement.** Guides cover selected or sampled excerpts and may be incomplete. Uncertain places and dates remain explicit. The images below are actual component captures; the map and timeline use a labelled demonstration journey. [Preview details](docs/reading-guides-preview.md).
+Chapter titles stay on one line and expand when needed. Sort the library by recently read, newest added, title or author; the app remembers your choice on each device.
+
+**Available in iOS and Android 1.0.14 (37). Mac build37 is still in review; the public Mac version is 1.0.13 (23). The web reader has its own release schedule.** Guides cover selected or sampled excerpts and may be incomplete. Uncertain places and dates remain explicit. The images below are actual component captures; the map and timeline use a labelled demonstration journey. [Preview details](docs/reading-guides-preview.md).
 
 <p>
-<a href="docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — test preview" width="190"></a>
+<a href="docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="docs/images/reading-guides-20261021/phone-map.png"><img src="docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>
 <a href="docs/images/reading-guides-20261021/phone-timeline.png"><img src="docs/images/reading-guides-20261021/phone-timeline.png" alt="Calendar timeline — demonstration journey" width="190"></a>
 </p>
