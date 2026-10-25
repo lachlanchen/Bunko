@@ -45,6 +45,15 @@ Older saved maps receive location identifiers at read time when their names and
 period match. Their stored messages are not rewritten. This preserves the
 original conversation while enabling the new renderer.
 
+## Preview
+
+This is the actual reading-map component with synthetic demonstration content,
+shown at a 390-pixel width. The second turn adds Luoyang, Chang'an and Xiangyang
+to the thirteen provinces. It is an internal-build preview, not a public-store
+or physical iPhone capture. The map attribution is visible below the map.
+
+<a href="images/historical-maps-20261026/han-cities-phone.png"><img src="images/historical-maps-20261026/han-cities-phone.png" alt="Thirteen Eastern Han provinces with three named city markers" width="300"></a>
+
 ## Qualification · 26 October 2026
 
 `npm run check` passed: 181 client tests, 169 server tests, lint, document renderer
@@ -68,8 +77,26 @@ are distinct from installed-device tests. `tools/build-reading-map-fixture.mjs`
 also prepares a synthetic fixture for the isolated Mac Debug WebKit harness;
 those fixture files are excluded from release resources.
 
-Apple internal build41 and Android42 carry the client update. Android41 was
-uploaded as an unpublished draft before the city-label refinement; it is not the
-final candidate. The delivery receipt will record
-actual Apple/Google availability after processing. Mac40's formal review and the
-public PWA remain unchanged during this internal round.
+The isolated native Mac Debug application passed 16 WebKit checks, including
+downloaded and offline reading, ruby, reading-position restoration, equations,
+figures and the synthetic map continuation at multiple window sizes. The map
+test added the three cities and returned to the saved thirteen-region result.
+
+## Internal availability
+
+- Apple iOS/Watch and universal Mac **1.0.15 (41)** are VALID / IN_BETA_TESTING
+  in the existing TestFlight internal group.
+- Android **1.0.15 (42)** is available to the existing Google Play internal testers.
+  Android41 was an unpublished draft before the city-label refinement and was
+  removed from that draft release.
+
+Both Apple exports passed signature, version and bundled-resource checks. The
+embedded Watch app is build41; both Mac architectures retain a macOS12 minimum.
+The actual Mac runtime checks used macOS15.7.9 on x86_64. This round did not add
+a physical iOS or Watch UI test. Android42 passed release lint, signed-package
+checks and seven installed upgrade checks, preserving downloaded reading data.
+Four-language beta notes and internal group membership were read back.
+
+Mac40 remains Waiting for Review. The public PWA and public store screenshots
+are unchanged. Build processes, temporary signing resources and upload connections
+were closed after verification. [Exact delivery receipt](../store/testflight/reading-tools41-20261026.json).

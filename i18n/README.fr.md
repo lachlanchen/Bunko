@@ -22,7 +22,9 @@ Bunko réunit des classiques du domaine public et des ouvrages originaux autoris
 
 Le compagnon de lecture réunit le contexte automatique du livre, les références @ compactes aux livres, chapitres et passages, et le retour au texte exact. Explorez les relations entre personnages sous forme de graphe ou d’arbre, les lieux sur une carte géographique hors connexion et les événements sur une frise datée. Les passages qui étayent chaque guide restent accessibles.
 
-**Disponible sur iOS et Android 1.0.14 (37). Mac39 est encore en cours d’examen ; la version Mac publique reste 1.0.13 (23). Le lecteur web est mis à jour séparément.** Les guides portent sur des extraits choisis ou échantillonnés et peuvent être incomplets. Les lieux et dates incertains sont signalés. Les images sont de vraies captures des composants ; la carte et la frise utilisent un parcours de démonstration explicitement indiqué. [Détails de l’aperçu](../docs/reading-guides-preview.md).
+**Disponible sur iOS et Android 1.0.14 (37). Mac40 est encore en cours d’examen ; la version Mac publique reste 1.0.13 (23). Le lecteur web est mis à jour séparément.** Les guides portent sur des extraits choisis ou échantillonnés et peuvent être incomplets. Les lieux et dates incertains sont signalés. Les images sont de vraies captures des composants ; la carte et la frise utilisent un parcours de démonstration explicitement indiqué. [Détails de l’aperçu](../docs/reading-guides-preview.md).
+
+**Cartes historiques en test interne :** provinces en couleurs, villes nommées et questions de suivi pour enrichir la carte enregistrée. La couche des Han orientaux indique son année de référence et ses sources. [Détails et aperçu](../docs/reading-tools-and-historical-maps.md).
 
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>

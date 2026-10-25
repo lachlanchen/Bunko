@@ -22,7 +22,9 @@ Bunko reúne clásicos de dominio público y libros originales con autorización
 
 El compañero de lectura reúne el contexto automático del libro, las referencias @ compactas a libros, capítulos y pasajes, y el regreso al texto exacto. Explora relaciones entre personajes en gráficos o árboles, lugares en un mapa geográfico sin conexión y acontecimientos en una línea temporal con fechas. Los pasajes que sustentan cada guía quedan a mano.
 
-**Disponible en iOS y Android 1.0.14 (37). Mac39 sigue en revisión; la versión pública para Mac es 1.0.13 (23). El lector web se actualiza por separado.** Las guías abarcan fragmentos seleccionados o muestreados y pueden ser incompletas. Los lugares y fechas inciertos se indican expresamente. Las imágenes son capturas reales de los componentes; el mapa y la cronología usan un recorrido de demostración identificado como tal. [Detalles del avance](../docs/reading-guides-preview.md).
+**Disponible en iOS y Android 1.0.14 (37). Mac40 sigue en revisión; la versión pública para Mac es 1.0.13 (23). El lector web se actualiza por separado.** Las guías abarcan fragmentos seleccionados o muestreados y pueden ser incompletas. Los lugares y fechas inciertos se indican expresamente. Las imágenes son capturas reales de los componentes; el mapa y la cronología usan un recorrido de demostración identificado como tal. [Detalles del avance](../docs/reading-guides-preview.md).
+
+**Mapas históricos en pruebas internas:** provincias con distintos colores, marcadores con nombres de ciudades y preguntas de seguimiento para ampliar el mapa guardado. La capa Han oriental indica el año de referencia y las fuentes. [Detalles y vista previa](../docs/reading-tools-and-historical-maps.md).
 
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>

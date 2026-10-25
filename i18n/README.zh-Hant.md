@@ -22,7 +22,9 @@ Bunko 將公版經典與已獲散布許可的原創書籍收進同一個多語�
 
 閱讀助手延續開啟助手時自動帶入書籍脈絡的體驗，支援用精簡的 @ 參照指定書籍、章節和段落，並返回原文的準確位置。人物關係可用網絡圖或樹狀圖查看，地名可放到離線地理地圖上，事件可按日期排列成時間軸。每份導讀都能開啟相應的原文依據。
 
-**iOS 和 Android 1.0.14 (37) 已正式發布。Mac39 仍在審核，Mac 目前正式版為 1.0.13 (23)。網頁版單獨更新。** 導讀涵蓋選定或抽樣的文本，未必涵蓋全書；不確定的地點和日期會明確標示。下方圖片來自實際元件畫面，其中地圖和時間軸使用明確標示的示範旅程。[查看預覽說明](../docs/reading-guides-preview.md)。
+**iOS 和 Android 1.0.14 (37) 已正式發布。Mac40 仍在審核，Mac 目前正式版為 1.0.13 (23)。網頁版單獨更新。** 導讀涵蓋選定或抽樣的文本，未必涵蓋全書；不確定的地點和日期會明確標示。下方圖片來自實際元件畫面，其中地圖和時間軸使用明確標示的示範旅程。[查看預覽說明](../docs/reading-guides-preview.md)。
+
+**內測中的歷史地圖：** 州域分色顯示，城市使用名稱標記，可接續上次的地圖提問和補充地點。東漢圖層註明參考年代和來源。[地圖說明與預覽](../docs/reading-tools-and-historical-maps.md)。
 
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>

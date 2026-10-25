@@ -22,7 +22,9 @@ Bunko tập hợp tác phẩm kinh điển thuộc phạm vi công cộng và s�
 
 Trợ lý đọc sách kết hợp ngữ cảnh sách tự động, tham chiếu @ gọn cho sách, chương và đoạn văn, cùng liên kết trở về đúng vị trí trong bản gốc. Khám phá quan hệ nhân vật bằng đồ thị hoặc cây, địa danh trên bản đồ địa lý ngoại tuyến và sự kiện trên dòng thời gian có ngày tháng. Các đoạn làm căn cứ luôn có thể mở từ hướng dẫn.
 
-**Đã có trên iOS và Android 1.0.14 (37). Mac39 vẫn đang xét duyệt; bản Mac công khai là 1.0.13 (23). Trình đọc web được cập nhật riêng.** Hướng dẫn chỉ bao quát các trích đoạn được chọn hoặc lấy mẫu và có thể chưa đầy đủ. Địa điểm và ngày tháng chưa chắc chắn được ghi rõ. Ảnh dưới đây chụp các thành phần giao diện thực; bản đồ và dòng thời gian dùng hành trình minh họa có nhãn. [Chi tiết bản xem trước](../docs/reading-guides-preview.md).
+**Đã có trên iOS và Android 1.0.14 (37). Mac40 vẫn đang xét duyệt; bản Mac công khai là 1.0.13 (23). Trình đọc web được cập nhật riêng.** Hướng dẫn chỉ bao quát các trích đoạn được chọn hoặc lấy mẫu và có thể chưa đầy đủ. Địa điểm và ngày tháng chưa chắc chắn được ghi rõ. Ảnh dưới đây chụp các thành phần giao diện thực; bản đồ và dòng thời gian dùng hành trình minh họa có nhãn. [Chi tiết bản xem trước](../docs/reading-guides-preview.md).
+
+**Bản đồ lịch sử đang thử nghiệm nội bộ:** các châu được tô màu riêng, thành phố có nhãn tên, và câu hỏi tiếp theo có thể bổ sung địa điểm vào bản đồ đã lưu. Lớp bản đồ Đông Hán ghi rõ năm tham chiếu và nguồn. [Chi tiết và xem trước](../docs/reading-tools-and-historical-maps.md).
 
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>

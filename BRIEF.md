@@ -9,7 +9,14 @@ Render historical provinces as individually colored areas, with legible labels
 and selectable details. Preserve previous conversations and map continuations.
 Use sourced geographic data; distinguish the c.140 CE reference layer from the
 191 CE reading context and from contemporary military control. Accumulate the
-qualified client in internal build41, preserving the Mac40 review.
+qualified client in Apple internal build41 and Android42, preserving the Mac40 review.
+
+Apple iOS/Watch and universal Mac **1.0.15 (41)** are now VALID /
+IN_BETA_TESTING in the existing internal group. Android **1.0.15 (42)** is
+available to internal testers. The reading-tool backend is live; the real
+thirteen-region request and three-city continuation passed. See
+`docs/reading-tools-and-historical-maps.md` and
+`store/testflight/reading-tools41-20261026.json` for qualification and delivery.
 
 ## Reading assistant restored · 2026-10-25
 

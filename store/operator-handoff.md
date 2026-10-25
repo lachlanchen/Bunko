@@ -1,3 +1,33 @@
+# Reading tools and historical maps available internally · 26 October 2026
+
+Apple **1.0.15 (41)** is VALID / IN_BETA_TESTING for iOS/Watch and universal
+Mac in the existing internal group. Android **1.0.15 (42)** is available to the
+existing Google Play internal testers. Qualified app source: `fb64aad7`.
+
+The live backend can look up places, inspect dated layers and search the
+authorized passage selection before making a guide. The new client draws
+thirteen colored Eastern Han reference provinces and fixed named city markers;
+follow-ups extend saved maps. Prior reader conversations remain intact.
+
+181 client and 169 server tests, real model/HTTPS requests, four browser widths,
+seven installed Android upgrade checks and 16 native Mac WebKit checks passed.
+Both Apple archives/exports and embedded Watch resources/signatures were verified.
+No new physical iOS/Watch UI test is claimed. All 11 README languages include a
+clearly marked internal map preview. [Qualification](../docs/reading-tools-and-historical-maps.md)
+and [delivery receipt](testflight/reading-tools41-20261026.json).
+
+Mac40 remains Waiting for Review, selected build40 verified at17:05 UTC.
+No new public submission, public PWA deployment, billing or identity change.
+Android41 was never published;42 is the final internal release.
+
+No Mac/GUI hold remains. R3's matching guard released16:57 UTC; independent
+cleanup verified source, process, profile and keychain restoration. Bunko
+noVNC6190/CDP9490, emulator5598/WebView19524 and upload proxy19641 are stopped.
+Saved profiles remain available for reuse. Private evidence:
+`.runtime/reading-agent41-20261025/`.
+
+## Earlier records
+
 # Bunko Mac40 replaces Mac39 · 25 October 2026
 
 Mac **1.0.15 (40)** is **Waiting for Review**, automatic release after approval,
