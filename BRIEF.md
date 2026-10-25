@@ -1,5 +1,23 @@
 # Bunko — product brief
 
+## Deferred text and interface sizing · 2026-10-25
+
+The owner requests recording this for after their Codex usage resets. Do not
+implement, build or submit it now; resume when the owner returns to this work.
+
+- Extend main reading text to 250%, including an easy 200% choice. Prefer a
+  slider with visible percentages and a few quick presets.
+- Add a separate interface-size control for navigation, Settings, chat and
+  other app text. The owner reports that the interface stays too small on
+  tablets such as Bigme e-ink/AINote even when reading text is enlarged.
+- Preferred design: follow system text sizing by default, with simple larger
+  interface presets. Keep interface size independent of reading text so large
+  book text does not make navigation unwieldy. Keep the existing ruby control.
+  Exact preset values can be settled during implementation.
+- Remember choices on the device; preserve reading position. Check large sizes
+  on phones, tablets/e-ink and Mac for clipped labels, reachable controls and
+  sensible wrapping. Use controls that work without dragging on e-ink devices.
+
 ## Mainland storefront correction · 2026-10-25
 
 Apple rejected Mac1.0.14(37) under Guideline5 for mainland China generative-service
