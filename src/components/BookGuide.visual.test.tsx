@@ -116,6 +116,12 @@ it('draws every requested Han region with a distinct color, visible name, dated 
   const jing = container.querySelector('.atlas-region[aria-label="荆州"]')!
   fireEvent.keyDown(jing, { key: 'Enter' })
   expect(container.querySelector('.guide-entity-grid')).toHaveTextContent('荆州')
+  const cities = [['luoyang', '洛阳', '1159147063'], ['changan', '长安', '1159151363'], ['xiangyang', '襄阳', '1159148459']].map(([id, name, locationId]) => ({ ...entity(id, name), locationId }))
+  rerender(<BookGuide guide={{ ...current, key: 'with-cities', places: [...places, ...cities] }} tab="places" ui="zh-Hans" onRead={() => {}} />)
+  await waitFor(() => expect(container.querySelectorAll('.atlas-city-label text')).toHaveLength(3))
+  expect([...container.querySelectorAll('.atlas-city-label text')].map(n => n.textContent)).toEqual(['洛阳', '长安', '襄阳'])
+  expect(container.querySelectorAll('.atlas-city-anchor')).toHaveLength(3)
+  expect(container.querySelectorAll('.atlas-region')).toHaveLength(13)
   rerender(<BookGuide guide={{ ...current, key: 'fewer-regions', places: places.slice(0, 3) }} tab="places" ui="zh-Hans" onRead={() => {}} />)
   await waitFor(() => expect(container.querySelectorAll('.atlas-region')).toHaveLength(3))
 })

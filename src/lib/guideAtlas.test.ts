@@ -91,6 +91,10 @@ it('locates all thirteen Han provinces as colored dated areas and rejects other-
   expect(suggestedReadingPlace(['长安'], 'zizhi-tongjian', 191)?.name).toBe('Xian')
   expect(suggestedReadingPlace(['荆州'], 'zizhi-tongjian', 191, 'han140-jing')?.area).toBeDefined()
   expect(han.license).toBe('CC-BY-SA-4.0')
+  for (const [city, province] of [['洛阳', '司隶'], ['长安', '司隶'], ['襄阳', '荆州']]) {
+    const place = suggestedReadingPlace([city], 'zizhi-tongjian', 191)!
+    expect(geoContains(regions.find(r => r.name === province)!.area!, [place.longitude, place.latitude])).toBe(true)
+  }
 })
 
 it('keeps all region labels separately readable and selectable on narrow phones', () => {

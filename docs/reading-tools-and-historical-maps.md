@@ -7,7 +7,7 @@ questions keep the selected conversation branch and its prior visual results.
 ## Map behavior
 
 Historical provinces are colored areas with selectable labels and details. Cities
-remain point locations. The map supports zoom, pan and fit; labels avoid each other
+remain fixed point locations with named labels and leader lines. The map supports zoom, pan and fit; labels avoid each other
 at compact widths. A province overview does not draw adjacency lines unless the
 reader chooses to show the returned connections.
 
@@ -68,6 +68,8 @@ are distinct from installed-device tests. `tools/build-reading-map-fixture.mjs`
 also prepares a synthetic fixture for the isolated Mac Debug WebKit harness;
 those fixture files are excluded from release resources.
 
-Internal build41 carries the client update. Its delivery receipt will record
+Apple internal build41 and Android42 carry the client update. Android41 was
+uploaded as an unpublished draft before the city-label refinement; it is not the
+final candidate. The delivery receipt will record
 actual Apple/Google availability after processing. Mac40's formal review and the
 public PWA remain unchanged during this internal round.

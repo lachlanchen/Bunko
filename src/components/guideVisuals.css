@@ -108,3 +108,7 @@
 [data-theme=night] .atlas-region-label rect { fill: #253b40; stroke: #a5bab4; }
 [data-theme=night] .atlas-region-label text { fill: #f4f5ec; }
 [data-theme=night] .atlas-region.selected { stroke: #d7e6e0; }
+.atlas-city-anchor{fill:#235a83;stroke:var(--paper,#fffdf8);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.atlas-city-label rect{fill:#e5f0f7;stroke:#426f8d;stroke-width:1.4;stroke-dasharray:none}
+.atlas-city-label text{fill:#20465e;font-weight:700}
+.atlas-city-label.selected rect{stroke:#173f5b;stroke-width:2.5}
