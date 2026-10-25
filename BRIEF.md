@@ -1,5 +1,16 @@
 # Bunko — product brief
 
+## Historical maps and reading tools · 2026-10-26
+
+The owner requests a reading assistant that can query evidence, check its map
+and continue improving it across messages. Add bounded read-only place lookup,
+dated map-layer discovery and search within the authorized passage scope.
+Render historical provinces as individually colored areas, with legible labels
+and selectable details. Preserve previous conversations and map continuations.
+Use sourced geographic data; distinguish the c.140 CE reference layer from the
+191 CE reading context and from contemporary military control. Accumulate the
+qualified client in internal build41, preserving the Mac40 review.
+
 ## Reading assistant restored · 2026-10-25
 
 The owner now requests a corrected Mac build to replace the pending Mac39 review.

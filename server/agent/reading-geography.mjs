@@ -1,4 +1,5 @@
 import locations from './reading-locations.json' with { type: 'json' }
+import { groundMap } from './map-grounding.mjs'
 const normalize = value => String(value || '').normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().replace(/[’'‘ʽʼ\s-]/gu, '')
 
 const names = value => { const text = String(value || '').normalize('NFKC'); return [text, ...text.split(/[()]/u).filter(Boolean)].map(normalize) }
@@ -6,6 +7,7 @@ const names = value => { const text = String(value || '').normalize('NFKC'); ret
 /** Add documented modern search names; never fabricate places, routes or coordinates.
  * Read-time adaptation also helps older native maps without rewriting saved chat. */
 export function readingGeography(guide) {
+  guide = groundMap(guide)
   const book = locations.books[guide?.reference?.id]
   if (!book || !Array.isArray(guide.places)) return guide
   return { ...guide, places: guide.places.map(place => {

@@ -161,6 +161,27 @@ final class MacSmokeTests {
             if (try await js("document.querySelectorAll('.katex-error,.math-error').length")) as? Int != 0 { throw URLError(.cannotParseResponse) }
             check("physics equations and figures render without TeX errors")
             try await screenshot("04-physics-figures")
+            if ProcessInfo.processInfo.environment["BUNKO_MAP_QA"] == "1" {
+                // The isolated operator copies this synthetic component fixture
+                // into the Debug product only. Release resources exclude it.
+                webView.load(URLRequest(url: URL(string: "bunko://localhost/qa-map.html")!))
+                try await wait("document.querySelectorAll('.atlas-region').length === 13 && document.querySelectorAll('.atlas-region-label').length === 13")
+                try await wait("new Set(Array.from(document.querySelectorAll('.atlas-region')).map(p => p.style.fill)).size === 13")
+                _ = try await js("document.querySelector('.atlas-region[aria-label=荆州]').dispatchEvent(new MouseEvent('click',{bubbles:true}))")
+                try await wait("document.querySelector('.atlas-region[aria-label=荆州]').classList.contains('selected')")
+                try await screenshot("05-han-regions")
+                _ = try await js("document.querySelector('[data-map-extend]').click()")
+                try await wait("document.querySelectorAll('.atlas-region').length === 13 && document.querySelectorAll('.atlas-pin').length === 3 && !document.querySelector('.atlas-unresolved')")
+                for width in [620, 1120] {
+                    webView.window?.setContentSize(NSSize(width: width, height: 800))
+                    try await Task.sleep(nanoseconds: 300_000_000)
+                    try await wait("document.documentElement.scrollWidth <= innerWidth + 1")
+                }
+                try await screenshot("06-han-cities")
+                _ = try await js("document.querySelector('[data-map-extend]').click()")
+                try await wait("document.querySelectorAll('.atlas-region').length === 13 && document.querySelectorAll('.atlas-pin').length === 0")
+                check("synthetic map fixture: 13 colored regions, selection, three-city continuation, resize and prior-map return in native WebKit")
+            }
             let report: [String: Any] = ["passed": true, "checks": checks, "actualRegion": actualRegion, "countryMatrix": "synthetic Debug fixtures; not physical China network", "system": ProcessInfo.processInfo.operatingSystemVersionString]
             try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]).write(to: output.appendingPathComponent("result.json"))
             print("BUNKO_QA COMPLETE \(output.path)")

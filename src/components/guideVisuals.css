@@ -95,3 +95,16 @@
 [data-theme=night] .atlas-region { fill: #b88c54; stroke: #d5b17e; }
 .atlas-marker-leader { fill: none; stroke: #607989; stroke-width: 1; vector-effect: non-scaling-stroke; pointer-events: none; }
 .atlas-place-label { pointer-events: none; }
+.atlas-period { display: grid; gap: .25rem; margin: .6rem 0; font-size: .85rem; }
+.atlas-period > span { color: var(--muted); line-height: 1.5; }
+.atlas-period label { display: flex; align-items: center; gap: .4rem; width: fit-content; }
+.atlas-region { fill-opacity: .72; stroke: #667875; stroke-width: 1; cursor: pointer; outline: none; }
+.atlas-region.selected,.atlas-region:focus-visible { fill-opacity: .94; stroke: #304d58; stroke-width: 2.2; }
+.atlas-region-label { cursor: pointer; outline: none; }
+.atlas-region-label rect { fill: #fffdf5; fill-opacity: .94; stroke: #79867e; stroke-width: .65; }
+.atlas-region-label text { fill: #243b3e; font: 650 14px system-ui,sans-serif; }
+.atlas-region-label.selected rect,.atlas-region-label:focus-visible rect { stroke: #254d58; stroke-width: 2; }
+.atlas-swatch { background: var(--region-color); border-radius: .25em; border: 1px solid #657a7770; }
+[data-theme=night] .atlas-region-label rect { fill: #253b40; stroke: #a5bab4; }
+[data-theme=night] .atlas-region-label text { fill: #f4f5ec; }
+[data-theme=night] .atlas-region.selected { stroke: #d7e6e0; }

@@ -20,7 +20,7 @@
   ],
   "outputs": [
     {
-      "path": "src/data/atlas-places.json",
+      "path": "server/agent/atlas-places.json",
       "sha256": "865c5095d9a23adc16d29d6219af51c19bb41f56625e11334b8e35a8f1406e49",
       "bytes": 2390417
     },

@@ -19,7 +19,7 @@ export function readingMemory(branch) {
   const visuals = {}
   for (const message of branch) for (const response of [message.baseGuide, message.bookResponse].filter(Boolean)) for (const [view, fields] of Object.entries(visualGroups)) {
     if (!fields.some(field => Array.isArray(response[field]))) continue
-    visuals[view] = { reference: response.reference,
+    visuals[view] = { reference: response.reference, ...(view === 'places' && response.mapYear !== undefined ? { mapYear: response.mapYear } : {}),
       ...Object.fromEntries(fields.map(field => [field, (response[field] || []).map(entry => {
         // Old quotations are not fresh evidence. Unchanged views retain their original
         // verified citations in storage; newly emitted claims must use current sources.

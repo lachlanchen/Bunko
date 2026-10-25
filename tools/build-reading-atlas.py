@@ -55,10 +55,10 @@ def main():
         feature['properties'] = {k: p[k] for k in ['NAME_EN', 'NAME_ZH', 'NAME_JA', 'LABEL_X', 'LABEL_Y']}
         feature['geometry']['coordinates'] = rounded(feature['geometry']['coordinates'])
     for name, data in [('atlas-places.json', rows), ('atlas-land.json', land), ('atlas-countries.json', countries)]:
-        path = ROOT / 'src/data' / name
+        path = ROOT / ('server/agent' if name == 'atlas-places.json' else 'src/data') / name
         raw = (json.dumps(data, ensure_ascii=False, separators=(',', ':')) + '\n').encode()
         path.write_bytes(raw)
-        manifest['outputs'].append({'path': f'src/data/{name}', 'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw)})
+        manifest['outputs'].append({'path': str(path.relative_to(ROOT)), 'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw)})
     (ROOT / 'docs/reading-atlas-provenance.json').write_text(json.dumps(manifest, indent=2) + '\n')
     print(json.dumps({'places': len(rows), 'outputs': manifest['outputs']}))
 

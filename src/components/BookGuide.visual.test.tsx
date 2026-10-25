@@ -4,6 +4,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { BookGuide } from './BookGuide'
 import type { BookResponse, GuideEntity } from '../lib/bookCompanion'
+import han from '../../server/agent/han-regions.json'
 
 const citations = [{ passage: 'P1', paragraph: 0, quote: 'In 2000 Ada visited London; Ben had arrived in 1990.' }]
 const entity = (id: string, name: string): GuideEntity => ({ id, name, detail: 'A person in this passage.', aliases: [], certainty: 'stated', citations })
@@ -101,4 +102,20 @@ it('renders the current Foguoji stops and routes, exposes gaps, and changes the 
   expect(container.querySelector('.atlas-pin')?.getAttribute('aria-label')).toContain('Patna')
   fireEvent.click(screen.getByText('Find a location ·', { exact: false, selector: 'summary' }))
   expect(screen.getByRole('link', {name:'Location source 1'})).toHaveAttribute('href','https://www.gutenberg.org/cache/epub/64535/pg64535-images.html')
+})
+
+it('draws every requested Han region with a distinct color, visible name, dated source and usable selection', async () => {
+  const places = han.regions.map(r => ({ ...entity(r.id, r.name), locationId: r.id, certainty: 'background' as const, citations: [] }))
+  const current = { ...guide, key: 'han-map', mapYear: 191, reference: { ...guide.reference, id: 'zizhi-tongjian' }, places, routes: [] }
+  const { container, rerender } = render(<BookGuide guide={current} tab="places" ui="zh-Hans" onRead={() => {}} />)
+  await waitFor(() => expect(container.querySelectorAll('.atlas-region')).toHaveLength(13))
+  expect(container.querySelectorAll('.atlas-region-label text')).toHaveLength(13)
+  expect(new Set([...container.querySelectorAll('.atlas-region')].map(p => p.getAttribute('style'))).size).toBe(13)
+  expect(container.querySelector('.atlas-period')).toHaveTextContent('约公元140年')
+  expect(container.querySelectorAll('.atlas-borders')).toHaveLength(0)
+  const jing = container.querySelector('.atlas-region[aria-label="荆州"]')!
+  fireEvent.keyDown(jing, { key: 'Enter' })
+  expect(container.querySelector('.guide-entity-grid')).toHaveTextContent('荆州')
+  rerender(<BookGuide guide={{ ...current, key: 'fewer-regions', places: places.slice(0, 3) }} tab="places" ui="zh-Hans" onRead={() => {}} />)
+  await waitFor(() => expect(container.querySelectorAll('.atlas-region')).toHaveLength(3))
 })

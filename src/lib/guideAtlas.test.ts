@@ -1,6 +1,8 @@
 import { expect, it } from 'vitest'
 import { historicalPlaces, readingPlaceChoices, suggestedReadingPlace } from './guideAtlas'
-import { guideMapGeometry, mapMarkerPositions } from './guideMapGeometry'
+import { guideMapGeometry, mapMarkerPositions, mapLabelPositions } from './guideMapGeometry'
+import han from '../../server/agent/han-regions.json'
+import { geoArea, geoContains } from 'd3-geo'
 
 it('locates historical Foguoji names without inferring a route or borrowing another book context', () => {
   const names = ['長安', '張掖', '燉煌', '于闐', '弗樓沙', '巴連弗邑', '多摩梨帝']
@@ -71,4 +73,32 @@ it('separates coincident and nearby touch targets at phone and desktop zoom leve
     markers.forEach((p,i) => markers.slice(i+1).forEach(q => expect(Math.hypot(p[0]-q[0],p[1]-q[1])*scale).toBeGreaterThanOrEqual(35)))
   }
   expect(points[1]).toEqual([200,200])
+})
+
+it('locates all thirteen Han provinces as colored dated areas and rejects other-period substitutions', () => {
+  const regions = historicalPlaces('zizhi-tongjian', 191).filter(r => r.area)
+  expect(regions).toHaveLength(13)
+  expect(new Set(regions.map(r => r.color)).size).toBe(13)
+  for (const region of regions) {
+    expect(region.referenceYear).toBe(140)
+    expect(region.area).toBeDefined()
+    expect(geoArea(region.area!)).toBeGreaterThan(0)
+    expect(geoArea(region.area!)).toBeLessThan(.2)
+    expect(geoContains(region.area!, [region.longitude, region.latitude])).toBe(true)
+    expect(suggestedReadingPlace([region.name], 'zizhi-tongjian', 191)?.id).toBe(region.id)
+  }
+  expect(historicalPlaces('zizhi-tongjian', 800).filter(r => r.area)).toHaveLength(0)
+  expect(suggestedReadingPlace(['长安'], 'zizhi-tongjian', 191)?.name).toBe('Xian')
+  expect(suggestedReadingPlace(['荆州'], 'zizhi-tongjian', 191, 'han140-jing')?.area).toBeDefined()
+  expect(han.license).toBe('CC-BY-SA-4.0')
+})
+
+it('keeps all region labels separately readable and selectable on narrow phones', () => {
+  const places = historicalPlaces('zizhi-tongjian', 191)
+  const geometry = guideMapGeometry(places, 520, 600)
+  const points = places.map(p => geometry.projection([p.longitude, p.latitude])!)
+  for (const scale of [.3, .55, .7, 1.5]) {
+    const labels = mapLabelPositions(points, places.map(() => 46), scale)
+    labels.forEach((a, i) => labels.slice(i + 1).forEach(b => expect(Math.abs(a[0] - b[0]) * scale >= 50 || Math.abs(a[1] - b[1]) * scale >= 33.99).toBe(true)))
+  }
 })

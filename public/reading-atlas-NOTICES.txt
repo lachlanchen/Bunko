@@ -134,3 +134,15 @@ INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
 LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE
 OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
+
+Eastern Han reference polygons (c. 140 CE)
+Source: Zunkir, Han orientaux 140.svg (2017), base map by Kanguole.
+https://commons.wikimedia.org/wiki/File:Han_orientaux_140.svg
+License: Creative Commons Attribution-ShareAlike 4.0 International
+https://creativecommons.org/licenses/by-sa/4.0/
+Changes: sampled boundary paths, resolved drafting gaps, clipped to the original
+eastern-China extent and Natural Earth coastline, converted to GeoJSON.
+These adapted polygons are distributed under CC BY-SA 4.0.
+Source and reproducible converter: server/agent/han-regions.json and
+tools/build-han-atlas.py in https://github.com/lachlanchen/Bunko .
+The layer is a dated reference, not exact borders for 191 or military control.
