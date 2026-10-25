@@ -8,7 +8,7 @@ const sha = value => createHash('sha256').update(value).digest('base64url')
 const key = 'sample/c001.json/p1/2'
 const config = { publicUrl: 'https://llm.lazying.art/bunko', clientId: 'fixture-client', clientSecret: 'fixture-secret', encryptionKey: randomBytes(32).toString('base64') }
 const user = { id: 7, login: 'reader' }
-async function setup(t, custom) {
+async function setup(t, custom, configPatch = {}) {
   let time = Date.now(), writes = 0, issue = null, comments = [], tokenRequest
   const fetchImpl = async (url, options) => {
     if (custom) { const result = await custom(url, options); if (result) return result }
@@ -24,7 +24,7 @@ async function setup(t, custom) {
     if (url.endsWith('/issues/12')) return Response.json(issue)
     throw new Error('Unexpected fixture path')
   }
-  const server = createService(config, { fetchImpl, now: () => time })
+  const server = createService({ ...config, ...configPatch }, { fetchImpl, now: () => time })
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
   t.after(() => new Promise(resolve => { server.close(resolve); server.closeAllConnections() }))
   const root = `http://127.0.0.1:${server.address().port}`
@@ -220,19 +220,27 @@ test('foreground rewards require the existing session and origin, and remain dis
  assert.equal(s.writes(),0);
 });
 
-test('regional generation denial precedes providers and preserves sessions/discussions/history access', async t => {
+test('legacy availability stays compatible while requests reach the companion without regional denial', async t => {
   const s = await setup(t), token = await s.login()
   const mainland = { platform: 'macos', storefront: 'CHN', deviceRegion: 'US' }
   const probe = await s.request('/v1/auth/methods', { clientRegion: mainland })
   assert.equal(probe.status, 200); assert.equal(probe.body.companion.reason, 'mainland'); assert.deepEqual(probe.body.providers, ['github'])
   for (const action of ['send','upload','import','resume']) {
     const r = await s.request('/v1/agent/'+action, { clientRegion: mainland }, token)
-    assert.equal(r.status,403); assert.equal(r.body.error,'companion_region_unavailable')
+    assert.equal(r.status,503); assert.notEqual(r.body.error,'companion_region_unavailable')
     const legacy = await s.request('/v1/agent/'+action, {}, token, {'X-Bunko-Client-Address':'114.114.114.114'})
-    assert.equal(legacy.status,403); assert.equal(legacy.body.error,'companion_region_unavailable')
+    assert.equal(legacy.status,503); assert.notEqual(legacy.body.error,'companion_region_unavailable')
   }
   assert.equal((await s.request('/v1/session', {}, token)).status,200)
   assert.equal((await s.request('/v1/discussions/read', { passage: key }, token, {'X-Bunko-Client-Address':'114.114.114.114'})).status,200)
   assert.equal((await s.request('/v1/agent/messages', {clientRegion:mainland},token)).status,503) // Fixture companion disabled, not region-denied.
   assert.equal(s.writes(),0)
+})
+
+test('HTTP derives DeepSeek routing from region/IP and ignores a client-supplied model scope', async t => {
+  const s=await setup(t,undefined,{agent:{enabled:true,model:{name:'gpt-6.1-sol',url:'https://api.openai.com/v1/chat/completions'},models:{providers:{deepseek:{token:'fixture-only',qualifiedModels:['deepseek-flash','deepseek-v4-pro']}}}}}), token=await s.login()
+  for(const [region,ip] of [[{platform:'macos',storefront:'CHN'},'1.1.1.1'],[{platform:'ios'},'1.1.1.1'],[{platform:'web'},'223.5.5.5']]) {
+    const result=await s.request('/v1/agent/state',{clientRegion:region,modelScope:{deepseekOnly:false}},token,{'X-Bunko-Client-Address':ip})
+    assert.equal(result.status,200);assert.deepEqual(result.body.modelPolicy.providers,['DeepSeek'])
+  }
 })

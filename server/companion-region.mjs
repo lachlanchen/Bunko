@@ -43,4 +43,8 @@ export function companionAvailability(region, address) {
   if (['macos', 'ios'].includes(region?.platform) && !/^[A-Z]{3}$/.test(storefront)) return { available: false, reason: 'region_unknown', policy: 'mainland-v1' }
   return { available: true, reason: '', policy: 'mainland-v1' }
 }
-export const generatesContent = action => ['send', 'upload', 'import', 'resume'].includes(action)
+// Preserve the availability response understood by build39. New clients keep
+// the workspace visible and use this server-derived provider restriction.
+export function companionModelScope(region, address) {
+  return { deepseekOnly: !companionAvailability(region, address).available }
+}

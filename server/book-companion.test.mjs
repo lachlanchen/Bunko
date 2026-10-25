@@ -333,3 +333,21 @@ test('long branches keep older visual snapshots while bounding conversational pr
   assert.ok(!JSON.stringify(memory.history).includes('Family tree'))
   assert.deepEqual(readingBranch(messages, ref, null, true), [])
 })
+
+test('regional book answers and repaired guides use DeepSeek and retain reusable saved results', async t => {
+  const db = new DatabaseSync(':memory:'), calls = []
+  const agent = createDocumentAgent({ db, seal: JSON.stringify, unseal: JSON.parse, readBook: read,
+    config: { enabled: true, model: { name: 'gpt-6.1-sol', url: 'https://api.openai.com/v1/chat/completions' }, models: { providers: { deepseek: { token: 'fixture', qualifiedModels: ['deepseek-flash','deepseek-v4-pro'] } } } },
+    provider: async (url, options) => { calls.push({ url, model: JSON.parse(options.body).model }); return { choices: [{ message: { content: calls.length === 1 ? '{"answer":"partial"}' : JSON.stringify(guide()) } }] } },
+  })
+  t.after(() => { agent.close(); db.close() })
+  const scope = { deepseekOnly: true }, reader = { id: 1 }
+  assert.deepEqual((await agent.handle('messages', { book: ref }, reader, scope)).modelPolicy.providers, ['DeepSeek'])
+  const result = await agent.handle('send', { ...input('regional'), modelConsent: ['DeepSeek'] }, reader, scope)
+  assert.equal(result.state, 'completed'); assert.equal(result.bookResponse.relationships.length, 1)
+  assert.deepEqual(calls.map(c=>c.model), ['deepseek-flash','deepseek-v4-pro'])
+  assert.ok(calls.every(c=>c.url==='https://api.deepseek.com/chat/completions'))
+  assert.equal((await agent.handle('messages', { book: ref }, reader, scope)).messages.length, 1)
+  const cached = await agent.handle('send', { ...input('regional-reuse'), modelConsent: ['DeepSeek'] }, {id:2}, scope)
+  assert.equal(cached.bookResponse.reused, true); assert.equal(calls.length, 2)
+})

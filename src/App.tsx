@@ -1,5 +1,3 @@
-import { useCompanionAvailability } from './lib/companionRegion'
-import { CompanionRegionNotice } from './components/CompanionRegionNotice'
 import { ChapterRow } from './components/ChapterRow'
 import {bookIdFromLink} from './lib/bookLink'
 import {observeForegroundUse} from './lib/activityRewards'
@@ -67,7 +65,6 @@ function categoryOf(book: BookRow): Filter {
 }
 
 export default function App() {
-  const companionAvailability = useCompanionAvailability()
   useEffect(observeForegroundUse,[])
   const [ui, setUI] = useState<UILanguage>('en')
   const [settings, setSettings] = useState<ReadingSettings>(DEFAULT_SETTINGS)
@@ -306,15 +303,13 @@ export default function App() {
   }, [view, chapterIndex, settings.fontScale, update, goToChapter, checkForUpdates])
 
   const settingsSheet = showSettings && <SettingsSheet
-    copy={copy} ui={ui} companionAvailability={companionAvailability} settings={settings} book={view === 'book' || view === 'reader' ? meta : null}
+    copy={copy} ui={ui} settings={settings} book={view === 'book' || view === 'reader' ? meta : null}
     onUI={(next) => { setUI(next); void saveUI({ language: next }) }}
     onChange={update} onClose={() => setShowSettings(false)} onRead={readAvailableTranslation} storage={storage}
     request={request} setRequest={setRequest}
     updates={updates} canReload={canReload}
     onCloud={() => { setShowSettings(false); setView('cloud') }}
   />
-
-  if (['agent', 'book-agent'].includes(view) && !companionAvailability.available) return <main className="page-shell"><button type="button" onClick={() => setView(companionContext?.returnTo === 'reader' ? 'reader' : 'library')}>{copy.back}</button><CompanionRegionNotice availability={companionAvailability} ui={ui} /></main>
 
   if (view === 'book-agent' && companionContext) return <BookCompanion context={companionContext} ui={ui}
     onBack={() => { setCompanionPeek(false); setPeekPlace(null); setReferenceQuote(''); setMeta(companionContext.meta); setChapterIndex(companionContext.chapter); setPlaces(current => ({ ...current, [companionContext.meta.id]: { ...current[companionContext.meta.id], chapter: companionContext.chapter, paragraph: companionContext.paragraph } })); setView(companionContext.returnTo) }}
@@ -358,13 +353,13 @@ export default function App() {
           onOpenChapters={() => setShowChapters(true)}
           onOpenSettings={() => setShowSettings(true)}
           highlightQuote={referenceQuote}
-          onCompanion={companionAvailability.available ? (paragraph, language, quote) => {
+          onCompanion={(paragraph, language, quote) => {
             if (companionPeek && !quote) { setView('book-agent'); return }
             setCompanionPeek(false); setReferenceQuote('')
             handlePlace(paragraph)
             setCompanionContext({ meta, chapter: chapterIndex, paragraph, language, quote, returnTo: 'reader' })
             setView('book-agent')
-          } : undefined}
+          }}
           onBack={() => setView(companionPeek ? 'book-agent' : 'book')}
           backLabel={copy.back}
           overlayOpen={showChapters || showSettings}
@@ -431,12 +426,12 @@ export default function App() {
               <button type="button" className="primary" onClick={() => startReading(!places[meta.id])}>
                 <BookOpen size={17} /> {places[meta.id] ? copy.continueReading : copy.start}
               </button>
-              {companionAvailability.available && <button type="button" onClick={() => {
+              <button type="button" onClick={() => {
                 const place = places[meta.id] || { chapter: 0, paragraph: 0 }
                 setChapterIndex(place.chapter)
                 setCompanionContext({ meta, ...place, language: settings.langs.find(lang => meta.langs.includes(lang)) || meta.primary, returnTo: 'book' })
                 setView('book-agent')
-              }}><Sparkles size={17} />{agentCopy[ui].name}</button>}
+              }}><Sparkles size={17} />{agentCopy[ui].name}</button>
               {downloading?.id === meta.id ? (
                 <button type="button" onClick={() => downloadRef.current?.abort()}>
                   {copy.downloading} {downloading.done}/{downloading.total}
@@ -497,7 +492,7 @@ export default function App() {
       <UpdatePrompt ui={ui} updates={updates} canReload={canReload} />
       <MobileStorePrompt copy={copy} />
 
-      {companionAvailability.available && <button type="button" className="companion-entry" onClick={() => { setGeneralReturn('library'); setView('agent') }}><Sparkles size={19} /><span><strong>{agentCopy[ui].name}</strong><small>{agentCopy[ui].hint}</small></span><PaperclipIcon /></button>}
+      <button type="button" className="companion-entry" onClick={() => { setGeneralReturn('library'); setView('agent') }}><Sparkles size={19} /><span><strong>{agentCopy[ui].name}</strong><small>{agentCopy[ui].hint}</small></span><PaperclipIcon /></button>
 
       <div className="search">
         <Search size={16} />
@@ -563,7 +558,6 @@ export default function App() {
 }
 
 function SettingsSheet({
-  companionAvailability,
   onRead,
   onCloud,
   updates,
@@ -579,7 +573,6 @@ function SettingsSheet({
   request,
   setRequest,
 }: {
-  companionAvailability: import('./lib/companionRegion').CompanionAvailability
   onCloud: () => void
   updates: Updates
   canReload: boolean
@@ -599,7 +592,7 @@ function SettingsSheet({
   return (
     <Sheet title={copy.settings} onClose={onClose} closeLabel={copy.close}>
       {book && <section><TranslationRequest key={book.id} ui={ui} book={book} expanded onRead={onRead} /></section>}
-      <section>{companionAvailability.available ? <button type="button" className="cloud-entry" onClick={onCloud}><Sparkles size={18} />{cloudCopy[ui].title}</button> : <CompanionRegionNotice availability={companionAvailability} ui={ui} />}</section>
+      <section><button type="button" className="cloud-entry" onClick={onCloud}><Sparkles size={18} />{cloudCopy[ui].title}</button></section>
       {langs.length > 0 && (
         <section>
           <h3>{copy.show}</h3>

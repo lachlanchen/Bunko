@@ -1,5 +1,15 @@
 # Bunko — product brief
 
+## Reading assistant restored · 2026-10-25
+
+The owner now requests a corrected Mac build to replace the pending Mac39 review.
+Keep the assistant visible from the library, books and reader. Mainland and
+unknown native storefront requests use qualified DeepSeek Flash/Pro, including
+fallback and repair, without hiding conversations or blocking document access.
+Preserve book context, saved messages, reading positions and existing privacy
+consent. Test the successor and update Apple's review notes to match its actual
+behavior before replacing the submitted build. Font/interface sizing stays deferred.
+
 ## Deferred text and interface sizing · 2026-10-25
 
 The owner requests recording this for after their Codex usage resets. Do not

@@ -407,6 +407,3 @@ input[type='range'] { width: 100%; accent-color: var(--indigo); }
 .reader-chapter-title summary::-webkit-details-marker { display: none; }
 .reader-chapter-title:not([open]) h1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .reader-chapter-title[open] summary::after { transform: rotate(180deg); }
-.companion-region-notice { color: var(--muted); font-size: .85rem; line-height: 1.5; max-width: 36rem; }
-.companion-region-notice p { margin: .35rem 0; }
-.companion-region-notice button { margin-top: .3rem; padding: .45rem .7rem; }

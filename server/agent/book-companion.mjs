@@ -172,7 +172,7 @@ Prioritize the principal characters and their meaningful relationships; do not c
 export function createBookCompanion({ db, seal, unseal, read, provider, models, config, now, reserve, finish, capacity }) {
   db.exec('CREATE TABLE IF NOT EXISTS agent_book_guides(id TEXT PRIMARY KEY,data TEXT NOT NULL,created INTEGER NOT NULL)')
   const pending = new Map()
-  async function generate(context, kind, question, history = [], modelConsent, memory = {}) {
+  async function generate(context, kind, question, history = [], modelConsent, memory = {}, modelScope = {}) {
     requireValue(config.model?.url && config.model?.name, 'The reading assistant is not connected.', 503)
     const mode = kind === 'answer' ? '\nTHIS CALL IS ANSWER, not GUIDE. Return ONLY answer, knowledge, insufficient and citations. Explain relationships in readable prose or a compact Markdown list. Do not include people/relationships/places/routes/events arrays or a type field. Keep the answer under 900 words.' : kind === 'guide' ? '\nTHIS CALL IS GUIDE. Return all five guide arrays, within the stated limits; no type field.' : `\nTHIS CALL IS EXPLORE: a continuing book discussion with optional visual updates. Answer the user's actual question. When relationships or characters are requested, return people AND relationships; for places/journeys return places AND routes; for chronology return events. The active view is ${memory.focus || 'chat'}: prefer updating that view when the question continues its result. Omit visual groups that do not need updating; the app keeps their existing versions. Each returned group is a complete revised snapshot, retaining relevant earlier entries and adding/correcting what was requested, within the limits. Never return empty groups just as placeholders. Use stable prior entity ids when they refer to the same person/place. Old visuals/history are memory, not new quotation evidence: any newly emitted citation must exactly match CURRENT supplied passages. Label reliable uncited broader-book facts background. Keep current reading position and the question's requested scope distinct; explicit whole-book questions and their followups may discuss the whole book. Do not refuse because excerpts are partial. If asked to start a new topic, do not import unrelated previous details. Keep the answer concise, and do not include a type field.`
     const messages = [{ role: 'system', content: system + mode }, { role: 'user', content: JSON.stringify({
@@ -183,7 +183,7 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
       ...(kind === 'explore' ? { readingBookmark: memory.bookmark, previousVisuals: memory.visuals || {} } : {}),
     }) }, ...history, ...(kind !== 'guide' ? [{ role: 'user', content: question }] : [])]
     const deadline = Date.now() + 110000
-    const complete = models?.forRequest(modelConsent) || provider
+    const complete = models?.forRequest(modelConsent, modelScope) || provider
     for (let attempt = 0; attempt < 2; attempt++) {
       let content = '', structured = false
       try {
@@ -221,14 +221,14 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
   const messages = (owner, key) => db.prepare('SELECT * FROM agent_messages WHERE owner=? AND document=? ORDER BY created,rowid').all(owner, key)
     .map(r => { const data = unseal(r.data); return { id: r.id, state: r.state, created: r.created, ...data, ...(data.bookResponse ? { bookResponse: readingGeography(data.bookResponse) } : {}), ...(data.baseGuide ? { baseGuide: readingGeography(data.baseGuide) } : {}) } })
   return {
-    async handle(path, input, owner, requestKey) {
+    async handle(path, input, owner, requestKey, modelScope = {}) {
       const ref = bookReference(input.book), target = input.reference ? bookReference(input.reference) : ref, key = conversation(ref)
       migrate(owner)
       if (path === 'messages') {
-        if (!input.checkGuide) return { messages: messages(owner, key), modelPolicy: models?.policy() }
+        if (!input.checkGuide) return { messages: messages(owner, key), modelPolicy: models?.policy(modelScope) }
         const context = await bookContext(target, read)
         const cached = db.prepare('SELECT data FROM agent_book_guides WHERE id=?').get(context.key)
-        return { modelPolicy: models?.policy(), messages: messages(owner, key), guide: cached ? readingGeography(JSON.parse(cached.data)) : null, revision: context.revision }
+        return { modelPolicy: models?.policy(modelScope), messages: messages(owner, key), guide: cached ? readingGeography(JSON.parse(cached.data)) : null, revision: context.revision }
       }
       requireValue(path === 'send', 'Unknown book companion action.', 404)
       const kind = input.kind || 'answer'
@@ -265,19 +265,20 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
         let result
         if (kind === 'guide') {
           // Cache contains only fixed prompts + the public edition. Personal questions never enter it.
+          const pendingKey = context.key + (modelScope.deepseekOnly ? ':deepseek' : ':configured')
           const cached = db.prepare('SELECT data FROM agent_book_guides WHERE id=?').get(context.key)
           if (cached) result = { ...JSON.parse(cached.data), reused: true }
-          else if (pending.has(context.key)) result = { ...await pending.get(context.key), reused: true }
+          else if (pending.has(pendingKey)) result = { ...await pending.get(pendingKey), reused: true }
           else {
             reserve(id, owner); charged = true
-            const task = generate(context, kind, undefined, [], input.modelConsent).then(value => {
+            const task = generate(context, kind, undefined, [], input.modelConsent, {}, modelScope).then(value => {
               capacity(Buffer.byteLength(JSON.stringify(value)))
               db.prepare('INSERT OR IGNORE INTO agent_book_guides VALUES(?,?,?)').run(context.key, JSON.stringify(value), now())
               // Bounded shared public output; old editions are naturally evicted.
               db.prepare('DELETE FROM agent_book_guides WHERE id NOT IN (SELECT id FROM agent_book_guides ORDER BY created DESC LIMIT 400)').run()
               return value
-            }).finally(() => pending.delete(context.key))
-            pending.set(context.key, task)
+            }).finally(() => pending.delete(pendingKey))
+            pending.set(pendingKey, task)
             result = await task
           }
         } else {
@@ -285,7 +286,7 @@ export function createBookCompanion({ db, seal, unseal, read, provider, models, 
           const recent = messages(owner, key).filter(m => m.state === 'completed' && m.bookResponse?.reference?.id === target.id).slice(-6)
           const history = recent.flatMap(m => [{ role: 'user', content: m.question.slice(0, 4000) }, { role: 'assistant', content: JSON.stringify({ reference: m.reference, knowledge: m.bookResponse?.knowledge || 'passages', answer: m.answer.slice(0, 4000), ...(m.kind === 'guide' ? { people: m.bookResponse?.people?.map(p => p.name), places: m.bookResponse?.places?.map(p => p.name) } : {}) }) }])
           const memory = readingMemory(baseGuide ? [{ question: '', answer: baseGuide.answer, bookResponse: baseGuide }, ...branch] : branch)
-          result = await generate(context, kind, data.question, kind === 'explore' ? memory.history : history, input.modelConsent, { ...memory, focus, bookmark: ref })
+          result = await generate(context, kind, data.question, kind === 'explore' ? memory.history : history, input.modelConsent, { ...memory, focus, bookmark: ref }, modelScope)
           if (kind === 'explore') result = { ...result, key: hash(`private:${id}`), visibility: 'private', parentId: data.parentId, created: now() }
         }
         result = readingGeography(result)

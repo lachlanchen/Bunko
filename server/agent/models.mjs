@@ -36,8 +36,17 @@ export function createModelRouter({ db, config, provider, now = Date.now }) {
     try { return { ...defaults, ...JSON.parse(db.prepare('SELECT data FROM agent_model_settings WHERE id=1').get()?.data) } } catch { return defaults }
   }
   const isAdmin = user => user?.kind !== 'demo' && Array.isArray(config.models?.adminUserIds) && config.models.adminUserIds.some(id => String(id) === String(user?.id))
-  const policy = () => {
-    const value = read()
+  const selection = (scope = {}) => {
+    if (!scope.deepseekOnly) return read()
+    // Pin actual transport, including fallback/repair. A model label on a
+    // private gateway is not sufficient to select this route.
+    const qualified = id => routes.get(id)?.provider === 'DeepSeek' && routes.get(id)?.url === endpoints.DeepSeek
+    const primary = qualified('deepseek-flash') ? 'deepseek-flash' : qualified('deepseek-v4-pro') ? 'deepseek-v4-pro' : ''
+    const capable = qualified('deepseek-v4-pro') ? 'deepseek-v4-pro' : primary
+    return { primary, capable, fallback: capable !== primary ? capable : '' }
+  }
+  const policy = (scope) => {
+    const value = selection(scope)
     const providers = [...new Set([value.primary, value.fallback, value.capable].filter(Boolean).map(id => routes.get(id)?.provider).filter(Boolean))]
     return { providers, consentKey: providers.slice().sort().join('|') }
   }
@@ -56,8 +65,8 @@ export function createModelRouter({ db, config, provider, now = Date.now }) {
     return { ...read(), catalog: [...modelCatalog, ...[...routes.values()].filter(r => !modelCatalog.some(m => m.id === r.id))]
       .map(({ id, label, use, provider: name }) => ({ id, label, use, provider: name, available: routes.has(id) })) }
   }
-  const forRequest = (consent = ['DeepSeek', 'Configured provider']) => {
-    const settings = read() // Freeze this request's selection across repair attempts.
+  const forRequest = (consent = ['DeepSeek', 'Configured provider'], scope) => {
+    const settings = selection(scope) // Freeze this request's selection across repair attempts.
     const allowed = new Set(Array.isArray(consent) ? consent.filter(v => typeof v === 'string') : [])
     return async (_legacyUrl, options = {}) => {
       // Only host validation can request the one bounded repair with a stronger model.

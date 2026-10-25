@@ -81,3 +81,31 @@ test('repair escalation requires consent and freezes configuration for the exist
   await assert.rejects(pending('', { quality: 'repair', body: '{}' }), /provider notice/)
   db.close()
 })
+
+test('DeepSeek scope pins initial, transient fallback and repair even with an OpenAI admin default', async () => {
+  const db = new DatabaseSync(':memory:'), calls = []
+  const router = createModelRouter({ db, config: { models: { adminUserIds: [7], providers: {
+    deepseek: { token: 'fixture-ds', qualifiedModels: ['deepseek-flash', 'deepseek-v4-pro'] },
+    openai: { token: 'fixture-oa', qualifiedModels: ['gpt-6.1-sol'] },
+  } } }, provider: async (url, options) => {
+    calls.push({ url, body: JSON.parse(options.body) })
+    if (calls.length === 1) throw Object.assign(new Error('busy'), { retryable: true })
+    return {}
+  } })
+  router.admin({ id: 7 }, { save: true, revision: 0, primary: 'gpt-6.1-sol', fallback: '', capable: 'gpt-6.1-sol' })
+  const scope = { deepseekOnly: true }
+  assert.deepEqual(router.policy(scope), { providers: ['DeepSeek'], consentKey: 'DeepSeek' })
+  const request = router.forRequest(['DeepSeek'], scope)
+  await request('', { body: '{}' })
+  await request('', { quality: 'repair', body: '{}' })
+  assert.deepEqual(calls.map(c => c.body.model), ['deepseek-flash', 'deepseek-v4-pro', 'deepseek-v4-pro'])
+  assert.ok(calls.every(c => c.url === 'https://api.deepseek.com/chat/completions'))
+  db.close()
+})
+
+test('a DeepSeek label cannot route regional requests through an unqualified gateway', async () => {
+  const db = new DatabaseSync(':memory:'); let calls = 0
+  const router = createModelRouter({ db, config: { model: { name: 'deepseek-flash', url: 'https://other.invalid/chat/completions' } }, provider: async () => { calls++; return {} } })
+  await assert.rejects(router.forRequest(['DeepSeek'], { deepseekOnly: true })('', { body: '{}' }), /not connected/)
+  assert.equal(calls, 0); db.close()
+})

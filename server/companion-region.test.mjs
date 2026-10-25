@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { companionAvailability, mainlandNetwork, companionClientAddress, generatesContent } from './companion-region.mjs'
+import { companionAvailability, mainlandNetwork, companionClientAddress, companionModelScope } from './companion-region.mjs'
 test('storefront and device country restrict independently of UI language or other signals', () => {
   for (const value of [{storefront:'CHN'}, {deviceRegion:'CN'}, {storefront:'CHN',deviceRegion:'US'}, {storefront:'USA',deviceRegion:'CN'}]) assert.equal(companionAvailability(value,'8.8.8.8').reason,'mainland')
   for (const storefront of ['USA','HKG','MAC','TWN','JPN']) assert.equal(companionAvailability({platform:'macos',storefront,language:'zh-Hans'},'8.8.8.8').available,true)
@@ -16,6 +16,9 @@ test('CN IPv4, IPv6 and mapped addresses cannot be overridden with an allowed st
 test('only the loopback ingress may supply the client address; arbitrary country headers are ignored', () => {
   assert.equal(companionClientAddress({socket:{remoteAddress:'114.114.114.114'},headers:{'x-bunko-client-address':'8.8.8.8'}}),'114.114.114.114')
   assert.equal(companionClientAddress({socket:{remoteAddress:'127.0.0.1'},headers:{'x-bunko-client-address':'114.114.114.114'}}),'114.114.114.114')
-  for (const action of ['send','upload','import','resume']) assert.equal(generatesContent(action),true)
-  for (const action of ['messages','document','delete','clear','report','state']) assert.equal(generatesContent(action),false)
+})
+
+test('mainland and unknown native regions select DeepSeek without disabling the workspace', () => {
+  for(const [region,ip] of [[{platform:'macos',storefront:'CHN'},'8.8.8.8'],[{platform:'ios'},'8.8.8.8'],[{platform:'web'},'223.5.5.5']]) assert.deepEqual(companionModelScope(region,ip),{deepseekOnly:true})
+  assert.deepEqual(companionModelScope({platform:'macos',storefront:'HKG'},'1.1.1.1'),{deepseekOnly:false})
 })

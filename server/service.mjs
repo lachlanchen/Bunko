@@ -1,4 +1,4 @@
-import { companionAvailability, companionClientAddress, generatesContent } from './companion-region.mjs'
+import { companionAvailability, companionClientAddress, companionModelScope } from './companion-region.mjs'
 import {linkFailures,linkFailure} from './account-link-errors.mjs'
 import {sharePage} from './share-page.mjs'
 import {createRewardSourceRoutes} from './reward-source-routes.mjs'
@@ -467,8 +467,8 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         // Sign-out during a large upload invalidates this operation.
         if (!db.prepare('SELECT id FROM sessions WHERE id=?').get(auth.sessionId)) fail(401, 'sign_in_again')
         const action = path.split('/').pop()
-        if (generatesContent(action) && !companionAvailability(input.clientRegion, companionClientAddress(req)).available) fail(403, 'companion_region_unavailable')
-        json(res, await agent.handle(action, input, auth.user)); return
+        const modelScope = companionModelScope(input.clientRegion, companionClientAddress(req))
+        json(res, await agent.handle(action, input, auth.user, modelScope)); return
       }
       const input = await body(req)
       if(path===`${PREFIX}/v1/auth/methods`){
