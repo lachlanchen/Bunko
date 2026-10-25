@@ -26,6 +26,8 @@ Bunko は、パブリックドメインの古典と配布許可を確認した�
 
 **内部テスト中の歴史地図：** 州を色分けし、都市名を表示します。保存した地図について続けて質問し、地点を追加できます。後漢の地図には参考年代と出典を記載しています。[地図の説明とプレビュー](../docs/reading-tools-and-historical-maps.md)。
 
+**読書の会話を続ける · 内部テスト版43：** 読書位置に近い会話を再開したり、以前の分岐を選んだりできます。過去の版を残しながら、保存した人物関係図・地図・年表を補足できます。大きな関係図はグループ別に表示できます。[詳細](../docs/reading-workspace-20261026.md)。
+
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>

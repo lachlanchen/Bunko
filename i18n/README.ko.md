@@ -26,6 +26,8 @@ Bunko는 퍼블릭 도메인 고전과 배포 허가를 확인한 창작 도서�
 
 **내부 테스트 중인 역사 지도:** 주별 색상과 도시 이름을 표시하며, 저장된 지도에 이어 질문하고 장소를 추가할 수 있습니다. 후한 지도에는 기준 연도와 출처가 표시됩니다. [지도 설명과 미리 보기](../docs/reading-tools-and-historical-maps.md).
 
+**독서 대화 이어가기 · 내부 테스트 빌드 43:** 현재 읽는 위치와 가장 가까운 대화를 이어가거나 이전 분기를 선택할 수 있습니다. 이전 버전을 유지하면서 저장된 인물 관계도, 지도, 연표를 보완할 수 있습니다. 큰 관계도는 그룹별로 볼 수 있습니다. [자세히](../docs/reading-workspace-20261026.md).
+
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>

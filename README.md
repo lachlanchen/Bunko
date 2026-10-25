@@ -28,6 +28,8 @@ Chapter titles stay on one line and expand when needed. Sort the library by rece
 
 **Historical maps in internal testing:** colored province areas, named city markers and follow-up questions that extend the saved map. The Eastern Han layer includes its reference year and sources. [Map details and preview](docs/reading-tools-and-historical-maps.md).
 
+**Continuing conversations · internal build 43:** Resume the conversation nearest your reading position, or choose an earlier branch. Add to saved relationship graphs, maps and timelines while keeping previous versions. Larger graphs can be filtered by group. [Details](docs/reading-workspace-20261026.md).
+
 <p>
 <a href="docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="docs/images/reading-guides-20261021/phone-map.png"><img src="docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>

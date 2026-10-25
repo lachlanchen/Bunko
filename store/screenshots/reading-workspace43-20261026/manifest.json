@@ -1,0 +1,75 @@
+{
+  "capturedAt": "2026-10-25T22:46:23.450622+00:00",
+  "source": "52f0626",
+  "build": "1.0.15 (43)",
+  "state": "locally captured and reviewed; internal-test draft only",
+  "storeUploaded": false,
+  "reviewApproved": false,
+  "publiclyVisible": false,
+  "items": [
+    {
+      "layout": "Android phone",
+      "view": "reading",
+      "file": "android43-reader.png",
+      "sha256": "afceb5e41af369f7bdc4781174c54c582cd4b205fc2c7e0b8a22696f4c548723",
+      "content": "Real cached public book"
+    },
+    {
+      "layout": "Android phone",
+      "view": "conversation",
+      "file": "android43-workspace.png",
+      "sha256": "f788374f887afaa5f52ebe67966ea7c8228a190536fe832067927d6b0d57a51d",
+      "content": "Synthetic public-book workspace; actual app components, no real account or model action"
+    },
+    {
+      "layout": "Android phone",
+      "view": "people-group",
+      "file": "android43-people.png",
+      "sha256": "650684f900e0da6b12652c85a6cb135cec6bb762910f37a92d994df291bf093c",
+      "content": "Synthetic public-book workspace; actual app components, no real account or model action"
+    },
+    {
+      "layout": "Android phone",
+      "view": "timeline",
+      "file": "android43-timeline.png",
+      "sha256": "1ed2b0c0a9daea52e7bf61c1b5d26ffd094a6cb4e5bed673fc6cda120d0c2494",
+      "content": "Synthetic public-book workspace; actual app components, no real account or model action"
+    },
+    {
+      "layout": "Tablet Chromium",
+      "view": "people-group",
+      "file": "people-768-paper.png",
+      "sha256": "be6c83a6de60858ce05d51b788091cb9160e872fb093848593b2e93ea8ddf513",
+      "content": "Synthetic public-book workspace; actual app components, no real account or model action"
+    },
+    {
+      "layout": "Desktop Chromium",
+      "view": "conversation",
+      "file": "workspace-1280-paper.png",
+      "sha256": "b1793b16b7ba8507814da6edda3a4678e3b94461275560f1bbac892300c5b214",
+      "content": "Synthetic public-book workspace; actual app components, no real account or model action"
+    },
+    {
+      "layout": "Desktop Chromium",
+      "view": "timeline",
+      "file": "timeline-1280-paper.png",
+      "sha256": "91320b48a0aaf1ef310d1d18c815d0ade1bb2e3ca2898178a81ebe3ce48b24ba",
+      "content": "Synthetic public-book workspace; actual app components, no real account or model action"
+    }
+  ],
+  "androidEvidence": {
+    "qa": "45e3ffb2d7019573b3b599377da0e1f7172af63b2fbbef8c834c3d3797203e84",
+    "workspaceQA": "0dc35509296ded69ff75b0e15a7c69e626840678b8c4e002e0f0f795453cf695",
+    "cleanup": {
+      "emulatorClosed": true,
+      "pid": 244278,
+      "forwardRemoved": true
+    }
+  },
+  "nativeEvidence": {
+    "checks": 18,
+    "runtime": "macOS15.7.9 x86_64",
+    "fixture": "actual native WebKit, synthetic reading conversation; no account or provider action",
+    "note": "Native QA captures remain in private runtime; the selected-person capture requires scrolling and is not a storefront image."
+  }
+}

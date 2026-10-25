@@ -1,3 +1,36 @@
+# Continuing reading workspace available internally · 26 October 2026
+
+Apple **1.0.15 (43)** is VALID / IN_BETA_TESTING for iOS/Watch and universal
+Mac in the existing internal group. Android **1.0.15 (43)** is available to
+existing Google Play internal testers. Qualified source: `52f0626`.
+
+The live backend selects the capable qualified model for complex diagrams and
+merges incremental visual updates with stable identities and retained provenance.
+The client resumes the nearest reading branch, preserves drafts when switching,
+and adds group filters and explicit background-date timeline markers.
+
+183 client /180 server tests, four browser widths,17 installed Android checks and
+18 native Mac checks passed. A real two-turn graph extension retained the original
+20 people and reached45 people/53 relationships. Both Apple archives and exports,
+embedded Watch, resources/signatures and universal Mac minOS12 were checked.
+No new physical iOS/Watch runtime test is claimed.
+
+[Qualification](../docs/reading-workspace-20261026.md) and
+[exact delivery](testflight/reading-workspace43-20261026.json).
+All11 README languages include the internal preview. Current screenshot drafts are
+captured/reviewed locally; public listings remain unchanged.
+
+Mac40 remains Waiting for Review, selected build40 verified23:15 UTC. Public PWA,
+accounts, subscriptions and OnlyIdeas remain unchanged. The Mac guard released
+22:58:49 UTC; independent23:00:06 readback verifies326 owned process identities
+absent,6 profiles/search state restored,264 source pins and72 device states equal.
+No Mac/GUI hold remains. Owned noVNC6190/CDP9490, emulator5598/WebView19524 and
+upload proxy19643 are stopped; profiles are retained. The iOS upload recovered
+within its same uncommitted reservation; direct TLS completed both files.
+Private evidence: `.runtime/reading-workspace43-20261026/`.
+
+## Earlier records
+
 # Reading tools and historical maps available internally · 26 October 2026
 
 Apple **1.0.15 (41)** is VALID / IN_BETA_TESTING for iOS/Watch and universal

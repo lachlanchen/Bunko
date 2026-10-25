@@ -26,6 +26,8 @@ Bunko собирает классику в общественном достоя
 
 **Исторические карты во внутреннем тестировании:** провинции выделены цветами, города подписаны, а последующие вопросы позволяют дополнять сохранённую карту. Для слоя Восточной Хань указаны опорный год и источники. [Описание и предпросмотр](../docs/reading-tools-and-historical-maps.md).
 
+**Продолжение бесед · внутренняя тестовая сборка 43:** Возвращайтесь к беседе, ближайшей к месту чтения, или выбирайте прежнюю ветку. Дополняйте сохранённые схемы связей, карты и хронологии, сохраняя предыдущие версии. Большие схемы можно фильтровать по группам. [Подробнее](../docs/reading-workspace-20261026.md).
+
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>

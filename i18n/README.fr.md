@@ -26,6 +26,8 @@ Le compagnon de lecture réunit le contexte automatique du livre, les référenc
 
 **Cartes historiques en test interne :** provinces en couleurs, villes nommées et questions de suivi pour enrichir la carte enregistrée. La couche des Han orientaux indique son année de référence et ses sources. [Détails et aperçu](../docs/reading-tools-and-historical-maps.md).
 
+**Poursuivre une conversation · version de test interne 43 :** Reprenez la conversation la plus proche de votre position de lecture ou choisissez une branche antérieure. Complétez les relations, cartes et chronologies enregistrées en conservant les versions précédentes. Les grands graphes peuvent être filtrés par groupe. [Détails](../docs/reading-workspace-20261026.md).
+
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>

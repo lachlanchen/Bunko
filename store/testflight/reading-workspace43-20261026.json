@@ -1,0 +1,188 @@
+{
+  "date": "2026-10-26",
+  "at": "2026-10-25T23:17:14.814718+00:00",
+  "version": "1.0.15",
+  "build": 43,
+  "source": "52f062667e08e6402f364bddc782f666436d502a",
+  "status": "Available to existing TestFlight and Google Play internal testers",
+  "backend": {
+    "deployed": true,
+    "releaseHash": "77b3efaa8cda",
+    "historyAndConfigPreserved": true,
+    "realModelContinuation": {
+      "originalPeople": 20,
+      "finalPeople": 45,
+      "finalRelationships": 53,
+      "turns": 2,
+      "seconds": 34.406,
+      "originalSnapshotsUnchanged": true,
+      "separateAccountHistoryEmpty": true
+    }
+  },
+  "qualification": {
+    "clientTests": 183,
+    "serverTests": 180,
+    "androidUpgradeChecks": 7,
+    "androidSyntheticWorkspaceChecks": 10,
+    "macNativeChecks": 18,
+    "macRuntime": "macOS15.7.9 x86_64",
+    "browserWidths": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "physicalAppleDeviceTestThisRound": false
+  },
+  "appleArtifacts": [
+    {
+      "platform": "ios",
+      "source": "52f062667e08e6402f364bddc782f666436d502a",
+      "version": "1.0.15",
+      "build": "43",
+      "sha256": "36cf16da2613abe38a9bab0a79c2ad81aeca18a563a29a6108dc6039b004a61d",
+      "bytes": 12118411,
+      "archive": {
+        "bundle": "art.lazying.bunko",
+        "resources": 88,
+        "signer": "Q8M2S2FY77",
+        "watch": {
+          "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+          "CFBundleShortVersionString": "1.0.15",
+          "CFBundleVersion": "43",
+          "WKCompanionAppBundleIdentifier": "art.lazying.bunko"
+        }
+      },
+      "exported": {
+        "bundle": "art.lazying.bunko",
+        "resources": 88,
+        "signer": "Q8M2S2FY77",
+        "watch": {
+          "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+          "CFBundleShortVersionString": "1.0.15",
+          "CFBundleVersion": "43",
+          "WKCompanionAppBundleIdentifier": "art.lazying.bunko"
+        }
+      }
+    },
+    {
+      "platform": "macos",
+      "source": "52f062667e08e6402f364bddc782f666436d502a",
+      "version": "1.0.15",
+      "build": "43",
+      "sha256": "18a783bb1bb5db23d783b371c09d01e5b071440893f3cbf832ba1d54299a79d8",
+      "bytes": 6512302,
+      "archive": {
+        "bundle": "art.lazying.bunko",
+        "resources": 86,
+        "signer": "Q8M2S2FY77",
+        "machO": {
+          "arm64": "12.0",
+          "x86_64": "12.0"
+        }
+      },
+      "exported": {
+        "bundle": "art.lazying.bunko",
+        "resources": 86,
+        "signer": "Q8M2S2FY77",
+        "machO": {
+          "arm64": "12.0",
+          "x86_64": "12.0"
+        }
+      }
+    }
+  ],
+  "appleInternalAvailability": [
+    {
+      "id": "4da217c2-aa5a-40e2-bbfe-223675a473d7",
+      "platform": "IOS",
+      "version": "1.0.15",
+      "build": "43",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING",
+      "group": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+      "locales": [
+        "en-US",
+        "zh-Hans",
+        "zh-Hant",
+        "ja"
+      ]
+    },
+    {
+      "id": "ac927f7f-4344-4437-b8db-6460b0f827a0",
+      "platform": "MAC_OS",
+      "version": "1.0.15",
+      "build": "43",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING",
+      "group": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+      "locales": [
+        "en-US",
+        "zh-Hans",
+        "zh-Hant",
+        "ja"
+      ]
+    }
+  ],
+  "android": {
+    "at": "2026-10-25T22:55:27.814948+00:00",
+    "app": "art.lazying.bunko",
+    "appId": "4972575539744983205",
+    "trackId": "4701547714770281380",
+    "track": "internal",
+    "build": 43,
+    "version": "1.0.15",
+    "state": "Available to internal testers",
+    "releaseName": "1.0.15 (43) - Continuing reading conversations",
+    "aabSHA256": "a22a4a7e3f97c98a6bec528b00e5dd47488241a8b480678616303fa11d262db7",
+    "locales": [
+      "en-US",
+      "zh-CN",
+      "zh-TW",
+      "ja-JP"
+    ],
+    "publicReviewChanged": false
+  },
+  "formalReview": {
+    "at": "2026-10-25T23:15:50.784370+00:00",
+    "macReview": "WAITING_FOR_REVIEW",
+    "selectedBuilds": [
+      "40"
+    ],
+    "existingInternalTesterCount": 1,
+    "new43SubmittedForReview": false
+  },
+  "resourceCleanup": {
+    "at": "2026-10-25T23:00:06.111876+00:00",
+    "guardAbsent": true,
+    "ownedProcessIdentitiesAbsent": 326,
+    "temporarySignerAbsent": true,
+    "originalSearchListRestored": true,
+    "profilesRestored": 6,
+    "sourceFilesUnchanged": 264,
+    "deviceStatesPreserved": 72,
+    "peerBB1": "Booted",
+    "handbackSha256": "68f18eb527dad53c9ab495ec190c6e73b9cec61042628a97b897d055b026d194",
+    "localBrowserEmulatorUploadPortsClosed": true
+  },
+  "formalReviewChanged": false,
+  "publicPwaChanged": false,
+  "features": [
+    "Nearest reading conversation branch with latest continuation and preserved draft",
+    "Stable incremental People, Places/routes and Timeline updates retaining prior snapshots and source references",
+    "Qualified capable model selected immediately for complex visual requests",
+    "Bounded format/tool repair and normalized provider tool identifiers",
+    "Faction/group filters, compact radial graphs and explicit background-date timeline markers"
+  ],
+  "screenshots": {
+    "manifest": "store/screenshots/reading-workspace43-20261026/manifest.json",
+    "state": "captured/reviewed locally; not uploaded to public listings"
+  },
+  "upload": {
+    "transport": "direct verified TLS",
+    "sameIOSFileReservationResumed": true,
+    "iosFileComplete": true,
+    "macFileComplete": true,
+    "duplicateBuildReservation": false
+  }
+}

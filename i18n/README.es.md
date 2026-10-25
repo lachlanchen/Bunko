@@ -26,6 +26,8 @@ El compañero de lectura reúne el contexto automático del libro, las referenci
 
 **Mapas históricos en pruebas internas:** provincias con distintos colores, marcadores con nombres de ciudades y preguntas de seguimiento para ampliar el mapa guardado. La capa Han oriental indica el año de referencia y las fuentes. [Detalles y vista previa](../docs/reading-tools-and-historical-maps.md).
 
+**Continuar una conversación · versión de prueba interna 43:** Retoma la conversación más cercana a tu posición de lectura o elige una rama anterior. Amplía los gráficos de relaciones, mapas y cronologías guardados sin perder las versiones anteriores. Los gráficos grandes se pueden filtrar por grupo. [Detalles](../docs/reading-workspace-20261026.md).
+
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>

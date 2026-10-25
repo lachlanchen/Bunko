@@ -26,6 +26,8 @@
 
 **خرائط تاريخية قيد الاختبار الداخلي:** مناطق ملوّنة للمقاطعات، وعلامات بأسماء المدن، وأسئلة متابعة توسّع الخريطة المحفوظة. تتضمن طبقة هان الشرقية السنة المرجعية والمصادر. [تفاصيل الخريطة ومعاينتها](../docs/reading-tools-and-historical-maps.md).
 
+**متابعة حوار القراءة · الإصدار التجريبي الداخلي 43:** استأنف الحوار الأقرب إلى موضع قراءتك أو اختر فرعًا سابقًا. أضف إلى مخططات العلاقات والخرائط والخطوط الزمنية المحفوظة مع الاحتفاظ بالإصدارات السابقة. يمكن تصفية المخططات الكبيرة حسب المجموعة. [التفاصيل](../docs/reading-workspace-20261026.md).
+
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>

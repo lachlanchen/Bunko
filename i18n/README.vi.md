@@ -26,6 +26,8 @@ Trợ lý đọc sách kết hợp ngữ cảnh sách tự động, tham chiếu
 
 **Bản đồ lịch sử đang thử nghiệm nội bộ:** các châu được tô màu riêng, thành phố có nhãn tên, và câu hỏi tiếp theo có thể bổ sung địa điểm vào bản đồ đã lưu. Lớp bản đồ Đông Hán ghi rõ năm tham chiếu và nguồn. [Chi tiết và xem trước](../docs/reading-tools-and-historical-maps.md).
 
+**Tiếp tục trò chuyện khi đọc · bản thử nghiệm nội bộ 43:** Mở lại cuộc trò chuyện gần vị trí đang đọc nhất hoặc chọn một nhánh trước đó. Bổ sung sơ đồ quan hệ, bản đồ và dòng thời gian đã lưu mà vẫn giữ các phiên bản trước. Có thể lọc sơ đồ lớn theo nhóm. [Chi tiết](../docs/reading-workspace-20261026.md).
+
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>

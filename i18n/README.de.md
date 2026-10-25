@@ -26,6 +26,8 @@ Der Lesebegleiter verbindet den automatisch übernommenen Buchkontext, kompakte 
 
 **Historische Karten im internen Test:** farbige Provinzflächen, benannte Stadtmarkierungen und Folgefragen, die eine gespeicherte Karte erweitern. Die Ebene der Östlichen Han nennt Bezugsjahr und Quellen. [Kartendetails und Vorschau](../docs/reading-tools-and-historical-maps.md).
 
+**Lesegespräche fortsetzen · interner Testbuild 43:** Setzen Sie das Gespräch nahe Ihrer Leseposition fort oder wählen Sie einen früheren Zweig. Ergänzen Sie gespeicherte Beziehungsgraphen, Karten und Zeitleisten; frühere Versionen bleiben erhalten. Größere Graphen lassen sich nach Gruppen filtern. [Details](../docs/reading-workspace-20261026.md).
+
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>

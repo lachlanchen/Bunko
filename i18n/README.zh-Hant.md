@@ -26,6 +26,8 @@ Bunko 將公版經典與已獲散布許可的原創書籍收進同一個多語�
 
 **內測中的歷史地圖：** 州域分色顯示，城市使用名稱標記，可接續上次的地圖提問和補充地點。東漢圖層註明參考年代和來源。[地圖說明與預覽](../docs/reading-tools-and-historical-maps.md)。
 
+**持續讀書對話 · 內測版43：** 自動接續離目前閱讀位置最近的對話，也可選擇較早的分支。在已儲存的人物關係圖、地圖和時間線上繼續補充，保留先前版本；較大的關係圖可按陣營或家族分組查看。[詳情](../docs/reading-workspace-20261026.md)。
+
 <p>
 <a href="../docs/images/reading-guides-20261021/phone-graph-focused.png"><img src="../docs/images/reading-guides-20261021/phone-graph-focused.png" alt="Character relationships — component example" width="190"></a>
 <a href="../docs/images/reading-guides-20261021/phone-map.png"><img src="../docs/images/reading-guides-20261021/phone-map.png" alt="Geographic map — demonstration journey" width="190"></a>

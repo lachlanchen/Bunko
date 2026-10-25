@@ -8,7 +8,8 @@ Choose the nearest conversation branch for the current reading position and
 resume its latest continuation; allow explicit branch selection without losing
 drafts. Complex visual tasks use the qualified capable model immediately, with
 bounded repair and existing provider consent. Improve graph grouping and timeline
-legibility. Backend correction is live; accumulate client changes in internal43.
+legibility. Backend correction is live. Apple iOS/Watch and universal Mac1.0.15(43) are
+VALID / IN_BETA_TESTING; Android43 is available to existing internal testers.
 Preserve Mac40 formal review, public releases, accounts and billing.
 See `docs/reading-workspace-20261026.md`.
 
