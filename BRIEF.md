@@ -10,6 +10,10 @@ Preserve book context, saved messages, reading positions and existing privacy
 consent. Test the successor and update Apple's review notes to match its actual
 behavior before replacing the submitted build. Font/interface sizing stays deferred.
 
+Mac 1.0.15 (40) is now VALID / IN_BETA_TESTING and Waiting for Review, replacing
+withdrawn Mac39. The restored service is live, and descriptions/review notes match.
+See `docs/mac-review40-20261025.md` for actual qualification and delivery.
+
 ## Deferred text and interface sizing · 2026-10-25
 
 The owner requests recording this for after their Codex usage resets. Do not

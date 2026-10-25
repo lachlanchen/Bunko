@@ -1,3 +1,23 @@
+# Bunko Mac40 replaces Mac39 · 25 October 2026
+
+Mac **1.0.15 (40)** is **Waiting for Review**, automatic release after approval,
+and **VALID / IN_BETA_TESTING** in the existing internal group. Mac39 was
+withdrawn before replacement. Apple selected-build and review-state readbacks
+passed at 08:56 UTC.
+
+The reading assistant is restored, with DeepSeek routing for mainland and unknown
+native storefronts. The live service, real synthetic-document answer, saved history,
+15 Mac runtime checks and universal signed package passed. Four descriptions and
+Apple review notes were corrected; six existing screenshots remain accurate and
+COMPLETE. [Qualification and delivery](../docs/mac-review40-20261025.md).
+
+No Mac/GUI hold remains. Signing/profiles were restored, the temporary signer and
+upload proxy removed. Private evidence: `.runtime/mac-review40-20261025/`.
+Public releases and other platform binaries are unchanged pending Apple approval.
+Font/interface sizing remains deferred.
+
+## Earlier records
+
 # Bunko Mac39 submitted · 25 October 2026
 
 Mac **1.0.15 (39)** is **Waiting for Review**, automatic release after approval,

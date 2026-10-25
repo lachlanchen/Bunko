@@ -3,7 +3,9 @@
 Bunko starts with DeepSeek Flash. A failed structured answer or unverified source
 quotation can use DeepSeek Pro for the existing single repair attempt. A temporary
 provider failure may also use the configured alternative. The overall deadline,
-citation checks, provider consent and regional restriction still apply. Saved
+citation checks and provider consent still apply. Mainland and unresolved native
+storefront requests use the qualified DeepSeek route for every attempt, including
+repair and fallback. The reading workspace remains available. Saved
 answers reopen without another model call.
 
 Administrator settings offer two choices: Default and For harder questions.
