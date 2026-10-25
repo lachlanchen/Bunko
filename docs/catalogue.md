@@ -8,7 +8,7 @@ The separate [bunko-books](https://github.com/lachlanchen/bunko-books) catalogue
 | --- | ---: | --- | --- |
 | Physics | 19 | English | [Independent Susskind lecture companion notes](https://github.com/lachlanchen/leonardsusskind): six Theoretical Minimum volumes, four other core course runs and all nine published supplementary volumes, with equations and figures. These are not Susskind manuscripts, transcripts or endorsed books; preserve source GPL-3.0 attribution. |
 | Learning | 2 | English | [How to Speak and Write and Justice with Michael Sandel](https://github.com/lachlanchen/LazyLearn), owner-prepared companion editions. |
-| Finance | 9 | English; English/Japanese/Chinese | Seven edited [LazyEarn](https://github.com/lachlanchen/LazyEarn) course and thematic books, Wealth From First Principles, and accepted V3 [How You Got Rich](https://github.com/lachlanchen/HowYouGotRich). Raw interview corpora, direct Jim Rohn transcripts and third-party interview frames were not republished. |
+| Finance | 9 | English; English/Japanese/Chinese | Seven edited [LazyEarn](https://github.com/lachlanchen/LazyEarn) course and thematic books, Wealth From First Principles, and accepted V3 [How Did You Get Rich?](https://github.com/lachlanchen/HowDidYouGetRich). Raw interview corpora, direct Jim Rohn transcripts and third-party interview frames were not republished. |
 | Travel | 3 | English/Japanese/Chinese | [Xi'an, Hakone and Lanzhou](https://github.com/lachlanchen/LazyTravel), using accepted aligned text, readings and reviewed illustrations. |
 
 This owner-edition audit is separate from the 336-item `ZhJpBook` registry below. There are no payloads in this app repository.

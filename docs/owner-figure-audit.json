@@ -1,5 +1,4 @@
 {
-  "checked": "2026-09-26",
   "books": 33,
   "figures": 2696,
   "categories": {
@@ -14,7 +13,7 @@
       "expected": 32,
       "figures": 32,
       "uniqueAssets": 32,
-      "retainedPassages": 1241,
+      "retainedPassages": 1304,
       "figureBytes": 1309984
     },
     {
@@ -22,7 +21,7 @@
       "expected": 73,
       "figures": 73,
       "uniqueAssets": 73,
-      "retainedPassages": 3140,
+      "retainedPassages": 3211,
       "figureBytes": 3452456
     },
     {
@@ -30,7 +29,7 @@
       "expected": 79,
       "figures": 79,
       "uniqueAssets": 79,
-      "retainedPassages": 2718,
+      "retainedPassages": 2797,
       "figureBytes": 3210160
     },
     {
@@ -38,7 +37,7 @@
       "expected": 52,
       "figures": 52,
       "uniqueAssets": 52,
-      "retainedPassages": 1708,
+      "retainedPassages": 1758,
       "figureBytes": 2403136
     },
     {
@@ -46,7 +45,7 @@
       "expected": 40,
       "figures": 40,
       "uniqueAssets": 40,
-      "retainedPassages": 1160,
+      "retainedPassages": 1181,
       "figureBytes": 1929474
     },
     {
@@ -54,7 +53,7 @@
       "expected": 76,
       "figures": 76,
       "uniqueAssets": 76,
-      "retainedPassages": 5807,
+      "retainedPassages": 5883,
       "figureBytes": 1806614
     },
     {
@@ -62,7 +61,7 @@
       "expected": 60,
       "figures": 60,
       "uniqueAssets": 60,
-      "retainedPassages": 2088,
+      "retainedPassages": 2106,
       "figureBytes": 1318400
     },
     {
@@ -74,7 +73,7 @@
       "figureBytes": 0
     },
     {
-      "book": "how-you-got-rich",
+      "book": "how-did-you-get-rich",
       "expected": 2,
       "figures": 2,
       "uniqueAssets": 2,
@@ -86,7 +85,7 @@
       "expected": 14,
       "figures": 14,
       "uniqueAssets": 14,
-      "retainedPassages": 1551,
+      "retainedPassages": 1559,
       "figureBytes": 300238
     },
     {
@@ -94,7 +93,7 @@
       "expected": 35,
       "figures": 35,
       "uniqueAssets": 35,
-      "retainedPassages": 1820,
+      "retainedPassages": 1842,
       "figureBytes": 997492
     },
     {
@@ -102,7 +101,7 @@
       "expected": 41,
       "figures": 41,
       "uniqueAssets": 41,
-      "retainedPassages": 616,
+      "retainedPassages": 1080,
       "figureBytes": 735444
     },
     {
@@ -110,7 +109,7 @@
       "expected": 150,
       "figures": 150,
       "uniqueAssets": 150,
-      "retainedPassages": 791,
+      "retainedPassages": 1272,
       "figureBytes": 2273406
     },
     {
@@ -118,7 +117,7 @@
       "expected": 112,
       "figures": 112,
       "uniqueAssets": 112,
-      "retainedPassages": 567,
+      "retainedPassages": 581,
       "figureBytes": 805758
     },
     {
@@ -126,7 +125,7 @@
       "expected": 64,
       "figures": 64,
       "uniqueAssets": 64,
-      "retainedPassages": 589,
+      "retainedPassages": 1106,
       "figureBytes": 1206574
     },
     {
@@ -134,7 +133,7 @@
       "expected": 101,
       "figures": 101,
       "uniqueAssets": 101,
-      "retainedPassages": 652,
+      "retainedPassages": 1151,
       "figureBytes": 1261686
     },
     {
@@ -142,7 +141,7 @@
       "expected": 23,
       "figures": 23,
       "uniqueAssets": 23,
-      "retainedPassages": 465,
+      "retainedPassages": 664,
       "figureBytes": 152676
     },
     {
@@ -150,7 +149,7 @@
       "expected": 168,
       "figures": 168,
       "uniqueAssets": 168,
-      "retainedPassages": 776,
+      "retainedPassages": 1268,
       "figureBytes": 3947484
     },
     {
@@ -158,7 +157,7 @@
       "expected": 212,
       "figures": 212,
       "uniqueAssets": 212,
-      "retainedPassages": 657,
+      "retainedPassages": 809,
       "figureBytes": 1426580
     },
     {
@@ -166,7 +165,7 @@
       "expected": 13,
       "figures": 13,
       "uniqueAssets": 13,
-      "retainedPassages": 89,
+      "retainedPassages": 114,
       "figureBytes": 238098
     },
     {
@@ -174,7 +173,7 @@
       "expected": 77,
       "figures": 77,
       "uniqueAssets": 77,
-      "retainedPassages": 800,
+      "retainedPassages": 1447,
       "figureBytes": 1155172
     },
     {
@@ -182,7 +181,7 @@
       "expected": 79,
       "figures": 79,
       "uniqueAssets": 79,
-      "retainedPassages": 864,
+      "retainedPassages": 1396,
       "figureBytes": 895824
     },
     {
@@ -190,7 +189,7 @@
       "expected": 44,
       "figures": 44,
       "uniqueAssets": 44,
-      "retainedPassages": 698,
+      "retainedPassages": 1107,
       "figureBytes": 291870
     },
     {
@@ -198,7 +197,7 @@
       "expected": 98,
       "figures": 98,
       "uniqueAssets": 98,
-      "retainedPassages": 539,
+      "retainedPassages": 1003,
       "figureBytes": 583868
     },
     {
@@ -206,7 +205,7 @@
       "expected": 114,
       "figures": 114,
       "uniqueAssets": 114,
-      "retainedPassages": 548,
+      "retainedPassages": 816,
       "figureBytes": 979280
     },
     {
@@ -214,7 +213,7 @@
       "expected": 106,
       "figures": 106,
       "uniqueAssets": 106,
-      "retainedPassages": 678,
+      "retainedPassages": 1198,
       "figureBytes": 1584546
     },
     {
@@ -222,7 +221,7 @@
       "expected": 167,
       "figures": 167,
       "uniqueAssets": 167,
-      "retainedPassages": 671,
+      "retainedPassages": 679,
       "figureBytes": 789250
     },
     {
@@ -230,7 +229,7 @@
       "expected": 220,
       "figures": 220,
       "uniqueAssets": 220,
-      "retainedPassages": 1006,
+      "retainedPassages": 1526,
       "figureBytes": 3483704
     },
     {
@@ -238,7 +237,7 @@
       "expected": 106,
       "figures": 106,
       "uniqueAssets": 106,
-      "retainedPassages": 682,
+      "retainedPassages": 1235,
       "figureBytes": 1720276
     },
     {
@@ -246,7 +245,7 @@
       "expected": 213,
       "figures": 213,
       "uniqueAssets": 213,
-      "retainedPassages": 925,
+      "retainedPassages": 1465,
       "figureBytes": 2459666
     },
     {

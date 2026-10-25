@@ -12,7 +12,7 @@ the same asset may occur more than once.
 | Physics, including supplementary courses | 19 | 2,108 |
 | Travel | 3 | 125 |
 | Learning | 2 | 49 |
-| Finance, including How You Got Rich | 9 | 414 |
+| Finance, including How Did You Get Rich? | 9 | 414 |
 | **Total** | **33** | **2,696** |
 
 The repair adds 799 previously omitted placements. All referenced assets exist,
@@ -22,7 +22,7 @@ remain unchanged. Per-book counts are in [the audit report](owner-figure-audit.j
 Validation passed: six importer regression tests, seven bundle-validator tests,
 the full 183-book catalogue validation, and eleven browser checks. The browser
 checks cover seven representative books at 390 pixels, translated Chinese
-captions, a complete How You Got Rich download, and reopening its figure from
+captions, a complete How Did You Get Rich? download, and reopening its figure from
 the local cache with networking disabled. Source diagram spot checks and phone
 screenshots are retained privately under `.runtime/owner-figures/qa/`.
 
@@ -43,7 +43,7 @@ screenshots are retained privately under `.runtime/owner-figures/qa/`.
 - Unwrap image-only `resizebox`/`scalebox` layout containers before Pandoc;
   the reader's responsive CSS controls their displayed size.
 - Restore two source photographs in How You Build a Business and two in
-  How You Got Rich. The latter retain the reviewed English, Chinese and Japanese
+  How Did You Get Rich? The latter retain the reviewed English, Chinese and Japanese
   captions and existing source passage IDs.
 - Ignore editorial comments when looking for a TeX document terminator.
   Existing published chapter boundaries are retained during this repair.

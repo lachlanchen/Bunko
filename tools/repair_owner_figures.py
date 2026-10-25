@@ -76,7 +76,7 @@ def main():
             row['after'] = sum(bool(p.get('figure')) for _, blocks, _ in chapters for p in blocks)
         report.append(row)
         print(json.dumps(row), flush=True)
-    if args.write and (not args.only or 'how-you-got-rich' in args.only):
+    if args.write and (not args.only or 'how-did-you-get-rich' in args.only):
         wealth_book()
     (CACHE / ('repair-report.json' if args.write else 'render-report.json')).write_text(json.dumps(report, indent=2))
     (CACHE / 'failures.json').write_text(json.dumps(failures, indent=2))

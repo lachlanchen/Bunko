@@ -11,9 +11,28 @@ from owner_figures import CACHE, TIKZ
 from repair_owner_figures import editions, source_body
 
 
+TITLE_RENAME = {
+    'The title of this book is deliberately addressed to someone else: *How you got rich.*':
+    'The title of this book is deliberately addressed to someone else: *How did you get rich?*',
+}
+
+
+def same_passage(previous, replacement, slug):
+    if not replacement or replacement['id'] != previous['id']:
+        return False
+    old_source = previous['src']
+    if slug == 'how-did-you-get-rich':
+        for old, new in TITLE_RENAME.items():
+            old_source = old_source.replace(old, new)
+    return replacement['src'] == old_source
+
+
 def head_json(path):
+    relative = str(path.relative_to(OUT.parent))
+    if relative.startswith('books/how-did-you-get-rich/'):
+        relative = relative.replace('books/how-did-you-get-rich/', 'books/how-you-got-rich/', 1)
     return json.loads(subprocess.check_output(['git', '-C', str(OUT.parent), 'show',
-                                              'HEAD:' + str(path.relative_to(OUT.parent))]))
+                                              'HEAD:' + relative]))
 
 
 def main():
@@ -27,8 +46,8 @@ def main():
                            ('lanzhou', 'china/cities/lanzhou')]:
         doc = json.loads((ROOT.parent / 'LazyTravel/data' / location / 'book.json').read_text())
         expected['travel-' + city] = sum(len(b.get('asset_ids', [])) for c in doc['chapters'] for b in c['blocks'])
-    manifest = json.loads((ROOT.parent / 'HowYouGotRich/docs/data/web-edition.json').read_text())
-    expected['how-you-got-rich'] = sum(entry.get('figures', 0) for entry in manifest['entries'])
+    manifest = json.loads((ROOT.parent / 'HowDidYouGetRich/docs/data/web-edition.json').read_text())
+    expected['how-did-you-get-rich'] = sum(entry.get('figures', 0) for entry in manifest['entries'])
     expected['finance-wealth-first-principles'] = 0  # Source contains cover artwork only.
     totals = Counter()
     rows, errors = [], []
@@ -53,13 +72,13 @@ def main():
             previous = json.loads((folder / old_rows[row['n']]['file']).read_text())
             for block in previous['p']:
                 replacement = by_id.get(block['id'])
-                if not replacement or replacement['src'] != block['src']:
+                if not same_passage(block, replacement, slug):
                     errors.append(f'{slug}/{row["n"]}/{block["id"]}: old passage lost or reassigned: {block["src"][:90]}')
                 else:
                     retained += 1
         if figures != count:
             errors.append(f'{slug}: imported {figures}, expected {count} source placements')
-        if meta.get('cover') != old.get('cover'):
+        if meta.get('cover') != old.get('cover') and slug != 'how-did-you-get-rich':
             errors.append(f'{slug}: original cover changed')
         totals[meta['cat']] += figures
         rows.append({'book': slug, 'expected': count, 'figures': figures, 'uniqueAssets': len(asset_paths),

@@ -192,7 +192,7 @@ def markdown_rich(markdown):
 
 
 def wealth_book():
-    root = ROOT.parent / 'HowYouGotRich'
+    root = ROOT.parent / 'HowDidYouGetRich'
     manifest = json.loads((root / 'docs/data/web-edition.json').read_text())
     chapters = []
     for entry in manifest['entries']:
@@ -230,9 +230,9 @@ def wealth_book():
                 row.update(kind='figure', figure={'path': dest, 'caption': captions})
             blocks.append(row)
         chapters.append((doc['metadata']['title'], blocks, assets))
-    publish('how-you-got-rich', {'en': 'How You Got Rich', 'ja': '豊かさをどう築いたか', 'zh': '你是如何富起来的'},
+    publish('how-did-you-get-rich', {'en': 'How Did You Get Rich?', 'ja': 'あなたはどうやって富を築いたのか？', 'zh': '你是如何致富的？'},
             ['en', 'ja', 'zh'], 'en', 'finance', 'LazyingArt LLC', chapters,
-            'https://github.com/lachlanchen/HowYouGotRich/tree/main/multilingual/entries',
+            'https://github.com/lachlanchen/HowDidYouGetRich/tree/main/multilingual/entries',
             'Author-owned V3 original book and reviewed Japanese and Chinese editions, supplied by the owner for Bunko.',
             root / 'assets/cover-page-1.png', True)
 

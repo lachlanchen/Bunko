@@ -18,7 +18,7 @@ The public site lists 11 books. Bunko has these **9**:
 | --- | --- |
 | Wealth from first principles | `finance-wealth-first-principles` |
 | The Way to Wealth Freedom | `earn-wealth-freedom` |
-| How You Got Rich | `how-you-got-rich` (English, Japanese, Chinese) |
+| How Did You Get Rich? | `how-did-you-get-rich` (English, Japanese, Chinese) |
 | How You Got Happiness? | `earn-happiness` |
 | 10 Questions With a Millionaire | `earn-millionaire-questions` |
 | Yale Financial Markets notes | `earn-yale-financial-markets` |
