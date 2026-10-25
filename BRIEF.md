@@ -18,6 +18,17 @@ implement, build or submit it now; resume when the owner returns to this work.
   on phones, tablets/e-ink and Mac for clipped labels, reachable controls and
   sensible wrapping. Use controls that work without dragging on e-ink devices.
 
+## Deferred correction to companion visibility · 2026-10-25
+
+The owner clarifies that the Agent should remain accessible. Apple's rejection
+specifically identified ChatGPT/OpenAI functionality and metadata; it did not
+explicitly demand hiding the whole companion. Revisit the broad regional and
+unknown-storefront hiding after the owner's usage reset. Qualify a DeepSeek-only
+mainland route, with OpenAI excluded there, and explain the actual service to
+Apple. A provider change alone is not evidence of approval or local compliance.
+Preserve the submitted build/review until this successor is qualified; no runtime
+or review change is requested during the current deferral.
+
 ## Mainland storefront correction · 2026-10-25
 
 Apple rejected Mac1.0.14(37) under Guideline5 for mainland China generative-service
