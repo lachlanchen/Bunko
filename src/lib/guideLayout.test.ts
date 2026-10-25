@@ -45,3 +45,17 @@ describe('offline geographic references', () => {
     expect(findPlaces('')).toEqual([])
   })
 })
+
+it('keeps compact faction overviews legible and preserves every edge without overlapping people', () => {
+  for (let count = 5; count <= 14; count++) {
+    const people = Array.from({ length: count }, (_, i) => ({ ...entity(`person${i}`, `人物${i}`), group: '同组' }))
+    const edges: GuideConnection[] = people.slice(1).map(p => ({ from: people[0].id, to: p.id, label: '同一阵营', direction: 'mutual', certainty: 'background', citations: [] }))
+    const result = relationshipLayout(people, edges, false, true)
+    expect(result.nodes).toHaveLength(count); expect(result.edges).toHaveLength(count - 1)
+    expect(result.width / result.height).toBeGreaterThan(.8)
+    expect(result.width / result.height).toBeLessThan(1.2)
+    for (const a of result.nodes) for (const b of result.nodes) if (a !== b) expect(Math.abs(a.x - b.x) >= (a.width + b.width) / 2 || Math.abs(a.y - b.y) >= (a.height + b.height) / 2).toBe(true)
+    expect(new Set(result.nodes.map(n => n.color)).size).toBe(1)
+    expect(result.edges.every(e => edges.includes(e.source))).toBe(true)
+  }
+})

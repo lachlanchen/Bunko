@@ -1,5 +1,17 @@
 # Bunko — product brief
 
+## Incremental reading workspace · 2026-10-26
+
+Extend saved People, Places and Timeline results through stable, validated
+incremental updates. Preserve source provenance and immutable earlier turns.
+Choose the nearest conversation branch for the current reading position and
+resume its latest continuation; allow explicit branch selection without losing
+drafts. Complex visual tasks use the qualified capable model immediately, with
+bounded repair and existing provider consent. Improve graph grouping and timeline
+legibility. Backend correction is live; accumulate client changes in internal43.
+Preserve Mac40 formal review, public releases, accounts and billing.
+See `docs/reading-workspace-20261026.md`.
+
 ## Historical maps and reading tools · 2026-10-26
 
 The owner requests a reading assistant that can query evidence, check its map

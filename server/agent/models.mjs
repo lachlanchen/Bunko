@@ -71,7 +71,7 @@ export function createModelRouter({ db, config, provider, now = Date.now }) {
     return async (_legacyUrl, options = {}) => {
       // Only host validation can request the one bounded repair with a stronger model.
       // Book text and model output cannot select a route or add a provider.
-      const primary = options.quality === 'repair' && settings.capable ? settings.capable : settings.primary
+      const primary = ['repair', 'capable'].includes(options.quality) && settings.capable ? settings.capable : settings.primary
       const candidates = [...new Set([primary, settings.fallback].filter(Boolean))].map(id => routes.get(id))
       requireValue(candidates[0], 'The reading assistant is not connected.', 503)
       const raw = JSON.parse(options.body)

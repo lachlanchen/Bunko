@@ -69,7 +69,7 @@ test('source tool stays inside selected passages and rejects ambient URLs/accoun
   assert.deepEqual(JSON.parse((await source.execute({ terms: ['later secret'] })).report).passages, [])
   let calls = 0
   await assert.rejects(runStructuredReading({ messages: [{ role: 'user', content: query }], kind: 'explore', tools, timeoutMs: 1000, maxTokens: 2000,
-    complete: async () => { calls++; return { choices: [{ finish_reason: 'tool_calls', message: { tool_calls: [{ id: 'danger', type: 'function', function: { name: 'exec', arguments: '{"cmd":"env"}' } }] } }] } } }), /could not finish/)
+    complete: async () => { calls++; return { choices: [{ finish_reason: 'tool_calls', message: { tool_calls: [{ id: 'danger', type: 'function', function: { name: 'exec', arguments: '{"cmd":"env"}' } }] } }] } } }), /corrected response/)
   assert.equal(calls, 1)
 })
 
@@ -82,4 +82,17 @@ test('tool loop has a final synthesis step, a finite call budget and cancellatio
       return { choices: [{ finish_reason: 'tool_calls', message: { tool_calls: [{ id: `layers${calls}`, type: 'function', function: { name: 'list_map_layers', arguments: '{}' } }] } }] }
     } })
   assert.equal(calls, 4); assert.equal(result.places.length, 13)
+})
+
+test('provider ids repeated across completions become distinct checked tool calls', async () => {
+  let calls = 0
+  const value = await runStructuredReading({ messages: [{ role: 'user', content: query }], kind: 'explore', focus: 'places', tools: createReadingTools(context), timeoutMs: 1000, maxTokens: 2000,
+    complete: async (_url, options) => {
+      const body = JSON.parse(options.body); calls++
+      if (calls < 3) return { choices: [{ finish_reason: 'tool_calls', message: { tool_calls: [{ id: 'call_0', type: 'function', function: { name: 'list_map_layers', arguments: '{}' } }] } }] }
+      const answers = body.messages.filter(m => m.role === 'tool')
+      assert.equal(new Set(answers.map(m => m.tool_call_id)).size, 2)
+      return { choices: [{ message: { content: JSON.stringify(complete) } }] }
+    } })
+  assert.equal(calls, 3); assert.equal(value.places.length, 13)
 })

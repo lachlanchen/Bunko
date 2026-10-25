@@ -2,8 +2,21 @@
 const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 const normalized = text => String(text || '').normalize('NFKC').replace(/\s+/g, ' ').trim().toLocaleLowerCase();
 export function quotedCalendar(event) {
-  let value = normalized(event?.when);
+  const value = normalized(event?.when);
   if (!value || !event?.citations?.some(c => normalized(c.quote).includes(value))) return null;
+  return calendarPhrase(value);
+}
+
+/** Background dates remain visibly distinct from passage-verified dates. */
+export function readingCalendar(event) {
+  const quoted = quotedCalendar(event);
+  if (quoted) return { ...quoted, evidence: 'passage' };
+  const background = event?.certainty === 'background' ? calendarPhrase(normalized(event.when)) : null;
+  return background ? { ...background, evidence: 'background' } : null;
+}
+
+function calendarPhrase(value) {
+  if (!value) return null;
   // Approximate/relative expressions retain their narrative label and are not
   // silently turned into an exact point on a calendar.
   if (/(?:circa|about|around|approximately|early|late|spring|summer|autumn|winter|约|約|頃|ごろ|前後)/u.test(value)) return null;

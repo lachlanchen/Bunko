@@ -4,6 +4,7 @@ import { AppError, hash, requireValue } from './common.mjs'
 import { readingBranch, readingMemory, visualGroups } from './book-memory.mjs'
 import { createReadingTools } from './reading-tools.mjs'
 import { checkMapRequest } from './map-grounding.mjs'
+import { applyReadingUpdate, updateBases, readingTask } from './reading-updates.mjs'
 
 const VERSION = 3
 const kinds = new Set(['answer', 'guide', 'explore'])
@@ -78,13 +79,13 @@ export async function bookContext(ref, read, { maxChars = 48000 } = {}) {
 }
 
 /** Quotes are checked against exact supplied passages; output is data, never executable SVG/HTML. */
-export function validateBookResponse(raw, context, kind) {
+export function validateBookResponse(raw, context, kind, previous = {}) {
   requireValue(raw && typeof raw === 'object' && !Array.isArray(raw), 'The reading guide was incomplete. Please retry.', 502)
   if (kind === 'explore') {
-    const fields = Object.values(visualGroups).flat(), included = fields.filter(field => Object.hasOwn(raw, field))
+    const fields = Object.values(visualGroups).flat(), included = fields.filter(field => Object.hasOwn(raw, field) || raw.remove?.[field]?.length)
     if (!included.length) return validateBookResponse(raw, context, 'answer')
     const full = { ...Object.fromEntries(fields.map(field => [field, []])), ...raw }
-    const result = validateBookResponse(full, context, 'guide')
+    const result = validateBookResponse(full, context, 'guide', { ...previous, incremental: true, removing: Object.values(raw.remove || {}).some(ids => ids.length) })
     for (const group of Object.values(visualGroups)) if (!group.some(field => included.includes(field))) for (const field of group) delete result[field]
     return result
   }
@@ -103,7 +104,7 @@ export function validateBookResponse(raw, context, kind) {
   }
   const badConnections = []
   if (kind !== 'answer') for (const [field, group] of [['relationships', 'people'], ['routes', 'places']]) {
-    const nodes = Array.isArray(raw[group]) ? raw[group] : []
+    const nodes = [...new Map([...(previous[group] || []), ...(Array.isArray(raw[group]) ? raw[group] : [])].map(n => [n.id, n])).values()]
     const resolve = value => nodes.find(n => n?.id === value)?.id || (nodes.filter(n => [n?.name, ...(Array.isArray(n?.aliases) ? n.aliases : [])].includes(value)).length === 1 ? nodes.find(n => [n?.name, ...(Array.isArray(n?.aliases) ? n.aliases : [])].includes(value))?.id : null)
     for (const [i, edge] of (Array.isArray(raw[field]) ? raw[field] : []).entries()) {
       const from = resolve(edge?.from), to = resolve(edge?.to)
@@ -141,9 +142,10 @@ export function validateBookResponse(raw, context, kind) {
   const entities = (values, maximum) => list(values, maximum).map((v, i) => ({
     id: text(v.id, 40), name: text(v.name, 120), detail: text(v.detail), aliases: list(v.aliases || [], 6).map(a => text(a, 120)),
     ...(v.locationId ? { locationId: text(v.locationId, 100) } : {}),
+    ...(v.group ? { group: text(v.group, 80) } : {}),
     certainty: certainty(v.certainty), citations: entryEvidence(v), order: i,
   }))
-  const people = entities(raw.people, 32), places = entities(raw.places, 24)
+  const people = entities(raw.people, previous.incremental ? 128 : 32), places = entities(raw.places, previous.incremental ? 96 : 24)
   requireValue(new Set(people.map(p => p.id)).size === people.length && new Set(places.map(p => p.id)).size === places.length, 'The guide contained ambiguous names.', 502)
   const endpoint = (value, nodes) => {
     const exact = nodes.find(n => n.id === value)
@@ -154,14 +156,16 @@ export function validateBookResponse(raw, context, kind) {
   const edges = (values, nodes, max) => list(values, max).map(v => {
     const from = endpoint(v.from, nodes), to = endpoint(v.to, nodes)
     requireValue(from && to && from !== to, 'The guide contained an unknown connection.', 502)
-    return { from, to, label: text(v.label, 160), direction: v.direction === 'forward' ? 'forward' : 'mutual', certainty: certainty(v.certainty), citations: entryEvidence(v) }
+    return { ...(v.id ? { id: text(v.id, 40) } : {}), from, to, label: text(v.label, 160), direction: v.direction === 'forward' ? 'forward' : 'mutual', certainty: certainty(v.certainty), citations: entryEvidence(v) }
   })
-  const relationships = edges(raw.relationships, people, 64), routes = edges(raw.routes, places, 32)
-  const events = list(raw.events, 48).map(v => ({
+  const nodes = (field, fresh) => [...new Map([...(previous[field] || []), ...fresh].map(n => [n.id, n])).values()]
+  const relationships = edges(raw.relationships, nodes('people', people), previous.incremental ? 384 : 64), routes = edges(raw.routes, nodes('places', places), previous.incremental ? 192 : 32)
+  const events = list(raw.events, previous.incremental ? 160 : 48).map(v => ({
+    ...(v.id ? { id: text(v.id, 40) } : {}),
     title: text(v.title, 160), when: clean(v.when, 120), detail: text(v.detail), certainty: certainty(v.certainty),
     citations: entryEvidence(v), // Unquoted background events retain their stated narrative order.
   })).sort((a, b) => (a.citations.length ? Math.min(...a.citations.map(c => (c.chapter || 0) * 100000 + c.paragraph)) : Number.MAX_SAFE_INTEGER) - (b.citations.length ? Math.min(...b.citations.map(c => (c.chapter || 0) * 100000 + c.paragraph)) : Number.MAX_SAFE_INTEGER))
-  requireValue(people.length || places.length || events.length || raw.insufficient === true, 'No supported guide entries were returned.', 502)
+  requireValue(people.length || places.length || events.length || previous.incremental && (relationships.length || routes.length || previous.removing || Object.keys(previous).some(k => Array.isArray(previous[k]) && previous[k].length)) || raw.insufficient === true, 'No supported guide entries were returned.', 502)
   return { answer, citations, ...(Number.isSafeInteger(raw.mapYear) && raw.mapYear >= -3000 && raw.mapYear <= 3000 ? { mapYear: raw.mapYear } : {}), knowledge: [...people, ...relationships, ...places, ...routes, ...events].some(v => v.certainty === 'background') ? (citations.length ? 'mixed' : 'background') : knowledge, insufficient: raw.insufficient === true, people, relationships, places, routes, events }
 }
 
@@ -170,41 +174,45 @@ Knowledge and spoilers: prefer the supplied edition for precise details. Explain
 Return one valid JSON object (no fences) with answer (concise Markdown), knowledge:"passages"|"background"|"mixed", insufficient (boolean), citations:[{passage:"P1",quote:"exact short substring in the supplied source language"}]. Escape line breaks and double quotes inside JSON strings. Background answers may have citations:[]; explain in the answer that they use broader book knowledge. Use insufficient=true only when you cannot give a useful reliable answer.
 For a GUIDE also include people:[{id,name,detail,aliases:[],certainty:"stated"|"interpretation"|"background",citations}], relationships:[{from,to,label,direction:"forward"|"mutual",certainty,citations}], places:[{id,name,detail,aliases:[],certainty,citations}], routes:[{from,to,label,direction,certainty,citations}], events:[{title,when,detail,certainty,citations}].
 Use stated for facts in exact supplied quotes, interpretation for an interpretation of those quotes, and background for reliable broader book knowledge not established by the supplied passages. Each stated/interpretation entry needs 1–3 exact short quotations. Background entries may have citations:[]; never manufacture a quote to satisfy the schema. Mark mixed entries background if the quotation does not establish the whole claim. A route represents a known journey or spatial connection, never assumed distance or coordinates. You cannot observe the rendered map or diagnose a client display error. If prior visual data is present, do not claim it was omitted. Historical names and regions may be unresolved by the client; provide clear aliases and honest uncertainty instead of claiming a successful UI repair. Keep the map and answer consistent: a request about a different journey or section must update places AND routes together, not retain an unrelated earlier map. Do not connect places merely because they appear consecutively in a list. Use historical names with known modern aliases; do not turn a kingdom into its modern capital. Do not claim exact historical paths from endpoint connections.
-Prioritize the principal characters and their meaningful relationships; do not crowd a whole-book overview with every incidental name from a sampled chapter. Aim for 12–20 people, 16–28 relationships, 6–10 places, 4–10 routes and 10–16 major events, expanding only when useful. Keep each detail under 100 characters where possible, one short quotation per entry, and the summary under 700 characters. Stay within the output budget. Hard limits: 32 people, 64 relationships, 24 places, 32 routes, 48 events. All arrays are required for guides, empty if unavailable. Every from/to MUST exactly equal an id in its people/places list. Use forward for a directional relation (parent to child, teacher to pupil, journey start to destination), mutual for symmetric relations. A tree layout alone does not establish ancestry. Aliases must be known, not invented. For passage-grounded events, when is an EXACT time phrase from the quote, or empty if unstated; background events may use a reliably known time, labeled background. Do not infer calendar years from publication dates or chapter numbers. Put events in narrative order; Bunko plots quoted calendar dates separately. Answer citations: up to 5, each at most 240 characters. Do not output raw HTML.`;
+Prioritize the principal characters and their meaningful relationships; do not crowd a whole-book overview with every incidental name from a sampled chapter. Aim for 12–20 people, 16–28 relationships, 6–10 places, 4–10 routes and 10–16 major events, expanding only when useful. Keep each detail under 100 characters where possible, one short quotation per entry, and the summary under 700 characters. Stay within the output budget. Hard limits: 32 people, 64 relationships, 24 places, 32 routes, 48 events. All arrays are required for guides, empty if unavailable. Every from/to MUST exactly equal an id in its people/places list or in the saved previousVisuals for an incremental EXPLORE update. People may include a concise group (faction, family or organization) when useful and reliable; leave it absent when uncertain. Use forward for a directional relation (parent to child, teacher to pupil, journey start to destination), mutual for symmetric relations. A tree layout alone does not establish ancestry. Aliases must be known, not invented. For passage-grounded events, when is an EXACT time phrase from the quote, or empty if unstated; background events may use a reliably known time, labeled background. Do not infer calendar years from publication dates or chapter numbers. Put events in narrative order; Bunko plots quoted calendar dates separately. Answer citations: up to 5, each at most 240 characters. Do not output raw HTML.`;
 
 export function createBookCompanion({ db, seal, unseal, read, provider, models, config, now, reserve, finish, capacity }) {
   db.exec('CREATE TABLE IF NOT EXISTS agent_book_guides(id TEXT PRIMARY KEY,data TEXT NOT NULL,created INTEGER NOT NULL)')
   const pending = new Map()
   async function generate(context, kind, question, history = [], modelConsent, memory = {}, modelScope = {}) {
     requireValue(config.model?.url && config.model?.name, 'The reading assistant is not connected.', 503)
-    const mode = kind === 'answer' ? '\nTHIS CALL IS ANSWER, not GUIDE. Return ONLY answer, knowledge, insufficient and citations. Explain relationships in readable prose or a compact Markdown list. Do not include people/relationships/places/routes/events arrays or a type field. Keep the answer under 900 words.' : kind === 'guide' ? '\nTHIS CALL IS GUIDE. Return all five guide arrays, within the stated limits; no type field.' : `\nTHIS CALL IS EXPLORE: a continuing book discussion with optional visual updates. Answer the user's actual question. When relationships or characters are requested, return people AND relationships; for places/journeys return places AND routes; for chronology return events. The active view is ${memory.focus || 'chat'}: prefer updating that view when the question continues its result. Omit visual groups that do not need updating; the app keeps their existing versions. Each returned group is a complete revised snapshot, retaining relevant earlier entries and adding/correcting what was requested, within the limits. Never return empty groups just as placeholders. Use stable prior entity ids when they refer to the same person/place. Old visuals/history are memory, not new quotation evidence: any newly emitted citation must exactly match CURRENT supplied passages. Label reliable uncited broader-book facts background. Keep current reading position and the question's requested scope distinct; explicit whole-book questions and their followups may discuss the whole book. Do not refuse because excerpts are partial. If asked to start a new topic, do not import unrelated previous details. Keep the answer concise, and do not include a type field.`
+    const mode = kind === 'answer' ? '\nTHIS CALL IS ANSWER, not GUIDE. Return ONLY answer, knowledge, insufficient and citations. Explain relationships in readable prose or a compact Markdown list. Do not include people/relationships/places/routes/events arrays or a type field. Keep the answer under 900 words.' : kind === 'guide' ? '\nTHIS CALL IS GUIDE. Return all five guide arrays, within the stated limits; no type field.' : `\nTHIS CALL IS EXPLORE: a continuing book discussion with optional visual updates. Answer the user's actual question. When relationships or characters are requested, return people AND relationships; for places/journeys return places AND routes; for chronology return events. The active view is ${memory.focus || 'chat'}: prefer updating that view when the question continues its result. Omit visual groups that do not need updating; the app keeps their existing versions. Visual arrays contain ONLY new or corrected entries, NOT a rewritten snapshot. Bunko merges them with the saved view, preserving every unchanged item and its original evidence. The per-response limits apply to changes, not the accumulated result. Prefer concise batches of 12–32 useful changes, but the complete accumulated EXPLORE view may contain up to 128 people, 384 relationships, 96 places, 192 routes and 160 events. These EXPLORE limits override the smaller initial GUIDE limits. Never reject a detailed request solely because the graph exceeds 32 people. Group characters by faction/family when useful, using the optional group field; do not invent membership. Reuse stable entity, relationship and event ids from previousVisuals when correcting them. For an existing person, resend its complete entry only if correcting details or assigning a group; do not repeat unchanged entries. Edges may refer to saved people/place ids absent from this response. Use remove:{people:[id],relationships:[id],places:[id],routes:[id],events:[id]} ONLY for explicit corrections/removal; never remove data merely to fit the output budget. Use updateModes:{people:"replace",places:"replace",timeline:"replace"} ONLY for a requested replacement or a genuinely different topic/geographic journey; otherwise merge is automatic. Omit unused keys. Timelines and relationships receive durable ids from Bunko when first saved. Preserve them in later corrections. Never return empty groups just as placeholders. Use stable prior entity ids when they refer to the same person/place. Old visuals/history are memory, not new quotation evidence: any newly emitted citation must exactly match CURRENT supplied passages. Label reliable uncited broader-book facts background. Keep current reading position and the question's requested scope distinct; explicit whole-book questions and their followups may discuss the whole book. Do not refuse because excerpts are partial. If asked to start a new topic, do not import unrelated previous details. Keep the answer concise, and do not include a type field.`
+    const task = readingTask(question, kind, memory.focus, memory, context.reference)
     const useTools = kind !== 'answer'
-    const toolInstructions = useTools ? '\nUse the read-only tools to resolve geography and check source text when needed. For a geographic map, look up places before finalizing. For all provinces or colored regions, list_map_layers supplies the complete region set and dated outlines; then lookup_places resolves their IDs. Set mapYear to the requested historical year and locationId only to a matching tool result. Do not fabricate coordinates, SVG or borders. Administrative regions are areas, not similarly named modern cities. Mention the layer reference year if different from the requested year. A map request requires actual places and routes arrays, not color suggestions in prose. For a region overview, routes:[] is usually clearest; do not draw a web of adjacency lines unless requested. Keep the answer focused on the requested result; one short background/source note is enough. Reuse prior results, and update the complete requested group when the user adds or corrects it.' : ''
+    const toolInstructions = useTools ? '\nUse the read-only tools to resolve geography and check source text when needed. For a geographic map, look up places before finalizing. For all provinces or colored regions, list_map_layers supplies the complete region set and dated outlines; then lookup_places resolves their IDs. Set mapYear to the requested historical year and locationId only to a matching tool result. Do not fabricate coordinates, SVG or borders. Administrative regions are areas, not similarly named modern cities. Mention the layer reference year if different from the requested year. A map request requires actual places and routes arrays, not color suggestions in prose. For a region overview, routes:[] is usually clearest; do not draw a web of adjacency lines unless requested. Keep the answer focused on the requested result; one short background/source note is enough. Reuse prior results; return only additions/corrections when extending them. For a different journey or region, explicitly replace the places view so unrelated old routes are not retained.' : ''
     const messages = [{ role: 'system', content: system + mode + toolInstructions }, { role: 'user', content: JSON.stringify({
       task: kind === 'guide' ? (context.reference.scope === 'book' ? 'GUIDE: the principal characters and their relationships, major places, journeys and timeline of the whole identified book, using reliable broader book knowledge plus the supplied excerpts and current reading bookmark' : 'GUIDE: people, relationships, places, journeys and events relevant to this reading selection') : kind === 'explore' ? 'EXPLORE: answer the question and update only relevant visual groups' : 'ANSWER',
       replyLanguage: context.reference.replyLanguage, title: context.title, chapter: context.chapterTitle,
       ...(kind !== 'answer' ? { geography: geographyContext(context.reference.id) } : {}),
       coverage: context.coverage, passages: context.passages.map(p => ({ id: p.id, text: p.text })),
       ...(kind === 'explore' ? { readingBookmark: memory.bookmark, previousVisuals: memory.visuals || {} } : {}),
-    }) }, ...history, ...(kind !== 'guide' ? [{ role: 'user', content: question }] : [])]
+    }) }, ...history, ...(kind === 'explore' ? [{ role: 'system', content: `For THIS reply use the EXPLORE JSON schema. The selected task view is ${task.focus}. Return answer, knowledge, citations and the requested visual arrays, not only a prose description. Prior assistant answers were abbreviated memory, not format examples. Reuse saved ids and send incremental additions/corrections. Keep the prose summary short; details belong in the entries.` }] : []), ...(kind !== 'guide' ? [{ role: 'user', content: question }] : [])]
     const deadline = Date.now() + 110000
     const complete = models?.forRequest(modelConsent, modelScope) || provider
     for (let attempt = 0; attempt < 2; attempt++) {
-      let content = '', structured = false
+      let content = '', structured = false, toolTranscript = []
       try {
-        const parsed = await runStructuredReading({ messages, kind, focus: memory.focus, complete, url: config.model.url, repairAttempt: attempt,
-          tools: useTools ? createReadingTools(context) : [],
-          timeoutMs: Math.max(1000, Math.min(attempt ? 55000 : 80000, deadline - Date.now())), maxTokens: kind === 'answer' ? 3000 : 8192,
+        const parsed = await runStructuredReading({ messages, kind, focus: task.focus, quality: task.quality, complete, url: config.model.url, repairAttempt: attempt,
+          tools: useTools && !attempt ? createReadingTools(context) : [],
+          onToolTranscript: value => { toolTranscript = value },
+          timeoutMs: Math.max(1000, Math.min(attempt ? 55000 : 70000, deadline - Date.now())), maxTokens: kind === 'answer' ? 3000 : 8192,
           onContent: value => { content = value } })
         structured = true
-        const mapIssues = kind !== 'answer' ? checkMapRequest(parsed, question, context, memory.focus) : []
+        const validated = validateBookResponse(parsed, context, kind, kind === 'explore' ? updateBases(parsed, memory.snapshots) : {})
+        const result = kind === 'explore' ? applyReadingUpdate(validated, parsed, memory.snapshots || {}, context.reference) : validated
+        const mapIssues = kind !== 'answer' ? checkMapRequest(result, question, context, task.focus) : []
         if (mapIssues.length) throw Object.assign(new AppError('The map needs correction.', 502), { repairDetails: mapIssues })
-        return readingGeography({ ...validateBookResponse(parsed, context, kind), title: context.title, coverage: context.coverage, revision: context.revision, key: context.key, reference: context.reference })
+        return readingGeography({ ...result, title: context.title, coverage: context.coverage, revision: context.revision, key: context.key, reference: context.reference })
       } catch (error) {
         if (attempt || !(error instanceof AppError) || (!structured && !error.repairable) || Date.now() >= deadline - 1000) throw error
         // One structural/citation repair within the same quota and whole deadline.
-        messages.push({ role: 'assistant', content: content || '{}' },
-          { role: 'user', content: `Correct the JSON, preserving useful background knowledge with explicit background labels and no invented citations. Validation: ${error.message} ${error.repairDetails ? JSON.stringify(error.repairDetails) : ''} ${kind === 'guide' ? 'Use exact existing entity ids in from/to and all five required guide arrays, with fewer entries if needed.' : kind === 'explore' ? 'Return answer, knowledge, insufficient, citations and only the visual groups requested. Return a complete compact snapshot of each updated group, preserving its relevant prior entries. Omit unrelated groups. Use exact existing entity ids in from/to.' : 'This is an ANSWER. Return ONLY answer, knowledge, insufficient and citations; omit all guide arrays and any type field.'} Use exact source substrings in quote. Do not translate quotes, join separate fragments or add an ellipsis. Label reliable uncited book knowledge background; omit invented or uncertain claims. Return the complete corrected JSON with escaped line breaks inside strings.` })
+        messages.push(...toolTranscript, { role: 'assistant', content: content || '{}' },
+          { role: 'user', content: `Correct the JSON, preserving useful background knowledge with explicit background labels and no invented citations. Validation: ${error.message} ${error.repairDetails ? JSON.stringify(error.repairDetails) : ''} ${kind === 'guide' ? 'Use exact existing entity ids in from/to and all five required guide arrays, with fewer entries if needed.' : kind === 'explore' ? 'Return answer, knowledge, insufficient, citations and only the visual groups requested. Return only the requested new or corrected entries; the saved entries are retained automatically. Edges may use ids from previousVisuals. Never discard earlier entries to meet a per-turn limit. Omit unrelated groups. Use exact existing entity ids in from/to.' : 'This is an ANSWER. Return ONLY answer, knowledge, insufficient and citations; omit all guide arrays and any type field.'} Use exact source substrings in quote. Do not translate quotes, join separate fragments or add an ellipsis. Label reliable uncited book knowledge background; omit invented or uncertain claims. Return the complete corrected JSON with escaped line breaks inside strings.` })
       }
     }
   }

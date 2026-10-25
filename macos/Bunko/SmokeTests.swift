@@ -182,6 +182,38 @@ final class MacSmokeTests {
                 try await wait("document.querySelectorAll('.atlas-region').length === 13 && document.querySelectorAll('.atlas-pin').length === 0")
                 check("synthetic map fixture: 13 colored regions, selection, three-city continuation, resize and prior-map return in native WebKit")
             }
+            if ProcessInfo.processInfo.environment["BUNKO_WORKSPACE_QA"] == "1" {
+                webView.load(URLRequest(url: URL(string: "bunko://localhost/qa-workspace.html")!))
+                try await wait("document.querySelector('#reading-message-extended') && !document.querySelector('#reading-message-far')")
+                _ = try await js("{ const input=document.querySelector('.agent-composer textarea'); Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set.call(input,'继续完善这张图'); input.dispatchEvent(new Event('input',{bubbles:true})); const picker=document.querySelector('.book-artifact-picker select'); picker.value='workspace-far'; picker.dispatchEvent(new Event('change',{bubbles:true})); }")
+                try await wait("document.querySelector('#reading-message-far') && document.querySelector('.agent-composer textarea').value === '继续完善这张图'")
+                _ = try await js("{ const picker=document.querySelector('.book-artifact-picker select'); picker.value=''; picker.dispatchEvent(new Event('change',{bubbles:true})); }")
+                try await wait("document.querySelector('#reading-message-extended') && !document.querySelector('#reading-message-far')")
+                check("synthetic reading workspace restores nearest branch and preserves drafts when switching")
+                try await screenshot("07-reading-conversation")
+                _ = try await js("document.querySelectorAll('nav button')[1].click()")
+                try await wait("document.querySelectorAll('.guide-group-filter button').length === 4")
+                _ = try await js("document.querySelectorAll('.guide-group-filter button')[3].click()")
+                try await wait("document.querySelectorAll('.graph-person').length === 10")
+                for width in [620, 1120] {
+                    webView.window?.setContentSize(NSSize(width: width, height: 800))
+                    try await Task.sleep(nanoseconds: 300_000_000)
+                    try await wait("document.documentElement.scrollWidth <= innerWidth + 1")
+                }
+                _ = try await js("Array.from(document.querySelectorAll('.graph-person')).find(p=>p.textContent==='周瑜').dispatchEvent(new MouseEvent('click',{bubbles:true}))")
+                try await wait("document.querySelector('.guide-card h2')?.textContent === '周瑜'")
+                try await screenshot("08-reading-relationships")
+                _ = try await js("document.querySelectorAll('nav button')[3].click()")
+                try await wait("document.querySelectorAll('.time-marker.background-date').length === 3")
+                try await screenshot("09-reading-timeline")
+                _ = try await js("document.querySelectorAll('nav button')[0].click()")
+                try await wait("document.querySelector('.agent-composer textarea').value === '继续完善这张图'")
+                _ = try await js("document.querySelector('.agent-composer button[type=submit]').click()")
+                try await wait("document.querySelector('#reading-message-followup') && window.__fixtureSends === 1")
+                webView.reload()
+                try await wait("document.querySelector('#reading-message-extended') && !window.__fixtureSends")
+                check("synthetic workspace: faction filter, person details, resize, dated background timeline, explicit followup and no generation on reopen")
+            }
             let report: [String: Any] = ["passed": true, "checks": checks, "actualRegion": actualRegion, "countryMatrix": "synthetic Debug fixtures; not physical China network", "system": ProcessInfo.processInfo.operatingSystemVersionString]
             try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]).write(to: output.appendingPathComponent("result.json"))
             print("BUNKO_QA COMPLETE \(output.path)")

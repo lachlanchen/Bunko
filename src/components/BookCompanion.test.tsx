@@ -143,7 +143,8 @@ it('opening an older guide in chat selects that artifact rather than the latest 
   const older = { ...guide, key: 'older', people: [{ ...guide.people![0], name: 'Earlier Ada', level: 2 }] }
   const newer = { ...guide, key: 'newer', people: [{ ...guide.people![0], name: 'Later Ada' }] }
   fixture.call.mockResolvedValue({ messages: [older, newer].map((g, i) => ({ id: String(i), state: 'completed', kind: 'guide', question: `Guide ${i}`, answer: g.answer, papers: [], bookResponse: g })), guide: newer })
-  open(); await screen.findByText('Guide 0')
+  open(); await screen.findByText('Guide 1')
+  fireEvent.change(screen.getByRole('combobox', { name: 'Conversations' }), { target: { value: 'older' } })
   fireEvent.click(within(screen.getByText('Guide 0').closest('article')!).getByRole('button', { name: 'People' }))
   expect(screen.getByRole('heading', { name: 'Earlier Ada', level: 2 })).toBeInTheDocument()
   expect(screen.getByRole('combobox', { name: 'Saved results' })).toHaveValue('older')
@@ -221,4 +222,23 @@ it('an inherited diagram keeps the later prose conversation as the followup pare
   fireEvent.click(screen.getByRole('button', { name: 'Send message' }))
   await waitFor(() => expect(fixture.call.mock.calls.some(c => c[0] === 'send')).toBe(true))
   expect(fixture.call.mock.calls.find(c => c[0] === 'send')![1]).toMatchObject({ parentId: 'tip', focus: 'people' })
+})
+
+
+it('opens the nearest conversation tip, switches branches and keeps the draft without generating', async () => {
+  const root = { id: 'root', state: 'completed', kind: 'explore', question: 'First nearby graph', answer: 'Nearby root', papers: [], bookResponse: { ...guide, key: 'root', visibility: 'private' } }
+  const tip = { ...root, id: 'tip', parentId: 'root', question: 'Extend nearby graph', answer: 'Nearby extension', bookResponse: { ...guide, key: 'tip', reference: { ...reference, paragraph: 2 }, visibility: 'private' } }
+  const far = { ...root, id: 'far', question: 'Distant branch', answer: 'Far away', bookResponse: { ...guide, key: 'far', reference: { ...reference, file: 'c9.json', chapter: 8 }, visibility: 'private' } }
+  fixture.call.mockResolvedValue({ messages: [root, tip, far], guide: null })
+  open(); await screen.findByText('Nearby extension')
+  expect(screen.getByText('Nearby root')).toBeInTheDocument()
+  expect(screen.queryByText('Far away')).not.toBeInTheDocument()
+  fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Do not lose this draft' } })
+  fireEvent.change(screen.getByRole('combobox', { name: 'Conversations' }), { target: { value: 'far' } })
+  expect(screen.getByText('Far away')).toBeInTheDocument()
+  expect(screen.queryByText('Nearby extension')).not.toBeInTheDocument()
+  expect(screen.getByRole('textbox')).toHaveValue('Do not lose this draft')
+  fireEvent.change(screen.getByRole('combobox', { name: 'Conversations' }), { target: { value: '' } })
+  expect(screen.getByText('Nearby extension')).toBeInTheDocument()
+  expect(fixture.call.mock.calls.some(c => c[0] === 'send')).toBe(false)
 })

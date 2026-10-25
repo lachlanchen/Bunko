@@ -88,3 +88,7 @@
 .reading-active-result .reading-result-actions button:first-child { background: var(--indigo-soft); }
 .book-companion .agent-composer-area { flex-shrink: 0; }
 @media(max-height:540px) { .reading-followup-context { margin-bottom: 2px; }.agent-page .reading-followup-context button { min-height: 30px; }.book-artifact-picker { margin-bottom: 2px; } }
+
+.guide-group-filter { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 10px; }
+.guide-group-filter button { flex: 0 0 auto; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border-radius: 20px; font-size: 13px; }
+.guide-group-filter button[aria-pressed=true] { color: var(--indigo); border-color: var(--indigo); background: var(--indigo-soft); }

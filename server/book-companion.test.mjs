@@ -351,3 +351,15 @@ test('regional book answers and repaired guides use DeepSeek and retain reusable
   const cached = await agent.handle('send', { ...input('regional-reuse'), modelConsent: ['DeepSeek'] }, {id:2}, scope)
   assert.equal(cached.bookResponse.reused, true); assert.equal(calls.length, 2)
 })
+
+test('a complex continuing graph uses capable routing immediately within the Lite token ceiling', async t => {
+  const db = new DatabaseSync(':memory:'), calls = []
+  const agent = createDocumentAgent({ db, seal: JSON.stringify, unseal: JSON.parse, readBook: read,
+    config: { enabled: true, model: { name: 'deepseek-flash', url: 'https://api.deepseek.com/chat/completions' }, models: { providers: { deepseek: { token: 'fixture', qualifiedModels: ['deepseek-flash','deepseek-v4-pro'] } }, capable: 'deepseek-v4-pro' } },
+    provider: async (_url, options) => { const body = JSON.parse(options.body); calls.push(body); return { choices: [{ message: { content: JSON.stringify(guide()) } }] } },
+  })
+  t.after(() => { agent.close(); db.close() })
+  const result = await agent.handle('send', { ...input('complex-graph'), kind: 'explore', focus: 'people', text: 'Expand the complete character relationship graph of the whole book', modelConsent: ['DeepSeek'] }, { id: 1 })
+  assert.equal(result.state, 'completed'); assert.equal(calls.length, 1)
+  assert.equal(calls[0].model, 'deepseek-v4-pro'); assert.ok(calls[0].max_tokens <= 8192)
+})

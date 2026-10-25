@@ -1,13 +1,13 @@
 import type { BookMeta } from '../types'
 import type { UILanguage } from '../i18n'
 import type { AgentMessage } from './documentAgent'
-import { bookRelevance } from '../../server/agent/book-relevance.mjs'
+import { bookRelevance, nearestReadingTip } from '../../server/agent/book-relevance.mjs'
 
 export interface BookReference { id: string; file: string; chapter: number; paragraph: number; language: string; replyLanguage: UILanguage; scope: 'passage' | 'chapter' | 'book' | 'paragraph' | 'sentence'; quote?: string }
 export interface BookCitation { passage: string; paragraph: number; quote: string; chapter?: number; file?: string }
-export interface GuideEntity { id: string; name: string; detail: string; aliases: string[]; locationId?: string; certainty: 'stated' | 'interpretation' | 'background'; citations: BookCitation[] }
-export interface GuideConnection { from: string; to: string; label: string; direction?: 'forward' | 'mutual'; certainty: 'stated' | 'interpretation' | 'background'; citations: BookCitation[] }
-export interface GuideEvent { title: string; when: string; detail: string; certainty: 'stated' | 'interpretation' | 'background'; citations: BookCitation[] }
+export interface GuideEntity { id: string; name: string; detail: string; aliases: string[]; group?: string; locationId?: string; certainty: 'stated' | 'interpretation' | 'background'; citations: BookCitation[] }
+export interface GuideConnection { id?: string; from: string; to: string; label: string; direction?: 'forward' | 'mutual'; certainty: 'stated' | 'interpretation' | 'background'; citations: BookCitation[] }
+export interface GuideEvent { id?: string; title: string; when: string; detail: string; certainty: 'stated' | 'interpretation' | 'background'; citations: BookCitation[] }
 export interface BookResponse {
   mapYear?: number
   visibility?: 'private'; parentId?: string | null; created?: number
@@ -79,14 +79,27 @@ export function readingResults(messages: BookMessage[], cached: BookResponse[]):
 export function closestReadingResult(results: ReadingResult[], reference: BookReference, view: CompanionView, selectedKey = ''): ReadingResult | undefined {
   const available = results.filter(row => Number.isFinite(bookRelevance(row.guide.reference, reference)))
   const seen = new Set<string>()
-  let selected = available.find(row => row.guide.key === selectedKey)
+  const rows = available.map(row => ({ id: row.guide.key, reference: row.guide.reference,
+    parentId: available.find(p => p.messageIds?.includes(row.message?.parentId || row.guide.parentId || ''))?.guide.key || row.message?.baseGuide?.key }))
+  const nearest = nearestReadingTip(rows, reference)?.id
+  let selected = available.find(row => row.guide.key === selectedKey) || available.find(row => row.guide.key === nearest)
   while (selected && !seen.has(selected.guide.key)) {
     if (hasReadingView(selected.guide, view)) return selected
     seen.add(selected.guide.key)
     const parent = selected.message?.parentId || selected.guide.parentId
     selected = parent ? available.find(row => row.messageIds?.includes(parent)) : selected.message?.baseGuide ? available.find(row => row.guide.key === selected!.message!.baseGuide!.key) : undefined
   }
-  return available.filter(row => hasReadingView(row.guide, view)).sort((a, b) => bookRelevance(a.guide.reference, reference) - bookRelevance(b.guide.reference, reference))[0]
+  return undefined
+}
+
+/** Display the chosen ancestor chain, plus its pending/failed direct followups.
+ * Other branches remain selectable; they do not move the current chat's scroll. */
+export function readingThread(messages: BookMessage[], tip?: ReadingResult, fresh = false): BookMessage[] {
+  if (!tip && !fresh) return messages.filter(m => !m.bookResponse || m.state !== 'completed')
+  const ids = new Set<string>(), byId = new Map(messages.map(m => [m.id, m]))
+  let cursor = tip?.message
+  while (cursor && !ids.has(cursor.id)) { ids.add(cursor.id); cursor = cursor.parentId ? byId.get(cursor.parentId) : undefined }
+  return messages.filter(m => ids.has(m.id) || m.state !== 'completed' && (m.parentId ? m.parentId === tip?.message?.id : !tip || !m.reference))
 }
 
 /** Keep newer prose on the same branch, but follow a displayed saved diagram

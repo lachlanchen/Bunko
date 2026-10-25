@@ -37,6 +37,26 @@ export function labelLines(value: string, width = 24): string[] {
 }
 
 function layoutComponent(nodes: GuideEntity[], edges: GuideConnection[], tree = false, compact = false) {
+  edges = edges.filter(e => e.from !== e.to && nodes.some(n => n.id === e.from) && nodes.some(n => n.id === e.to))
+  // A faction/family with one main connector reads better as a compact circle
+  // than one extremely wide rank of leaves. This changes layout only, never edges.
+  const hub = [...nodes].sort((a, b) => edges.filter(e => e.from === b.id || e.to === b.id).length - edges.filter(e => e.from === a.id || e.to === a.id).length)[0]
+  if (!tree && nodes.length >= 5 && nodes.length <= 14 && nodes.every(n => labelLines(n.name, 12).length <= 2) && edges.length <= nodes.length * 1.5 && edges.filter(e => e.from === hub.id || e.to === hub.id).length >= nodes.length - 2) {
+    const radius = Math.max(185, (nodes.length - 1) * 20), center = radius + 78, others = nodes.filter(n => n.id !== hub.id)
+    const rows = nodes.map(node => {
+      const angle = others.indexOf(node) * Math.PI * 2 / others.length - Math.PI / 2
+      return { ...node, lines: labelLines(node.name, 12), width: 108, height: 64, color: nodeColor(node.group || node.id),
+        x: node === hub ? center : center + Math.cos(angle) * radius, y: node === hub ? center : center + Math.sin(angle) * radius }
+    })
+    const links = edges.map((edge, i) => {
+      const from = rows.find(n => n.id === edge.from)!, to = rows.find(n => n.id === edge.to)!
+      const dx = to.x - from.x, dy = to.y - from.y
+      const trim = Math.min(54 / Math.max(.001, Math.abs(dx)), 32 / Math.max(.001, Math.abs(dy)))
+      return { ...edge, source: edge, lines: labelLines(edge.label, 14), labelWidth: 108, fromKey: edge.from, toKey: edge.to, key: `edge${i}`, index: i,
+        x: (from.x + to.x) / 2, y: (from.y + to.y) / 2, points: [{ x: from.x + dx * trim, y: from.y + dy * trim }, { x: to.x - dx * trim, y: to.y - dy * trim }] }
+    })
+    return { width: center * 2, height: center * 2, nodes: rows, edges: links }
+  }
   const graph = new Graph({ multigraph: true })
   graph.setGraph({ rankdir: tree ? 'TB' : 'LR', ranksep: compact ? 52 : 82, nodesep: compact ? 24 : 44, edgesep: 28, marginx: compact ? 16 : 32, marginy: compact ? 16 : 32 })
   graph.setDefaultEdgeLabel(() => ({}))
@@ -45,7 +65,7 @@ function layoutComponent(nodes: GuideEntity[], edges: GuideConnection[], tree = 
   const rows = nodes.map((node, i) => {
     const lines = labelLines(node.name, compact ? 17 : 23), height = Math.max(64, lines.length * 19 + 34), width = compact ? 140 : 188
     graph.setNode(`node${i}`, { width, height })
-    return { ...node, lines, width, height, color: nodeColor(node.id) }
+    return { ...node, lines, width, height, color: nodeColor(node.group || node.id) }
   })
   const links = edges.flatMap((edge, i) => {
     const from = ids.get(edge.from), to = ids.get(edge.to)

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { quotedCalendar } from '../../shared/guide-calendar.mjs'
+import { readingCalendar } from '../../shared/guide-calendar.mjs'
 import type { GuideEvent, BookCitation } from '../lib/bookCompanion'
 import type { UILanguage } from '../i18n'
 import { PassageEvidence } from './PassageEvidence'
@@ -8,7 +8,7 @@ import { guideVisualCopy } from './guideVisualCopy'
 
 export function GuideTimeline({ guideKey, events, ui, onRead }: { guideKey: string; events: GuideEvent[]; ui: UILanguage; onRead: (paragraph: number, citation?: BookCitation) => void }) {
   const t = guideVisualCopy[ui], copy = bookCompanionCopy[ui]
-  const indexed = events.map((event, index) => ({ event, index, date: quotedCalendar(event) }))
+  const indexed = events.map((event, index) => ({ event, index, date: readingCalendar(event) }))
   const dated = indexed.filter(row => row.date).sort((a, b) => a.date!.start - b.date!.start || a.index - b.index)
   const undated = indexed.filter(row => !row.date)
   const storageKey = `bunko-guide-timeline:${guideKey}`
@@ -66,8 +66,8 @@ export function GuideTimeline({ guideKey, events, ui, onRead }: { guideKey: stri
           const label = tickLabel(value), x = position(value)
           return <g key={value}><line className="time-tick" x1={x} x2={x} y1="39" y2="52" /><text x={x} y="25" textAnchor={x < 50 ? 'start' : x > chartWidth - 50 ? 'end' : 'middle'}>{label}</text></g>
         })}
-        {markers.map(({ event, index, x, y, end }) => {
-          return <g key={index} className={`time-marker${focused === index ? ' selected' : ''}`} role="button" tabIndex={0} aria-label={`${event.when}: ${event.title}`} onClick={() => choose(index)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(index) } }}>
+        {markers.map(({ event, index, x, y, end, date }) => {
+          return <g key={index} className={`time-marker${focused === index ? ' selected' : ''}${date?.evidence === 'background' ? ' background-date' : ''}`} role="button" tabIndex={0} aria-label={`${event.when}: ${event.title}${date?.evidence === 'background' ? ` · ${copy.background}` : ''}`} onClick={() => choose(index)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(index) } }}>
             <title>{event.when} · {event.title}</title><line x1={x} x2={x} y1="45" y2={y} className="time-stem" />
             {end > x && <line x1={x} x2={end} y1={y} y2={y} className="time-range" />}
             <circle cx={x} cy={y} r="13" /><text x={x} y={y + 4} textAnchor="middle">{index + 1}</text>
