@@ -31,8 +31,29 @@ final class MacSmokeTests {
         let body = (try? await js("JSON.stringify({text:document.body.innerText.slice(0,1500), math:document.querySelectorAll('.katex').length, figures:document.querySelectorAll('.book-figure').length, image:document.querySelector('.book-figure img')?.outerHTML, rect:document.querySelector('.book-figure')?.getBoundingClientRect().toJSON(), visibility:document.visibilityState})")) ?? "no document"
         throw NSError(domain: "BunkoQA", code: 1, userInfo: [NSLocalizedDescriptionKey: "Timed out: \(expression)\n\(body)"])
     }
-    private func command(_ name: String) async throws {
-        _ = try await js("window.dispatchEvent(new CustomEvent('bunko-command', {detail:{command:'\(name)'}}))")
+    private func command(_ name: String) throws {
+        // Exercise the actual AppKit target/action path, including validation.
+        // A direct web event would miss broken or unavailable native menus.
+        var matches: [(NSMenu, NSMenuItem)] = []
+        func visit(_ menu: NSMenu) {
+            for item in menu.items {
+                if item.representedObject as? String == name { matches.append((menu, item)) }
+                if let submenu = item.submenu { visit(submenu) }
+            }
+        }
+        if let menu = NSApp.mainMenu { visit(menu) }
+        guard matches.count == 1, let match = matches.first else {
+            throw NSError(domain: "BunkoQA", code: 5, userInfo: [NSLocalizedDescriptionKey: "Expected one native menu command: \(name)"])
+        }
+        try performMenuAction(match.0, item: match.1)
+    }
+    private func performMenuAction(_ menu: NSMenu, item: NSMenuItem) throws {
+        menu.update()
+        let index = menu.index(of: item)
+        guard index >= 0, item.isEnabled, item.action != nil, item.target != nil else {
+            throw NSError(domain: "BunkoQA", code: 6, userInfo: [NSLocalizedDescriptionKey: "Native menu command unavailable: \(item.title)"])
+        }
+        menu.performActionForItem(at: index)
     }
     private func screenshot(_ name: String) async throws {
         let image = try await webView.takeSnapshot(configuration: nil)
@@ -45,24 +66,29 @@ final class MacSmokeTests {
         _ = try await webView.callAsyncJavaScript("await window.webkit.messageHandlers.bunkoAuth.postMessage({qaRegion: country}); window.dispatchEvent(new Event('bunko-region-changed')); return true", arguments: ["country": country], in: nil, contentWorld: .page)
     }
 
-    private func reopenThroughWindowMenu() async throws {
-        guard let originalWindow = webView.window, let menu = NSApp.windowsMenu,
-              let index = menu.items.firstIndex(where: { $0.identifier?.rawValue == "bunko.show-main-window" }) else {
-            throw NSError(domain: "BunkoQA", code: 2, userInfo: [NSLocalizedDescriptionKey: "Missing permanent Show Bunko menu item"])
+    private func reopenAfterClosing(_ action: () throws -> Void) async throws {
+        guard let originalWindow = webView.window else {
+            throw NSError(domain: "BunkoQA", code: 2, userInfo: [NSLocalizedDescriptionKey: "Missing reader window"])
         }
         let document = UUID().uuidString
         _ = try await js("window.__qaWindowDocument = '\(document)'")
         originalWindow.performClose(nil)
         guard !originalWindow.isVisible else { throw URLError(.cannotParseResponse) }
-        menu.update()
-        guard menu.items[index].isEnabled, menu.items[index].target != nil else {
-            throw NSError(domain: "BunkoQA", code: 3, userInfo: [NSLocalizedDescriptionKey: "Show Bunko is disabled after closing the window"])
-        }
-        menu.performActionForItem(at: index)
+        try action()
         guard originalWindow.isVisible, webView.window === originalWindow,
               originalWindow.contentView === webView,
               document == (try await js("window.__qaWindowDocument") as? String) else {
             throw NSError(domain: "BunkoQA", code: 4, userInfo: [NSLocalizedDescriptionKey: "Reopen did not preserve the window and WebKit document"])
+        }
+    }
+
+    private func reopenThroughWindowMenu() async throws {
+        try await reopenAfterClosing {
+            guard let menu = NSApp.windowsMenu,
+                  let item = menu.items.first(where: { $0.identifier?.rawValue == "bunko.show-main-window" }) else {
+                throw NSError(domain: "BunkoQA", code: 3, userInfo: [NSLocalizedDescriptionKey: "Missing permanent Show Bunko menu item"])
+            }
+            try performMenuAction(menu, item: item)
         }
     }
 
@@ -74,12 +100,12 @@ final class MacSmokeTests {
             actualRegion = try await webView.callAsyncJavaScript("return await window.webkit.messageHandlers.bunkoAuth.postMessage({region:true})", arguments: [:], in: nil, contentWorld: .page) ?? [:]
             check("actual StoreKit storefront bridge returned; country matrix below uses explicit synthetic fixtures")
             try await region("CHN")
-            try await command("settings")
+            try command("settings")
             try await wait("document.querySelector('.cloud-entry') && document.querySelector('.companion-entry')")
             try await screenshot("00-mainland-settings")
             _ = try await js("document.querySelector('.sheet header button').click()")
             try await region("")
-            try await command("settings")
+            try command("settings")
             try await wait("document.querySelector('.cloud-entry') && document.querySelector('.companion-entry')")
             _ = try await js("document.querySelector('.sheet header button').click()")
             for country in ["USA", "HKG"] {
@@ -99,11 +125,11 @@ final class MacSmokeTests {
             try await wait("Array.from(document.querySelectorAll('.card .cover img')).slice(0, 5).length === 5 && Array.from(document.querySelectorAll('.card .cover img')).slice(0, 5).every(img => img.complete && img.naturalWidth > 0)")
             check("visible library cover artwork loaded")
             try await screenshot("01-library")
-            try await command("settings")
+            try await reopenAfterClosing { try command("settings") }
             try await wait("document.querySelector('[role=dialog]')")
-            check("native Settings menu opens reader settings")
+            check("native Settings menu reopens a closed window and opens reader settings")
             _ = try await js("document.querySelector('.sheet header button').click()")
-            try await command("search")
+            try command("search")
             // A deliberately nonactivating window cannot promise keyboard focus.
             // Exercise search itself without taking the user's foreground app.
             try await wait("document.querySelector('.search input')")
@@ -135,12 +161,23 @@ final class MacSmokeTests {
                 try await wait("window.__qaPoint().id === window.__qaBefore.id && Math.abs(window.__qaPoint().fraction - window.__qaBefore.fraction) < 0.04", timeout: 5)
             }
             check("reading passage and ruby survive four native window resizes")
-            try await reopenThroughWindowMenu()
+            for _ in 0..<3 {
+                try await reopenThroughWindowMenu()
+                try await wait("document.querySelectorAll('ruby').length > 20 && window.__qaPoint().id === window.__qaBefore.id && Math.abs(window.__qaPoint().fraction - window.__qaBefore.fraction) < 0.04", timeout: 5)
+            }
+            check("three Close Window and Show Bunko cycles preserve the same reader, exact passage and ruby without reloading")
+            try await reopenAfterClosing {
+                guard let delegate = NSApp.delegate as? AppDelegate,
+                      !delegate.applicationShouldHandleReopen(NSApp, hasVisibleWindows: false),
+                      !delegate.applicationShouldHandleReopen(NSApp, hasVisibleWindows: true) else {
+                    throw NSError(domain: "BunkoQA", code: 7, userInfo: [NSLocalizedDescriptionKey: "Dock reopen delegate did not handle the existing window"])
+                }
+            }
             try await wait("document.querySelectorAll('ruby').length > 20 && window.__qaPoint().id === window.__qaBefore.id && Math.abs(window.__qaPoint().fraction - window.__qaBefore.fraction) < 0.04", timeout: 5)
-            check("Close Window then Show Bunko reopens the same reader and exact passage without reloading")
+            check("Dock reopen delegate restores the closed reader and reuses the already-visible window")
             let savedPlace = try await js("localStorage.getItem('CapacitorStorage.bunko.place.v1')") as? String
             try await region("CHN")
-            try await command("settings")
+            try command("settings")
             try await wait("document.querySelector('.cloud-entry')")
             _ = try await js("document.querySelector('.sheet header button').click()")
             guard savedPlace == (try await js("localStorage.getItem('CapacitorStorage.bunko.place.v1')") as? String) else { throw URLError(.cannotParseResponse) }
@@ -148,14 +185,14 @@ final class MacSmokeTests {
             try await region("USA")
             check("storefront change preserves downloaded book, ruby and exact saved reading position")
             try await screenshot("02-resized-reading")
-            try await command("larger-text")
+            try command("larger-text")
             try await wait("document.querySelector('.page').style.fontSize !== '1rem'")
-            try await command("reset-text")
+            try command("reset-text")
             try await wait("document.querySelector('.page').style.fontSize === '1rem'")
             check("native text-size controls update and restore reading size")
-            try await command("next-chapter")
+            try command("next-chapter")
             try await wait("document.querySelector('.reader')?.dataset.chapter === '1' && JSON.parse(localStorage.getItem('CapacitorStorage.bunko.place.v1') || '{}').sanshiro?.chapter === 1")
-            try await command("chapters")
+            try command("chapters")
             try await wait("document.querySelector('.sheet .chapter-list')")
             _ = try await js("document.querySelector('.sheet .chapter-list li:last-child button').click()")
             try await wait("document.querySelector('.reader')?.dataset.chapter === '12' && document.querySelectorAll('ruby').length > 20")
@@ -172,7 +209,7 @@ final class MacSmokeTests {
             try await wait("document.querySelector('.reader')?.dataset.chapter === '12' && document.querySelectorAll('ruby').length > 20")
             check("offline reload resumes the saved final chapter with HTTP blocked")
             webView.configuration.userContentController.remove(block!)
-            try await command("library")
+            try command("library")
             try await wait("document.querySelector('.card[data-book-id=physics-classical-mechanics]')")
             _ = try await js("document.querySelector('.card[data-book-id=physics-classical-mechanics]').click()")
             try await wait("document.querySelector('.book-hero')")
@@ -229,6 +266,9 @@ final class MacSmokeTests {
                 }
                 _ = try await js("Array.from(document.querySelectorAll('.graph-person')).find(p=>p.textContent==='周瑜').dispatchEvent(new MouseEvent('click',{bubbles:true}))")
                 try await wait("document.querySelector('.guide-card h2')?.textContent === '周瑜'")
+                try await reopenThroughWindowMenu()
+                try await wait("document.querySelectorAll('.graph-person').length === 10 && document.querySelector('.guide-card h2')?.textContent === '周瑜' && !window.__fixtureSends", timeout: 5)
+                check("Show Bunko preserves the relationship filter and selected person without generation")
                 try await screenshot("08-reading-relationships")
                 _ = try await js("document.querySelectorAll('nav button')[3].click()")
                 try await wait("document.querySelectorAll('.time-marker.background-date').length === 3")
@@ -241,7 +281,7 @@ final class MacSmokeTests {
                 try await wait("document.querySelector('#reading-message-extended') && !window.__fixtureSends")
                 check("synthetic workspace: faction filter, person details, resize, dated background timeline, explicit followup and no generation on reopen")
             }
-            let report: [String: Any] = ["passed": true, "checks": checks, "actualRegion": actualRegion, "countryMatrix": "synthetic Debug fixtures; not physical China network", "system": ProcessInfo.processInfo.operatingSystemVersionString]
+            let report: [String: Any] = ["passed": true, "checks": checks, "actualRegion": actualRegion, "countryMatrix": "synthetic Debug fixtures; not physical China network", "nativeMenuDispatch": "actual NSMenu target/action; no direct web command injection", "windowRecovery": "nonactivating Debug checks; Dock delegate invoked directly, no physical Dock click or keyboard focus claim", "system": ProcessInfo.processInfo.operatingSystemVersionString]
             try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]).write(to: output.appendingPathComponent("result.json"))
             print("BUNKO_QA COMPLETE \(output.path)")
         } catch {
