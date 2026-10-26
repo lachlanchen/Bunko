@@ -1,3 +1,33 @@
+# Mac window fix submitted · 26 October 2026
+
+Mac **1.0.15 (44)** is **VALID / IN_BETA_TESTING** and **Waiting for Review**,
+replacing rejected40. Automatic release after approval is retained. Apple API
+and visible submission readbacks verify the selected build. Source: `06456da`.
+
+Window > Show Bunko restores the retained reader or conversation after closing.
+All22 native checks pass, including actual AppKit menu dispatch, repeated reopen,
+closed-window Settings, the Dock delegate, exact reading position, drafts and
+focused graph state. The363 client/server tests, renderer, lint and web build
+also pass. Signed universal Mac archive/export/resource checks passed; both
+executable slices retain minimum macOS12. Native runtime QA used macOS15.7.9.
+
+Mainland China is excluded from the app's Apple availability; all174 other
+territories remain selected. Four localized release notes and review instructions
+are current; six complete screenshots are retained. The demo login works without
+OTP. Existing iOS/Watch/Android43 internals and public releases remain unchanged.
+
+The KVM guard released04:24 UTC. Independent04:25 readback verifies owned process
+cleanup, temporary signer removal, original keychain search and two profiles
+restored,112 source/22 helper hashes unchanged and72 simulator states preserved.
+No Mac hold remains. The single existing Apple upload reservation was reused;
+a timed-out transfer resumed within the same uncommitted file and processed VALID.
+
+[Qualification](../docs/mac-review44-20261026.md) and
+[delivery](testflight/mac-window44-20261026.json).
+Private evidence: `.runtime/review-check-20261026/`.
+
+## Earlier records
+
 # Continuing reading workspace available internally · 26 October 2026
 
 Apple **1.0.15 (43)** is VALID / IN_BETA_TESTING for iOS/Watch and universal

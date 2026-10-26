@@ -1,0 +1,111 @@
+{
+  "app": "Bunko",
+  "appId": "6815137919",
+  "platform": "MAC_OS",
+  "version": "1.0.15",
+  "build": "44",
+  "source": "06456da994a026a99674b2998b4e25c6237c7502",
+  "uploadedArtifact": {
+    "name": "Bunko.pkg",
+    "sha256": "e17982d0d36273bcece4dd12c280308f07c24e8fed48fbbb89522872d3255b28",
+    "bytes": 6513736,
+    "universalArchitectures": {
+      "arm64": "12.0",
+      "x86_64": "12.0"
+    },
+    "bundledResourcesVerified": 86,
+    "releaseDebugFixturesAbsent": true
+  },
+  "apple": {
+    "checkedAt": "2026-10-26T04:44:35.564506+00:00",
+    "appVersionState": "WAITING_FOR_REVIEW",
+    "reviewState": "WAITING_FOR_REVIEW",
+    "reviewId": "83cced08-122e-455b-9926-1998290bcbeb",
+    "build": "feaeaf59-6aa8-4512-b648-00a53895bb4d",
+    "version": "1.0.15",
+    "buildNumber": "44",
+    "platform": "MAC_OS",
+    "replaces": "40",
+    "releaseType": "AFTER_APPROVAL",
+    "beta": "IN_BETA_TESTING",
+    "localizedDescriptionsVerified": 4,
+    "reviewNotesVerified": true
+  },
+  "testflight": {
+    "id": "feaeaf59-6aa8-4512-b648-00a53895bb4d",
+    "platform": "MAC_OS",
+    "version": "1.0.15",
+    "build": "44",
+    "processing": "VALID",
+    "internal": "IN_BETA_TESTING",
+    "group": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+    "locales": [
+      "en-US",
+      "zh-Hans",
+      "zh-Hant",
+      "ja"
+    ]
+  },
+  "availability": {
+    "mainlandChina": false,
+    "otherSelectedTerritories": 174,
+    "appliesTo": "Apple app availability across iOS and macOS",
+    "futureTerritoriesSettingPreserved": true
+  },
+  "qualification": {
+    "clientTests": 183,
+    "serverTests": 180,
+    "lint": true,
+    "renderer": true,
+    "webBuild": true,
+    "nativeSystem": "Version 15.7.9 (Build 24G830)",
+    "nativeChecks": [
+      "live 183-book catalogue in bundled macOS WebKit",
+      "actual StoreKit storefront bridge returned; country matrix below uses explicit synthetic fixtures",
+      "CHN/unknown/USA/HKG all retain the companion and reading-plan entry",
+      "assistant opens and stays mounted across CHN/unknown storefronts; back restores library",
+      "visible library cover artwork loaded",
+      "native Settings menu reopens a closed window and opens reader settings",
+      "book search filters and restores the catalogue without activating the window",
+      "complete book downloaded to IndexedDB",
+      "ruby and multilingual text render",
+      "reading passage and ruby survive four native window resizes",
+      "three Close Window and Show Bunko cycles preserve the same reader, exact passage and ruby without reloading",
+      "Dock reopen delegate restores the closed reader and reuses the already-visible window",
+      "storefront change preserves downloaded book, ruby and exact saved reading position",
+      "native text-size controls update and restore reading size",
+      "chapter navigation reaches downloaded final chapter",
+      "offline reload resumes the saved final chapter with HTTP blocked",
+      "physics equations and figures render without TeX errors",
+      "synthetic map fixture: 13 colored regions, selection, three-city continuation, resize and prior-map return in native WebKit",
+      "synthetic reading workspace restores nearest branch and preserves drafts when switching",
+      "Show Bunko preserves the conversation branch, unsent draft and generation count after closing",
+      "Show Bunko preserves the relationship filter and selected person without generation",
+      "synthetic workspace: faction filter, person details, resize, dated background timeline, explicit followup and no generation on reopen"
+    ],
+    "nativeMenuDispatch": "actual NSMenu target/action; no direct web command injection",
+    "windowRecoveryScope": "nonactivating Debug checks; Dock delegate invoked directly, no physical Dock click or keyboard focus claim",
+    "newMontereyRuntimeTest": false,
+    "demoLoginWithoutOTP": true,
+    "reviewerTestSessionRevoked": true,
+    "macStoreScreenshotsCompleteAndRetained": 6,
+    "localizedReleaseNotesVerified": 4
+  },
+  "cleanup": {
+    "at": "2026-10-26T04:25:17.445078+00:00",
+    "guardAbsent": true,
+    "ownedProcessIdentitiesAbsent": 136,
+    "temporarySignerAbsent": true,
+    "originalSearchListRestored": true,
+    "profilesRestored": 2,
+    "sourceFilesUnchanged": 112,
+    "helpersUnchanged": 22,
+    "deviceStatesPreserved": 72,
+    "peerBB1": "Booted",
+    "handbackSha256": "9d6d5ed9c102490fe96061c48cf8041eadff1f6ead148c4b7e8df6ecba62eabc"
+  },
+  "otherNativeBinariesChanged": false,
+  "backendChanged": false,
+  "currentPublicReleaseChanged": false,
+  "billingOrIdentityChanged": false
+}

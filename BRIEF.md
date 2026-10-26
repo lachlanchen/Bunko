@@ -12,8 +12,11 @@ reopen path with Dock activation and reader menu commands, and retains the
 existing WebKit document, reading position and drafts. Actual native close/reopen
 regressions must pass before replacement delivery. The expanded native suite
 uses actual AppKit menu dispatch and checks repeated reopen, Settings from a
-closed window, the Dock delegate, saved drafts and graph selection. Source correction is staged;
-native44 qualification, upload and formal resubmission are not yet complete.
+closed window, the Dock delegate, saved drafts and graph selection.
+All22 native checks and the signed universal Mac package pass. Mac1.0.15(44)
+is VALID / IN_BETA_TESTING and Waiting for Review, replacing rejected40, with
+automatic release after approval. Apple selected-build and review-state readbacks
+passed at04:44 UTC. See `docs/mac-review44-20261026.md`.
 Existing iOS/Watch/Android43 internal delivery remains unchanged.
 
 ## Incremental reading workspace · 2026-10-26
