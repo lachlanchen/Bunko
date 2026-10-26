@@ -265,9 +265,12 @@ final class MacSmokeTests {
                     try await wait("document.documentElement.scrollWidth <= innerWidth + 1")
                 }
                 _ = try await js("Array.from(document.querySelectorAll('.graph-person')).find(p=>p.textContent==='周瑜').dispatchEvent(new MouseEvent('click',{bubbles:true}))")
-                try await wait("document.querySelector('.guide-card h2')?.textContent === '周瑜'")
+                // Selecting a person focuses on that person's neighbors, not
+                // every member of the faction. Preserve this focused view.
+                try await wait("document.querySelectorAll('.graph-person').length === 2 && document.querySelector('.graph-person[aria-pressed=true]')?.getAttribute('aria-label') === '周瑜' && document.querySelector('.guide-card h2')?.textContent === '周瑜'")
+                _ = try await js("window.__qaGraphState = () => JSON.stringify({nodes:Array.from(document.querySelectorAll('.graph-person')).map(p=>p.getAttribute('aria-label')).sort(), selected:document.querySelector('.graph-person[aria-pressed=true]')?.getAttribute('aria-label'), group:document.querySelector('.guide-group-filter button[aria-pressed=true]')?.textContent, card:document.querySelector('.guide-card h2')?.textContent}); window.__qaGraphBefore = window.__qaGraphState()")
                 try await reopenThroughWindowMenu()
-                try await wait("document.querySelectorAll('.graph-person').length === 10 && document.querySelector('.guide-card h2')?.textContent === '周瑜' && !window.__fixtureSends", timeout: 5)
+                try await wait("window.__qaGraphState() === window.__qaGraphBefore && !window.__fixtureSends", timeout: 5)
                 check("Show Bunko preserves the relationship filter and selected person without generation")
                 try await screenshot("08-reading-relationships")
                 _ = try await js("document.querySelectorAll('nav button')[3].click()")
