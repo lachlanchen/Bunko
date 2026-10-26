@@ -45,6 +45,27 @@ final class MacSmokeTests {
         _ = try await webView.callAsyncJavaScript("await window.webkit.messageHandlers.bunkoAuth.postMessage({qaRegion: country}); window.dispatchEvent(new Event('bunko-region-changed')); return true", arguments: ["country": country], in: nil, contentWorld: .page)
     }
 
+    private func reopenThroughWindowMenu() async throws {
+        guard let originalWindow = webView.window, let menu = NSApp.windowsMenu,
+              let index = menu.items.firstIndex(where: { $0.identifier?.rawValue == "bunko.show-main-window" }) else {
+            throw NSError(domain: "BunkoQA", code: 2, userInfo: [NSLocalizedDescriptionKey: "Missing permanent Show Bunko menu item"])
+        }
+        let document = UUID().uuidString
+        _ = try await js("window.__qaWindowDocument = '\(document)'")
+        originalWindow.performClose(nil)
+        guard !originalWindow.isVisible else { throw URLError(.cannotParseResponse) }
+        menu.update()
+        guard menu.items[index].isEnabled, menu.items[index].target != nil else {
+            throw NSError(domain: "BunkoQA", code: 3, userInfo: [NSLocalizedDescriptionKey: "Show Bunko is disabled after closing the window"])
+        }
+        menu.performActionForItem(at: index)
+        guard originalWindow.isVisible, webView.window === originalWindow,
+              originalWindow.contentView === webView,
+              document == (try await js("window.__qaWindowDocument") as? String) else {
+            throw NSError(domain: "BunkoQA", code: 4, userInfo: [NSLocalizedDescriptionKey: "Reopen did not preserve the window and WebKit document"])
+        }
+    }
+
     func run() async {
         do {
             try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
@@ -114,6 +135,9 @@ final class MacSmokeTests {
                 try await wait("window.__qaPoint().id === window.__qaBefore.id && Math.abs(window.__qaPoint().fraction - window.__qaBefore.fraction) < 0.04", timeout: 5)
             }
             check("reading passage and ruby survive four native window resizes")
+            try await reopenThroughWindowMenu()
+            try await wait("document.querySelectorAll('ruby').length > 20 && window.__qaPoint().id === window.__qaBefore.id && Math.abs(window.__qaPoint().fraction - window.__qaBefore.fraction) < 0.04", timeout: 5)
+            check("Close Window then Show Bunko reopens the same reader and exact passage without reloading")
             let savedPlace = try await js("localStorage.getItem('CapacitorStorage.bunko.place.v1')") as? String
             try await region("CHN")
             try await command("settings")
@@ -190,6 +214,9 @@ final class MacSmokeTests {
                 _ = try await js("{ const picker=document.querySelector('.book-artifact-picker select'); picker.value=''; picker.dispatchEvent(new Event('change',{bubbles:true})); }")
                 try await wait("document.querySelector('#reading-message-extended') && !document.querySelector('#reading-message-far')")
                 check("synthetic reading workspace restores nearest branch and preserves drafts when switching")
+                try await reopenThroughWindowMenu()
+                try await wait("document.querySelector('#reading-message-extended') && document.querySelector('.agent-composer textarea').value === '继续完善这张图' && !window.__fixtureSends", timeout: 5)
+                check("Show Bunko preserves the conversation branch, unsent draft and generation count after closing")
                 try await screenshot("07-reading-conversation")
                 _ = try await js("document.querySelectorAll('nav button')[1].click()")
                 try await wait("document.querySelectorAll('.guide-group-filter button').length === 4")

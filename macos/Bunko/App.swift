@@ -67,17 +67,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                 await MainActor.run { self?.webView.evaluateJavaScript("window.dispatchEvent(new Event('bunko-region-changed'))", completionHandler: nil) }
             }
         }
-        #if DEBUG
-        if CommandLine.arguments.contains("--bunko-smoke-test") {
-            window.orderBack(nil)
-        } else {
-            window.makeKeyAndOrderFront(nil)
-            NSApp.activate(ignoringOtherApps: true)
-        }
-        #else
-        window.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
-        #endif
+        showMainWindow(nil)
         webView.load(URLRequest(url: URL(string: "bunko://localhost/index.html")!))
         #if DEBUG
         if CommandLine.arguments.contains("--bunko-smoke-test") {
@@ -102,7 +92,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        window.makeKeyAndOrderFront(nil); return true
+        showMainWindow(nil)
+        return false
+    }
+
+    // Keep the existing WebKit document alive: reopening must not reload the
+    // reader, lose a draft or interrupt a companion response.
+    @objc private func showMainWindow(_ sender: Any?) {
+        guard let window else { return }
+        if window.isMiniaturized { window.deminiaturize(nil) }
+        #if DEBUG
+        if CommandLine.arguments.contains("--bunko-smoke-test") {
+            window.orderBack(nil)
+            return
+        }
+        #endif
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor { window }
@@ -250,6 +256,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         command(book, "Next Chapter", "next-chapter", "]")
         command(book, "Chapters", "chapters", "t")
         let windowMenu = menu(NSLocalizedString("Window", comment: "Mac menu"))
+        let reopen = windowMenu.addItem(withTitle: NSLocalizedString("Show Bunko", comment: "Mac menu"), action: #selector(showMainWindow(_:)), keyEquivalent: "n")
+        reopen.identifier = NSUserInterfaceItemIdentifier("bunko.show-main-window")
+        reopen.target = self
+        windowMenu.addItem(.separator())
         windowMenu.addItem(withTitle: NSLocalizedString("Minimize", comment: "Mac menu"), action: #selector(NSWindow.performMiniaturize(_:)), keyEquivalent: "m")
         NSApp.windowsMenu = windowMenu
         NSApp.mainMenu = main
@@ -259,6 +269,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         guard let command = sender.representedObject as? String,
               let data = try? JSONSerialization.data(withJSONObject: ["command": command]),
               let json = String(data: data, encoding: .utf8) else { return }
+        showMainWindow(nil)
         webView.evaluateJavaScript("window.dispatchEvent(new CustomEvent('bunko-command', {detail: \(json)}))")
     }
 

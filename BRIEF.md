@@ -1,5 +1,19 @@
 # Bunko — product brief
 
+## Mac window recovery and review correction · 2026-10-26
+
+Apple rejected Mac1.0.15(40) for missing mainland publication documentation
+and no menu command to reopen its closed main window. The owner chooses to
+exclude mainland China from Apple distribution; the change is saved and the
+other174 territories are unchanged. Preserve the reading assistant and data.
+
+Mac44 adds a permanent Window > Show Bunko command (Command-N), shares its
+reopen path with Dock activation and reader menu commands, and retains the
+existing WebKit document, reading position and drafts. Actual native close/reopen
+regressions must pass before replacement delivery. Source correction is staged;
+native44 qualification, upload and formal resubmission are not yet complete.
+Existing iOS/Watch/Android43 internal delivery remains unchanged.
+
 ## Incremental reading workspace · 2026-10-26
 
 Extend saved People, Places and Timeline results through stable, validated
