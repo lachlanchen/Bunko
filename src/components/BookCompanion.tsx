@@ -7,6 +7,8 @@ import { currentUser, DiscussionError, requestId, restoreSession, signIn, subscr
 import { initialModelPolicy, type ModelPolicy, agentCall } from '../lib/documentAgent'
 import { companionReference, referenceKey, savedGuide, savedGuides, saveGuide, forgetGuide, readingResults, closestReadingResult, readingContinuation, readingThread, hasReadingView, type BookCompanionContext, type BookMessage, type BookReference, type BookResponse } from '../lib/bookCompanion'
 import { useBackAction } from '../lib/backNavigation'
+import { preserveReadingViewport } from '../lib/readingViewport'
+import { fitComposer, observeComposer } from '../lib/composerViewport'
 import { agentCopy } from './agentCopy'
 import { bookCompanionCopy } from './bookCompanionCopy'
 import { readingWorkspaceCopy } from './readingWorkspaceCopy'
@@ -109,16 +111,14 @@ function BookCompanionSession({ context, ui, onBack, onRead, onGeneral, refValue
   useEffect(() => {
     const viewport = window.visualViewport
     const resize = () => { page.current?.style.setProperty('--agent-height', `${viewport?.height ?? window.innerHeight}px`); page.current?.style.setProperty('--agent-top', `${viewport?.offsetTop ?? 0}px`) }
-    resize(); viewport?.addEventListener('resize', resize); viewport?.addEventListener('scroll', resize)
-    return () => { viewport?.removeEventListener('resize', resize); viewport?.removeEventListener('scroll', resize) }
+    resize(); viewport?.addEventListener('resize', resize); viewport?.addEventListener('scroll', resize); window.addEventListener('resize', resize)
+    return () => { viewport?.removeEventListener('resize', resize); viewport?.removeEventListener('scroll', resize); window.removeEventListener('resize', resize) }
   }, [plans])
-  useLayoutEffect(() => { if (composer.current) { composer.current.style.height = 'auto'; composer.current.style.height = draft ? `${Math.min(144, composer.current.scrollHeight)}px` : '44px' } }, [draft, tab, plans])
+  useLayoutEffect(() => { if (composer.current) fitComposer(composer.current) }, [draft, tab, plans])
+  useEffect(() => { if (composer.current) return observeComposer(composer.current) }, [tab, plans])
   useEffect(() => {
-    if (!contents.current || typeof ResizeObserver === 'undefined') return
-    const observer = new ResizeObserver(() => { if (tab === 'chat' && following.current && scroller.current) scroller.current.scrollTop = scroller.current.scrollHeight })
-    observer.observe(contents.current)
-    if (scroller.current) observer.observe(scroller.current)
-    return () => observer.disconnect()
+    if (!contents.current || !scroller.current) return
+    return preserveReadingViewport(scroller.current, contents.current, '.agent-exchange, .guide-card, .guide-connection, .guide-timeline > li', { followEnd: () => tab === 'chat' && following.current })
   }, [tab, plans])
   useLayoutEffect(() => { if (tab === 'chat' && following.current && scroller.current) scroller.current.scrollTop = scroller.current.scrollHeight }, [tab, messages, busy, focusKey])
   useLayoutEffect(() => {

@@ -1,5 +1,16 @@
 # Bunko — product brief
 
+## iPhone Duo adaptation · 2026-10-28
+
+The owner renews iPhone Duo support for Bunko and OnlyIdeas. Preserve reader
+position, conversations, selected guides and drafts while displays change size.
+Conversation anchoring and composer remeasurement are implemented and browser
+tested. Full Duo qualification requires Xcode 27.1, official poses, reserved
+regions and internal delivery. The compatible Mini currently has 27.0/26.6;
+approval to add 27.1 alongside them is pending under shared-device coordination.
+Keep existing review candidates intact. See `docs/iphone-duo-20261028.md` for
+the exact source/test boundary; no new native build is delivered by this entry.
+
 ## Mac window recovery and review correction · 2026-10-26
 
 Apple rejected Mac1.0.15(40) for missing mainland publication documentation

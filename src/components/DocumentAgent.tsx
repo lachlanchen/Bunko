@@ -12,6 +12,8 @@ import { ModelSettings } from './ModelSettings'
 import { initialModelPolicy, type ModelPolicy } from '../lib/documentAgent'
 import { agentCall, uploadDocument, type AgentMessage, type PrivateDocument, type PaperMatch } from '../lib/documentAgent'
 import { useBackAction } from '../lib/backNavigation'
+import { preserveReadingViewport } from '../lib/readingViewport'
+import { fitComposer, observeComposer } from '../lib/composerViewport'
 import type { UILanguage } from '../i18n'
 import { agentCopy } from './agentCopy'
 import { DocumentContent } from './DocumentContent'
@@ -67,12 +69,11 @@ function DocumentAgentSession({ ui, onBack, onBook, user }: AgentProps & { user:
     return () => { viewport?.removeEventListener('resize', resize); viewport?.removeEventListener('scroll', resize); window.removeEventListener('resize', resize) }
   }, [plans])
   useLayoutEffect(() => { if (history.current) history.current.scrollTop = followLatest.current ? history.current.scrollHeight : savedScroll.current }, [messages, busy, plans])
-  useLayoutEffect(() => { if (composer.current) { composer.current.style.height = 'auto'; composer.current.style.height = draft ? `${Math.min(144, composer.current.scrollHeight)}px` : '44px' } }, [draft, plans])
+  useLayoutEffect(() => { if (composer.current) fitComposer(composer.current) }, [draft, plans])
+  useEffect(() => { if (composer.current) return observeComposer(composer.current) }, [plans, user?.id])
   useEffect(() => {
-    if (!historyContent.current || typeof ResizeObserver === 'undefined') return
-    const observer = new ResizeObserver(() => { if (followLatest.current && history.current) history.current.scrollTop = history.current.scrollHeight })
-    observer.observe(historyContent.current); if (history.current) observer.observe(history.current)
-    return () => observer.disconnect()
+    if (!historyContent.current || !history.current) return
+    return preserveReadingViewport(history.current, historyContent.current, '.agent-exchange', { followEnd: () => followLatest.current })
   }, [plans, user?.id])
   const latest = () => { followLatest.current = true; userScrolling.current = false; setAtBottom(true); if (history.current) history.current.scrollTop = history.current.scrollHeight }
   const activeDocument = useRef(selected)

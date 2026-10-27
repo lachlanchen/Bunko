@@ -15,6 +15,9 @@ afterEach(()=>{cleanup();vi.unstubAllGlobals()})
 it('follows rendered replies but preserves a deliberate scroll into older messages',async()=>{
  render(<DocumentAgent ui="en" onBack={()=>{}}/>);await screen.findByText('A reply')
  const log=screen.getByRole('log');Object.defineProperties(log,{scrollHeight:{value:1000,configurable:true},clientHeight:{value:100,configurable:true}})
+ // jsdom has no layout. Model a visible pane; zero-size panes deliberately
+ // retain their anchor until the display becomes usable again.
+ Object.defineProperties(log.querySelector('.agent-message-content')!,{clientWidth:{value:300,configurable:true},clientHeight:{value:1000,configurable:true}})
  // A rendering/reflow scroll is not a request to stop following the answer.
  log.scrollTop=300;fireEvent.scroll(log);act(()=>fixture.resize());expect(log.scrollTop).toBe(1000)
  fireEvent.wheel(log,{deltaY:-200});log.scrollTop=100;fireEvent.scroll(log);act(()=>fixture.resize());expect(log.scrollTop).toBe(100)
