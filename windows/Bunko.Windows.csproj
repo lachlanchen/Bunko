@@ -4,7 +4,7 @@
     <UseWPF>true</UseWPF><EnableWindowsTargeting>true</EnableWindowsTargeting>
     <ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable>
     <AssemblyName>Bunko</AssemblyName><RootNamespace>Bunko.Windows</RootNamespace>
-    <Version>1.0.15</Version><Company>LazyingArt LLC</Company><Product>Bunko</Product>
+    <Version>1.0.16</Version><AssemblyVersion>1.0.16.46</AssemblyVersion><FileVersion>1.0.16.46</FileVersion><Company>LazyingArt LLC</Company><Product>Bunko</Product>
     <ApplicationIcon>Bunko.ico</ApplicationIcon><ApplicationManifest>app.manifest</ApplicationManifest>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>

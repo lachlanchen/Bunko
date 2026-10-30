@@ -1,5 +1,9 @@
 # Bunko — product brief
 
+## Update-prompt internal delivery · 2026-10-31
+
+Build 46 packages the update controls for the existing internal testing groups on Apple and Google. Qualify the actual native app, embedded Watch, signed archives and exported resources, then upload and verify tester availability. Keep existing public release selections. Windows previews retain independent executable build numbers.
+
 ## Update controls · 2026-10-31
 
 Extend the existing web, iOS, Android and Mac update checks to Windows and Watch. Keep checks quiet and optional, provide a manual check, remember Later for one day and preserve reading positions, drafts and downloads. Advertise only verified public releases, never newer internal builds. Windows opens the fixed download page; Watch directs readers to the paired iPhone App Store. This is a source update; new native controls await packaging and native qualification. See `docs/app-updates.md`.
