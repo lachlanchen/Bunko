@@ -45,3 +45,32 @@ The implementation follows the [Vite PWA prompt lifecycle](https://vite-pwa-org.
 - Automated version, build, unpublished-platform, malformed-feed and snooze checks, plus the existing reader suite.
 - Real production service worker: first installation, waiting update while reading, disabled reload, persistent dismissal, manual update, preference preservation, another open tab left running, and offline cached reading after update.
 - Native Android upgrade from an existing 1.0.3 cache: migration to 1.0.4 (6), exact store link, dismissal persistence, all four interface languages and invalid-feed recovery passed. iOS/Mac packages compiled and signed; this update did not receive a physical iPhone interaction test. Native platform UI and installed build details are recorded with the release evidence. Test fixtures with a future version are used only in the private QA environment; they are never put in the public release feed.
+
+
+## Windows and Watch controls · 31 October 2026
+
+The Windows reader checks its installed executable version against the `windows`
+entry in the same public feed. Its toolbar offers **Check for updates**; an
+available release opens the fixed LazyingArt Windows download page in the system
+browser. **Later** dismisses that release for 24 hours. The app does not download
+or execute an installer automatically. Web content and executable updates are
+checked independently.
+
+The Watch library now checks the bundled iOS/Watch public release record, shows a
+compact update card and provides a manual check. The card directs the reader to
+update from the App Store on the paired iPhone. Dismissal never removes excerpts
+or saved reading positions.
+
+Checks run on launch and foreground return, with a six-hour interval, single-flight
+requests and a shorter retry delay after failure. Version comparison is numeric;
+a newer internal build never receives an older public-release suggestion. Feed
+URLs and download/store destinations are fixed in the app. Offline checks do not
+interrupt reading. These controls require a new installed native build.
+
+Qualification for this source round: the full Bunko check passes (183 client and
+180 server tests, renderer, lint and production build), the Windows project
+compiles without warnings, and 15 Windows update-policy checks pass. Browser
+fixtures cover 320/390/1024 px, English/Chinese/Japanese, dark appearance, dismissal,
+manual checks, disabled reload while reading and the exact native store URL.
+Screenshots remain private test evidence. Watch changes have not yet been compiled
+with Xcode or tested on a watch; no new native package was uploaded in this round.

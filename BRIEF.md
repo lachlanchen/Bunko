@@ -1,5 +1,9 @@
 # Bunko — product brief
 
+## Update controls · 2026-10-31
+
+Extend the existing web, iOS, Android and Mac update checks to Windows and Watch. Keep checks quiet and optional, provide a manual check, remember Later for one day and preserve reading positions, drafts and downloads. Advertise only verified public releases, never newer internal builds. Windows opens the fixed download page; Watch directs readers to the paired iPhone App Store. This is a source update; new native controls await packaging and native qualification. See `docs/app-updates.md`.
+
 ## Internal Apple builds and Windows preview · 2026-10-30
 
 Apple iOS/Watch and universal Mac **1.0.16 (45)** are VALID / IN_BETA_TESTING

@@ -9,3 +9,18 @@
 "Ruby readings" = "显示注音";
 "Ruby size" = "注音大小";
 "Send this excerpt again from your iPhone to add ruby and sentence alignment." = "请从 iPhone 重新发送此摘录，以添加注音和逐句对照。";
+
+"App updates" = "应用更新";
+"Update available" = "有可用更新";
+"Check for updates" = "检查更新";
+"Checking for updates…" = "正在检查更新…";
+"You’re up to date." = "已是最新版本。";
+"Could not check for updates. Try again when online." = "无法检查更新，请联网后重试。";
+"Open store" = "打开应用商店";
+"Later" = "稍后";
+"Installed version" = "当前版本";
+"Update & reload" = "更新并重新载入";
+"A new version is ready. Update when you have finished reading or writing." = "新版已准备好，读完或写完后可更新。";
+"Return to the library and finish writing before updating." = "请返回书库并完成编辑后再更新。";
+"Could not open the store." = "无法打开应用商店。";
+"Update the app from the App Store on your iPhone." = "请在 iPhone 的 App Store 中更新应用。";

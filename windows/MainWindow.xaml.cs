@@ -12,7 +12,7 @@ public partial class MainWindow : Window {
  readonly List<CoreWebView2Controller> popups=new();
  CoreWebView2Environment? environment;
  bool closed,selfTestStarted;
- public MainWindow(){InitializeComponent();if(selfTest){ShowActivated=false;ShowInTaskbar=false;Opacity=0;Left=-16000;Top=-16000;}Loaded+=Initialize;Closed+=(_,_)=>{closed=true;foreach(var p in popups.ToArray())p.Close();popups.Clear();Reader.Dispose();};PreviewKeyDown+=Keys;}
+ public MainWindow(){InitializeComponent();if(!selfTest)SetupUpdates();if(selfTest){ShowActivated=false;ShowInTaskbar=false;Opacity=0;Left=-16000;Top=-16000;}Loaded+=Initialize;Closed+=(_,_)=>{closed=true;foreach(var p in popups.ToArray())p.Close();popups.Clear();Reader.Dispose();};PreviewKeyDown+=Keys;}
  static void Restrict(CoreWebView2 core){
   core.Settings.AreHostObjectsAllowed=false;core.Settings.IsWebMessageEnabled=false;core.Settings.AreDevToolsEnabled=false;
   core.Settings.IsPasswordAutosaveEnabled=false;core.Settings.IsGeneralAutofillEnabled=false;
