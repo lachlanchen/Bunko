@@ -1,5 +1,15 @@
 # Bunko — product brief
 
+## Internal Apple builds and Windows preview · 2026-10-30
+
+Apple iOS/Watch and universal Mac **1.0.16 (45)** are VALID / IN_BETA_TESTING
+in the existing internal group. The build preserves reading position, conversation
+anchors and drafts across size changes, and includes the qualified Mac window
+reopening correction. All 22 native checks passed before signing and upload.
+The Windows 11 x64 preview is available from the LazyingArt download page.
+See `docs/internal-build45-20261030.md` for tests, artifacts and runtime gaps.
+Public store selections remain unchanged.
+
 ## iPhone Duo adaptation · 2026-10-28
 
 The owner renews iPhone Duo support for Bunko and OnlyIdeas. Preserve reader
