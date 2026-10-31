@@ -40,3 +40,21 @@ The 27.1 build, hinge/camera reserved-region integration and native pose checks
 remain pending toolchain availability. No deployment target was raised and no
 new TestFlight build or formal review was submitted in this source round.
 Existing accounts, books, billing and review candidates are unchanged.
+
+## Renewed delivery request · 31 October
+
+The existing adaptive changes are already included in internal build 46. That
+build used the older SDK; its native checks and TestFlight availability do not
+establish full Duo behavior. Apple distinguishes the display behavior obtained
+with iOS 26, 27.0 and 27.1 in its preparation guide above.
+
+A fresh shared Mini metadata inventory at 12:51 UTC on 31 October found Xcode
+27.0 and 26.6, with no 27.1-or-later installation in the inspected locations.
+The owner has been asked to authorize installing 27.1 alongside the existing
+versions. Installation and a native test slot still require their coordinated
+resource boundaries. Existing Xcode versions, default developer selection,
+simulator states, reviews and public releases are preserved.
+
+No new Duo simulator run or internal upload is claimed by this preparation
+checkpoint. The redundant app-owned read collector was left unused after the
+fresh shared result became available.
