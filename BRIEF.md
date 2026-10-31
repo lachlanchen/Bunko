@@ -610,3 +610,14 @@ conversations and deliberate manual pin choices. Modern country outlines are
 orientation only; do not invent ancient roads, borders or precise positions for
 disputed kingdoms. The historical-name server adapter can improve restored
 results in existing builds; the new renderer requires native delivery.
+
+
+### Update-control delivery · 31 October 2026
+
+1.0.16 (46) is available in the existing TestFlight internal group for iOS/Watch
+and universal Mac, and on Google Play internal testing. The 22 native checks,
+Apple package/signature/resource gates, signed Android manual update check and
+Windows reader runtime check passed. The Windows preview is published on the
+LazyingArt downloads page. Public release feeds retain actual public store
+versions; no formal review, production track, billing or identity was changed.
+Receipt: `store/review/update-prompts46-20261031.json`.

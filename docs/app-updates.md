@@ -74,3 +74,27 @@ fixtures cover 320/390/1024 px, English/Chinese/Japanese, dark appearance, dismi
 manual checks, disabled reload while reading and the exact native store URL.
 Screenshots remain private test evidence. Watch changes have not yet been compiled
 with Xcode or tested on a watch; no new native package was uploaded in this round.
+
+
+## Internal delivery · 31 October 2026
+
+Bunko **1.0.16 (46)** is available to the existing TestFlight internal group on
+iOS/Watch and Mac, and to Google Play internal testers. Both Apple builds are
+VALID and IN_BETA_TESTING. The 22 native Mac checks passed before packaging;
+archive and exported app identities, bundled resources, signatures and embedded
+Watch version were checked. The Mac executable contains arm64 and x86_64 slices,
+each targeting macOS 12.0. This is binary qualification, not a physical Monterey
+or Duo runtime test. Watch changes compiled and were packaged; no watch runtime
+pass is claimed.
+
+The signed Android release was installed and its manual update result observed.
+The Windows preview passed its native reader check, and its public download
+matched the qualified SHA-256. Both web settings views were checked at phone and
+desktop widths. Initial browser service-worker installation failures were
+retained in the private test record; a subsequent installation/manual check
+succeeded, and all 44 precached assets returned HTTP 200.
+
+The public feed now advertises Mac **1.0.15 (44)** and the Windows **1.0.16 (46)**
+preview. iOS and Android remain **1.0.14 (37)**, their released store versions.
+Internal Apple/Google build 46 is not advertised as a public store release.
+See [the delivery receipt](../store/review/update-prompts46-20261031.json).
