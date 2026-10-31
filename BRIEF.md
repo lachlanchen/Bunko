@@ -1,5 +1,15 @@
 # Bunko — product brief
 
+## SDK-qualified internal candidate · 2026-11-01
+
+The shared Mini handback verifies Xcode 27.1 (27A9275), the iOS 27.1 SDK and
+completed first-launch setup. Prepare internal 47 with explicit per-command
+developer selection. Gate archives on the isolated 22-case native Mac reader
+suite and inspect actual SDK linkage, embedded Watch, resources, signatures and
+both Mac architectures. Duo runtime/poses remain unqualified and are reported as
+coverage gaps; their absence alone does not block this internal candidate.
+Actual host qualification and a separate app admission still precede execution.
+
 ## Internal delivery default · 2026-10-31
 
 Complete substantial app updates through validated upload to the existing internal

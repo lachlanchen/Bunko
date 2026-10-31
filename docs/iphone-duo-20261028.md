@@ -58,3 +58,16 @@ simulator states, reviews and public releases are preserved.
 No new Duo simulator run or internal upload is claimed by this preparation
 checkpoint. The redundant app-owned read collector was left unused after the
 fresh shared result became available.
+
+## Shared SDK ready · 1 November
+
+The shared Mini handback verifies Xcode 27.1/build 27A9275 at
+`/Applications/Xcode_27.1.app/Contents/Developer`, iPhoneOS SDK 27.1 and a successful
+first-launch status check. The default developer selection remains unchanged.
+The new internal candidate uses this developer path explicitly. Its native Mac
+reader checks and signed archive/resource gates are separate from official Duo
+pose tests. A missing Duo runtime does not by itself prevent internal delivery;
+full Duo compatibility and a public compatibility claim still need those tests.
+
+No Duo simulator or hardware test, new native compilation, archive or upload is
+claimed by this source checkpoint. The shared installer is not rerun.
