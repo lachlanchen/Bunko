@@ -1,5 +1,14 @@
 # Bunko — product brief
 
+## Internal delivery default · 2026-10-31
+
+Complete substantial app updates through validated upload to the existing internal
+test groups by default. Do not stop at a preparation note or request another
+upload confirmation. Public release and formal review remain separate. Reuse the
+one approved shared Duo toolchain installation owned by EchoMind; do not start a
+second installer or repeat its approval request. Candidate 47 requires native Duo
+qualification after that installation is verified.
+
 ## Renewed iPhone Duo internal delivery · 2026-10-31
 
 Prepare Duo-qualified internal successors for Bunko and OnlyIdeas, preserving
@@ -7,7 +16,8 @@ current reviews and public releases. Reuse the qualified reader/chat resizing
 work; build against iOS 27.1 or later and verify official Duo poses, reserved
 regions and state continuity before claiming full support. The fresh shared Mini
 inventory at 12:51 UTC found Xcode 27.0/26.6. Side-by-side 27.1 provisioning needs
-the outstanding owner approval and a separately coordinated installation scope.
+a separately coordinated installation scope. The shared installation now has
+owner approval and a single EchoMind operator; Bunko reuses its verified result.
 Build 46 remains available; no new Duo build has been uploaded in this round.
 
 ## Update-prompt internal delivery · 2026-10-31
