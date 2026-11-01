@@ -1,0 +1,125 @@
+{
+  "verifiedAt": "2026-11-01T00:38:12.445017+00:00",
+  "app": "Bunko",
+  "builds": [
+    {
+      "platform": "MAC_OS",
+      "id": "cb759673-c2ff-40e0-ba36-22e4a59accbe",
+      "version": "1.0.16",
+      "build": "47",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING",
+      "unexpired": true,
+      "existingInternalGroupMember": true,
+      "notesVerified": true
+    },
+    {
+      "platform": "IOS",
+      "id": "09a24c8b-3519-4600-b2a8-86a5d63f4be8",
+      "version": "1.0.16",
+      "build": "47",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING",
+      "unexpired": true,
+      "existingInternalGroupMember": true,
+      "notesVerified": true
+    }
+  ],
+  "internalGroup": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+  "isInternalGroup": true,
+  "publicReviewChanged": false,
+  "source": "7313e3ce5a19cd6c729621fc6d3a16f618e6b838",
+  "nativeChecksPassed": 22,
+  "nativeSystem": "macOS 27.0 (26A425)",
+  "xcode": {
+    "version": "27.1",
+    "build": "27A9275"
+  },
+  "artifacts": [
+    {
+      "platform": "ios",
+      "bytes": 12212681,
+      "sha256": "3448b5a300a80572427aefa6fe43ed1733179f11a2220d07c38f15496d7ab555",
+      "archive": {
+        "bundle": "art.lazying.bunko",
+        "resources": 88,
+        "signer": "Q8M2S2FY77",
+        "xcodeBuild": "27A9275",
+        "sdk": "iphoneos27.1",
+        "minimumOS": "15.0",
+        "watch": {
+          "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+          "CFBundleShortVersionString": "1.0.16",
+          "CFBundleVersion": "47",
+          "WKCompanionAppBundleIdentifier": "art.lazying.bunko",
+          "MinimumOSVersion": "11.0"
+        }
+      },
+      "exported": {
+        "bundle": "art.lazying.bunko",
+        "resources": 88,
+        "signer": "Q8M2S2FY77",
+        "xcodeBuild": "27A9275",
+        "sdk": "iphoneos27.1",
+        "minimumOS": "15.0",
+        "watch": {
+          "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+          "CFBundleShortVersionString": "1.0.16",
+          "CFBundleVersion": "47",
+          "WKCompanionAppBundleIdentifier": "art.lazying.bunko",
+          "MinimumOSVersion": "11.0"
+        }
+      }
+    },
+    {
+      "platform": "macos",
+      "bytes": 6506513,
+      "sha256": "f7d7df38d438dd30a74f9dcc289afa19c1ec33ba4a4d6d55d59a274c8127b22e",
+      "archive": {
+        "bundle": "art.lazying.bunko",
+        "resources": 86,
+        "signer": "Q8M2S2FY77",
+        "xcodeBuild": "27A9275",
+        "sdk": "macosx27.0",
+        "minimumOS": "12.0",
+        "machO": {
+          "arm64": "12.0",
+          "x86_64": "12.0"
+        }
+      },
+      "exported": {
+        "bundle": "art.lazying.bunko",
+        "resources": 86,
+        "signer": "Q8M2S2FY77",
+        "xcodeBuild": "27A9275",
+        "sdk": "macosx27.0",
+        "minimumOS": "12.0",
+        "machO": {
+          "arm64": "12.0",
+          "x86_64": "12.0"
+        }
+      }
+    }
+  ],
+  "cleanup": {
+    "originalWorkerTerminal": "FAILED_CLEANUP",
+    "originalFailurePreserved": true,
+    "separateRecoveryCompleted": true,
+    "independentlyVerifiedAt": "2026-11-01T00:06:17.429841+00:00",
+    "guardAbsent": true,
+    "signingRestored": true,
+    "ownedProcessesAbsent": true,
+    "deviceStatePreserved": true,
+    "rawDeviceMetadataBytePreserved": false,
+    "onlyAcceptedMetadataChange": "one existing lastUsedAt timestamp advanced",
+    "deviceMetadataWritten": false
+  },
+  "publicReviewSubmitted": false,
+  "formalStoreSelectionsUnchanged": true,
+  "runtimeTestGaps": [
+    "Physical iPhone and Watch",
+    "Official iPhone Duo poses and reserved regions",
+    "Fresh macOS Monterey runtime",
+    "Keyboard focus and physical Dock interaction"
+  ]
+}

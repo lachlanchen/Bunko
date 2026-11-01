@@ -1,5 +1,14 @@
 # Bunko — product brief
 
+## Internal Apple delivery · 2026-11-01
+
+Apple iOS/Watch and universal Mac **1.0.16 (47)** are `VALID` and
+`IN_BETA_TESTING` in the existing internal group. All 22 native Mac checks and
+both signed package gates passed using Xcode 27.1 (27A9275). Independent cleanup
+reconciliation completed before upload. Official Duo poses, physical iOS/Watch
+and fresh Monterey runtime checks remain unrun. Public releases and review
+selections are unchanged. See `docs/internal-build47-20261101.md`.
+
 ## SDK-qualified internal candidate · 2026-11-01
 
 The shared Mini handback verifies Xcode 27.1 (27A9275), the iOS 27.1 SDK and
