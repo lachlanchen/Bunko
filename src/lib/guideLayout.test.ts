@@ -4,6 +4,15 @@ import { findPlaces, suggestedPlace } from './guideAtlas'
 import type { GuideConnection, GuideEntity } from './bookCompanion'
 const entity = (id: string, name = id): GuideEntity => ({ id, name, detail: '', aliases: [], certainty: 'stated', citations: [] })
 describe('complete graph layout', () => {
+  it('keeps a small relationship chain readable in a phone-width portrait canvas', () => {
+    const nodes = ['Faxian', 'Huijing', 'Daozheng', 'Buddhabhadra'].map(name => entity(name))
+    const edges = nodes.slice(1).map((n, i) => ({ from: nodes[i].id, to: n.id, label: 'Travelled together', certainty: 'stated' as const, citations: [] }))
+    const graph = relationshipLayout(nodes, edges, false, true)
+    expect(graph.width).toBeLessThanOrEqual(360)
+    expect(graph.nodes.map(n => n.name)).toEqual(nodes.map(n => n.name))
+    expect(graph.edges.map(e => e.source)).toEqual(edges)
+    expect(graph.nodes.every((n,i) => !i || n.y > graph.nodes[i-1].y)).toBe(true)
+  })
   it('keeps full long and multilingual names without overlapping nodes, including cycles and disconnected people', () => {
     const nodes = Array.from({ length: 32 }, (_, i) => entity(i === 0 ? '__proto__' : `person${i}`, i % 2 ? '源氏と複数の長い名前が続く登場人物' : `An unusually long complete character name ${i}`))
     const edges = nodes.slice(1, 25).map((n, i) => ({ from: nodes[i].id, to: n.id, label: 'A clearly labelled relationship', certainty: 'stated' as const, citations: [] }))

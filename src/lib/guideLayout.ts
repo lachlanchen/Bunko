@@ -58,7 +58,7 @@ function layoutComponent(nodes: GuideEntity[], edges: GuideConnection[], tree = 
     return { width: center * 2, height: center * 2, nodes: rows, edges: links }
   }
   const graph = new Graph({ multigraph: true })
-  graph.setGraph({ rankdir: tree ? 'TB' : 'LR', ranksep: compact ? 52 : 82, nodesep: compact ? 24 : 44, edgesep: 28, marginx: compact ? 16 : 32, marginy: compact ? 16 : 32 })
+  graph.setGraph({ rankdir: tree || compact ? 'TB' : 'LR', ranksep: compact ? 52 : 82, nodesep: compact ? 24 : 44, edgesep: 28, marginx: compact ? 16 : 32, marginy: compact ? 16 : 32 })
   graph.setDefaultEdgeLabel(() => ({}))
   // Opaque internal keys avoid reserved/property-like model IDs in graphlib.
   const ids = new Map(nodes.map((n, i) => [n.id, `node${i}`]))
