@@ -1,3 +1,497 @@
+# Mac window fix submitted · 26 October 2026
+
+Mac **1.0.15 (44)** is **VALID / IN_BETA_TESTING** and **Waiting for Review**,
+replacing rejected40. Automatic release after approval is retained. Apple API
+and visible submission readbacks verify the selected build. Source: `06456da`.
+
+Window > Show Bunko restores the retained reader or conversation after closing.
+All22 native checks pass, including actual AppKit menu dispatch, repeated reopen,
+closed-window Settings, the Dock delegate, exact reading position, drafts and
+focused graph state. The363 client/server tests, renderer, lint and web build
+also pass. Signed universal Mac archive/export/resource checks passed; both
+executable slices retain minimum macOS12. Native runtime QA used macOS15.7.9.
+
+Mainland China is excluded from the app's Apple availability; all174 other
+territories remain selected. Four localized release notes and review instructions
+are current; six complete screenshots are retained. The demo login works without
+OTP. Existing iOS/Watch/Android43 internals and public releases remain unchanged.
+
+The KVM guard released04:24 UTC. Independent04:25 readback verifies owned process
+cleanup, temporary signer removal, original keychain search and two profiles
+restored,112 source/22 helper hashes unchanged and72 simulator states preserved.
+No Mac hold remains. The single existing Apple upload reservation was reused;
+a timed-out transfer resumed within the same uncommitted file and processed VALID.
+
+[Qualification](../docs/mac-review44-20261026.md) and
+[delivery](testflight/mac-window44-20261026.json).
+Private evidence: `.runtime/review-check-20261026/`.
+
+## Earlier records
+
+# Continuing reading workspace available internally · 26 October 2026
+
+Apple **1.0.15 (43)** is VALID / IN_BETA_TESTING for iOS/Watch and universal
+Mac in the existing internal group. Android **1.0.15 (43)** is available to
+existing Google Play internal testers. Qualified source: `52f0626`.
+
+The live backend selects the capable qualified model for complex diagrams and
+merges incremental visual updates with stable identities and retained provenance.
+The client resumes the nearest reading branch, preserves drafts when switching,
+and adds group filters and explicit background-date timeline markers.
+
+183 client /180 server tests, four browser widths,17 installed Android checks and
+18 native Mac checks passed. A real two-turn graph extension retained the original
+20 people and reached45 people/53 relationships. Both Apple archives and exports,
+embedded Watch, resources/signatures and universal Mac minOS12 were checked.
+No new physical iOS/Watch runtime test is claimed.
+
+[Qualification](../docs/reading-workspace-20261026.md) and
+[exact delivery](testflight/reading-workspace43-20261026.json).
+All11 README languages include the internal preview. Current screenshot drafts are
+captured/reviewed locally; public listings remain unchanged.
+
+Mac40 remains Waiting for Review, selected build40 verified23:15 UTC. Public PWA,
+accounts, subscriptions and OnlyIdeas remain unchanged. The Mac guard released
+22:58:49 UTC; independent23:00:06 readback verifies326 owned process identities
+absent,6 profiles/search state restored,264 source pins and72 device states equal.
+No Mac/GUI hold remains. Owned noVNC6190/CDP9490, emulator5598/WebView19524 and
+upload proxy19643 are stopped; profiles are retained. The iOS upload recovered
+within its same uncommitted reservation; direct TLS completed both files.
+Private evidence: `.runtime/reading-workspace43-20261026/`.
+
+## Earlier records
+
+# Reading tools and historical maps available internally · 26 October 2026
+
+Apple **1.0.15 (41)** is VALID / IN_BETA_TESTING for iOS/Watch and universal
+Mac in the existing internal group. Android **1.0.15 (42)** is available to the
+existing Google Play internal testers. Qualified app source: `fb64aad7`.
+
+The live backend can look up places, inspect dated layers and search the
+authorized passage selection before making a guide. The new client draws
+thirteen colored Eastern Han reference provinces and fixed named city markers;
+follow-ups extend saved maps. Prior reader conversations remain intact.
+
+181 client and 169 server tests, real model/HTTPS requests, four browser widths,
+seven installed Android upgrade checks and 16 native Mac WebKit checks passed.
+Both Apple archives/exports and embedded Watch resources/signatures were verified.
+No new physical iOS/Watch UI test is claimed. All 11 README languages include a
+clearly marked internal map preview. [Qualification](../docs/reading-tools-and-historical-maps.md)
+and [delivery receipt](testflight/reading-tools41-20261026.json).
+
+Mac40 remains Waiting for Review, selected build40 verified at17:05 UTC.
+No new public submission, public PWA deployment, billing or identity change.
+Android41 was never published;42 is the final internal release.
+
+No Mac/GUI hold remains. R3's matching guard released16:57 UTC; independent
+cleanup verified source, process, profile and keychain restoration. Bunko
+noVNC6190/CDP9490, emulator5598/WebView19524 and upload proxy19641 are stopped.
+Saved profiles remain available for reuse. Private evidence:
+`.runtime/reading-agent41-20261025/`.
+
+## Earlier records
+
+# Bunko Mac40 replaces Mac39 · 25 October 2026
+
+Mac **1.0.15 (40)** is **Waiting for Review**, automatic release after approval,
+and **VALID / IN_BETA_TESTING** in the existing internal group. Mac39 was
+withdrawn before replacement. Apple selected-build and review-state readbacks
+passed at 08:56 UTC.
+
+The reading assistant is restored, with DeepSeek routing for mainland and unknown
+native storefronts. The live service, real synthetic-document answer, saved history,
+15 Mac runtime checks and universal signed package passed. Four descriptions and
+Apple review notes were corrected; six existing screenshots remain accurate and
+COMPLETE. [Qualification and delivery](../docs/mac-review40-20261025.md).
+
+No Mac/GUI hold remains. Signing/profiles were restored, the temporary signer and
+upload proxy removed. Private evidence: `.runtime/mac-review40-20261025/`.
+Public releases and other platform binaries are unchanged pending Apple approval.
+Font/interface sizing remains deferred.
+
+## Earlier records
+
+# Bunko Mac39 submitted · 25 October 2026
+
+Mac **1.0.15 (39)** is **Waiting for Review**, automatic release after approval,
+and **VALID / IN_BETA_TESTING** in the existing internal group. This replaces the
+rejected Mac37 item with the mainland companion restriction, reliable figure
+loading and cumulative historical-map fixes. Four localized descriptions and the
+library screenshot were corrected; Apple received the review reply and notes.
+
+[Qualification and exact delivery](../docs/mac-review39-20261025.md).
+The backend regional policy and Flash→Pro repair routing are live. The requested
+OpenAI model IDs are not available in the checked API account; no OpenAI route
+was activated. Existing reader/account data is preserved.
+
+Mac QA, signing, export and exact cleanup passed. No Mac hold remains. The owned
+Bunko noVNC6190/CDP9490 store desktop is stopped; its saved profile is retained.
+Private receipts: `.runtime/mac-review39-20261025/`.
+
+Public iOS/Watch and Android37, internal38, pricing and billing remain unchanged.
+OnlyIdeas iOS39 is publicly available; Mac39 is still IN_REVIEW.
+
+## Earlier records
+
+# Bunko build 38 available internally · 24 October 2026
+
+- Apple **1.0.15 (38)**: iOS/Watch and universal Mac are VALID / IN_BETA_TESTING
+  in the existing TestFlight internal group.
+- Android **1.0.14 (38)**: available to the existing Google Play internal testers.
+
+Historical reading maps recognize compound names, distinguish regions from
+cities, mark uncertain journey sections and separate nearby touch targets.
+The backend fix is live; saved conversations are preserved.
+
+Apple source `ec6d1e55557ca6a80cccbead4973ca2bb44f196e` contains the same map
+update as Android source `996ae31334bc99e0d924392f25b9f4d5ff7e357a`, with the
+Apple marketing version advanced because iOS 1.0.14 is already public.
+170 client and 152 server tests, 13 final map tests, four browser layouts,
+Android lint/signature/resource checks and installed Android upgrade QA passed.
+Both Apple packages passed processing, signatures, bundled-resource and embedded
+Watch checks. Mac arm64/x86_64 binaries retain a macOS 12 minimum. Internal group
+membership and four-language beta notes were read back.
+
+The clean Apple build includes all tracked Watch and shared reading files.
+Original signing/profile state was restored, the temporary signer removed, and
+the owned build processes and guard released. No Bunko desktop/emulator remains.
+No new physical Apple UI test, public review or PWA deployment is claimed.
+See the [build38 record](testflight/historical-map38-20261024.json) and
+[map qualification](../docs/historical-reading-maps.md).
+
+## Earlier records
+
+# Bunko 1.0.14 (37) submitted · 24 October 2026
+
+Apple iOS/Watch and universal Mac are **Waiting for Review**. Google production
+is **Changes in review**, with eight changes sent and no unsent submission button.
+Automatic release/full rollout after approval is retained. Approved23 remains
+available; the former Mac23 review is complete.
+
+Four localized descriptions and current phone/tablet/desktop screenshots are
+saved and verified. 311 client/server tests, renderer/build checks, live no-code
+Demo access, a real whole-book companion answer and saved-result reuse passed.
+Both public legal-page hosts now serve the current provider/book-guide disclosure.
+No new binary, price/billing/provider change, PWA deployment or physical Apple
+UI test was made. Exact evidence: [build37 receipt](../docs/latest-review37-20261024.md).
+
+## Earlier records
+
+# Current internal checkpoint · build 37 · 23 October 2026 HKT
+
+Bunko **1.0.14 (37)** is VALID / IN_BETA_TESTING for iOS/Watch and universal
+Mac in the existing internal group, and available to Google internal testers.
+Ask, People, Places and Timeline share continuing, selectable conversation
+branches and saved visual results. Nearby results reopen without generation.
+Whole-book questions preserve the reading bookmark. Graph and timeline view
+state, focused layouts and stable colors improve navigation.
+
+[Qualification and delivery](../docs/continuing-reading-workspace36-20261023.md).
+The new reading workspace backend is live; original reading-json recovery remains
+included. Existing auth-provider gates, billing, rewards and public reviews stay
+unchanged. No new physical iOS/Mac UI qualification or PWA deployment is claimed.
+
+Apple 36 was closed unused. Android 36 was internally delivered, then superseded
+by 37's correction for a displayed artifact from a different conversation branch.
+The build 37 shared Mac round is closed with independent source, signing,
+process and guard reconciliation. No Mac or GUI hold remains. Bunko noVNC 6190,
+CDP 9490, Android emulator 5598 and WebView 19524 are stopped; saved profiles
+and device data retained.
+Private evidence: `.runtime/test37-20261023/`,
+`.runtime/reading-workspace37-20261023/` and the earlier36 qualification directory.
+
+## Earlier records
+
+# Current internal checkpoint · build35 · 23 October 2026 HKT
+
+Bunko **1.0.14 (35)** is VALID / IN_BETA_TESTING for iOS/Watch and universal
+Mac in the existing internal group, and available to Google internal testers.
+Chapter rows and reader headings stay compact with full-title expansion. The
+library remembers Recently read, Newest added, Title or Author order.
+
+[Build35 qualification and delivery](../docs/library-order34-20261022.md).
+The whole-book companion/history/artifact changes from33 remain included.
+Google, Apple and LazyingArt provider entrances remain public-gated; the owner
+Apple callback still requires full qualification. This delivery does not activate
+providers, subscriptions, shared rewards, public reviews or a PWA deployment.
+The reading-response recovery backend is now live for these clients. See
+[the correction and qualification](../docs/reading-response-recovery-20261023.md).
+The accompanying duplicate-error display correction is source-tested, pending
+the next cumulative native/PWA delivery; build35 binaries remain unchanged.
+
+Both build34 and35 shared-Mac operations are closed with independent cleanup
+proof. No Mac/GUI hold remains. Bunko noVNC6190/CDP9490, source preview19534 and
+Android emulator5598 are stopped, with their saved profiles/data retained.
+Private evidence: `.runtime/test35-20261022/` and `.runtime/library35-20261022/`.
+
+## Earlier records
+
+# Current internal checkpoint · build31 · 21 October 2026 HKT
+
+Bunko **1.0.14 (31)** is VALID / IN_BETA_TESTING for iOS/Watch and universal Mac
+in the existing internal group, and available to Google Play internal testers.
+The shared Mac operation completed, cleaned up and handed back. No public review
+or release changed. Build30 was closed unused; do not reuse either admission.
+
+[Build31 delivery and remaining sign-in qualification](../docs/signin-guides31-20261021.md).
+The interactive map/graph/timeline update is included. New Google, Apple and
+LazyingArt login code is bundled, but live provider buttons remain disabled until
+actual approved-account and native-return checks pass. GitHub remains available.
+
+No host or GUI hold. Bunko noVNC6190/CDP9490 is stopped, with the saved profile
+retained. Backend login31 source and nine exact auth-route additions are active;
+identity configuration remains unchanged/disabled. The server-only Settings
+visibility gate is also deployed after service-user import and126 tests. No
+provider is activated; approved-account qualification is still required. Private evidence: `.runtime/login31-20261021/` and
+`.runtime/test31-20261021/`.
+
+## Earlier records
+
+# Current internal checkpoint · 21 October 2026 HKT
+
+Bunko **1.0.14 (29)** is available to the existing Apple iOS/Watch and Mac
+TestFlight internal group and Google Play internal testers. Both Apple builds
+are VALID / IN_BETA_TESTING. The admitted operation is complete; its shared Mac
+guard, phase processes and temporary signing state were cleaned up and verified.
+Do not rerun its consumed admission. No public review or release changed.
+
+[Build29 delivery](updates/reading-references29-20261020.md).
+A newer source-only visualization update is documented in
+[reading visualizations](../docs/reading-visualizations-20261021.md). It is not
+part of uploaded build29. Its tests/screenshots/native web bundles are local;
+new native delivery requires a fresh coordinated round. AgInTi image jobs and
+central-created Bunko login sessions remain unqualified/disabled.
+
+No current Mac hold. The Bunko noVNC6190 / CDP9490 browser remains stopped,
+with its existing login profile retained. Local visualization browser QA stopped
+after capture; no peer desktop or service was touched.
+
+## Earlier records
+
+# Internal test checkpoint · 20 October 2026 HKT
+
+Bunko **1.0.14 (28)** is **Available to internal testers** on Google Play.
+It includes the compact reading companion, contextual book questions and cited
+people/place/timeline guides. Source `1666e7e` is pushed; 125 client and 102 server
+tests passed. The companion backend is live and both service entrances passed
+HTTPS/authentication/cache checks.
+
+Apple **iOS/Watch and universal Mac28 are VALID and IN_BETA_TESTING** in the
+existing internal group. Both archives, exports, resource/identity/signature gates
+and provider validations/uploads passed in the corrected admitted round.
+Embedded Watch matches1.0.14(28); Mac arm64/x86_64 minimumOS12.0 verified.
+The shared Mac guard was released at12:43:57UTC; independent12:44:13 readback
+verified exact process cleanup and signing/profile restoration. No host hold.
+Existing public releases, review candidates and billing gates are preserved.
+
+[Build 28 qualification](../docs/internal-build28-20261020.md).
+The owned noVNC 6190 / CDP 9490 browser is stopped and its profile retained.
+
+## Earlier records
+
+# Internal test checkpoint · 19 October 2026 HKT
+
+Bunko **1.0.14 (27)** is **Available to internal testers** on Google Play,
+verified in the existing track. It includes the compact reading companion and
+Reading plan labels. Source074b6dc,119 client +95 server tests, Android release
+lint/signatures and all86 packaged reader resources passed.
+
+Apple27 remains locally prepared, awaiting the coordinated KVM slot after Coin
+and AiMemo. No Apple27 archive/upload or tester availability is claimed. The
+corrected delivery helper pack is private under `.runtime/test27-20261019/v3`;
+its nine local supervision tests pass. Shared admission is still required.
+Production reviews, public releases and billing are unchanged.
+
+[Build27 qualification](../docs/internal-build27-20261019.md).
+The owned6190/CDP9490 store desktop is stopped; its persistent profile remains.
+
+## Earlier records
+
+# Current store checkpoint · 17 October 2026 HKT
+
+Bunko's newest uploaded build remains **1.0.13 (23)**. It is public on iOS/Watch
+and Google Play; Mac23 is **IN_REVIEW** with automatic release. No duplicate
+submission or native rebuild was needed. The Android update feed now targets 23;
+iOS23 and public Mac10 remain unchanged.
+
+OnlyIdeas' newer **1.0.8 (34)** test candidate is **WAITING_FOR_REVIEW** on
+iOS/Watch and Mac, and submitted on Google Play with quick checks completed
+and no unsent changes. Its former 1.0.7 (32) is public on all three platforms. Existing dedicated reviewer
+access and prices are preserved; no shared-account/reward or billing activation.
+
+[Bunko status](../docs/store-check-20261017.md). OnlyIdeas' exact receipt is in
+`../OnlyIdeasApp/docs/latest-review-20261017.json`. Private operational evidence
+is in `../OnlyIdeasApp/.runtime/review-20261017/`.
+
+## Earlier records
+
+# Current distribution · 14 October 2026 HKT
+
+Bunko iOS/Watch **1.0.13 (23)** is public, verified through ASC and US/HK listings.
+Google **1.0.12 (22)** remains public; build23 is still IN_REVIEW. Latest Mac23
+is IN_REVIEW; public Mac remains1.0.8(10). Automatic publishing remains selected.
+No approved release was pending manual action. All175 Apple storefronts available.
+
+OnlyIdeas iOS/Watch and Android **1.0.7 (32)** are public. OnlyIdeas Mac32 is still
+IN_REVIEW; public Mac is now1.0.6(28). Its public receipt is in the sibling repo.
+No store, pricing, auth, user-data or review-candidate mutation this task.
+
+[Distribution receipt](../docs/distribution-20261014.md).
+Private runtime: `.runtime/distribution-20261014/`.
+Owned noVNC6190/CDP9490 stopped; persistent profile retained. No Mac desktop used.
+Bunko update feed uses iOS23, Android22 and Mac10, matching approved public builds.
+Feed-only main commit925d01b49496a69652874bc6f4c8808a7df78740 deployed successfully
+(Pages38476064536). Uncached live JSON matched the committed feed.
+
+## Earlier records
+
+# Current: Bunko 1.0.13 (23) submitted · 13 October 2026
+
+Apple iOS/Watch and universal Mac are WAITING_FOR_REVIEW. Google23 is in review,
+automatic checks completed and no unsent changes. Apple automatic release and
+Google100% rollout remain selected. Both Apple builds are in TestFlight; Android23
+is available internally. Mac22's older review was replaced under owner authority.
+
+Translation discussion bubbles and the dedicated native service origin are
+included. 162 automated tests, Android lint/signature, package identity, reader UI,
+fresh no-OTP Demo web login and direct-origin native protocol checks passed.
+The Mac WebKit helper passed login/reload/logout using an isolated login Keychain;
+production Data Protection Keychain and physical-device qualification are not
+claimed by that helper. Full evidence boundaries are in the receipt.
+
+[Build23 receipt](../docs/latest-review-20261013.md).
+Private runtime: `.runtime/review-20261013/`.
+Owned preview4173, noVNC6190/CDP9490, KVM archive/QA agents stopped; temporary
+QA credentials removed. Persistent store profile retained. No Mac mini GUI used.
+OnlyIdeas1.0.7(32) also submitted on all three store platforms; its owned receipt
+is `../OnlyIdeasApp/docs/latest-review-20261013.md`.
+
+## Earlier records
+
+## Prepared successor · translation bubbles · 11 October 2026
+
+Translation comment bubbles now default on, with a persistent four-language
+Settings toggle to hide secondary-language bubbles. All entrances share the
+same passage discussion; the tapped language supplies the excerpt. 94 client
+tests, lint, web build and five browser checks pass; screenshots prepared locally.
+Accumulate for the next test build. No newer native upload or review replacement
+was made; submitted build22 remains the provider checkpoint below.
+
+[Implementation receipt](../docs/translation-bubbles-20261011.md).
+Private runtime: `.runtime/translation-bubbles-20261011/` (preview stopped after capture).
+
+# Current: Bunko 1.0.12 (22) submitted · 11 October 2026
+
+Only the first selected/main language is unlabelled; secondary translations keep
+bold labels in both reader layouts. Settings names and order numbers remain.
+Build22 is in iOS/Watch and Mac TestFlight and Google internal testing.
+Apple submissions are WAITING_FOR_REVIEW; Google accepted the review submission,
+with automatic quick-check status recorded in the receipt. No unsent changes.
+Qualified build22 replaces21. 150 automated tests and four targeted reader-browser
+checks pass. Signed packages contain the tested entry JavaScript; screenshots refreshed.
+No new physical-device/purchase test, PWA deployment or public-feed change.
+
+[Build22 receipt](../docs/translation-labels22-20261011.md).
+Private runtime: `.runtime/translation-labels22-20261011/`.
+Owned preview4173, noVNC6190/CDP9490 and KVM archive agent stopped after capture;
+the persistent store profile is retained. No Mac mini GUI or peer desktop used.
+
+## Earlier records
+
+# Current: Bunko 1.0.12 (21) submitted · 11 October 2026
+
+Build 21 is available in iOS/Watch and Mac TestFlight and Google internal testing.
+Both Apple submissions are WAITING_FOR_REVIEW. Google accepted the submission;
+its automatic pre-review checks are running, with no unsent changes.
+Apple build 19 and Google build 20 reviews were replaced under the owner's latest build/submission request.
+Current-book translation defaults, book-home Settings, reliable Settings dismissal
+and right-swipe navigation are included. Existing translations open directly and language selections define main/translation order. 150 automated tests and 16 mobile-browser
+interaction checks passed. Signed packages and refreshed screenshots were verified.
+No new physical-device/purchase test or web deployment is claimed.
+
+[Build 21 receipt](../docs/navigation21-20261011.md).
+Private runtime: `.runtime/navigation21-20261011/`.
+The owned noVNC6190/CDP9490 and local preview4173 were stopped after capture;
+the persistent store profile remains reusable. The KVM archive agent and its
+orphan log streams were stopped. No Mac mini GUI or peer desktop was used.
+
+## Earlier records
+
+# Latest translation update submitted · 11 October 2026
+
+Bunko **1.0.12 (19)** is **WAITING_FOR_REVIEW** on iOS/Watch and universal Mac,
+and **Changes in review** on Google Play. Both Apple builds are in TestFlight;
+Android19 is available internally. Apple automatic release and Google100% rollout
+remain selected. The older Mac18 review was replaced with the owner's authority.
+
+141 automated tests, renderer/build checks, Android lint, signed package checks,
+actual embedded-feature checks, localized layout checks, live no-OTP Demo login
+and privacy availability passed. Current screenshots were added and inventoried.
+No new physical-device or purchase test is claimed. Public feeds remain at
+released builds; web deployment, billing and pricing are unchanged.
+
+[Submission receipt](../docs/translation-release-20261011.md).
+Private runtime: `.runtime/translation-release-20261011/`.
+
+## Earlier records
+
+# Public mobile releases · 10 October 2026 HKT
+
+Bunko **1.0.11 (18)** is public on iOS/Watch and Google Play. Apple review is
+COMPLETE and the exact build is READY_FOR_DISTRIBUTION; US/HK public listings
+match. All 175 Apple territories are available with no phased release. Google
+production 18 is active at 100% across 172 countries, with no unpublished changes.
+Both stores released automatically; no manual release action was necessary.
+
+Mac 1.0.11 (18) is still IN_REVIEW with AFTER_APPROVAL. Public Mac remains 1.0.8 (10),
+verified separately on the platform=mac listing. Preserve the pending review.
+
+The public update feed advances only iOS/Android to18 through a feed-only change
+on the deployed main baseline. Fresh 139 tests, renderer and production build
+passed. Rounded-icon feature-branch web assets were not deployed in this step.
+See [distribution receipt](../docs/distribution-20261010.md) and private evidence
+in `.runtime/distribution-20261010/`. No billing, price or content changes.
+
+## Earlier records
+
+# Latest builds submitted · 9 October 2026
+
+The owner authorized the latest fixes/builds for Apple and Google review,
+superseding the earlier test-only direction. Bunko **1.0.11 (18)** is now
+**WAITING_FOR_REVIEW** on iOS/Watch and universal Mac. The older Mac16 review was
+withdrawn and replaced. Google production18 is **Changes in review**, with
+automatic checks passed, 100% rollout and managed publishing off.
+
+Fresh 139 project tests and renderer/build passed. Existing qualified signed
+uploads were reused; later app-source inputs are unchanged. Fresh live Demo
+login/reload passed without GitHub or email-code navigation. Privacy returned
+HTTPS200. General cloud purchases remain disabled. Public update feeds retain
+the verified public builds until actual approval and distribution.
+
+[Submission and qualifications](../docs/latest-review-20261009.md) ·
+[Exact provider identifiers](../docs/latest-review-20261009.json).
+Private evidence: `.runtime/latest-review-20261009/`. OnlyIdeas uses the same
+owned isolated store desktop; it must be stopped after evidence capture.
+
+## Earlier records
+
+# Rounded icons available for testing · 7 October 2026
+
+**Bunko 1.0.11 (18)** is available in the existing internal TestFlight group for
+iOS/Watch and universal Mac, and in Google Play internal testing. Rounded Mac,
+web and legacy launcher exports preserve the approved master. iOS/Watch continue
+to use the platform mask. All package signatures and icon exports were verified.
+
+The owner explicitly requested **no new production review**. Current releases
+and review attachments are preserved. Work is saved on
+`test/rounded-icons-20261007`, not deployed to the web or merged into `main`.
+Accumulate the change for the next authorized review.
+
+[Builds and evidence](../docs/rounded-icons-20261007.md). No user action is needed
+for the temporary signing prompt; the builds finished with existing credentials.
+
+## Earlier records
+
 # Apple release verification · 4 October 2026 HKT
 
 **iOS/Watch 1.0.10 (16) is public; Mac 1.0.10 (16) is still IN_REVIEW.**

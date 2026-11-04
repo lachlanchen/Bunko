@@ -1,0 +1,28 @@
+{
+  "status": "Local successor captures; not uploaded to stores",
+  "baseline": "684d438",
+  "sourceFiles": {
+    "src/App.tsx": "30363b69c20f938bee94ed917583c7129b615985fe50f9fe9a44b302fa38f697",
+    "src/components/Reader.tsx": "7a822f2eaff23a99f86f69f99a42f0dd37c36973c8c85d4c3ebbbd845ea3f513",
+    "src/types.ts": "4433c7b30f0bf7f11537a6043f75d256123ef6aafab8d047c8b5d71eccf856cc",
+    "src/lib/settings.ts": "400d43c7cda1510dd7d0c0cf675c630e9c84dbc46aae12440fe62a973e53c3fd",
+    "src/i18n.ts": "52e35b86e29050addd6427457077d749deec356d02feb9c27afd407f9bf60144"
+  },
+  "images": [
+    {
+      "file": "store/screenshots/translation-bubbles-20261011/phone-reader.png",
+      "sha256": "3502461cb9729c42e870ee6c819ac7ba6c337af5ae76a885423550b4f06c13d0",
+      "channel": "Chromium, unreleased web successor to build22"
+    },
+    {
+      "file": "store/screenshots/translation-bubbles-20261011/phone-settings.png",
+      "sha256": "03891a9a4f7ae3cafeb647d5dfa9b2a35099faed73e13660e38216d1947129fe",
+      "channel": "Chromium, unreleased web successor to build22"
+    },
+    {
+      "file": "store/screenshots/translation-bubbles-20261011/mac-dark-paired.png",
+      "sha256": "4a8c88f650883777d539b5ba1026d7ab27ff81ca7ec1ab502dbd97da0d36b576",
+      "channel": "Chromium, unreleased web successor to build22"
+    }
+  ]
+}

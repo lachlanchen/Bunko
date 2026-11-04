@@ -1,0 +1,73 @@
+{
+  "source": "5f0b09647cce668d3edb4d03d928d610ff702e01",
+  "platform": "MAC_OS",
+  "version": "1.0.15",
+  "build": "39",
+  "artifact": {
+    "platform": "macos",
+    "source": "5f0b09647cce668d3edb4d03d928d610ff702e01",
+    "version": "1.0.15",
+    "build": "39",
+    "sha256": "39eb8390722e206203eeaf8b63c1936fe6a6f9e7a1d4739a099e15cc45879104",
+    "bytes": 6489587,
+    "archive": {
+      "bundle": "art.lazying.bunko",
+      "resources": 86,
+      "signer": "Q8M2S2FY77",
+      "machO": {
+        "arm64": "12.0",
+        "x86_64": "12.0"
+      }
+    },
+    "exported": {
+      "bundle": "art.lazying.bunko",
+      "resources": 86,
+      "signer": "Q8M2S2FY77",
+      "machO": {
+        "arm64": "12.0",
+        "x86_64": "12.0"
+      }
+    }
+  },
+  "automatedTests": {
+    "client": 179,
+    "server": 158
+  },
+  "native": {
+    "actualRegion": {
+      "deviceRegion": "HK",
+      "storefront": "USA"
+    },
+    "checks": [
+      "live 183-book catalogue in bundled macOS WebKit",
+      "actual StoreKit storefront bridge returned; country matrix below uses explicit synthetic fixtures",
+      "synthetic CHN/unknown disable companion; USA/HKG restore entry without changing library",
+      "visible library cover artwork loaded",
+      "native Settings menu opens reader settings",
+      "book search filters and restores the catalogue without activating the window",
+      "complete book downloaded to IndexedDB",
+      "ruby and multilingual text render",
+      "reading passage and ruby survive four native window resizes",
+      "storefront change preserves downloaded book, ruby and exact saved reading position",
+      "native text-size controls update and restore reading size",
+      "chapter navigation reaches downloaded final chapter",
+      "offline reload resumes the saved final chapter with HTTP blocked",
+      "physics equations and figures render without TeX errors"
+    ],
+    "countryMatrix": "synthetic Debug fixtures; not physical China network",
+    "passed": true,
+    "system": "Version 27.0 (Build 26A425)"
+  },
+  "macRoundClosed": "2026-10-24T23:29:46.821715+00:00",
+  "signingRestored": true,
+  "guardReleased": true,
+  "processing": "VALID",
+  "reviewSubmitted": true,
+  "internal": "IN_BETA_TESTING",
+  "group": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+  "providerBuild": "12e6b347-cbf2-4552-a15e-eb5f7871afc1",
+  "reviewState": "WAITING_FOR_REVIEW",
+  "reviewId": "875dc997-6cad-421a-a1f1-0e9c0be25fc5",
+  "releaseType": "AFTER_APPROVAL",
+  "verifiedAt": "2026-10-24T23:37:12.256396+00:00"
+}

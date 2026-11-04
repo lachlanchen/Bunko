@@ -1,0 +1,51 @@
+{
+  "source": "2411c14a1583ccd12e48f934046cca8e6f84df00",
+  "version": "1.0.14",
+  "build": 26,
+  "android": "Available to internal testers",
+  "apple": [
+    {
+      "platform": "MAC_OS",
+      "id": "82541ca5-e036-41c6-9369-485b4ee07b1a",
+      "version": "1.0.14",
+      "build": "26",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    },
+    {
+      "platform": "IOS",
+      "id": "a626907f-05d5-4182-aaaf-669367520c5f",
+      "version": "1.0.14",
+      "build": "26",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    }
+  ],
+  "artifacts": [
+    {
+      "platform": "ios",
+      "version": "1.0.14",
+      "build": "26",
+      "source": "2411c14a1583ccd12e48f934046cca8e6f84df00",
+      "bundle": "art.lazying.bunko",
+      "minimum": "15.0",
+      "resourceCount": 19,
+      "bytes": 11781970,
+      "sha256": "21eb8e4f83cf3b77aa3deabc792da1a0b178658aab83a4d917bfb910a54272c4"
+    },
+    {
+      "platform": "macos",
+      "version": "1.0.14",
+      "build": "26",
+      "source": "2411c14a1583ccd12e48f934046cca8e6f84df00",
+      "bundle": "art.lazying.bunko",
+      "minimum": "12.0",
+      "resourceCount": 17,
+      "bytes": 6173485,
+      "sha256": "9452c6796294cfbe0529acfe81f2bb009e62c65f49216a1af4e539ca92705b8d"
+    }
+  ],
+  "productionChanged": false,
+  "physicalMontereyRuntime": "unqualified",
+  "foldableHardwareRuntime": "unqualified"
+}

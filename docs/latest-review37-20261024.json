@@ -1,0 +1,106 @@
+{
+  "at": "2026-10-23T23:23:47.159402+00:00",
+  "version": "1.0.14",
+  "build": 37,
+  "source": "7a3767d1b76c99a99b3ba1a36e2f9194be722ddc",
+  "apple": {
+    "IOS": {
+      "version": "16001aac-ff44-4719-9583-8ae4209a598d",
+      "build": "575c264d-48ed-48d7-b74b-8768029b801b",
+      "reviewId": "a86e2530-f78e-4505-8f67-7ff2fec4cd9c",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-10-23T23:01:40.276Z",
+      "verifiedAt": "2026-10-23T23:01:42.719695+00:00",
+      "releaseType": "AFTER_APPROVAL"
+    },
+    "MAC_OS": {
+      "version": "c850234b-0721-432b-aaf9-7155dd6e62eb",
+      "build": "ab009c9b-7d07-4aa8-b0f1-fb840c742c02",
+      "reviewId": "875dc997-6cad-421a-a1f1-0e9c0be25fc5",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-10-23T23:01:52.622Z",
+      "verifiedAt": "2026-10-23T23:01:55.031196+00:00",
+      "releaseType": "AFTER_APPROVAL"
+    }
+  },
+  "google": {
+    "at": "2026-10-23T23:22:18.389768+00:00",
+    "version": "1.0.14",
+    "build": 37,
+    "status": "CHANGES_IN_REVIEW",
+    "managedPublishing": false,
+    "rollout": "100 percent",
+    "changes": 8,
+    "scope": [
+      "production37",
+      "four descriptions",
+      "phone screenshots",
+      "7-inch screenshots",
+      "10-inch screenshots"
+    ],
+    "noUnsentSubmitButton": true
+  },
+  "qualification": {
+    "at": "2026-10-23T23:01:08.246594+00:00",
+    "passed": true,
+    "version": "1.0.14",
+    "build": 37,
+    "source": "7a3767d1b76c99a99b3ba1a36e2f9194be722ddc",
+    "sourceUnchanged": true,
+    "clientTests": 162,
+    "serverTests": 149,
+    "lintTypecheckBuild": true,
+    "liveCompanion": true,
+    "savedGuideReuse": true,
+    "nativeProtocolReviewer": true,
+    "privacyExactOnBothOrigins": true,
+    "appleCurrentScreenshotCount": 14,
+    "appleAllProcessed": true,
+    "newPhysicalAppleUI": false,
+    "priorBinaryQualification": "store/testflight/reading-workspace37-receipt.json",
+    "googleSubmissionGate": "Separate UI readback before final send",
+    "browserDemoSignout": true,
+    "browserDemoSignoutEvidence": "reuse-2x.mjs and story2x.mjs completed, including demo-form visibility after Sign out",
+    "metadataFiles": {
+      "store/listings.json": "051ecd50e4189a9451790dc5bfb5177f74be2449fc50017690c87bb5d16b64f7",
+      "store/macos/listings.json": "8e596cafc7dd7b6328b5ed6a91599a6b995ead431fa577855c8b0d1c85eb43eb",
+      "store/google/listings.json": "c49cb6a31f7eaa8d825d80d1268c189c82ffb5a7a22657a2317a208c6da7d127"
+    }
+  },
+  "artifactsReceipt": "../store/testflight/reading-workspace37-receipt.json",
+  "screenshots": "../store/screenshots/review37-20261024/manifest.json",
+  "newScreenshots": 22,
+  "localeDescriptions": [
+    "en-US",
+    "zh-Hans",
+    "zh-Hant",
+    "ja"
+  ],
+  "privacy": {
+    "bothOriginsExact": true,
+    "privacySha256": "15414680a0596ab5d9b2d4402e56e781029a570a13d6bd26df1d829d3e6a9290",
+    "termsSha256": "3b799125af19a9c0800779124255854b2271507cee4c6a91a0fe5f52a96462f9",
+    "scope": "Current Bunko legal files only; immutable releases and rollback backups. No app restart or DNS change."
+  },
+  "boundaries": {
+    "newIosMacPhysicalUITest": false,
+    "screenshotsArePackagedBrowserCaptures": true,
+    "newBinaryCreated": false,
+    "providerActivationChanged": false,
+    "billingChanged": false,
+    "priceChanged": false,
+    "pwaAppDeployed": false,
+    "public37Available": false
+  },
+  "cleanup": {
+    "at": "2026-10-23T23:27:41.066926+00:00",
+    "ownedNovnc6190Stopped": true,
+    "ownedCdp9490Stopped": true,
+    "ownedVnc5990Stopped": true,
+    "onlyOwnedSharedPlayTabClosed": true,
+    "sharedStoreBrowserPreserved": true,
+    "noMacJobLaunched": true
+  }
+}

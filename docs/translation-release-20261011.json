@@ -1,0 +1,184 @@
+{
+  "verifiedAt": "2026-10-11T00:47:22.898278+00:00",
+  "version": "1.0.12",
+  "build": 19,
+  "source": "332f7ff",
+  "featureSource": "e93cece453d5f830c8fba87fbf0fb5781b678fb6",
+  "apple": {
+    "bunko-IOS": {
+      "app": "6815137919",
+      "platform": "IOS",
+      "version": "ea199841-b9b7-4cb9-8f61-550514c04f91",
+      "build": "4cf7b1ed-e0ab-46e8-bc36-6ef3a1c167a7",
+      "buildNumber": "19",
+      "marketing": "1.0.12",
+      "releaseType": "AFTER_APPROVAL",
+      "screenshots": [
+        {
+          "locale": "en-US",
+          "type": "APP_WATCH_SERIES_10",
+          "count": 2,
+          "files": [
+            "watch-01-library.png",
+            "watch-02-reading.png"
+          ],
+          "complete": true
+        },
+        {
+          "locale": "en-US",
+          "type": "APP_IPAD_PRO_3GEN_129",
+          "count": 3,
+          "files": [
+            "ios-ipad-01.png",
+            "ios-ipad-02.png",
+            "en-ipad-translation.png"
+          ],
+          "complete": true
+        },
+        {
+          "locale": "en-US",
+          "type": "APP_IPHONE_65",
+          "count": 6,
+          "files": [
+            "ios-65-01.png",
+            "ios-65-02.png",
+            "ios-65-03.png",
+            "ios-65-04.png",
+            "ios-65-05.png",
+            "en-phone-translation.png"
+          ],
+          "complete": true
+        }
+      ],
+      "reviewerCredentialsVerified": true,
+      "reviewId": "f80816df-a279-4643-a1de-5aa39e449644",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-10-11T00:42:32.285Z",
+      "verifiedAt": "2026-10-11T00:42:34.692746+00:00"
+    },
+    "bunko-MAC_OS": {
+      "app": "6815137919",
+      "platform": "MAC_OS",
+      "version": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+      "build": "f47223f2-14ab-4cd0-92d2-70bb4cb9bb3d",
+      "buildNumber": "19",
+      "marketing": "1.0.12",
+      "releaseType": "AFTER_APPROVAL",
+      "screenshots": [
+        {
+          "locale": "en-US",
+          "type": "APP_DESKTOP",
+          "count": 4,
+          "files": [
+            "macos-01-library.png",
+            "macos-03-equations.png",
+            "macos-02-reading.png",
+            "en-mac-translation.png"
+          ],
+          "complete": true
+        }
+      ],
+      "reviewerCredentialsVerified": true,
+      "reviewId": "180bda3b-906d-4dcb-b1b7-c24693ccc3e0",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-10-11T00:42:45.252Z",
+      "verifiedAt": "2026-10-11T00:42:47.566844+00:00"
+    }
+  },
+  "google": {
+    "package": "art.lazying.bunko",
+    "appId": "4972575539744983205",
+    "version": "1.0.12",
+    "build": 19,
+    "productionRelease": 9,
+    "state": "CHANGES_IN_REVIEW",
+    "rollout": 1,
+    "countries": 172,
+    "managedPublishing": false,
+    "internalRelease": 14,
+    "internalState": "Available to internal testers",
+    "changesSubmitted": 11,
+    "noUnsentChanges": true,
+    "verifiedAt": "2026-10-11T00:47:22.827248+00:00",
+    "evidenceSha256": "7a2c5852d096922878e39cda44f7ae26dfe5ba632c054c12b700e37a6e1f63af"
+  },
+  "packages": [
+    {
+      "platform": "IOS",
+      "version": "1.0.12",
+      "build": "19",
+      "signatureVerified": true,
+      "sha256": "535137dc5c37c62ce2452166a46fa82c5764cbf37111ab290679a1104d961b45",
+      "watchMatched": true,
+      "translationUIEmbedded": true
+    },
+    {
+      "platform": "MAC_OS",
+      "version": "1.0.12",
+      "build": "19",
+      "signatureVerified": true,
+      "sha256": "b6d98463e44f400dab63d0cbecc39bdddd5fc6d3db243c46eefd36f0bf01619c",
+      "architectures": [
+        "x86_64",
+        "arm64"
+      ],
+      "translationUIEmbedded": true
+    }
+  ],
+  "android": {
+    "files": {
+      "android/app/build/outputs/bundle/release/app-release.aab": "41793d8ed2bec78087925093db30d148f13fe592a79e12924cc1aac1df5c65b0",
+      "android/app/build/outputs/apk/release/app-release.apk": "b8e6b2cc35184bd35ddce4fb5e882a3a2e768abf0d71c77950b7a3623714c122"
+    },
+    "version": "1.0.12",
+    "build": 19,
+    "translationUIEmbedded": true
+  },
+  "checks": {
+    "tests": 141,
+    "clientTests": 83,
+    "serverTests": 58,
+    "lint": true,
+    "renderer": true,
+    "webNativeAndMacBuilds": true,
+    "androidLint": true,
+    "signaturesAndEmbeddedFeature": true,
+    "liveDemoSignInAndReloadWithoutOTP": true,
+    "privacyHTTPS200NoLoginNoRedirect": true,
+    "localizedBrowserLayouts": 12
+  },
+  "screenshots": {
+    "captured": 13,
+    "manifest": "store/screenshots/translation-release-20261011/manifest.json",
+    "appleUploadedProcessed": 3,
+    "googleUploadedSaved": 1,
+    "googlePhoneCounts": {
+      "en-US": 6,
+      "zh-CN": 5,
+      "zh-TW": 5,
+      "ja-JP": 5
+    },
+    "googleTabletCountsPerLocale": {
+      "sevenInch": 2,
+      "tenInch": 2
+    },
+    "publicListingUpdated": false
+  },
+  "replacedReview": {
+    "platform": "MAC_OS",
+    "version": "1.0.11",
+    "build": 18,
+    "review": "7e47bb7e-a839-4c11-a138-5ff31985f79c",
+    "reason": "Owner requested latest build and submission."
+  },
+  "limits": [
+    "Fresh interaction checks used Chromium with the packaged web assets and the live demo sign-in; no new physical-device, Apple-native UI or purchase test is claimed.",
+    "The localhost demo-login probe was blocked by the existing origin policy; the production-origin live sign-in and reload passed.",
+    "Only the English screenshot additions were uploaded. Other localized captures are prepared locally; existing provider localized images remain attached."
+  ],
+  "webDeployed": false,
+  "publicUpdateFeedChanged": false,
+  "pricingBillingAuthChanged": false
+}

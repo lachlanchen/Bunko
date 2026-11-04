@@ -1,0 +1,61 @@
+{
+  "at": "2026-10-18T23:41:09.045Z",
+  "kind": "Actual Bunko components/CSS/Markdown renderer; synthetic private data and catalog. QA only.",
+  "assertions": [
+    "composer stays within viewport",
+    "messages above composer",
+    "no helper text after composer",
+    "toolbar buttons same row",
+    "latest message initially visible after asynchronous Markdown rendering",
+    "jump to latest works",
+    "plan roundtrip retains draft",
+    "consent then send works",
+    "no horizontal page overflow"
+  ],
+  "captures": [
+    {
+      "file": "phone.png",
+      "sha256": "dab283570ceb412a099e662d56f43b89ae95d2b5ce9da64842359149b8f622ad"
+    },
+    {
+      "file": "reading-plans-phone.png",
+      "sha256": "3effbe09b8f67cb85413e34fc2af3f18108c9e368a4805903e1f04381f8ae8a7"
+    },
+    {
+      "file": "compact.png",
+      "sha256": "c4a9945dcd1b1acc9c3afbbfd8a608371a6dc6a612d533eaf051da1d23dc8a86"
+    },
+    {
+      "file": "desktop.png",
+      "sha256": "669c88c12e5a7012bb3895bb1140165309e09b1d6d3242e967592a65313ca07c"
+    },
+    {
+      "file": "keyboard-height.png",
+      "sha256": "aae6e60469b267f537bf9a521cbe64f5e9464a4f4021f7d69157991b16ee2b9e"
+    },
+    {
+      "file": "empty.png",
+      "sha256": "7a328beb2d79bfd6e96fc5cccf3c62be5e383880b9978e9b7bc5dc6c5d01eac4"
+    },
+    {
+      "file": "night.png",
+      "sha256": "a83ed1da97a2c77a813348b3971424a9cbb4cbedb1b5eac5d68a2607870f5135"
+    },
+    {
+      "file": "japanese.png",
+      "sha256": "000003890ae647cc5a2f6ed48dcd2ab7f1617fb97484c9c85e1621a6f542a652"
+    }
+  ],
+  "cleanup": true,
+  "sourceFiles": {
+    "src/components/DocumentAgent.tsx": "ea6e4b57ef7ec9701dc0131fc83e673f138e4b267d31aa9fb435bdf9362515b1",
+    "src/components/documentAgent.css": "f45e1a890a5bfedf444f5a0c53d1804356fed16d518addffc7a270ac7d06e0c5",
+    "src/components/agentCopy.ts": "a306dc469417e9a011dab7c4e9a3344ecf7b9ade0e354e7abb9cc6dbeb8928e8",
+    "src/components/CloudPlans.tsx": "e85bb468e2c9e790c5295c08e8f966a375441d47296af2939cd562cf14d65a09",
+    "src/components/cloudCopy.ts": "63a02c95d014133200ce0051296b4c28144cc1df68cf06a726a7d32f1be0a94b",
+    "src/components/cloudPlans.css": "fd62e5b9cd9c0b37a0714b937512dbb2c20c98fe1aea8e627cd2b9701e383679"
+  },
+  "reviewed": true,
+  "providerUpload": false,
+  "nativeBuild": false
+}

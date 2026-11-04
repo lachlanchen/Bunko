@@ -1,0 +1,48 @@
+{
+  "verifiedAt": "2026-10-30T00:29:18.594695+00:00",
+  "source": "0faf156b89865abfc74b956bfafa083e8b051357",
+  "builds": [
+    {
+      "platform": "MAC_OS",
+      "id": "a9f96439-bafa-4ddf-8347-be4751a7d3e5",
+      "version": "1.0.16",
+      "build": "45",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    },
+    {
+      "platform": "IOS",
+      "id": "e9d63bf9-a30f-4dd6-8533-fc0f788ea2b9",
+      "version": "1.0.16",
+      "build": "45",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    }
+  ],
+  "internalGroup": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+  "existingTesterCount": 1,
+  "nativeChecksPassed": 22,
+  "artifacts": [
+    {
+      "platform": "ios",
+      "bytes": 12118740,
+      "sha256": "ce40d0251cd7ea02940729b2c3974f57cad34e28293f5b52269b8be0393f2682"
+    },
+    {
+      "platform": "macos",
+      "bytes": 6510659,
+      "sha256": "020d6dbc60ec949cad9fa261412a88ebb890003aa06e1e1d3ff2e26f885b2705"
+    }
+  ],
+  "macArchitectures": [
+    "arm64",
+    "x86_64"
+  ],
+  "macMinimumTarget": "12.0",
+  "formalStoreSelectionsUnchanged": true,
+  "publicReviewSubmitted": false,
+  "runtimeTestGaps": [
+    "Physical iPhone Duo and official fold poses",
+    "Fresh macOS Monterey runtime in this round"
+  ]
+}

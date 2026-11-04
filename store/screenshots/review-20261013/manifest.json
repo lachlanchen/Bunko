@@ -1,0 +1,35 @@
+{
+  "version": "1.0.13",
+  "build": 23,
+  "source": "3763949",
+  "images": [
+    {
+      "path": "store/screenshots/review-20261013/en-phone-reader23.png",
+      "width": 1242,
+      "height": 2688,
+      "sha256": "4d4e1acbdb2bc0cb7d9414bb59594fb92cdb79089756ad8b564771a21b7ada23",
+      "channel": "Chromium rendering exact packaged web assets; not a native device capture"
+    },
+    {
+      "path": "store/screenshots/review-20261013/en-ipad-reader23.png",
+      "width": 2048,
+      "height": 2732,
+      "sha256": "0817381b86be07d78e154b1a9117df050413def66f23b395e56778de57370a21",
+      "channel": "Chromium rendering exact packaged web assets; not a native device capture"
+    },
+    {
+      "path": "store/screenshots/review-20261013/en-mac-reader23.png",
+      "width": 1280,
+      "height": 800,
+      "sha256": "7d0a7aff1f81a17ec399b31c2854f281fd42a1a3d6efb75b5eab6365d72b08ca",
+      "channel": "Chromium rendering exact packaged web assets; not a native device capture"
+    },
+    {
+      "path": "store/screenshots/review-20261013/en-android-reader23.png",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "1c34b33ec62cc7b291ad68923f51f950a33314db968c342cf7de8d93df791f40",
+      "channel": "Chromium rendering exact packaged web assets; not a native device capture"
+    }
+  ]
+}

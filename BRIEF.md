@@ -1,5 +1,380 @@
 # Bunko — product brief
 
+## Reading comfort and tappable map details · 2026-11-05
+
+The owner renews improvements to maps, reading-agent reliability, text sizing and
+real walkthrough recordings for Bunko and OnlyIdeas. Map details stay inside the
+map, with source passages, connected places and focus/previous/next controls.
+Book text reaches250%, interface text150%, with independent ruby and reduced-motion
+transitions. The bounded provider-recovery correction is live. Full source checks,
+a real Faxian guide and multi-width browser checks pass. Candidate48 is being
+qualified for existing internal groups; native delivery is not yet claimed.
+Existing public reviews, accounts, plans and balances are preserved. Optional
+Google/Apple/LazyingArt callback and canonical LAC consent qualification remain
+separate from central discovery. See `docs/reading-comfort-20261105.md`.
+
+## Internal Apple delivery · 2026-11-01
+
+Apple iOS/Watch and universal Mac **1.0.16 (47)** are `VALID` and
+`IN_BETA_TESTING` in the existing internal group. All 22 native Mac checks and
+both signed package gates passed using Xcode 27.1 (27A9275). Independent cleanup
+reconciliation completed before upload. Official Duo poses, physical iOS/Watch
+and fresh Monterey runtime checks remain unrun. Public releases and review
+selections are unchanged. See `docs/internal-build47-20261101.md`.
+
+## SDK-qualified internal candidate · 2026-11-01
+
+The shared Mini handback verifies Xcode 27.1 (27A9275), the iOS 27.1 SDK and
+completed first-launch setup. Prepare internal 47 with explicit per-command
+developer selection. Gate archives on the isolated 22-case native Mac reader
+suite and inspect actual SDK linkage, embedded Watch, resources, signatures and
+both Mac architectures. Duo runtime/poses remain unqualified and are reported as
+coverage gaps; their absence alone does not block this internal candidate.
+Actual host qualification and a separate app admission still precede execution.
+
+## Internal delivery default · 2026-10-31
+
+Complete substantial app updates through validated upload to the existing internal
+test groups by default. Do not stop at a preparation note or request another
+upload confirmation. Public release and formal review remain separate. Reuse the
+one approved shared Duo toolchain installation owned by EchoMind; do not start a
+second installer or repeat its approval request. Candidate 47 requires native Duo
+qualification after that installation is verified.
+
+## Renewed iPhone Duo internal delivery · 2026-10-31
+
+Prepare Duo-qualified internal successors for Bunko and OnlyIdeas, preserving
+current reviews and public releases. Reuse the qualified reader/chat resizing
+work; build against iOS 27.1 or later and verify official Duo poses, reserved
+regions and state continuity before claiming full support. The fresh shared Mini
+inventory at 12:51 UTC found Xcode 27.0/26.6. Side-by-side 27.1 provisioning needs
+a separately coordinated installation scope. The shared installation now has
+owner approval and a single EchoMind operator; Bunko reuses its verified result.
+Build 46 remains available; no new Duo build has been uploaded in this round.
+
+## Update-prompt internal delivery · 2026-10-31
+
+Build 46 packages the update controls for the existing internal testing groups on Apple and Google. Qualify the actual native app, embedded Watch, signed archives and exported resources, then upload and verify tester availability. Keep existing public release selections. Windows previews retain independent executable build numbers.
+
+## Update controls · 2026-10-31
+
+Extend the existing web, iOS, Android and Mac update checks to Windows and Watch. Keep checks quiet and optional, provide a manual check, remember Later for one day and preserve reading positions, drafts and downloads. Advertise only verified public releases, never newer internal builds. Windows opens the fixed download page; Watch directs readers to the paired iPhone App Store. This is a source update; new native controls await packaging and native qualification. See `docs/app-updates.md`.
+
+## Internal Apple builds and Windows preview · 2026-10-30
+
+Apple iOS/Watch and universal Mac **1.0.16 (45)** are VALID / IN_BETA_TESTING
+in the existing internal group. The build preserves reading position, conversation
+anchors and drafts across size changes, and includes the qualified Mac window
+reopening correction. All 22 native checks passed before signing and upload.
+The Windows 11 x64 preview is available from the LazyingArt download page.
+See `docs/internal-build45-20261030.md` for tests, artifacts and runtime gaps.
+Public store selections remain unchanged.
+
+## iPhone Duo adaptation · 2026-10-28
+
+The owner renews iPhone Duo support for Bunko and OnlyIdeas. Preserve reader
+position, conversations, selected guides and drafts while displays change size.
+Conversation anchoring and composer remeasurement are implemented and browser
+tested. Full Duo qualification requires Xcode 27.1, official poses, reserved
+regions and internal delivery. The compatible Mini currently has 27.0/26.6;
+approval to add 27.1 alongside them is pending under shared-device coordination.
+Keep existing review candidates intact. See `docs/iphone-duo-20261028.md` for
+the exact source/test boundary; no new native build is delivered by this entry.
+
+## Mac window recovery and review correction · 2026-10-26
+
+Apple rejected Mac1.0.15(40) for missing mainland publication documentation
+and no menu command to reopen its closed main window. The owner chooses to
+exclude mainland China from Apple distribution; the change is saved and the
+other174 territories are unchanged. Preserve the reading assistant and data.
+
+Mac44 adds a permanent Window > Show Bunko command (Command-N), shares its
+reopen path with Dock activation and reader menu commands, and retains the
+existing WebKit document, reading position and drafts. Actual native close/reopen
+regressions must pass before replacement delivery. The expanded native suite
+uses actual AppKit menu dispatch and checks repeated reopen, Settings from a
+closed window, the Dock delegate, saved drafts and graph selection.
+All22 native checks and the signed universal Mac package pass. Mac1.0.15(44)
+is VALID / IN_BETA_TESTING and Waiting for Review, replacing rejected40, with
+automatic release after approval. Apple selected-build and review-state readbacks
+passed at04:44 UTC. See `docs/mac-review44-20261026.md`.
+Existing iOS/Watch/Android43 internal delivery remains unchanged.
+
+## Incremental reading workspace · 2026-10-26
+
+Extend saved People, Places and Timeline results through stable, validated
+incremental updates. Preserve source provenance and immutable earlier turns.
+Choose the nearest conversation branch for the current reading position and
+resume its latest continuation; allow explicit branch selection without losing
+drafts. Complex visual tasks use the qualified capable model immediately, with
+bounded repair and existing provider consent. Improve graph grouping and timeline
+legibility. Backend correction is live. Apple iOS/Watch and universal Mac1.0.15(43) are
+VALID / IN_BETA_TESTING; Android43 is available to existing internal testers.
+Preserve Mac40 formal review, public releases, accounts and billing.
+See `docs/reading-workspace-20261026.md`.
+
+## Historical maps and reading tools · 2026-10-26
+
+The owner requests a reading assistant that can query evidence, check its map
+and continue improving it across messages. Add bounded read-only place lookup,
+dated map-layer discovery and search within the authorized passage scope.
+Render historical provinces as individually colored areas, with legible labels
+and selectable details. Preserve previous conversations and map continuations.
+Use sourced geographic data; distinguish the c.140 CE reference layer from the
+191 CE reading context and from contemporary military control. Accumulate the
+qualified client in Apple internal build41 and Android42, preserving the Mac40 review.
+
+Apple iOS/Watch and universal Mac **1.0.15 (41)** are now VALID /
+IN_BETA_TESTING in the existing internal group. Android **1.0.15 (42)** is
+available to internal testers. The reading-tool backend is live; the real
+thirteen-region request and three-city continuation passed. See
+`docs/reading-tools-and-historical-maps.md` and
+`store/testflight/reading-tools41-20261026.json` for qualification and delivery.
+
+## Reading assistant restored · 2026-10-25
+
+The owner now requests a corrected Mac build to replace the pending Mac39 review.
+Keep the assistant visible from the library, books and reader. Mainland and
+unknown native storefront requests use qualified DeepSeek Flash/Pro, including
+fallback and repair, without hiding conversations or blocking document access.
+Preserve book context, saved messages, reading positions and existing privacy
+consent. Test the successor and update Apple's review notes to match its actual
+behavior before replacing the submitted build. Font/interface sizing stays deferred.
+
+Mac 1.0.15 (40) is now VALID / IN_BETA_TESTING and Waiting for Review, replacing
+withdrawn Mac39. The restored service is live, and descriptions/review notes match.
+See `docs/mac-review40-20261025.md` for actual qualification and delivery.
+
+## Deferred text and interface sizing · 2026-10-25
+
+The owner requests recording this for after their Codex usage resets. Do not
+implement, build or submit it now; resume when the owner returns to this work.
+
+- Extend main reading text to 250%, including an easy 200% choice. Prefer a
+  slider with visible percentages and a few quick presets.
+- Add a separate interface-size control for navigation, Settings, chat and
+  other app text. The owner reports that the interface stays too small on
+  tablets such as Bigme e-ink/AINote even when reading text is enlarged.
+- Preferred design: follow system text sizing by default, with simple larger
+  interface presets. Keep interface size independent of reading text so large
+  book text does not make navigation unwieldy. Keep the existing ruby control.
+  Exact preset values can be settled during implementation.
+- Remember choices on the device; preserve reading position. Check large sizes
+  on phones, tablets/e-ink and Mac for clipped labels, reachable controls and
+  sensible wrapping. Use controls that work without dragging on e-ink devices.
+
+## Deferred correction to companion visibility · 2026-10-25
+
+The owner clarifies that the Agent should remain accessible. Apple's rejection
+specifically identified ChatGPT/OpenAI functionality and metadata; it did not
+explicitly demand hiding the whole companion. Revisit the broad regional and
+unknown-storefront hiding after the owner's usage reset. Qualify a DeepSeek-only
+mainland route, with OpenAI excluded there, and explain the actual service to
+Apple. A provider change alone is not evidence of approval or local compliance.
+Preserve the submitted build/review until this successor is qualified; no runtime
+or review change is requested during the current deferral.
+
+## Mainland storefront correction · 2026-10-25
+
+Apple rejected Mac1.0.14(37) under Guideline5 for mainland China generative-service
+availability and provider references in store metadata. The owner chooses to retain
+China availability with an automatic regional restriction. Keep books, offline
+reading, dictionaries and discussions available. Disable companion generation and
+uploads for a mainland Apple storefront/device region or CN-registered network;
+unknown Apple storefronts keep the companion closed until resolved. Do not infer
+region from reading language, erase saved history, or alter account/billing rights.
+Keep public descriptions concise and remove the rejected provider brand references;
+retain truthful in-app consent/privacy disclosures. Qualify the regional matrix,
+reader regression, actual Mac runtime and signed package before formal resubmission.
+OnlyIdeas iOS39 is already publicly released; its Mac39 review is preserved.
+
+Mac1.0.15(39) is now VALID/IN_BETA_TESTING and Waiting for Review, with automatic
+release after approval. Native reader/regional checks and signed universal package
+checks passed. See `docs/mac-review39-20261025.md`.
+
+## Build37 formal submission · 2026-10-24
+
+The owner requests the latest qualified Bunko update submitted for review, with
+current screenshots and reader-facing descriptions. Reuse the delivered build37
+binaries after source, live companion, reviewer-access and store checks. Refresh
+the four localized descriptions and affected device screenshots; keep required
+provider and accuracy disclosures clear. iOS/Watch and Android build37 are now publicly released. Mac37 remains waiting
+for review with release after approval. The exact builds, public listings and
+update feed are recorded in `docs/distribution37-20261024.md`. No provider, billing,
+reward or sibling-app activation is part of this submission. See
+`docs/latest-review37-20261024.md` for exact evidence and remaining public-release status.
+
+## Continuing reading workspace · 2026-10-23
+
+Ask, People, Places and Timeline share one account-bound conversation with explicit
+branches. Reopen the closest saved result, allow continuation from an earlier turn,
+and retain unchanged visual groups across follow-ups. Keep the reading bookmark
+independent of whole-book or selected-passage questions. Opening or refreshing a
+view never triggers generation. Personal results remain private; canonical fixed
+guides retain their existing public cache. Improve graph focus, stable colors,
+rounded links and expandable timelines with restored view state. Accumulate this
+round in internal build37; public reviews and identity/billing remain unchanged.
+
+## Reading response recovery · 2026-10-23
+
+Recover complete model answers containing literal line breaks inside JSON strings
+without changing their text or relaxing evidence validation. Keep repair prompts
+specific to answers or visual guides, and show each failed response once in chat.
+The backend correction is live for existing clients; the small client display
+correction accumulates in the next internal candidate. See
+`docs/reading-response-recovery-20261023.md` for qualification and delivery status.
+
+## Compact chapters and library order · 2026-10-22
+
+Keep chapter titles on one line with explicit full-title/translation expansion,
+including the reader heading and chapter drawer. Default library order to recently
+read, with persistent newest-added, title and author alternatives. Use actual
+catalog publication dates and device-local reading visits; preserve legacy
+bookmarks, companion source detours and offline access. Accumulate in internal
+build35 (including the nested ruby-heading whitespace correction) without changing public reviews or account-provider activation.
+
+## Whole-book knowledge and durable reading companion · 2026-10-22
+
+Allow useful whole-book answers from reliable model knowledge alongside the current
+reading context. Label background claims separately; exact cited quotations remain
+verified. Whole-book references may include later events; ordinary passage questions
+keep their reading boundary. Preserve account-bound conversations across chapters
+and language changes, recover earlier passage threads, and retain generated graphs,
+maps, routes and timelines. Long chapter labels collapse with accessible expansion.
+Deliver the cumulative update through internal build33; preserve public reviews.
+
+
+## Optional personal GitHub connection · 2026-10-22
+
+Readers may use qualified Google, Apple or LazyingArt sign-in without GitHub.
+Offer a compact optional GitHub connection in Settings; prefer that reader's
+GitHub identity for public comments when connected. Otherwise use Bunko's
+repository-scoped app and clear reader attribution. Preserve the initiating
+Bunko ID, private content, drafts and plan. Refuse existing-account collisions;
+never infer identity from email. Shared public book storage remains unchanged.
+Qualify refresh, cancellation, authorship and platform returns before activation.
+Accumulate the method-discovery repair and connection UI in internal build32.
+See `docs/optional-github32-20261022.md` for the current evidence boundary.
+
+## Additional sign-in methods and internal build31 · 2026-10-21
+
+The owner explicitly requests Google, Apple and LazyingArt sign-in with the existing GitHub entrance and storage preserved, improved visualizations, and a cumulative internal test build. Reuse the registered central profile protocol; retain original Bunko IDs through explicit linking and refuse collisions. General non-GitHub comments use the repository-scoped app with durable reader attribution. Qualify each provider separately before advertising its button. Build30 was closed unused after its admission expired; its source/archive remain intact. Build31 supersedes that unrun candidate, without changing public reviews, billing or rewards.
+
+Build31 is now verified in the existing iOS/Watch and Mac TestFlight internal group and Android internal track. New identity methods remain gated pending approved-account round-trips; no public review changed. See `docs/signin-guides31-20261021.md`.
+
+## Geographic maps and interactive reading guides · 2026-10-21
+
+Replace the initial schematic guides with pannable, zoomable graphs and tree
+layouts, a real geographic reference, and a proportional calendar timeline.
+Keep every returned person, connection and event accessible, with full names,
+source passages and explicit uncertainty. A selected person opens a readable
+neighborhood; Show all retains the entire returned graph. Tree layout alone is
+not evidence of ancestry. Ambiguous or fictional places require a location
+choice or remain on the story map; calendar dates must occur in quoted text.
+
+Use an offline public-domain atlas for geographic coordinates. AgInTi-generated
+illustrations may be an optional visual layer after the reusable image worker
+and Bunko adapter are qualified; generated pixels never establish coordinates,
+relationships or dates. Keep images disabled while that integration is pending.
+Guides cover the selected excerpts, with sampled/partial book coverage visible;
+this update does not assert exhaustive analysis of an entire book.
+
+Google, Apple, GitHub and LazyingArt login can coexist with GitHub storage.
+The current audit is documented in `docs/identity-and-github-storage.md`;
+central-created Bunko sessions and general non-GitHub authorship are a separate
+unfinished integration, not newly enabled by these visualization changes.
+
+## Reading references and lightweight model routing · 2026-10-20
+
+Preserve automatic book context when opening the companion. Strengthen
+right-swipe back, retain drafts and reading positions, and let source references
+return to the exact book/chapter/passage. Add compact @ references to books,
+chapters, paragraphs and selected sentences, with explicit spoiler scope.
+
+Use AiMemo's explicit model choices and the AgInTi-owned lightweight runtime
+where appropriate. DeepSeek Flash remains the default; offer qualified DeepSeek
+and OpenAI routes through server-admin settings with bounded safe fallback.
+Keep account scope, citations and quota commits in Bunko. Additional providers
+need actual credential/model qualification and reader disclosure. This does not
+activate shared billing, change prices, or mutate sibling apps.
+
+Accumulate this successor in internal build29. Build28 is already available in
+the existing Apple and Google internal groups; its public review state stays
+unchanged.
+
+## Contextual visual reading companion · 2026-10-20
+
+The owner requests the complete companion in the current test update: questions about
+characters and aliases, relationship diagrams, places/maps and chronological
+timelines. Plan clear, compact visualizations with passage evidence, explicit
+uncertainty and a current-chapter spoiler boundary. Reuse edition-aware public
+companion packs; keep personal questions and private documents private. This is
+a possible Reading plan feature, not a new product, quota or billing activation.
+This supersedes the planning-only boundary in
+`docs/visual-reading-companion-plan-20261019.md`. The cumulative successor to
+build27 includes the layout cleanup and these contextual guides. Qualify source
+citations, spoiler boundaries, private history isolation and all platform bundles
+before internal distribution.
+
+## Foreground and reading rewards · 2026-10-18
+
+The owner requests automatic daily shared LAC rewards from opening and using
+Bunko, without a check-in button, plus reading, comments and replies. Every
+rights-cleared public book is eligible in principle, regardless of topic or
+genre. Coordinate usable reading-session criteria with Coin; existing books,
+offline reading and discussion access remain independent of shared rewards.
+
+Daily foreground evidence and its durable outbox are prepared with Coin's v2
+contract. They stay disabled until exact account/consent, source transport and
+delivery qualification are complete. Coin owns the one canonical nonmonetary
+balance and duplicate prevention across apps; no app-local balance is minted.
+
+## Optional shared account and earned LAC points · 2026-10-16
+
+The first coordinated rollout is explicit linking and a consent-backed read-only
+canonical balance. It activates no reward policy. Missing issuer, SDK, callback or
+native capabilities stay disabled; existing accounts and releases remain intact.
+
+The owner requests one optional LazyingArt account connection and accumulated
+earned points across Bunko, OnlyIdeas, EchoMind, AiMemo and participating apps.
+Use the Coin-owned nonmonetary points asset, preserving local purchases,
+subscriptions, reading data and on-chain LAC. Linking must be explicit and proven
+by both accounts; usernames and email addresses never establish a match.
+
+Candidate shared rewards are daily activity5 once per canonical account/UTC day,
+qualified reading1 up to5/day, and approved unique public-paper contribution10
+up to50/day. Coin owns finite policies and the one canonical balance; app source
+events and retries must not grant the same activity twice. Ordinary reading and
+existing login remain available without a shared account.
+
+The exact Bunko profile registration is provisioned; the current service still
+uses its existing login. Keep the accepted legacy HTTPS callback while qualifying
+the separate optional profile integration. Daily/reading rewards are not yet
+enabled. See `docs/shared-account-rewards.md` and the installed
+`lazyingart-accounts-and-rewards` skill for implementation boundaries.
+
+## Dedicated Bunko service hostname · 2026-10-12
+
+The owner requests `bunko.lazying.art` as the direct service host, retaining
+`llm.lazying.art/bunko` for installed builds during migration. Both entrances must
+reach the same authoritative backend and sessions. Preserve the current GitHub
+callback and host-scoped PWA cookies; do not broaden cookies to sibling apps.
+Dedicated-host TLS, routes and compatibility checks passed on 2026-10-12. The
+next cumulative native/macOS build defaults to the direct endpoint; an explicit
+build flag can retain the legacy endpoint. PWA account cookies and the GitHub
+callback keep their original host. Existing store builds/reviews remain
+unchanged. See `docs/service-origin-migration.md` for native release checks.
+
+## Translation requests · 2026-10-11
+
+The owner requested translation requests through the existing book-issue workflow.
+Book details and Settings offer a prefilled public GitHub issue with the target
+language, edition identity and current languages. Readers review and submit on
+GitHub. Link existing requests; support arbitrary target languages. This queues
+editorial work, not an automatic paid translation. Cleared completed language
+editions remain downloadable book data.
+
+
 ## Cloud subscriptions and book mirrors · 2026-10-03
 
 The owner explicitly approved optional cloud-feature subscriptions at
@@ -20,7 +395,7 @@ depend on the owned server. GitHub remains the default discussion sign-in.
 
 Written 2026-09-22 by the L & N session from the owner's request. This is the contract for the reader app. The app code lives in this repository (`../Bunko`); the book data and its pipeline stay in `../ZhJpBook`. Refine it in place and date every change.
 
-**2026-09-25 scope amendment:** The owner requested their own books from LazyTravel, HowDidYouGetRich, LazyEarn, LazyLearn and the independent Leonard Susskind companion-note project. Bunko now accepts public-domain classics **and rights-cleared owner editions**. Each bundle is still separately reviewed and documented in `bunko-books/rights.json`; source repositories are read only during import. Books may have one, two, three or more language layers. Figures and TeX equations are preserved for mobile reading. The original public-domain-only points below describe the first catalogue, not the expanded catalogue.
+**2026-09-25 scope amendment:** The owner requested their own books from LazyTravel, HowYouGotRich, LazyEarn, LazyLearn and the independent Leonard Susskind companion-note project. Bunko now accepts public-domain classics **and rights-cleared owner editions**. Each bundle is still separately reviewed and documented in `bunko-books/rights.json`; source repositories are read only during import. Books may have one, two, three or more language layers. Figures and TeX equations are preserved for mobile reading. The original public-domain-only points below describe the first catalogue, not the expanded catalogue.
 
 **2026-09-25 macOS amendment:** The owner requested a native Mac edition, tested on the 3040, 7050 iMac and shared KVM Mac, and submitted under the existing Apple app record. The Mac app uses an AppKit window and native menus around the bundled reader, with persistent on-device storage, offline downloads, and no local web server. The release supports Intel and Apple silicon, with a macOS 12.0 deployment target. Physical runtime tests cover Intel Macs on macOS 12.7.6 and 15.7.7; the KVM test covers macOS 15.7.9. Apple silicon is compiled and signed but has not been tested on physical hardware.
 
@@ -194,14 +569,107 @@ dismissible device-aware suggestions and permanent store links in web Settings
 available; opening a store is explicit. Enable each destination only after its
 public platform release is verified. See `docs/pwa-store-links.md`.
 
-## PWA language selection parity · 2026-10-14
+## Rounded icon test candidate · 2026-10-07
 
-The first selected book language is the main text and has no language badge.
-Additional languages appear in selection order and keep their bold labels.
-Removing the main language promotes the next; selecting a removed language
-appends it. Keep at least one language selected. Number the selected language
-choices and distinguish the main text from translations. Apply the same order
-to sentence, paragraph and main-text-only layouts, preserving saved settings,
-reading progress and offline books. This focused web deployment supports the
-Japanese promotional film; native reviews and billing remain on their current
-release tracks.
+The owner requested rounded icon corners for both apps, with internal test builds
+only and no new production review. Preserve the approved artwork and archived
+masters. Legacy Mac, web and Android launcher exports receive transparent rounded
+corners; iOS/Watch and store marketing assets remain opaque for platform masking.
+Version 1.0.11 (18) is a test candidate. Accumulate this change for the
+next owner-authorized review; preserve current production releases and reviews.
+
+## Release amendment · 2026-10-11
+
+The owner requested “build bunko and submit”. Version 1.0.12 (19) carries the
+GitHub translation-request feature to iOS/Watch, universal Mac and Android.
+Qualify signed packages, publish to the existing testing groups, and submit
+for formal review. This authorizes replacement of the older pending Bunko Mac
+review with the qualified latest build. Existing pricing and billing settings
+remain as previously qualified. Public update feeds advance only after release.
+
+The owner then requested current-book translation requests in Settings, a book
+homepage Settings shortcut, reliable Settings dismissal and right-swipe back.
+Accumulate these fixes in build20 of1.0.12, qualify the complete navigation flow,
+and update the same authorized store submissions after testing.
+
+### Existing translation routing · 11 October 2026
+
+The owner requests that a language already present in the current book opens for
+reading instead of creating a duplicate translation request. Offer an inline
+Read action, match tags/names while preserving script distinctions, retain the
+reading location, and package the navigation/request corrections together as
+build21 for testing and store submission.
+
+The owner also requests selection order as reading order: the first selected
+language is main, removing it promotes the next, and reselecting appends. Numbered
+chips distinguish main and translations; the first selected language has no
+reading label, and secondary translations keep their language labels. Main-text-only mode follows selection rather than book source.
+Keep one language selected and preserve the reading anchor on changes.
+
+**Owner clarification, 11 October 2026:** Only the first selected/main language
+is unlabelled. Keep the existing bold language labels for every secondary
+translation in both interlinear and paragraph layouts. Labels follow selection
+order, including after promoting another language to main. Build22 corrects
+the overly broad removal in build21 and replaces it after qualification.
+
+### Translation discussion bubbles · 11 October 2026
+
+Show the existing end-of-passage comment bubble on secondary translations too,
+enabled by default. A persistent Settings toggle hides translation bubbles while
+keeping the main-language bubble. All language entrances share the same stable
+passage discussion; the panel quotes the language the reader tapped. Support both
+interlinear and paragraph layouts. Accumulate this small successor change for the
+next test build; build22's active reviews remain the submitted checkpoint.
+
+## Reading shares and quoted context · 2026-10-18
+
+The owner requests title-rich book/paper sharing to WeChat and EchoMind, and AiMemo read-later or research-idea drafts. Public share pages contain canonical metadata, a browser reader, an explicit app link and store choices. Sharing never publishes a private document or sends a message automatically. EchoMind owns its recipient/draft/card receiver and AiMemo owns its memo/agent draft receiver; qualify accepted ingress before enabling direct handoff. The OS share sheet and clearly labeled copy fallback remain usable independently.
+
+These changes accumulate in internal build26, without replacing public reviews.
+
+## Account linking · 2026-10-19
+
+Start from the account whose data and subscription the reader wants to keep.
+That initiating local ID remains primary. Refuse a connection when the target
+already belongs to another local account; offer cancellation or another login.
+There is no account consolidation, purchase inheritance or automatic grant.
+Reauthentication must return to the same app account and preserve drafts.
+Central account management is shown only after its exact destination and return
+contract are qualified by EchoMind. Bunko remains link-only for shared identity;
+this source update does not enable central-only registration or change releases.
+
+## Reading-companion presentation · 2026-10-19
+
+Keep Bunko focused on reading books and personal texts. Use a compact header and
+composer, put messages above the composer, and place add/refresh/delete together.
+Move file/privacy details out of the persistent chat layout while retaining
+consent and accessible privacy information. Keep the current conversation and
+unsent draft when opening its plan page.
+
+Present optional subscriptions as Reading plans, with Reader, Creator and
+Entrepreneur display names. All existing book, dictionary and offline-reading
+access stays included. Existing product IDs, prices, quotas and purchase gates
+remain unchanged; these labels do not activate billing or alter store products.
+Accumulate the qualified source for a subsequent internal candidate.
+
+## Historical map accuracy · 2026-10-24
+
+The owner reports that the Foguoji map appears unchanged despite different
+answers. Map geometry must follow the selected response's actual places and
+connections. Resolve historical names from documented book-specific references,
+show approximate locations and unresolved gaps explicitly, and preserve saved
+conversations and deliberate manual pin choices. Modern country outlines are
+orientation only; do not invent ancient roads, borders or precise positions for
+disputed kingdoms. The historical-name server adapter can improve restored
+results in existing builds; the new renderer requires native delivery.
+
+
+### Update-control delivery · 31 October 2026
+
+1.0.16 (46) is available in the existing TestFlight internal group for iOS/Watch
+and universal Mac, and on Google Play internal testing. The 22 native checks,
+Apple package/signature/resource gates, signed Android manual update check and
+Windows reader runtime check passed. The Windows preview is published on the
+LazyingArt downloads page. Public release feeds retain actual public store
+versions; no formal review, production track, billing or identity was changed.
+Receipt: `store/review/update-prompts46-20261031.json`.

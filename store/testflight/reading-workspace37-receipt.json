@@ -1,0 +1,118 @@
+{
+  "at": "2026-10-22T23:23:23.489828+00:00",
+  "source": "7a3767d1b76c99a99b3ba1a36e2f9194be722ddc",
+  "version": "1.0.14",
+  "build": 37,
+  "apple": [
+    {
+      "platform": "IOS",
+      "id": "575c264d-48ed-48d7-b74b-8768029b801b",
+      "version": "1.0.14",
+      "build": "37",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    },
+    {
+      "platform": "MAC_OS",
+      "id": "ab009c9b-7d07-4aa8-b0f1-fb840c742c02",
+      "version": "1.0.14",
+      "build": "37",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    }
+  ],
+  "android": {
+    "at": "2026-10-22T22:52:10.590079+00:00",
+    "build": 37,
+    "version": "1.0.14",
+    "track": "internal",
+    "available": true,
+    "title": "1.0.14 (37) - Continuing reading conversations",
+    "aabSha256": "53db063ca3d1b07c0fdff04180be12713b5099da33d9de2fb7e73e830d49e101",
+    "publicReviewChanged": false
+  },
+  "artifacts": [
+    {
+      "platform": "ios",
+      "source": "7a3767d1b76c99a99b3ba1a36e2f9194be722ddc",
+      "version": "1.0.14",
+      "build": "37",
+      "sha256": "4b509aa002652e4d1bd201860a91f9451d2d3419d1988226f019592380890946",
+      "bytes": 22337107,
+      "archive": {
+        "bundle": "art.lazying.bunko",
+        "resources": 88,
+        "signer": "Q8M2S2FY77",
+        "watch": {
+          "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+          "CFBundleShortVersionString": "1.0.14",
+          "CFBundleVersion": "37",
+          "WKCompanionAppBundleIdentifier": "art.lazying.bunko"
+        }
+      },
+      "exported": {
+        "bundle": "art.lazying.bunko",
+        "resources": 88,
+        "signer": "Q8M2S2FY77",
+        "watch": {
+          "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+          "CFBundleShortVersionString": "1.0.14",
+          "CFBundleVersion": "37",
+          "WKCompanionAppBundleIdentifier": "art.lazying.bunko"
+        }
+      }
+    },
+    {
+      "platform": "macos",
+      "source": "7a3767d1b76c99a99b3ba1a36e2f9194be722ddc",
+      "version": "1.0.14",
+      "build": "37",
+      "sha256": "63b45df06c0e49244b9dfc731cc7481f81419b09acad72b9252b11fa9baea5d9",
+      "bytes": 16737711,
+      "archive": {
+        "bundle": "art.lazying.bunko",
+        "resources": 86,
+        "signer": "Q8M2S2FY77",
+        "machO": {
+          "arm64": "12.0",
+          "x86_64": "12.0"
+        }
+      },
+      "exported": {
+        "bundle": "art.lazying.bunko",
+        "resources": 86,
+        "signer": "Q8M2S2FY77",
+        "machO": {
+          "arm64": "12.0",
+          "x86_64": "12.0"
+        }
+      }
+    }
+  ],
+  "tests": {
+    "client": 162,
+    "server": 149,
+    "deliveryHelpers": 73,
+    "androidInstalledGuestSmoke": true,
+    "browserWidths": [
+      320,
+      390,
+      1280
+    ],
+    "shortViewport": true,
+    "browserCaptures": 20,
+    "realProviderThreeStepContinuation": true,
+    "isolatedServerProviderFollowup": true
+  },
+  "backendSource": "5fdf0d8ec94b18962d019c54e6e4a4ab02ba782f",
+  "publicReviewSubmitted": false,
+  "pwaDeployed": false,
+  "newIosMacGuiTest": false,
+  "providerActivationChanged": false,
+  "cleanup": {
+    "macGuardReleased": true,
+    "signingRestored": true,
+    "ownedGroupsAbsent": true,
+    "localRuntimesStopped": true
+  }
+}

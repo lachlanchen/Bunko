@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { defaultLangsFor } from './settings'
+import { defaultLangsFor, DEFAULT_SETTINGS, normalizeSettings } from './settings'
 
 describe('which languages a book opens with', () => {
   const trilingual = ['en', 'zh', 'ja'] as const
@@ -15,4 +15,10 @@ describe('which languages a book opens with', () => {
   it('shows the source alone when the reader already reads it', () => {
     expect(defaultLangsFor([...trilingual], 'en')).toEqual(['en'])
   })
+})
+
+it('preserves large book text independently of interface/ruby size and repairs corrupt saved settings', () => {
+  expect(normalizeSettings({ ...DEFAULT_SETTINGS, fontScale:2.5, interfaceScale:1.3, rubyScale:.8 })).toMatchObject({fontScale:2.5,interfaceScale:1.3,rubyScale:.8})
+  expect(normalizeSettings({ ...DEFAULT_SETTINGS, fontScale:Infinity, interfaceScale:-3, rubyScale:99, langs:['ja','en','ja'] })).toMatchObject({fontScale:1,interfaceScale:1,rubyScale:1.8,langs:['ja','en']})
+  expect(normalizeSettings({ ...DEFAULT_SETTINGS, fontScale:4 })).toMatchObject({fontScale:2.5})
 })

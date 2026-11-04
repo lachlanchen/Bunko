@@ -1,3 +1,86 @@
+# Bunko release verified · 24 October 2026
+
+iOS/Watch and Android **1.0.14 (37)** are public. The exact approved iOS build
+matches the submission; Apple released it automatically at 02:12:06 UTC.
+Google production37 is active in 172 regions. Mac **1.0.13 (23)** remains public;
+Mac37 is waiting for review with automatic release selected.
+
+The public iPhone description and current phone/iPad screenshots are verified.
+Update prompts now target only those verified public builds. No new binary,
+store release mutation, pricing, identity or billing change was required.
+
+[Release receipt](../../docs/distribution37-20261024.md).
+
+## Submission history
+
+# Bunko 1.0.14 (37) submitted · 24 October 2026
+
+Apple iOS/Watch and universal Mac are **Waiting for Review**. Google production
+is **Changes in review**, with eight changes sent and no unsent submission button.
+Automatic release/full rollout after approval is retained. Approved23 remains
+available; the former Mac23 review is complete.
+
+Four localized descriptions and current phone/tablet/desktop screenshots are
+saved and verified. 311 client/server tests, renderer/build checks, live no-code
+Demo access, a real whole-book companion answer and saved-result reuse passed.
+Both public legal-page hosts now serve the current provider/book-guide disclosure.
+No new binary, price/billing/provider change, PWA deployment or physical Apple
+UI test was made. Exact evidence: [build37 receipt](../../docs/latest-review37-20261024.md).
+
+## Earlier records
+
+# Current: Bunko 1.0.12 (22) submitted · 11 October 2026
+
+Only the first selected/main language is unlabelled; secondary translations keep
+bold labels in both reader layouts. Settings names and order numbers remain.
+Build22 is in iOS/Watch and Mac TestFlight and Google internal testing.
+Apple submissions are WAITING_FOR_REVIEW; Google accepted the review submission,
+with automatic quick-check status recorded in the receipt. No unsent changes.
+Qualified build22 replaces21. 150 automated tests and four targeted reader-browser
+checks pass. Signed packages contain the tested entry JavaScript; screenshots refreshed.
+No new physical-device/purchase test, PWA deployment or public-feed change.
+
+[Build22 receipt](../../docs/translation-labels22-20261011.md).
+Private runtime: `.runtime/translation-labels22-20261011/`.
+Owned preview4173, noVNC6190/CDP9490 and KVM archive agent stopped after capture;
+the persistent store profile is retained. No Mac mini GUI or peer desktop used.
+
+## Earlier records
+
+# Current: Bunko 1.0.12 (21) submitted · 11 October 2026
+
+Build 21 is available in iOS/Watch and Mac TestFlight and Google internal testing.
+Both Apple submissions are WAITING_FOR_REVIEW. Google accepted the submission;
+its automatic pre-review checks are running, with no unsent changes.
+Apple build 19 and Google build 20 reviews were replaced under the owner's latest build/submission request.
+Current-book translation defaults, book-home Settings, reliable Settings dismissal
+and right-swipe navigation are included. Existing translations open directly and language selections define main/translation order. 150 automated tests and 16 mobile-browser
+interaction checks passed. Signed packages and refreshed screenshots were verified.
+No new physical-device/purchase test or web deployment is claimed.
+
+[Build 21 receipt](../../docs/navigation21-20261011.md).
+Private runtime: `.runtime/navigation21-20261011/`.
+
+## Earlier records
+
+# Latest translation update submitted · 11 October 2026
+
+Bunko **1.0.12 (19)** is **WAITING_FOR_REVIEW** on iOS/Watch and universal Mac,
+and **Changes in review** on Google Play. Both Apple builds are in TestFlight;
+Android19 is available internally. Apple automatic release and Google100% rollout
+remain selected. The older Mac18 review was replaced with the owner's authority.
+
+141 automated tests, renderer/build checks, Android lint, signed package checks,
+actual embedded-feature checks, localized layout checks, live no-OTP Demo login
+and privacy availability passed. Current screenshots were added and inventoried.
+No new physical-device or purchase test is claimed. Public feeds remain at
+released builds; web deployment, billing and pricing are unchanged.
+
+[Submission receipt](../../docs/translation-release-20261011.md).
+Private runtime: `.runtime/translation-release-20261011/`.
+
+## Earlier records
+
 # Apple release verification · 4 October 2026 HKT
 
 **iOS/Watch 1.0.10 (16) is public; Mac 1.0.10 (16) is still IN_REVIEW.**

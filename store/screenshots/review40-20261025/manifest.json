@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "build": "40",
+  "source": "4afd95d1477cb18bbe6a1710df7f669343f9c7a0",
+  "nativeCapturesReviewed": [
+    {
+      "file": "00-mainland-settings.png",
+      "sha256": "d9219578bd553a7a3d893c9d9cbcbd1f5d1639fbb1a3542afabc35b5b6d2fbc1"
+    },
+    {
+      "file": "00-reading-assistant.png",
+      "sha256": "0528c46e0a06aadf1aed55da669409c9621a7db000ec484f2112265d4c983607"
+    },
+    {
+      "file": "01-library.png",
+      "sha256": "abd160e52ce4036b003f4d07aa97ad078bf2f2f18e715124509b175b9d8a9810"
+    },
+    {
+      "file": "02-reading.png",
+      "sha256": "588dd96d4c7ae0d1d8269e40a0f21cf7c01f727194052e3aec7eb9eabd80d84f"
+    },
+    {
+      "file": "02-resized-reading.png",
+      "sha256": "ad6fd52c2c8d68e643d337e22e0b5e967419d67465bd95b66355a218c6ade48d"
+    },
+    {
+      "file": "03-physics-equations.png",
+      "sha256": "57c80c7b923a571304143f71414595d4641c6d4140b91a303126e0ae03c83a75"
+    },
+    {
+      "file": "04-physics-figures.png",
+      "sha256": "4402b84dda1f23aa0b04e25f7fe3abccee935b799feeb3d3004e0dbf80da5bb0"
+    }
+  ],
+  "storeAssets": [
+    {
+      "locale": "en-US",
+      "set": "c0bb6633-5ea9-47f8-9dc6-5e4f32d6cd33",
+      "type": "APP_DESKTOP",
+      "files": [
+        {
+          "id": "38800019-636c-807f-800d-12bd194962e8",
+          "name": "en-mac-reader37.png",
+          "state": "COMPLETE"
+        },
+        {
+          "id": "67000019-636c-807f-8014-109296991acc",
+          "name": "en-mac-library39.png",
+          "state": "COMPLETE"
+        },
+        {
+          "id": "33000019-636c-807f-8035-929116ff492e",
+          "name": "en-mac-people-expanded37.png",
+          "state": "COMPLETE"
+        },
+        {
+          "id": "7f800019-636c-807f-8032-0de1d6994eed",
+          "name": "en-mac-places-expanded37.png",
+          "state": "COMPLETE"
+        },
+        {
+          "id": "e4800019-636c-807f-8031-679f1542445b",
+          "name": "en-mac-timeline37.png",
+          "state": "COMPLETE"
+        },
+        {
+          "id": "b8acc88f-abc8-4222-a302-e932ae448254",
+          "name": "macos-03-equations.png",
+          "state": "COMPLETE"
+        }
+      ]
+    }
+  ],
+  "storeAssetAction": "Existing six screenshots retained: their layouts and features remain accurate; all provider assets COMPLETE. Current native captures retained in private runtime evidence."
+}

@@ -1,5 +1,6 @@
 import { useEffect, useState, type RefObject } from 'react'
-import { BookOpen, MessageCircle, TextSelect, X } from 'lucide-react'
+import { BookOpen, MessageCircle, TextSelect, Sparkles, X } from 'lucide-react'
+import { agentCopy } from './agentCopy'
 import type { UILanguage } from '../i18n'
 import { readSelection, selectSentence, type ReaderSelection } from '../lib/readerSelection'
 
@@ -10,8 +11,9 @@ const labels = {
   ja: { hint: '長押しで単語を選択。ハンドルを動かすと語句を選べます。', dictionary: '辞書', sentence: '文を選択', passage: '話し合う', close: '選択を解除', selected: '選択したテキスト' },
 }
 
-export function SelectionTools({ host, ui, onOpen }: {
+export function SelectionTools({ host, ui, onOpen, onCompanion }: {
   host: RefObject<HTMLDivElement | null>; ui: UILanguage;
+  onCompanion?: (selection: ReaderSelection) => void;
   onOpen: (selection: ReaderSelection, dictionary: boolean) => void;
 }) {
   const [selected, setSelected] = useState<ReaderSelection | null>(null)
@@ -21,6 +23,7 @@ export function SelectionTools({ host, ui, onOpen }: {
     return () => { document.removeEventListener('selectionchange', change); window.getSelection()?.removeAllRanges() }
   }, [host])
   const copy = labels[ui]
+  const ask = { en: 'Ask Bunko', 'zh-Hans': '问 Bunko', 'zh-Hant': '問 Bunko', ja: 'Bunkoに質問' }[ui]
   if (!selected) return <p className="selection-hint">{copy.hint}</p>
   const clear = () => { window.getSelection()?.removeAllRanges(); setSelected(null) }
   const open = (dictionary: boolean) => { onOpen(selected, dictionary); clear() }
@@ -29,6 +32,7 @@ export function SelectionTools({ host, ui, onOpen }: {
     <div className="selection-actions">
       <button type="button" className="selection-lookup" onClick={() => open(true)}><BookOpen size={16} /> {copy.dictionary}</button>
       <button type="button" disabled={!selected.passage.contains(selected.range.endContainer)} onClick={() => selectSentence(selected)}><TextSelect size={16} /> {copy.sentence}</button>
+      {onCompanion && <button type="button" disabled={!selected.passage.contains(selected.range.endContainer) || selected.text.length > 2000} aria-label={agentCopy[ui].name} onClick={() => { onCompanion(selected); clear() }}><Sparkles size={16} />{ask}</button>}
       <button type="button" onClick={() => open(false)}><MessageCircle size={16} /> {copy.passage}</button>
     </div>
   </div>

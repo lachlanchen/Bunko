@@ -8,7 +8,8 @@ import { htmlLanguage, languageDirection, unitLine } from '../lib/languages'
  * gloss under its own source line, or whole paragraphs one after another.
  */
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
-import { ChevronLeft, ChevronRight, List, MessageCircle, Settings2, Watch } from 'lucide-react'
+import { ChevronLeft, ChevronRight, List, MessageCircle, Settings2, Sparkles, Watch } from 'lucide-react'
+import { agentCopy } from './agentCopy'
 import type { BookMeta, Chapter, LangCode, ReadingSettings, Unit } from '../types'
 import { languageName, type UICopy, type UILanguage } from '../i18n'
 import { loadChapter } from '../lib/library'
@@ -21,6 +22,7 @@ import { ReadingPanel, type ReadingFocus } from './ReadingPanel'
 import { SelectionTools } from './SelectionTools'
 import type { ReaderSelection } from '../lib/readerSelection'
 import { supportsWatch, watchExcerpt, sendToWatch } from '../lib/watchReading'
+import { preserveReadingViewport } from '../lib/readingViewport'
 
 interface ReaderProps {
   meta: BookMeta
@@ -33,9 +35,25 @@ interface ReaderProps {
   startParagraph: number
   onOpenChapters: () => void
   onOpenSettings: () => void
+  highlightQuote?: string
+  onCompanion?: (paragraph: number, language: string, quote?: string) => void
   onBack: () => void
   backLabel: string
   overlayOpen?: boolean
+}
+
+function ChapterHeading({ children, label, lang, dir }: { children: ReactNode; label: string; lang: string; dir: string }) {
+  const ref = useRef<HTMLHeadingElement>(null)
+  const [overflow, setOverflow] = useState(false), [expanded, setExpanded] = useState(false)
+  useEffect(() => {
+    const measure = () => { if (!expanded && ref.current) setOverflow(ref.current.scrollWidth > ref.current.clientWidth + 1) }
+    const frame = requestAnimationFrame(measure)
+    const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(measure) : null
+    if (ref.current) observer?.observe(ref.current)
+    return () => { cancelAnimationFrame(frame); observer?.disconnect() }
+  }, [label, expanded, overflow])
+  const title = <h1 ref={ref} className={expanded ? undefined : 'compact-chapter-heading'} lang={lang} dir={dir}>{children}</h1>
+  return overflow || expanded ? <details className="reader-chapter-title" open={expanded} onToggle={event => setExpanded(event.currentTarget.open)}><summary title={label}>{title}</summary></details> : title
 }
 
 function PassageNotes({ enabled, label, children }: { enabled: boolean; label: string; children: ReactNode }) {
@@ -53,6 +71,8 @@ export function Reader({
   startParagraph,
   onOpenChapters,
   onOpenSettings,
+  onCompanion,
+  highlightQuote = '',
   onBack,
   backLabel,
   overlayOpen = false,
@@ -68,6 +88,7 @@ export function Reader({
   const visibleParagraph = useRef(startParagraph)
   const [focus, setFocus] = useState<ReadingFocus | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const appearance = useRef('')
   const row = meta.chapters[chapterIndex]
   // Anything not matching the chapter now on screen is a stale load.
   const chapter = loaded.file === row?.file ? loaded.chapter : null
@@ -79,6 +100,17 @@ export function Reader({
     [settings.langs, meta.langs],
   )
   const shown: LangCode[] = settings.layout === 'source' ? [langs[0] ?? meta.primary] : langs.length ? langs : [meta.primary]
+  const appearanceKey = `${meta.id}:${chapter?.id}:${settings.layout}:${shown.join(',')}`
+
+  useEffect(() => {
+    if (!chapter || overlayOpen || appearance.current === appearanceKey) return
+    const changedChapter = !appearance.current.startsWith(`${meta.id}:${chapter.id}:`)
+    appearance.current = appearanceKey
+    const page = scrollRef.current
+    if (!page?.animate || window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches) return
+    const animation = page.animate(changedChapter ? [{ opacity: .6, transform: 'translateX(8px)' }, { opacity: 1, transform: 'translateX(0)' }] : [{ opacity: .65 }, { opacity: 1 }], { duration: 180, easing: 'ease-out' })
+    return () => animation.cancel()
+  }, [appearanceKey, chapter, meta.id, overlayOpen])
 
   useEffect(() => {
     if (!row) return
@@ -101,6 +133,13 @@ export function Reader({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meta.id, row])
 
+  useEffect(() => {
+    if (!highlightQuote || !chapter || !scrollRef.current) return
+    const paragraph = scrollRef.current.querySelector<HTMLElement>(`[data-para="${startParagraph}"]`)
+    paragraph?.classList.add('reference-focus')
+    return () => paragraph?.classList.remove('reference-focus')
+  }, [highlightQuote, chapter, startParagraph])
+
   // Restore the reader's place once, when the chapter arrives. Reading then
   // updates the stored place, and this must not turn that into a scroll loop,
   // so the starting paragraph is read from a ref rather than followed.
@@ -114,6 +153,12 @@ export function Reader({
     if (!host) return
     const target = host.querySelector<HTMLElement>(`[data-para="${startRef.current}"]`)
     host.scrollTo({ top: target ? target.offsetTop - 12 : 0, behavior: 'auto' })
+  }, [chapter])
+
+  useEffect(() => {
+    const host = scrollRef.current
+    const article = host?.querySelector('article')
+    if (host && article) return preserveReadingViewport(host, article, '[data-para]')
   }, [chapter])
 
   const shownKey = shown.join('|')
@@ -139,6 +184,14 @@ export function Reader({
     onPlace(0)
     visibleParagraph.current = 0
   }, [chapter, onPlace])
+
+  // Opening an already-saved passage counts as a reading visit even when the
+  // restored position is zero and the browser emits no scroll event.
+  useEffect(() => {
+    if (!chapter) return
+    const frame = requestAnimationFrame(handleScroll)
+    return () => cancelAnimationFrame(frame)
+  }, [chapter, handleScroll])
 
   const title =
     plainText(chapter?.title?.[shown[0]] ?? chapter?.title?.[meta.primary]) ||
@@ -181,6 +234,7 @@ export function Reader({
           catch (error) { setWatchStatus(error instanceof Error ? error.message : String(error)) }
           finally { setWatchBusy(false) }
         }}><Watch size={18} /></button>}
+        {onCompanion && <button type="button" disabled={!chapter} onClick={() => onCompanion(visibleParagraph.current, shown[0])} aria-label={agentCopy[ui].name}><Sparkles size={18} /></button>}
         <ReadingShare ui={ui} title={meta.titleText[settings.langs[0]] || meta.titleText[meta.primary] || meta.id} url={"https://bunko.lazying.art/bunko/share/book/"+encodeURIComponent(meta.id)} />
         <button type="button" onClick={onOpenSettings} aria-label={copy.settings}>
           <Settings2 size={18} />
@@ -207,9 +261,9 @@ export function Reader({
 
         {chapter && (
           <article>
-            <h1 lang={htmlLanguage(chapter.title?.[shown[0]] ? shown[0] : meta.primary)} dir={languageDirection(chapter.title?.[shown[0]] ? shown[0] : meta.primary)}>
+            <ChapterHeading key={chapter.id} label={plainText(chapter.title?.[shown[0]] ?? chapter.title?.[meta.primary])} lang={htmlLanguage(chapter.title?.[shown[0]] ? shown[0] : meta.primary)} dir={languageDirection(chapter.title?.[shown[0]] ? shown[0] : meta.primary)}>
               <Line line={chapter.title?.[shown[0]] ?? chapter.title?.[meta.primary]} ruby={settings.ruby} />
-            </h1>
+            </ChapterHeading>
             {chapter.p.map((paragraph, index) => (paragraph.figure || paragraph.u.some(unit => shown.some(lang => unitLine(unit, lang)?.length))) && (
               <div className={`para${paragraph.kind ? ` para-${paragraph.kind}` : ''}`} key={paragraph.id || index} data-para={index}>
                 {paragraph.figure && <BookFigure bookId={meta.id} figure={paragraph.figure} lang={shown[0]} primary={meta.primary} />}
@@ -219,7 +273,7 @@ export function Reader({
                       <p className={`para-line lang-${lang} ${lang === shown[0] ? 'reading-main' : 'reading-translation'}`} key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>
                         {lang !== shown[0] && <strong className="language-label">{languageName(lang, ui)}</strong>}
                         {paragraph.u.map((unit, unitIndex) => unitLine(unit, lang)?.length ? (
-                          <span key={unitIndex} className="paired-unit"><span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><RichLine unit={unit} lang={lang} ruby={settings.ruby} grammar={settings.grammar} /></span>{lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
+                          <span key={unitIndex} className="paired-unit"><span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><RichLine unit={unit} lang={lang} ruby={settings.ruby} grammar={settings.grammar} /></span>{(lang === shown[0] || settings.translationBubbles) && <button className="passage-action" type="button" aria-label={lang === shown[0] ? discussLabel : `${discussLabel} · ${languageName(lang, ui)}`} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}</span>
                         ) : null)}
                       </p>
                     ))
@@ -235,7 +289,7 @@ export function Reader({
                                 ruby={settings.ruby}
                                 grammar={settings.grammar}
                               /></span>
-                              {lang === shown[0] && <button className="passage-action" type="button" aria-label={discussLabel} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}
+                              {(lang === shown[0] || settings.translationBubbles) && <button className="passage-action" type="button" aria-label={lang === shown[0] ? discussLabel : `${discussLabel} · ${languageName(lang, ui)}`} onClick={() => openFocus(paragraph.id, unit, unitIndex, lang)}><MessageCircle size={13} /></button>}
                             </p>
                           ) : null,
                         )}
@@ -263,7 +317,11 @@ export function Reader({
           </article>
         )}
       </div>
-      {chapter && !activeFocus && !overlayOpen && <SelectionTools key={`${row.file}:${settings.layout}:${shown.join(',')}`} host={scrollRef} ui={ui} onOpen={openSelection} />}
+      {chapter && !activeFocus && !overlayOpen && <SelectionTools key={`${row.file}:${settings.layout}:${shown.join(',')}`} host={scrollRef} ui={ui} onOpen={openSelection} onCompanion={onCompanion ? selected => {
+        const id = selected.passage.dataset.readingPara
+        const paragraph = Number(id)
+        if (Number.isSafeInteger(paragraph) && chapter.p[paragraph] && selected.passage.dataset.lang) onCompanion(paragraph, selected.passage.dataset.lang, selected.text)
+      } : undefined} />}
       {activeFocus && <ReadingPanel key={`${activeFocus.key}:${activeFocus.word ?? ''}:${activeFocus.lang}`} focus={activeFocus} ui={ui} onClose={() => setFocus(null)} />}
     </div>
   )

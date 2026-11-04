@@ -1,9 +1,16 @@
+import { ChapterRow } from './components/ChapterRow'
+import {readerComfortCopy} from './components/readerComfortCopy'
+import {bookIdFromLink} from './lib/bookLink'
+import {observeForegroundUse} from './lib/activityRewards'
+import {App as CapacitorApp} from '@capacitor/app'
+import {Capacitor} from '@capacitor/core'
 import {ReadingShare} from './components/ReadingShare'
-import { LanguageChoices } from './components/LanguageChoices'
-import { baseLanguage, htmlLanguage, languageDirection } from './lib/languages'
+import {SharedAccount} from './components/SharedAccount'
+import { htmlLanguage, languageDirection } from './lib/languages'
+import { BUNKO_LEGAL_API } from './lib/serviceOrigins'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { Paperclip as PaperclipIcon, Sparkles, BookOpen, Check, Download, Settings, RefreshCw, Search, Trash2, X } from 'lucide-react'
-import type { BookMeta, BookRow, LangCode, Place, ReaderIndex, ReadingSettings } from './types'
+import { Paperclip as PaperclipIcon, Sparkles, BookOpen, Check, Download, Settings, RefreshCw, Search, Trash2 } from 'lucide-react'
+import type { BookMeta, BookRow, Place, ReaderIndex, ReadingSettings } from './types'
 import { copies, languageName, uiLanguageNames, type UILanguage } from './i18n'
 import {
   cachedBookCounts,
@@ -25,8 +32,16 @@ import {
   savePlace,
   saveSettings,
   saveUI,
+  loadLibrarySort, saveLibrarySort, LIBRARY_SORTS, type LibrarySort,
 } from './lib/settings'
+import { orderBooks } from './lib/libraryOrder'
 import { DocumentAgent } from './components/DocumentAgent'
+import { BookCompanion } from './components/BookCompanion'
+import { companionReference, referenceKey, type BookCompanionContext, type BookReference } from './lib/bookCompanion'
+import { currentUser } from './lib/discussions'
+import { TranslationRequest } from './components/TranslationRequest'
+import { Sheet } from './components/Sheet'
+import { LanguageChoices } from './components/LanguageChoices'
 import { CloudPlans } from './components/CloudPlans'
 import { cloudCopy } from './components/cloudCopy'
 import { agentCopy } from './components/agentCopy'
@@ -38,7 +53,7 @@ import { Line } from './components/Line'
 import { UpdatePrompt, UpdateSettings } from './components/UpdatePrompt'
 import { useUpdates, type Updates } from './lib/updateService'
 
-type View = 'library' | 'book' | 'reader' | 'agent' | 'cloud'
+type View = 'library' | 'book' | 'reader' | 'agent' | 'book-agent' | 'cloud'
 type Filter = 'all' | 'chinese' | 'japanese' | 'world' | 'physics' | 'learning' | 'finance' | 'travel' | 'device'
 
 /** Which shelf a book belongs on, from its id and mode. */
@@ -51,6 +66,7 @@ function categoryOf(book: BookRow): Filter {
 }
 
 export default function App() {
+  useEffect(observeForegroundUse,[])
   const [ui, setUI] = useState<UILanguage>('en')
   const [settings, setSettings] = useState<ReadingSettings>(DEFAULT_SETTINGS)
   const [index, setIndex] = useState<ReaderIndex | null>(null)
@@ -60,9 +76,16 @@ export default function App() {
   const [view, setView] = useState<View>(() => ['success', 'cancel', 'return'].includes(new URLSearchParams(window.location.search).get('billing') ?? '') ? 'cloud' : 'library')
   const [filter, setFilter] = useState<Filter>('all')
   const [query, setQuery] = useState('')
+  const [librarySort, setLibrarySort] = useState<LibrarySort>('recent')
   const [meta, setMeta] = useState<BookMeta | null>(null)
   const [places, setPlaces] = useState<Record<string, Place>>({})
   const [chapterIndex, setChapterIndex] = useState(0)
+  const [generalReturn, setGeneralReturn] = useState<'library' | 'book-agent'>('library')
+  const [companionPeek, setCompanionPeek] = useState(false)
+  const [peekPlace, setPeekPlace] = useState<Place | null>(null)
+  const [referenceQuote, setReferenceQuote] = useState('')
+  const [referenceLanguage, setReferenceLanguage] = useState('')
+  const [companionContext, setCompanionContext] = useState<BookCompanionContext | null>(null)
   const [onDevice, setOnDevice] = useState<Record<string, number>>({})
   const [downloading, setDownloading] = useState<{ id: string; done: number; total: number } | null>(null)
   const [showChapters, setShowChapters] = useState(false)
@@ -71,21 +94,24 @@ export default function App() {
   const [request, setRequest] = useState('')
   const downloadRef = useRef<AbortController | null>(null)
   const linkedBookOpened = useRef(false)
+  const readingVisit = useRef<string | null>(null)
   const copy = copies[ui]
   const librarySearch = useRef<HTMLInputElement>(null)
   const updates = useUpdates()
   const checkForUpdates = updates.check
   const canReload = view !== 'reader' && !downloading && !request.trim()
   useBackNavigation()
-  useBackAction(() => setView(view === 'reader' ? 'book' : 'library'), view !== 'library')
+  useBackAction(() => setView(view === 'reader' ? (companionPeek ? 'book-agent' : 'book') : 'library'), view !== 'library')
   useBackAction(() => { if (showSettings) setShowSettings(false); else setShowChapters(false) }, showSettings || showChapters, 40)
+  useEffect(() => { if (view !== 'reader') readingVisit.current = null }, [view])
 
   useEffect(() => {
     void (async () => {
-      const [uiState, saved, savedPlaces] = await Promise.all([loadUI(), loadSettings(), loadPlaces()])
+      const [uiState, saved, savedPlaces, sort] = await Promise.all([loadUI(), loadSettings(), loadPlaces(), loadLibrarySort()])
       setUI(uiState.language)
       setSettings(saved)
       setPlaces(savedPlaces)
+      setLibrarySort(sort)
     })()
     const unsubscribe = subscribeIndex(setIndex)
     loadIndex()
@@ -118,6 +144,11 @@ export default function App() {
     return () => media?.removeEventListener('change', apply)
   }, [settings.theme])
 
+  useEffect(() => {
+    document.documentElement.style.setProperty('--ui-scale', String(settings.interfaceScale ?? 1))
+    return () => { document.documentElement.style.removeProperty('--ui-scale') }
+  }, [settings.interfaceScale])
+
   const update = useCallback((patch: Partial<ReadingSettings>) => {
     setSettings((current) => {
       const next = { ...current, ...patch }
@@ -129,14 +160,14 @@ export default function App() {
   const books = useMemo(() => {
     const all = index?.books ?? []
     const text = query.trim().toLowerCase()
-    return all.filter((book) => {
+    return orderBooks(all.filter((book) => {
       if (filter === 'device' && !onDevice[book.id]) return false
       if (filter !== 'all' && filter !== 'device' && categoryOf(book) !== filter) return false
       if (!text) return true
       const haystack = [book.id, book.author, ...Object.values(book.title)].join(' ').toLowerCase()
       return haystack.includes(text)
-    })
-  }, [index, filter, query, onDevice])
+    }), librarySort, places, ui)
+  }, [index, filter, query, onDevice, librarySort, places, ui])
 
   const openBook = useCallback(
     async (book: BookRow) => {
@@ -168,6 +199,18 @@ export default function App() {
     queueMicrotask(() => { void openBook(book) })
   }, [index, openBook])
 
+  const launchLinkChecked=useRef(false)
+  useEffect(() => {
+    if (!index) return
+    const openLink = (value: string) => {const id=bookIdFromLink(value);if(!id)return;const book=index.books.find(b=>b.id===id);if(book)void openBook(book)}
+    const receive=(event:Event)=>{const value=(event as CustomEvent<string>).detail;if(typeof value==='string'){delete window.__BUNKO_BOOK_LINK__;openLink(value)}}
+    window.addEventListener('bunko-open-book',receive)
+    if(window.__BUNKO_BOOK_LINK__) {openLink(window.__BUNKO_BOOK_LINK__);delete window.__BUNKO_BOOK_LINK__}
+    const subscription=Capacitor.isNativePlatform()?CapacitorApp.addListener('appUrlOpen',event=>openLink(event.url)):null
+    if(Capacitor.isNativePlatform()&&!launchLinkChecked.current){launchLinkChecked.current=true;void CapacitorApp.getLaunchUrl().then(result=>{if(result)openLink(result.url)})}
+    return()=>{window.removeEventListener('bunko-open-book',receive);void subscription?.then(s=>s.remove())}
+  }, [index,openBook])
+
   const startReading = useCallback(
     (fromStart: boolean) => {
       if (!meta) return
@@ -177,6 +220,13 @@ export default function App() {
     },
     [meta, places],
   )
+
+  const readAvailableTranslation = useCallback((language: string) => {
+    if (!meta?.langs.includes(language)) return
+    update({ langs: [language], layout: 'interlinear' })
+    setShowSettings(false)
+    if (view !== 'reader') startReading(false)
+  }, [meta, update, view, startReading])
 
   const runDownload = useCallback(async () => {
     if (!meta) return
@@ -205,26 +255,30 @@ export default function App() {
   const handlePlace = useCallback(
     (paragraph: number) => {
       if (!meta) return
-      const place = { chapter: chapterIndex, paragraph }
+      const place = { chapter: chapterIndex, paragraph, lastReadAt: Date.now() }
+      if (companionPeek) { setPeekPlace(place); return }
+      const sameVisit = readingVisit.current === meta.id
+      readingVisit.current = meta.id
       setPlaces((current) => {
         const existing = current[meta.id]
-        if (existing && existing.chapter === place.chapter && existing.paragraph === place.paragraph) {
+        if (sameVisit && existing && existing.chapter === place.chapter && existing.paragraph === place.paragraph) {
           return current
         }
         void savePlace(meta.id, place)
         return { ...current, [meta.id]: place }
       })
     },
-    [meta, chapterIndex],
+    [meta, chapterIndex, companionPeek],
   )
 
   const goToChapter = useCallback((next: number) => {
     if (!meta || next < 0 || next >= meta.chapters.length) return
-    const place = { chapter: next, paragraph: 0 }
+    const place = { chapter: next, paragraph: 0, lastReadAt: Date.now() }
     setChapterIndex(next)
+    if (companionPeek) { setPeekPlace(place); return }
     setPlaces((current) => ({ ...current, [meta.id]: place }))
     void savePlace(meta.id, place)
-  }, [meta])
+  }, [meta, companionPeek])
 
   // The macOS shell sends menu commands; the same reader remains responsible
   // for navigation, settings and their on-device persistence.
@@ -255,15 +309,34 @@ export default function App() {
   }, [view, chapterIndex, settings.fontScale, update, goToChapter, checkForUpdates])
 
   const settingsSheet = showSettings && <SettingsSheet
-    copy={copy} ui={ui} settings={settings} bookLangs={meta?.langs}
+    copy={copy} ui={ui} settings={settings} book={view === 'book' || view === 'reader' ? meta : null}
     onUI={(next) => { setUI(next); void saveUI({ language: next }) }}
-    onChange={update} onClose={() => setShowSettings(false)} storage={storage}
+    onChange={update} onClose={() => setShowSettings(false)} onRead={readAvailableTranslation} storage={storage}
     request={request} setRequest={setRequest}
     updates={updates} canReload={canReload}
     onCloud={() => { setShowSettings(false); setView('cloud') }}
   />
 
-  if (view === 'agent') return <DocumentAgent ui={ui} onBack={() => setView('library')} onCloud={() => setView('cloud')} />
+  if (view === 'book-agent' && companionContext) return <BookCompanion context={companionContext} ui={ui}
+    onBack={() => { setCompanionPeek(false); setPeekPlace(null); setReferenceQuote(''); setMeta(companionContext.meta); setChapterIndex(companionContext.chapter); setPlaces(current => ({ ...current, [companionContext.meta.id]: { ...current[companionContext.meta.id], chapter: companionContext.chapter, paragraph: companionContext.paragraph } })); setView(companionContext.returnTo) }}
+    onGeneral={() => { setGeneralReturn(companionContext.returnTo === 'agent' ? 'library' : 'book-agent'); setView('agent') }}
+    onRead={(paragraph, reference?: BookReference, quote?: string) => {
+      const open = async () => {
+        const nextMeta = reference && reference.id !== companionContext.meta.id ? await loadMeta(reference.id) : companionContext.meta
+        const place = { chapter: reference?.chapter ?? companionContext.chapter, paragraph }
+        if (reference && nextMeta.chapters[place.chapter]?.file !== reference.file) throw new Error('This edition changed. Reopen its reference.')
+        setMeta(nextMeta); setChapterIndex(place.chapter); setReferenceQuote(quote || ''); setReferenceLanguage(reference?.language || companionContext.language)
+        setPeekPlace(place)
+        setCompanionPeek(true); setView('reader')
+      }
+      void open().catch((error: Error) => { setBookError(error.message); setView('book') })
+    }} />
+  if (view === 'agent') return <DocumentAgent ui={ui} onBack={() => setView(generalReturn)} onBook={(reference, book, draft) => {
+    const next: BookCompanionContext = { meta: book, chapter: reference.chapter, paragraph: reference.paragraph, language: reference.language, quote: reference.quote, scope: reference.scope, returnTo: 'agent' }
+    const ref = companionReference(next, ui, reference.scope)
+    try { sessionStorage.setItem(`bunko-book-draft:${currentUser()?.id || 'guest'}:${referenceKey(ref)}`, draft) } catch { /* Reference navigation still works without storage. */ }
+    setGeneralReturn('library'); setCompanionContext(next); setCompanionPeek(false); setView('book-agent')
+  }} />
   if (view === 'cloud') return <CloudPlans ui={ui} onBack={() => {
     const url = new URL(window.location.href)
     url.searchParams.delete('billing')
@@ -277,15 +350,23 @@ export default function App() {
         <Reader
           meta={meta}
           chapterIndex={chapterIndex}
-          settings={settings}
+          settings={companionPeek && referenceLanguage ? { ...settings, langs: [referenceLanguage, ...settings.langs.filter(l => l !== referenceLanguage)] } : settings}
           copy={copy}
           ui={ui}
-          startParagraph={places[meta.id]?.chapter === chapterIndex ? (places[meta.id]?.paragraph ?? 0) : 0}
+          startParagraph={companionPeek && peekPlace?.chapter === chapterIndex ? peekPlace.paragraph : places[meta.id]?.chapter === chapterIndex ? (places[meta.id]?.paragraph ?? 0) : 0}
           onChapter={goToChapter}
           onPlace={handlePlace}
           onOpenChapters={() => setShowChapters(true)}
           onOpenSettings={() => setShowSettings(true)}
-          onBack={() => setView('book')}
+          highlightQuote={referenceQuote}
+          onCompanion={(paragraph, language, quote) => {
+            if (companionPeek && !quote) { setView('book-agent'); return }
+            setCompanionPeek(false); setReferenceQuote('')
+            handlePlace(paragraph)
+            setCompanionContext({ meta, chapter: chapterIndex, paragraph, language, quote, returnTo: 'reader' })
+            setView('book-agent')
+          }}
+          onBack={() => setView(companionPeek ? 'book-agent' : 'book')}
           backLabel={copy.back}
           overlayOpen={showChapters || showSettings}
         />
@@ -293,22 +374,7 @@ export default function App() {
           <Sheet title={copy.chapterList} onClose={() => setShowChapters(false)} closeLabel={copy.close}>
             <ol className="chapter-list">
               {meta.chapters.map((chapter, position) => (
-                <li key={chapter.file}>
-                  <button
-                    type="button"
-                    className={position === chapterIndex ? 'active' : ''}
-                    onClick={() => {
-                      goToChapter(position)
-                      setShowChapters(false)
-                    }}
-                  >
-                    <span className="chapter-n">{chapter.n}</span>
-                    <span className="chapter-title">
-                      <bdi lang={htmlLanguage(meta.primary)} dir={languageDirection(meta.primary)}>{chapter.title[meta.primary] ?? Object.values(chapter.title)[0] ?? ''}</bdi>
-                      {Object.entries(chapter.title).filter(([lang]) => lang !== meta.primary && baseLanguage(lang) === baseLanguage(ui)).slice(0, 1).map(([lang, title]) => <small key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>{title}</small>)}
-                    </span>
-                  </button>
-                </li>
+                <ChapterRow key={chapter.file} chapter={chapter} primary={meta.primary} ui={ui} active={position === chapterIndex} onRead={() => { goToChapter(position); setShowChapters(false) }} />
               ))}
             </ol>
           </Sheet>
@@ -325,9 +391,14 @@ export default function App() {
         <UpdatePrompt ui={ui} updates={updates} canReload={canReload} />
         <MobileStorePrompt copy={copy} />
         {settingsSheet}
-        <button className="link-back" type="button" onClick={() => setView('library')}>
-          ← {copy.library}
-        </button>
+        <nav className="book-toolbar">
+          <button className="link-back" type="button" onClick={() => setView('library')}>
+            ← {copy.library}
+          </button>
+          <button className="icon" type="button" disabled={!meta} onClick={() => setShowSettings(true)} aria-label={copy.settings}>
+            <Settings size={20} />
+          </button>
+        </nav>
         {!meta && <p className={`notice${bookError ? ' error' : ''}`}>{bookError || `${copy.loading}…`}</p>}
         {meta && bookError && <p className="notice error" role="status">{bookError}</p>}
         {meta && row && (
@@ -361,6 +432,12 @@ export default function App() {
               <button type="button" className="primary" onClick={() => startReading(!places[meta.id])}>
                 <BookOpen size={17} /> {places[meta.id] ? copy.continueReading : copy.start}
               </button>
+              <button type="button" onClick={() => {
+                const place = places[meta.id] || { chapter: 0, paragraph: 0 }
+                setChapterIndex(place.chapter)
+                setCompanionContext({ meta, ...place, language: settings.langs.find(lang => meta.langs.includes(lang)) || meta.primary, returnTo: 'book' })
+                setView('book-agent')
+              }}><Sparkles size={17} />{agentCopy[ui].name}</button>
               {downloading?.id === meta.id ? (
                 <button type="button" onClick={() => downloadRef.current?.abort()}>
                   {copy.downloading} {downloading.done}/{downloading.total}
@@ -389,23 +466,10 @@ export default function App() {
               </p>
             )}
 
+            <TranslationRequest key={meta.id} ui={ui} book={meta} onRead={readAvailableTranslation} />
             <ol className="chapter-list flat">
               {meta.chapters.map((chapter, position) => (
-                <li key={chapter.file}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      goToChapter(position)
-                      setView('reader')
-                    }}
-                  >
-                    <span className="chapter-n">{chapter.n}</span>
-                    <span className="chapter-title">
-                      <bdi lang={htmlLanguage(meta.primary)} dir={languageDirection(meta.primary)}>{chapter.title[meta.primary] ?? Object.values(chapter.title)[0] ?? ''}</bdi>
-                      {Object.entries(chapter.title).filter(([lang]) => lang !== meta.primary && baseLanguage(lang) === baseLanguage(ui)).slice(0, 1).map(([lang, title]) => <small key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>{title}</small>)}
-                    </span>
-                  </button>
-                </li>
+                <ChapterRow key={chapter.file} chapter={chapter} primary={meta.primary} ui={ui} onRead={() => { goToChapter(position); setView('reader') }} />
               ))}
             </ol>
           </>
@@ -434,7 +498,7 @@ export default function App() {
       <UpdatePrompt ui={ui} updates={updates} canReload={canReload} />
       <MobileStorePrompt copy={copy} />
 
-      <button type="button" className="companion-entry" onClick={() => setView('agent')}><Sparkles size={19} /><span><strong>{agentCopy[ui].name}</strong><small>{agentCopy[ui].hint}</small></span><PaperclipIcon /></button>
+      <button type="button" className="companion-entry" onClick={() => { setGeneralReturn('library'); setView('agent') }}><Sparkles size={19} /><span><strong>{agentCopy[ui].name}</strong><small>{agentCopy[ui].hint}</small></span><PaperclipIcon /></button>
 
       <div className="search">
         <Search size={16} />
@@ -470,10 +534,14 @@ export default function App() {
 
       {index && <div className="library-status">
         <span>{index.count} {copy.books}</span>
-        <button type="button" disabled={refreshing} onClick={async () => {
+        <select className="library-sort" aria-label={copy.sortBooks} value={librarySort} onChange={event => {
+          const sort = event.target.value as LibrarySort
+          setLibrarySort(sort); void saveLibrarySort(sort)
+        }}>{LIBRARY_SORTS.map(sort => <option key={sort} value={sort}>{copy.librarySort[sort]}</option>)}</select>
+        <button type="button" aria-label={copy.refreshLibrary} title={copy.refreshLibrary} disabled={refreshing} onClick={async () => {
           setRefreshing(true)
           try { setIndex(await loadIndex({ refresh: true })) } finally { setRefreshing(false) }
-        }}><RefreshCw size={14} className={refreshing ? 'spinning' : ''} /> {copy.refreshLibrary}</button>
+        }}><RefreshCw size={16} className={refreshing ? 'spinning' : ''} /></button>
       </div>}
       <section className="grid">
         {books.map((book) => (
@@ -495,40 +563,15 @@ export default function App() {
   )
 }
 
-function Sheet({
-  title,
-  onClose,
-  closeLabel,
-  children,
-}: {
-  title: string
-  onClose: () => void
-  closeLabel: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className="sheet-backdrop" role="dialog" aria-modal="true" aria-label={title}>
-      <div className="sheet">
-        <header>
-          <strong>{title}</strong>
-          <button type="button" onClick={onClose} aria-label={closeLabel}>
-            <X size={18} />
-          </button>
-        </header>
-        <div className="sheet-body">{children}</div>
-      </div>
-    </div>
-  )
-}
-
 function SettingsSheet({
+  onRead,
   onCloud,
   updates,
   canReload,
   copy,
   ui,
   settings,
-  bookLangs,
+  book,
   onUI,
   onChange,
   onClose,
@@ -542,7 +585,8 @@ function SettingsSheet({
   copy: import('./i18n').UICopy
   ui: UILanguage
   settings: ReadingSettings
-  bookLangs?: LangCode[]
+  book?: BookMeta | null
+  onRead: (language: string) => void
   onUI: (next: UILanguage) => void
   onChange: (patch: Partial<ReadingSettings>) => void
   onClose: () => void
@@ -550,14 +594,15 @@ function SettingsSheet({
   request: string
   setRequest: (value: string) => void
 }) {
-  const langs = bookLangs ?? []
+  const langs = book?.langs ?? []
   return (
     <Sheet title={copy.settings} onClose={onClose} closeLabel={copy.close}>
+      {book && <section><TranslationRequest key={book.id} ui={ui} book={book} expanded onRead={onRead} /></section>}
       <section><button type="button" className="cloud-entry" onClick={onCloud}><Sparkles size={18} />{cloudCopy[ui].title}</button></section>
       {langs.length > 0 && (
         <section>
           <h3>{copy.show}</h3>
-          <LanguageChoices available={langs} selected={settings.langs} ui={ui} onChange={(selected) => onChange({ langs: selected })} />
+          <LanguageChoices available={langs} selected={settings.langs} ui={ui} onChange={next => onChange({ langs: next })} />
         </section>
       )}
 
@@ -582,6 +627,7 @@ function SettingsSheet({
       </section>
 
       <Toggle label={copy.ruby} hint={copy.rubyHint} on={settings.ruby} onChange={(ruby) => onChange({ ruby })} />
+      <Toggle label={copy.translationBubbles} hint={copy.translationBubblesHint} on={settings.translationBubbles} onChange={(translationBubbles) => onChange({ translationBubbles })} />
       <Toggle
         label={copy.grammar}
         hint={copy.grammarHint}
@@ -596,17 +642,20 @@ function SettingsSheet({
           id="main-text-size"
           type="range"
           min={0.85}
-          max={1.6}
+          max={2.5}
           step={0.05}
           value={settings.fontScale}
           onChange={(event) => onChange({ fontScale: Number(event.target.value) })}
         />
+        <div className="chips size-presets">{[1,1.25,1.5,2,2.5].map(scale => <button key={scale} type="button" aria-pressed={Math.abs(settings.fontScale-scale)<.01} className={Math.abs(settings.fontScale-scale)<.01?'active':''} onClick={()=>onChange({fontScale:scale})}>{Math.round(scale*100)}%</button>)}</div>
         <label className="size-label" htmlFor="ruby-text-size">{copy.rubySize}<output>{Math.round(settings.rubyScale * 100)}%</output></label>
         <input id="ruby-text-size" type="range" min={0.7} max={1.8} step={0.05} value={settings.rubyScale} onChange={(event) => onChange({ rubyScale: Number(event.target.value) })} />
         <div className="type-preview" style={{ fontSize: `${settings.fontScale}rem`, '--ruby-size': `${settings.rubyScale * .52}rem` } as CSSProperties}>
           <Line line={ui === 'ja' ? [['文庫', 'ぶんこ'], 'で読む。'] : ui.startsWith('zh') ? [['阅读', 'yuè dú'], '，慢慢品味。'] : [['文庫', 'ぶんこ'], ' · A page to enjoy.']} ruby={settings.ruby} />
         </div>
       </section>
+
+      <section><label htmlFor="interface-size" className="size-label">{readerComfortCopy[ui].interfaceSize}</label><select id="interface-size" value={settings.interfaceScale??1} onChange={event=>onChange({interfaceScale:Number(event.target.value)})}>{[1,1.15,1.3,1.5].map((scale,i)=><option value={scale} key={scale}>{[readerComfortCopy[ui].standard,readerComfortCopy[ui].large,readerComfortCopy[ui].larger,readerComfortCopy[ui].largest][i]} · {Math.round(scale*100)}%</option>)}</select><p className="hint">{readerComfortCopy[ui].interfaceHint}</p></section>
 
       <section>
         <h3>{copy.theme}</h3>
@@ -656,6 +705,8 @@ function SettingsSheet({
         </div>
       </section>
 
+      {!book && <section><TranslationRequest ui={ui} /></section>}
+
       {storage && (
         <section>
           <h3>{copy.storage}</h3>
@@ -665,12 +716,13 @@ function SettingsSheet({
         </section>
       )}
 
+      <SharedAccount ui={ui} onLogin={onCloud} />
       <UpdateSettings ui={ui} updates={updates} canReload={canReload} />
       <StoreLinks copy={copy} />
       <section>
         <h3>{copy.about}</h3>
         <p className="hint">{copy.aboutBody}</p>
-        <p><a href="https://llm.lazying.art/bunko/privacy.html" target="_blank" rel="noopener noreferrer">{agentCopy[ui].privacyLink}</a></p>
+        <p><a href={`${BUNKO_LEGAL_API}/privacy.html`} target="_blank" rel="noopener noreferrer">{agentCopy[ui].privacyLink}</a></p>
         <h3>{copy.rights}</h3>
         <p className="hint">{copy.rightsBody}</p>
         <h3>{copy.dictionarySources}</h3>

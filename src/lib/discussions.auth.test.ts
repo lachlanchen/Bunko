@@ -6,7 +6,7 @@ const state = vi.hoisted(() => ({ native: false, saved: null as string | null })
 vi.mock('@capacitor/core', () => ({ Capacitor: { isNativePlatform: () => state.native } }))
 vi.mock('./discussionStorage', () => ({ savedSession: async () => state.saved, saveSession: async (token: string | null) => { state.saved = token } }))
 beforeEach(() => { vi.resetModules(); vi.useFakeTimers(); localStorage.clear(); state.native = false; state.saved = null; vi.stubGlobal('crypto', webcrypto) })
-afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks() })
+afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.unstubAllEnvs(); vi.restoreAllMocks(); delete window.__BUNKO_DESKTOP__ })
 it('recovers a lost completion response and ignores the COOP closed-popup signal', async () => {
   const popup = { opener: window, closed: true, location: { href: '' }, close: vi.fn() }
   vi.spyOn(window, 'open').mockReturnValue(popup as unknown as Window)
@@ -81,7 +81,7 @@ it('demo signs in without a browser or GitHub and restores from native secure st
   vi.resetModules(); api = await import('./discussions')
   await api.restoreSession()
   expect(api.currentUser()).toEqual(user)
-  expect(request.mock.calls.every(([url]) => String(url).startsWith('https://llm.lazying.art/bunko/'))).toBe(true)
+  expect(request.mock.calls.every(([url]) => String(url).startsWith('https://bunko.lazying.art/bunko/'))).toBe(true)
 })
 it('cancelled demo login cannot resurrect a session from a late password response', async () => {
   let release!: (value: Response) => void
@@ -97,7 +97,8 @@ it('cancelled demo login cannot resurrect a session from a late password respons
   expect((await result).code).toBe('authorization_cancelled')
   expect(api.currentUser()).toBeNull()
   expect(state.saved).toBeNull()
-  expect(request).toHaveBeenCalledTimes(1)
+  expect(request).toHaveBeenCalledTimes(2)
+  expect(String(request.mock.calls[1][0])).toMatch(/\/auth\/cancel$/)
 })
 it('demo password failures are not retried automatically or stored', async () => {
   const request = vi.fn<typeof fetch>(async () => Response.json({ error: 'invalid_demo_credentials' }, { status: 401 }))
@@ -108,4 +109,63 @@ it('demo password failures are not retried automatically or stored', async () =>
   expect(api.currentUser()).toBeNull()
   expect(localStorage.length).toBe(0)
   expect(state.saved).toBeNull()
+})
+
+it.each([
+  ['native', undefined, 'https://bunko.lazying.art/bunko'],
+  ['desktop', undefined, 'https://bunko.lazying.art/bunko'],
+  ['native', '0', 'https://llm.lazying.art/bunko'],
+  ['desktop', '0', 'https://llm.lazying.art/bunko'],
+])('restores an existing %s token with build flag %s on %s', async (platform, flag, origin) => {
+  vi.stubEnv('VITE_BUNKO_DIRECT_ORIGIN', flag)
+  state.native = platform === 'native'; window.__BUNKO_DESKTOP__ = platform === 'desktop'
+  state.saved = 's'.repeat(43)
+  const request = vi.fn<typeof fetch>(async () => Response.json({ user: { id: 2, login: 'existing-reader' }, expires: Date.now() + 86400000 }))
+  vi.stubGlobal('fetch', request)
+  const api = await import('./discussions')
+  await api.restoreSession()
+  expect(request.mock.calls[0][0]).toBe(`${origin}/v1/session`)
+  expect(request.mock.calls[0][1]).toMatchObject({ credentials: 'omit', headers: { Authorization: `Bearer ${state.saved}` } })
+  expect(api.currentUser()?.login).toBe('existing-reader')
+})
+
+it('keeps existing web cookie login on its original host even in a direct-enabled build', async () => {
+  vi.stubEnv('VITE_BUNKO_DIRECT_ORIGIN', '1')
+  const request = vi.fn<typeof fetch>(async () => Response.json({ user: { id: 3, login: 'web-reader' }, expires: Date.now() + 86400000 }))
+  vi.stubGlobal('fetch', request)
+  const api = await import('./discussions')
+  await api.restoreSession()
+  expect(request.mock.calls[0][0]).toBe('https://llm.lazying.art/bunko/v1/session')
+  expect(request.mock.calls[0][1]?.credentials).toBe('include')
+  expect(state.saved).toBeNull()
+})
+
+it('never replays an uncertain private upload or checkout across origins', async () => {
+  vi.stubEnv('VITE_BUNKO_DIRECT_ORIGIN', '1'); state.native = true
+  const request = vi.fn<typeof fetch>(async () => { throw new TypeError('response lost') })
+  vi.stubGlobal('fetch', request)
+  const api = await import('./discussions')
+  await expect(api.api('/v1/agent/upload', { fixture: true })).rejects.toThrow('offline')
+  await expect(api.api('/v1/cloud/checkout', { fixture: true })).rejects.toThrow('offline')
+  expect(request).toHaveBeenCalledTimes(2)
+  expect(request.mock.calls.every(([url]) => String(url).startsWith('https://bunko.lazying.art/bunko/'))).toBe(true)
+})
+
+it('cancelled reauthentication preserves the existing session across restoration', async()=>{
+ vi.stubGlobal('fetch',vi.fn(async url=>String(url).endsWith('/session')?Response.json({user:{id:3,login:'reader'},expires:Date.now()+86400000}):Response.json({flow:'f'.repeat(43),url:'https://github.com/login/oauth/authorize?client_id=fixture'})));
+ vi.spyOn(window,'open').mockReturnValue({opener:null,location:{href:''},close:vi.fn()} as unknown as Window);
+ const api=await import('./discussions');await api.restoreSession();const flow=api.reauthenticateAccount();const rejected=expect(flow.promise).rejects.toBeDefined();flow.cancel();await rejected;
+ expect(api.currentUser()?.id).toBe(3);expect(localStorage.getItem('bunko:signed-out')).not.toBe('1');await api.restoreSession();expect(api.currentUser()?.id).toBe(3);
+});
+
+it('optional GitHub connection sends explicit consent and preserves the current reader', async () => {
+  const popup={opener:window,location:{href:''},close:vi.fn()};vi.spyOn(window,'open').mockReturnValue(popup as unknown as Window)
+  const user={id:'bunko_existing',login:'Reader',kind:'lazyingart'}
+  const request=vi.fn<typeof fetch>(async (url,init)=>{
+    if(String(url).endsWith('/auth/start')){expect(JSON.parse(String(init?.body))).toMatchObject({connectGithub:true,consent:true});return Response.json({flow:'f'.repeat(43),url:'https://github.com/login/oauth/authorize?client_id=fixture'})}
+    return Response.json({user,expires:Date.now()+86400000,method:'lazyingart'})
+  });vi.stubGlobal('fetch',request)
+  const api=await import('./discussions');await api.restoreSession();localStorage.setItem('bunko:discussion-draft:fixture','Keep this note')
+  await api.connectGitHubAccount().promise
+  expect(api.currentUser()?.id).toBe(user.id);expect(localStorage.getItem('bunko:discussion-draft:fixture')).toBe('Keep this note')
 })

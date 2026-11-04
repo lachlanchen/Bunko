@@ -2,6 +2,7 @@ import AppKit
 import WebKit
 import AuthenticationServices
 import Security
+import StoreKit
 #if DEBUG
 import Network
 #endif
@@ -17,6 +18,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     private var window: NSWindow!
     private(set) var webView: WKWebView!
+    private var pendingBookLink:URL?
+    private var readerLoaded=false
+    private var storefrontTask: Task<Void, Never>?
+    #if DEBUG
+    private var qaStorefront: String?
+    #endif
     private var authSession: ASWebAuthenticationSession?
     private let schemeHandler = BundleSchemeHandler()
 
@@ -27,12 +34,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         config.websiteDataStore = .default()
         #if DEBUG
         // Test hosts can use a loopback CONNECT tunnel without changing system proxies.
+        #if compiler(>=5.9)
         if #available(macOS 14.0, *), CommandLine.arguments.contains("--bunko-smoke-test"),
            let value = ProcessInfo.processInfo.environment["BUNKO_QA_PROXY_PORT"],
            let port = UInt16(value), let endpointPort = NWEndpoint.Port(rawValue: port) {
             config.websiteDataStore.proxyConfigurations = [ProxyConfiguration(
                 httpCONNECTProxy: .hostPort(host: "127.0.0.1", port: endpointPort))]
         }
+        #endif
         #endif
         config.userContentController.addScriptMessageHandler(self, contentWorld: .page, name: "bunkoAuth")
         let appInfo = ["version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "",
@@ -53,8 +62,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         window.center()
         window.isReleasedWhenClosed = false
         createMenus()
-        window.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
+        storefrontTask = Task { [weak self] in
+            for await _ in Storefront.updates {
+                await MainActor.run { self?.webView.evaluateJavaScript("window.dispatchEvent(new Event('bunko-region-changed'))", completionHandler: nil) }
+            }
+        }
+        showMainWindow(nil)
         webView.load(URLRequest(url: URL(string: "bunko://localhost/index.html")!))
         #if DEBUG
         if CommandLine.arguments.contains("--bunko-smoke-test") {
@@ -79,7 +92,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        window.makeKeyAndOrderFront(nil); return true
+        showMainWindow(nil)
+        return false
+    }
+
+    // Keep the existing WebKit document alive: reopening must not reload the
+    // reader, lose a draft or interrupt a companion response.
+    @objc private func showMainWindow(_ sender: Any?) {
+        guard let window else { return }
+        if window.isMiniaturized { window.deminiaturize(nil) }
+        #if DEBUG
+        if CommandLine.arguments.contains("--bunko-smoke-test") {
+            window.orderBack(nil)
+            return
+        }
+        #endif
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor { window }
@@ -90,9 +119,34 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
               message.frameInfo.request.url?.scheme == "bunko",
               message.frameInfo.request.url?.host == "localhost",
               let body = message.body as? [String: Any] else { replyHandler(nil, "Denied"); return }
+        #if DEBUG
+        // Explicit synthetic country fixtures exist only in the isolated Debug harness.
+        if CommandLine.arguments.contains("--bunko-smoke-test"), let fixture = body["qaRegion"] as? String {
+            qaStorefront = fixture == "actual" ? nil : fixture
+            replyHandler(true, nil)
+            return
+        }
+        #endif
+        if body["region"] as? Bool == true {
+            Task {
+                let storefront = await Storefront.current
+                await MainActor.run {
+                    var country = storefront?.countryCode ?? ""
+                    #if DEBUG
+                    country = self.qaStorefront ?? country
+                    #endif
+                    replyHandler(["storefront": country, "deviceRegion": Locale.current.regionCode ?? ""], nil)
+                }
+            }
+            return
+        }
         if let action = body["storage"] as? String {
+            var storageService = "art.lazying.bunko.discussions"
+            #if DEBUG
+            if CommandLine.arguments.contains("--bunko-smoke-test") { storageService += ".qa39" }
+            #endif
             let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                kSecAttrService as String: "art.lazying.bunko.discussions",
+                kSecAttrService as String: storageService,
                 kSecAttrAccount as String: "session", kSecUseDataProtectionKeychain as String: true]
             switch action {
             case "read":
@@ -119,11 +173,26 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             }
             return
         }
+        if let share = body["share"] as? [String: String], let title = share["title"],
+           let value = share["url"], let url = URL(string: value),
+           url.scheme == "https", url.host == "bunko.lazying.art",
+           url.path.range(of: "^/bunko/share/book/[a-z0-9-]{1,120}$", options: .regularExpression) != nil {
+            let picker = NSSharingServicePicker(items: [String(title.prefix(400)), url])
+            picker.show(relativeTo: NSRect(x:webView.bounds.midX,y:40,width:1,height:1), of:webView, preferredEdge:.minY)
+            replyHandler(true, nil); return
+        }
         if body["cancel"] as? Bool == true { authSession?.cancel(); authSession = nil; replyHandler(true, nil); return }
         guard authSession == nil, let value = body["url"] as? String, let url = URL(string: value),
-              url.scheme == "https", url.host == "github.com", url.path == "/login/oauth/authorize" else {
+              url.scheme == "https", url.user == nil, url.password == nil, url.fragment == nil,
+              url.port == nil || url.port == 443 else {
             replyHandler(nil, "Invalid authorization URL"); return
         }
+        let query = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
+        let github = url.host == "github.com" && url.path == "/login/oauth/authorize"
+        let shared = url.host == "llm.lazying.art" && url.path == "/bunko/oauth/lazyingart"
+            && query.count == 1 && query.first?.name == "ticket"
+            && query.first?.value?.range(of: "^[A-Za-z0-9_-]{43}$", options: .regularExpression) != nil
+        guard github || shared else { replyHandler(nil, "Invalid authorization URL"); return }
         let session = ASWebAuthenticationSession(url: url, callbackURLScheme: "art.lazying.bunko") { [weak self] callback, error in
             DispatchQueue.main.async {
                 self?.authSession = nil
@@ -134,6 +203,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         session.presentationContextProvider = self
         authSession = session
         if !session.start() { authSession = nil; replyHandler(nil, "Could not open authorization") }
+    }
+
+    func application(_ application:NSApplication, open urls:[URL]) {
+        guard let url=urls.first(where:{$0.scheme=="art.lazying.bunko" && $0.host=="book" && $0.query==nil && $0.fragment==nil && $0.path.range(of:"^/[a-z0-9-]{1,120}$",options:.regularExpression) != nil}) else{return}
+        pendingBookLink=url
+        deliverBookLink()
+    }
+    func webView(_ webView:WKWebView,didFinish navigation:WKNavigation!) {readerLoaded=true;deliverBookLink()}
+    private func deliverBookLink() {
+        guard readerLoaded,let url=pendingBookLink,let webView=webView,webView.url?.scheme == "bunko" else{return}
+        let value=String(data:try! JSONSerialization.data(withJSONObject:[url.absoluteString]),encoding:.utf8)!
+        webView.evaluateJavaScript("window.__BUNKO_BOOK_LINK__ = \(value)[0]; window.dispatchEvent(new CustomEvent('bunko-open-book',{detail:window.__BUNKO_BOOK_LINK__}));",completionHandler:nil)
+        pendingBookLink=nil
     }
 
     private func createMenus() {
@@ -174,6 +256,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         command(book, "Next Chapter", "next-chapter", "]")
         command(book, "Chapters", "chapters", "t")
         let windowMenu = menu(NSLocalizedString("Window", comment: "Mac menu"))
+        let reopen = windowMenu.addItem(withTitle: NSLocalizedString("Show Bunko", comment: "Mac menu"), action: #selector(showMainWindow(_:)), keyEquivalent: "n")
+        reopen.identifier = NSUserInterfaceItemIdentifier("bunko.show-main-window")
+        reopen.target = self
+        windowMenu.addItem(.separator())
         windowMenu.addItem(withTitle: NSLocalizedString("Minimize", comment: "Mac menu"), action: #selector(NSWindow.performMiniaturize(_:)), keyEquivalent: "m")
         NSApp.windowsMenu = windowMenu
         NSApp.mainMenu = main
@@ -183,6 +269,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         guard let command = sender.representedObject as? String,
               let data = try? JSONSerialization.data(withJSONObject: ["command": command]),
               let json = String(data: data, encoding: .utf8) else { return }
+        showMainWindow(nil)
         webView.evaluateJavaScript("window.dispatchEvent(new CustomEvent('bunko-command', {detail: \(json)}))")
     }
 

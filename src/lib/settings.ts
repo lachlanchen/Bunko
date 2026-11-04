@@ -12,13 +12,24 @@ import type { LangCode, Place, ReadingSettings } from '../types'
 const SETTINGS_KEY = 'bunko.settings.v1'
 const PLACE_KEY = 'bunko.place.v1'
 const UI_KEY = 'bunko.ui.v1'
+const LIBRARY_KEY = 'bunko.library.v1'
+export const LIBRARY_SORTS = ['recent', 'added', 'title', 'author'] as const
+export type LibrarySort = typeof LIBRARY_SORTS[number]
+
+export async function loadLibrarySort(): Promise<LibrarySort> {
+  const saved = await read<{ sort: LibrarySort }>(LIBRARY_KEY, { sort: 'recent' })
+  return LIBRARY_SORTS.includes(saved.sort) ? saved.sort : 'recent'
+}
+export const saveLibrarySort = (sort: LibrarySort) => write(LIBRARY_KEY, { sort })
 
 export const DEFAULT_SETTINGS: ReadingSettings = {
   langs: [],
   layout: 'interlinear',
   ruby: true,
   grammar: false,
+  translationBubbles: true,
   fontScale: 1,
+  interfaceScale: 1,
   rubyScale: 1,
   theme: 'system',
   serif: true,
@@ -42,8 +53,21 @@ async function write(key: string, value: unknown): Promise<void> {
   }
 }
 
-export const loadSettings = () => read<ReadingSettings>(SETTINGS_KEY, DEFAULT_SETTINGS)
-export const saveSettings = (settings: ReadingSettings) => write(SETTINGS_KEY, settings)
+export function normalizeSettings(value: ReadingSettings): ReadingSettings {
+  const scale = (number: unknown, low: number, high: number) => typeof number === 'number' && Number.isFinite(number) ? Math.min(high, Math.max(low, number)) : 1
+  return { ...DEFAULT_SETTINGS, ...value,
+    langs: Array.isArray(value.langs) ? [...new Set(value.langs.filter(lang => typeof lang === 'string' && /^[A-Za-z][A-Za-z0-9_-]{0,34}$/.test(lang)))].slice(0, 20) : [],
+    layout: ['source','interlinear','paired'].includes(value.layout) ? value.layout : DEFAULT_SETTINGS.layout,
+    theme: ['paper','night','system'].includes(value.theme) ? value.theme : DEFAULT_SETTINGS.theme,
+    ruby: typeof value.ruby === 'boolean' ? value.ruby : DEFAULT_SETTINGS.ruby,
+    grammar: typeof value.grammar === 'boolean' ? value.grammar : DEFAULT_SETTINGS.grammar,
+    serif: typeof value.serif === 'boolean' ? value.serif : DEFAULT_SETTINGS.serif,
+    translationBubbles: typeof value.translationBubbles === 'boolean' ? value.translationBubbles : DEFAULT_SETTINGS.translationBubbles,
+    fontScale: scale(value.fontScale, .85, 2.5), rubyScale: scale(value.rubyScale, .7, 1.8), interfaceScale: scale(value.interfaceScale, 1, 1.5),
+  }
+}
+export const loadSettings = async () => normalizeSettings(await read<ReadingSettings>(SETTINGS_KEY, DEFAULT_SETTINGS))
+export const saveSettings = (settings: ReadingSettings) => write(SETTINGS_KEY, normalizeSettings(settings))
 
 export async function loadPlaces(): Promise<Record<string, Place>> {
   try {
@@ -54,11 +78,18 @@ export async function loadPlaces(): Promise<Record<string, Place>> {
   }
 }
 
-export async function savePlace(bookId: string, place: Place): Promise<Record<string, Place>> {
-  const places = await loadPlaces()
-  const next = { ...places, [bookId]: place }
-  await write(PLACE_KEY, next)
-  return next
+// Sequential writes keep rapid chapter changes from overwriting another book's
+// bookmark while native Preferences is still finishing the previous write.
+let placeWrite: Promise<unknown> = Promise.resolve()
+export function savePlace(bookId: string, place: Place): Promise<Record<string, Place>> {
+  const operation = placeWrite.then(async () => {
+    const places = await loadPlaces()
+    const next = { ...places, [bookId]: place }
+    await write(PLACE_KEY, next)
+    return next
+  })
+  placeWrite = operation.catch(() => {})
+  return operation
 }
 
 export interface UIState {

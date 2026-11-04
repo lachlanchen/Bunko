@@ -19,4 +19,5 @@
   <key>ITSAppUsesNonExemptEncryption</key><false/>
   <key>NSHumanReadableCopyright</key><string>© 2026 LazyingArt LLC</string>
   <key>CFBundleLocalizations</key><array><string>en</string><string>zh-Hans</string><string>zh-Hant</string><string>ja</string></array>
+<key>CFBundleURLTypes</key><array><dict><key>CFBundleURLName</key><string>art.lazying.bunko.reading</string><key>CFBundleURLSchemes</key><array><string>art.lazying.bunko</string></array></dict></array>
 </dict></plist>

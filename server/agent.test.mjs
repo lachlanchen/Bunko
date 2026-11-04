@@ -7,6 +7,19 @@ import { isPublicIP } from './agent/network.mjs'
 import { createCloudLedger, cloudOwner } from './cloud-ledger.mjs'
 const reader = { id: 7 }, other = { id: 9 }
 const requestId = 'request_fixture_1234567890'
+test('model administration uses the existing authenticated state route and excludes ordinary/demo readers', async t => {
+  const db = new DatabaseSync(':memory:')
+  const agent = createDocumentAgent({ db, seal: JSON.stringify, unseal: JSON.parse,
+    config: { enabled: true, model: { name: 'deepseek-flash', url: 'https://api.deepseek.com/chat/completions', token: 'private-value' }, models: { adminUserIds: [7] } } })
+  t.after(() => { agent.close(); db.close() })
+  assert.equal((await agent.handle('state', {}, reader)).modelAdmin, true)
+  assert.equal((await agent.handle('state', {}, other)).modelAdmin, false)
+  await assert.rejects(agent.handle('state', { adminModels: true }, other), /Administrator/)
+  await assert.rejects(agent.handle('state', { adminModels: true }, { id: 7, kind: 'demo' }), /Administrator/)
+  const value = await agent.handle('state', { adminModels: true }, reader)
+  assert.equal(value.primary, 'deepseek-flash')
+  assert.equal(JSON.stringify(value).includes('private-value'), false)
+})
 test('cloud conversion retries reuse the provider job and allowance reservation', async t => {
   const db = new DatabaseSync(':memory:'), owner = cloudOwner(reader)
   const cloud = createCloudLedger(db, { enabled: true, quotasEnabled: true })
@@ -188,4 +201,19 @@ test('paper discovery coalesces calls, caches success, and falls back during pro
   assert.deepEqual(a,b); assert.equal(a.length,1); assert.equal(calls,2); assert.equal(arxivCalls,1)
   assert.deepEqual(await search('quantum'),a); assert.equal(calls,2)
   await search('another topic'); assert.equal(calls,3); assert.equal(arxivCalls,1)
+})
+
+test('ordinary reading requests reach the companion and never fall back to paper search', async () => {
+  const {respond}=await import('./agent/discovery.mjs')
+  let prompt
+  const answer=await respond({text:'Help me understand the narrator in this book.',messages:[]},{model:{url:'https://model.invalid/chat',name:'fixture'}},async()=>{}, {
+    provider:async(_url,options)=>{prompt=JSON.parse(options.body);return {choices:[{message:{content:'not valid JSON'}}]}},
+    search:async()=>{throw Error('A book question must not become a paper search')},
+  })
+  assert.match(prompt.messages[0].content,/reading companion for books/)
+  assert.equal(prompt.messages.at(-1).content,'Help me understand the narrator in this book.')
+  assert.equal(answer.papers.length,0);assert.match(answer.text,/book title or paste a passage/)
+  let searched=false
+  await respond({text:'Find research papers about polarization',messages:[]},{},async()=>{}, {search:async()=>{searched=true;return []}})
+  assert.equal(searched,true)
 })

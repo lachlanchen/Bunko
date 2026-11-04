@@ -1,0 +1,156 @@
+[
+  {
+    "locale": "en",
+    "device": "phone",
+    "width": 1242,
+    "height": 2688,
+    "path": "store/screenshots/navigation21-20261011/en-phone-translation21.png",
+    "sha256": "6003e6af480006a48204084c79489fe6564a705e9785da50aa04cbc6c3f12512",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  },
+  {
+    "locale": "en",
+    "device": "ipad",
+    "width": 2048,
+    "height": 2732,
+    "path": "store/screenshots/navigation21-20261011/en-ipad-translation21.png",
+    "sha256": "abeccdf9e1d7dd5a9e7f1888b471229b7a12e1caf152871e2e320668d96c2181",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  },
+  {
+    "locale": "en",
+    "device": "mac",
+    "width": 1280,
+    "height": 800,
+    "path": "store/screenshots/navigation21-20261011/en-mac-translation21.png",
+    "sha256": "be195e90bf1d2f3ee0110cb6d640c97083e8079e4665feb7e2e9ad7b0ceedbfd",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  },
+  {
+    "locale": "zh-Hans",
+    "device": "phone",
+    "width": 1242,
+    "height": 2688,
+    "path": "store/screenshots/navigation21-20261011/zh-Hans-phone-translation21.png",
+    "sha256": "ccbf8f453f71fb912f71f8995864969eaace77ff886af8860fb908d91da2eca5",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  },
+  {
+    "locale": "zh-Hans",
+    "device": "ipad",
+    "width": 2048,
+    "height": 2732,
+    "path": "store/screenshots/navigation21-20261011/zh-Hans-ipad-translation21.png",
+    "sha256": "e6b4d4ea1a217ed8e6bf03b42f0b3d07d999971bc9afa760890d908b849ed470",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  },
+  {
+    "locale": "zh-Hans",
+    "device": "mac",
+    "width": 1280,
+    "height": 800,
+    "path": "store/screenshots/navigation21-20261011/zh-Hans-mac-translation21.png",
+    "sha256": "54d92612e380933ebb65ccbc92cbf45a60ac3e3bc92a688f6b30000af37e58dc",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  },
+  {
+    "locale": "zh-Hant",
+    "device": "phone",
+    "width": 1242,
+    "height": 2688,
+    "path": "store/screenshots/navigation21-20261011/zh-Hant-phone-translation21.png",
+    "sha256": "3ed11ccf2f3254d6d59b0840124b43a634c94cc2e1864f49ba104749c539195e",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  },
+  {
+    "locale": "zh-Hant",
+    "device": "ipad",
+    "width": 2048,
+    "height": 2732,
+    "path": "store/screenshots/navigation21-20261011/zh-Hant-ipad-translation21.png",
+    "sha256": "945a3b0978437ce18f1826c8f4d789e1d4750361a44412964099d0bc565071e1",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  },
+  {
+    "locale": "zh-Hant",
+    "device": "mac",
+    "width": 1280,
+    "height": 800,
+    "path": "store/screenshots/navigation21-20261011/zh-Hant-mac-translation21.png",
+    "sha256": "d1f0ccf8ff2cbfb0c5e4729b65438dac4555fbe9549e58994daeecd4253911c9",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  },
+  {
+    "locale": "ja",
+    "device": "phone",
+    "width": 1242,
+    "height": 2688,
+    "path": "store/screenshots/navigation21-20261011/ja-phone-translation21.png",
+    "sha256": "98ce5f283b75f61168f9977b4df4400ee184f3e1f0c2280fff3931a5b89e26e5",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  },
+  {
+    "locale": "ja",
+    "device": "ipad",
+    "width": 2048,
+    "height": 2732,
+    "path": "store/screenshots/navigation21-20261011/ja-ipad-translation21.png",
+    "sha256": "ceae99ca7517488deaae198de739660ac8e96e678f08eed857fae1bb91b1c099",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  },
+  {
+    "locale": "ja",
+    "device": "mac",
+    "width": 1280,
+    "height": 800,
+    "path": "store/screenshots/navigation21-20261011/ja-mac-translation21.png",
+    "sha256": "377697f60d78003b57a87a5473e3c25fd2a61f88d2fb9fd8277facd84d684112",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  },
+  {
+    "locale": "en",
+    "device": "iphone-settings",
+    "width": 1242,
+    "height": 2688,
+    "path": "store/screenshots/navigation21-20261011/en-iphone-settings21.png",
+    "sha256": "6d2a1a9e73551d17def9032eaf75f517bb63f493bee15dd31e0a0d2ee5785378",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  },
+  {
+    "locale": "en",
+    "device": "android-settings",
+    "width": 1080,
+    "height": 1920,
+    "path": "store/screenshots/navigation21-20261011/en-android-settings21.png",
+    "sha256": "d0e7cae795db9f73fc3ed1e0b327f575f383d85ae8b1e40810ca47d38207851c",
+    "source": "5999914",
+    "channel": "Chromium rendering exact build21 native web assets at platform layout size",
+    "overflow": false
+  }
+]

@@ -1,0 +1,182 @@
+{
+  "verifiedAt": "2026-10-13T22:12:22.873757+00:00",
+  "app": "Bunko",
+  "apple": {
+    "ios": {
+      "id": "6c4e3548-1e2a-4cc8-aae6-5352ccd51e09",
+      "platform": "IOS",
+      "versionString": "1.0.13",
+      "appVersionState": "READY_FOR_DISTRIBUTION",
+      "releaseType": "AFTER_APPROVAL",
+      "build": {
+        "id": "2cd11283-52ca-47b1-aef8-f69f265936de",
+        "number": "23"
+      },
+      "review": {
+        "id": "c8d42e11-2114-47b8-b307-6eb13bcd4480",
+        "platform": "IOS",
+        "submittedDate": "2026-10-13T07:00:36.212Z",
+        "state": "COMPLETE"
+      },
+      "public": {
+        "us": {
+          "version": "1.0.13",
+          "price": 0.99,
+          "currency": "USD",
+          "currentVersionReleaseDate": "2026-10-13T16:44:35Z",
+          "trackViewUrl": "https://apps.apple.com/us/app/bunko-classics-with-ruby/id6815137919?uo=4"
+        },
+        "hk": {
+          "version": "1.0.13",
+          "price": 8.0,
+          "currency": "HKD",
+          "currentVersionReleaseDate": "2026-10-13T16:44:35Z",
+          "trackViewUrl": "https://apps.apple.com/hk/app/bunko-%E6%96%87%E5%BA%AB-%E7%B6%93%E5%85%B8%E8%88%87%E6%B3%A8%E9%9F%B3/id6815137919?uo=4"
+        },
+        "iphone": {
+          "url": "https://apps.apple.com/us/app/id6815137919?platform=iphone",
+          "intent": {
+            "storefront": "us",
+            "language": "en-US",
+            "isDefaultLanguage": true,
+            "$kind": "ProductPageIntent",
+            "id": "6815137919"
+          },
+          "version": "Version 1.0.13",
+          "date": "Tue Oct 13 2026 16:44:35 GMT+0000 (Coordinated Universal Time)"
+        }
+      }
+    },
+    "macos": {
+      "submitted": {
+        "id": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+        "platform": "MAC_OS",
+        "versionString": "1.0.13",
+        "appVersionState": "IN_REVIEW",
+        "releaseType": "AFTER_APPROVAL",
+        "build": {
+          "id": "6db0c006-f129-4dc4-a634-041243aa50be",
+          "number": "23"
+        }
+      },
+      "review": {
+        "id": "d1a6be32-1158-4b36-8f18-6c10557ddbf6",
+        "platform": "MAC_OS",
+        "submittedDate": "2026-10-13T07:00:57.691Z",
+        "state": "IN_REVIEW"
+      },
+      "publicBuild": {
+        "id": "731c37f4-b4ed-4268-bafa-e5bfda8f7284",
+        "platform": "MAC_OS",
+        "versionString": "1.0.8",
+        "appVersionState": "READY_FOR_DISTRIBUTION",
+        "releaseType": "AFTER_APPROVAL",
+        "build": {
+          "id": "86831728-f214-4e77-b553-59c77470e1ad",
+          "number": "10"
+        }
+      },
+      "publicPage": {
+        "url": "https://apps.apple.com/us/app/id6815137919?platform=mac",
+        "intent": {
+          "storefront": "us",
+          "language": "en-US",
+          "isDefaultLanguage": true,
+          "$kind": "ProductPageIntent",
+          "id": "6815137919",
+          "platform": "mac"
+        },
+        "version": "Version 1.0.8",
+        "date": "Tue Sep 29 2026 22:50:52 GMT+0000 (Coordinated Universal Time)"
+      }
+    },
+    "availability": {
+      "verifiedAt": "2026-10-13T22:09:48.363541+00:00",
+      "total": 175,
+      "available": 175,
+      "availableInNewTerritories": true,
+      "iosPhasedRelease": null
+    },
+    "publicScreenshotCounts": {
+      "iphone": {
+        "product_media_phone_": {
+          "items": 9
+        },
+        "product_media_pad_": {
+          "items": 5
+        },
+        "product_media_mac_": {
+          "items": 3
+        },
+        "product_media_watch_": {
+          "items": 2
+        }
+      },
+      "mac": {
+        "product_media_mac_": {
+          "items": 3
+        },
+        "product_media_pad_": {
+          "items": 5
+        },
+        "product_media_phone_": {
+          "items": 9
+        },
+        "product_media_watch_": {
+          "items": 2
+        }
+      }
+    }
+  },
+  "google": {
+    "package": "art.lazying.bunko",
+    "publicVersion": "1.0.12",
+    "publicBuild": 22,
+    "status": "AVAILABLE_ON_GOOGLE_PLAY",
+    "countries": 172,
+    "managedPublishing": false,
+    "unsentChanges": false,
+    "pendingReview": true,
+    "latestSubmittedVersion": "1.0.13",
+    "latestSubmittedBuild": 23,
+    "productionEvidenceSha256": "54ab8c0389b8b28da6ce2a38ea48e758d64c354bf891b7141ada9f7a3779e659",
+    "public": {
+      "titlePresent": true,
+      "currentReleaseNotes": false,
+      "currentDescription": null,
+      "httpStatus": 200,
+      "url": "https://play.google.com/store/apps/details?id=art.lazying.bunko"
+    }
+  },
+  "actions": {
+    "manualReleaseRequired": false,
+    "reason": "Approved builds had automatically published. Both latest Mac builds and Bunko Android23 remain in review.",
+    "storeMutations": false
+  },
+  "billingChanged": false,
+  "newNativeBuild": false,
+  "updateFeed": {
+    "commit": "925d01b49496a69652874bc6f4c8808a7df78740",
+    "changedFiles": [
+      "public/updates.json"
+    ],
+    "pagesRun": 38476064536,
+    "ciResult": "success",
+    "publicReadbackMatches": true,
+    "feed": {
+      "schema": 1,
+      "ios": {
+        "version": "1.0.13",
+        "build": "23"
+      },
+      "android": {
+        "version": "1.0.12",
+        "build": "22"
+      },
+      "macos": {
+        "version": "1.0.8",
+        "build": "10"
+      }
+    }
+  }
+}

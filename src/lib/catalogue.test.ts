@@ -47,7 +47,7 @@ describe('catalog updates without app builds', () => {
     const data = { ...row, langs: [...row.langs] }
     expect(coverUrls({ ...data, cover: 'https://attacker.test/image.png' })).toEqual([])
     expect(coverUrls({ ...data, cover: 'books/shiji/cover-abcd.svg' })).toEqual([])
-    expect(coverUrls({ ...data, cover: 'books/shiji/cover-abcd.webp' })).toHaveLength(3)
+    expect(coverUrls({ ...data, cover: 'books/shiji/cover-abcd.webp' })).toHaveLength(4)
   })
 
   it('opens the previous downloaded edition offline after a catalog update', async () => {

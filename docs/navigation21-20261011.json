@@ -1,0 +1,191 @@
+{
+  "verifiedAt": "2026-10-11T01:21:08.864941+00:00",
+  "version": "1.0.12",
+  "build": 21,
+  "source": "5999914",
+  "apple": {
+    "bunko-IOS": {
+      "app": "6815137919",
+      "platform": "IOS",
+      "version": "ea199841-b9b7-4cb9-8f61-550514c04f91",
+      "build": "03caed0c-54ca-4c5a-a1b7-465a29a788dd",
+      "buildNumber": "21",
+      "marketing": "1.0.12",
+      "releaseType": "AFTER_APPROVAL",
+      "screenshots": [
+        {
+          "locale": "en-US",
+          "type": "APP_WATCH_SERIES_10",
+          "count": 2,
+          "files": [
+            "watch-01-library.png",
+            "watch-02-reading.png"
+          ],
+          "complete": true
+        },
+        {
+          "locale": "en-US",
+          "type": "APP_IPAD_PRO_3GEN_129",
+          "count": 3,
+          "files": [
+            "ios-ipad-01.png",
+            "ios-ipad-02.png",
+            "en-ipad-translation21.png"
+          ],
+          "complete": true
+        },
+        {
+          "locale": "en-US",
+          "type": "APP_IPHONE_65",
+          "count": 7,
+          "files": [
+            "ios-65-01.png",
+            "ios-65-02.png",
+            "ios-65-03.png",
+            "ios-65-04.png",
+            "ios-65-05.png",
+            "en-phone-translation21.png",
+            "en-iphone-settings21.png"
+          ],
+          "complete": true
+        }
+      ],
+      "reviewerCredentialsVerified": true,
+      "reviewId": "37a113cf-af13-4ad6-8249-a885b1d7bbb4",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-10-11T01:19:39.16Z",
+      "verifiedAt": "2026-10-11T01:20:39.145575+00:00"
+    },
+    "bunko-MAC_OS": {
+      "app": "6815137919",
+      "platform": "MAC_OS",
+      "version": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+      "build": "a0779a44-32e8-4811-baaa-93c99287f096",
+      "buildNumber": "21",
+      "marketing": "1.0.12",
+      "releaseType": "AFTER_APPROVAL",
+      "screenshots": [
+        {
+          "locale": "en-US",
+          "type": "APP_DESKTOP",
+          "count": 4,
+          "files": [
+            "macos-01-library.png",
+            "macos-03-equations.png",
+            "macos-02-reading.png",
+            "en-mac-translation21.png"
+          ],
+          "complete": true
+        }
+      ],
+      "reviewerCredentialsVerified": true,
+      "reviewId": "d53cb799-ee15-4fef-b351-ecfb2e4c69dc",
+      "reviewState": "WAITING_FOR_REVIEW",
+      "versionState": "WAITING_FOR_REVIEW",
+      "submittedAt": "2026-10-11T01:19:52.656Z",
+      "verifiedAt": "2026-10-11T01:20:41.190389+00:00"
+    }
+  },
+  "google": {
+    "verifiedAt": "2026-10-11T01:20:37.305210+00:00",
+    "package": "art.lazying.bunko",
+    "productionRelease": 11,
+    "version": "1.0.12",
+    "build": 21,
+    "status": "CHANGES_IN_REVIEW",
+    "rollout": "100%",
+    "targetCountries": 172,
+    "managedPublishing": false,
+    "quickChecks": "Running automatically after confirmed submission; proceeds to review when complete",
+    "internalRelease": 16,
+    "internalStatus": "Available to internal testers",
+    "replacedBuild": 20,
+    "newScreenshot": "en-android-settings21.png"
+  },
+  "packages": [
+    {
+      "platform": "IOS",
+      "version": "1.0.12",
+      "build": "21",
+      "signatureVerified": true,
+      "sha256": "1b5388592c3813b04e5fa876e4c298197256bf391386a9e8db7927ef1ce62667",
+      "currentBookSettingsEmbedded": true,
+      "orderedLanguagesAndReuseEmbedded": true,
+      "entryJS": "index-H4uLC9sS.js",
+      "watchMatched": true
+    },
+    {
+      "platform": "MAC_OS",
+      "version": "1.0.12",
+      "build": "21",
+      "signatureVerified": true,
+      "sha256": "df535903661681a230ace19aa38a3ceaf8c445099fee9fa14fdd470ba6735030",
+      "currentBookSettingsEmbedded": true,
+      "orderedLanguagesAndReuseEmbedded": true,
+      "entryJS": "index-H4uLC9sS.js",
+      "architectures": [
+        "x86_64",
+        "arm64"
+      ]
+    }
+  ],
+  "android": {
+    "files": {
+      "android/app/build/outputs/bundle/release/app-release.aab": "b9e49241a842371b06a9697a930da78339f2c2021c6ee89e6d5de2323f530111",
+      "android/app/build/outputs/apk/release/app-release.apk": "1f0cc734eae767899fac53af4d45298ae3a258b9c2c4c43129339b15f29da247"
+    },
+    "version": "1.0.12",
+    "build": 21,
+    "currentBookUIEmbedded": true,
+    "orderedLanguagesAndReuseEmbedded": true
+  },
+  "qualification": {
+    "clientTests": 92,
+    "serverTests": 58,
+    "lint": true,
+    "renderer": true,
+    "webNativeMacBuilds": true,
+    "androidLint": true,
+    "ui": {
+      "passed": true,
+      "channel": "Chromium mobile with real CDP touch events",
+      "checks": [
+        "Book homepage settings prefill the current book",
+        "Close remains visible and tappable after scrolling Settings",
+        "Backdrop tap dismisses Settings",
+        "Reader Settings close preserves reading position and book context",
+        "Slow right swipe closes Settings before leaving reader",
+        "Right swipe returns from reader to book",
+        "Right swipe returns from book to library",
+        "Library Settings do not retain the previously opened book",
+        "Switching books updates the translation request",
+        "Landscape Settings keeps the close action onscreen",
+        "Existing English opens the book directly with no duplicate issue",
+        "Custom Japanese name switches cached content offline at the same chapter and paragraph",
+        "Missing French still opens a correctly prefilled request",
+        "Selection order promotes English and main-only mode follows it without repeated labels",
+        "Paragraph layout follows the selected main and translation order",
+        "Language order persists after reopening"
+      ]
+    },
+    "liveDemoScope": "Same-day production-origin no-OTP browser login/reload check carried forward from build 19; authentication source unchanged."
+  },
+  "screenshots": {
+    "captured": 14,
+    "manifest": "store/screenshots/navigation21-20261011/manifest.json",
+    "appleNewProcessed": 4,
+    "googleNewSaved": 1
+  },
+  "replacedReviews": {
+    "appleBuild": 19,
+    "googleBuild": 20
+  },
+  "webDeployed": false,
+  "publicFeedChanged": false,
+  "limits": [
+    "Interaction checks ran in Chromium with real touch events and exact packaged web assets; no new physical-device or native Apple UI test was performed.",
+    "Public release awaits provider approval; uploads and TestFlight are not public distribution.",
+    "Other localized screenshots were captured locally; English screenshots were refreshed in store submissions."
+  ]
+}

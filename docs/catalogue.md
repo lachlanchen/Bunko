@@ -1,5 +1,15 @@
 # Catalogue audit — 2026-09-23
 
+## Adler addition — 2026-10-10
+
+The completed *What Life Should Mean to You / 自卑与超越* edition is registered
+and approved for publication: 250/250 chunks, 12 chapters,
+English/Chinese/Japanese with readings. The owner confirmed redistribution
+clearance after the initial renewal check; see the
+[validation and rights receipt](adler-library-preparation-20261010.md).
+This addition increases the published catalogue to 186 books and requires no
+app build. Counts in the dated September audit below describe that earlier audit.
+
 ## Owner editions added 2026-09-25
 
 The separate [bunko-books](https://github.com/lachlanchen/bunko-books) catalogue now has **185** editions. The registry below includes 152 published classics and translated editions. The owner explicitly supplied and authorized 33 additional original or independently edited editions from adjacent repositories. Each new bundle has its own `rights.json`, source link and language scope; `tools/import_owner_books.py` reproduces the conversion without modifying those source checkouts.

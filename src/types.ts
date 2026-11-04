@@ -22,6 +22,8 @@ export interface BookRow {
   cat?: 'chinese' | 'japanese' | 'world' | 'physics' | 'learning' | 'finance' | 'travel'
   cover?: string
   edition?: 'multilingual' | 'original-only'
+  /** First publication in Bunko's catalog, never the last content refresh. */
+  addedAt?: string
 }
 
 export interface ReaderIndex {
@@ -85,7 +87,9 @@ export interface ReadingSettings {
   layout: Layout
   ruby: boolean
   grammar: boolean
+  translationBubbles: boolean
   fontScale: number
+  interfaceScale?: number
   rubyScale: number
   theme: 'paper' | 'night' | 'system'
   serif: boolean
@@ -94,4 +98,5 @@ export interface ReadingSettings {
 export interface Place {
   chapter: number
   paragraph: number
+  lastReadAt?: number
 }

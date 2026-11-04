@@ -1,0 +1,46 @@
+{
+  "en": {
+    "Shared LAC points": "Shared LAC points",
+    "Recognition points across linked LazyingArt apps. Separate from app credits and purchases.": "Recognition points across linked LazyingArt apps. Separate from app credits and purchases.",
+    "Loading shared points…": "Loading shared points…",
+    "Pending recognition": "Pending recognition",
+    "Non-transferable. No cash value, purchases or redemption.": "Non-transferable. No cash value, purchases or redemption.",
+    "Connect your LazyingArt account to view shared points.": "Connect your LazyingArt account to view shared points.",
+    "Reading shared points requires separate consent.": "Reading shared points requires separate consent.",
+    "Shared points are temporarily unavailable.": "Shared points are temporarily unavailable.",
+    "Refresh shared points": "Refresh shared points"
+  },
+  "zh-Hans": {
+    "Shared LAC points": "共享 LAC 积分",
+    "Recognition points across linked LazyingArt apps. Separate from app credits and purchases.": "已关联的 LazyingArt 应用共用的荣誉积分，与应用额度和购买项目分开。",
+    "Loading shared points…": "正在加载共享积分…",
+    "Pending recognition": "待确认积分",
+    "Non-transferable. No cash value, purchases or redemption.": "不可转让，无现金价值，不可购买或兑换。",
+    "Connect your LazyingArt account to view shared points.": "连接 LazyingArt 账号以查看共享积分。",
+    "Reading shared points requires separate consent.": "查看共享积分需要单独授权读取余额。",
+    "Shared points are temporarily unavailable.": "共享积分暂时无法加载。",
+    "Refresh shared points": "刷新共享积分"
+  },
+  "zh-Hant": {
+    "Shared LAC points": "共享 LAC 積分",
+    "Recognition points across linked LazyingArt apps. Separate from app credits and purchases.": "已連結的 LazyingArt 應用共用的榮譽積分，與應用額度和購買項目分開。",
+    "Loading shared points…": "正在載入共享積分…",
+    "Pending recognition": "待確認積分",
+    "Non-transferable. No cash value, purchases or redemption.": "不可轉讓，無現金價值，不可購買或兌換。",
+    "Connect your LazyingArt account to view shared points.": "連接 LazyingArt 帳號以查看共享積分。",
+    "Reading shared points requires separate consent.": "查看共享積分需要另行授權讀取餘額。",
+    "Shared points are temporarily unavailable.": "共享積分暫時無法載入。",
+    "Refresh shared points": "重新整理共享積分"
+  },
+  "ja": {
+    "Shared LAC points": "共通 LAC ポイント",
+    "Recognition points across linked LazyingArt apps. Separate from app credits and purchases.": "連携した LazyingArt アプリで共通の貢献ポイントです。アプリ内クレジットや購入とは別に管理されます。",
+    "Loading shared points…": "共通ポイントを読み込み中…",
+    "Pending recognition": "確認待ちポイント",
+    "Non-transferable. No cash value, purchases or redemption.": "譲渡・購入・交換はできません。金銭的価値はありません。",
+    "Connect your LazyingArt account to view shared points.": "共通ポイントを見るには LazyingArt アカウントを連携してください。",
+    "Reading shared points requires separate consent.": "共通ポイントの残高を読むには、別途許可が必要です。",
+    "Shared points are temporarily unavailable.": "共通ポイントを一時的に読み込めません。",
+    "Refresh shared points": "共通ポイントを更新"
+  }
+}

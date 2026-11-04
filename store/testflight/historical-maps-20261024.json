@@ -1,0 +1,106 @@
+{
+  "at": "2026-10-24T07:28:32.443903+00:00",
+  "scope": "Bunko historical maps",
+  "locations": 17,
+  "modernCountryFeatures": 177,
+  "checks": {
+    "fullClientTests": 167,
+    "fullServerTests": 151,
+    "lint": true,
+    "types": true,
+    "renderer": true,
+    "pwaBuild": true,
+    "nativeWebAssetsSafari15": true,
+    "focusedMapTests": 9,
+    "browser": [
+      {
+        "name": "phone",
+        "width": 390,
+        "height": 844,
+        "pins": 4,
+        "routes": 2,
+        "noOverflow": true,
+        "zoomFit": true,
+        "selection": true,
+        "restored": true
+      },
+      {
+        "name": "desktop",
+        "width": 1280,
+        "height": 900,
+        "pins": 4,
+        "routes": 2,
+        "noOverflow": true,
+        "zoomFit": true,
+        "selection": true,
+        "restored": true
+      },
+      {
+        "name": "compact-night",
+        "width": 320,
+        "height": 568,
+        "pins": 4,
+        "routes": 2,
+        "noOverflow": true,
+        "zoomFit": true,
+        "selection": true,
+        "restored": true
+      },
+      {
+        "name": "tablet-large",
+        "width": 768,
+        "height": 1024,
+        "pins": 4,
+        "routes": 2,
+        "noOverflow": true,
+        "zoomFit": true,
+        "selection": true,
+        "restored": true
+      }
+    ]
+  },
+  "liveModel": {
+    "state": "completed",
+    "calls": 1,
+    "elapsedMs": 11103,
+    "isolatedDatabase": true,
+    "publicBook": "foguoji",
+    "privateUserChatUsed": false
+  },
+  "backend": {
+    "release": "historical-maps-533657cd2c75",
+    "previous": "reading-workspace36-7e5fa3b09175",
+    "hashes": {
+      "agent/book-companion.mjs": "a6d6eb2e84e476520bfab355ac04b1a2828b318d7280e3f5990be8a530a1a1d9",
+      "agent/reading-geography.mjs": "4cacd7ee11f934e29ce0ae1168e9df27829a372d83b3c4dd8cc9683db8dc6e04",
+      "agent/reading-locations.json": "2f6e226b3611f8ad7f93c227449265ae23e5ed3f285bdf4be0a16112351968d2"
+    },
+    "configUnchanged": true,
+    "storedMessagesUnchanged": true,
+    "publicHealth": [
+      {
+        "host": "bunko.lazying.art",
+        "status": 200,
+        "ready": true
+      },
+      {
+        "host": "llm.lazying.art",
+        "status": 200,
+        "ready": true
+      }
+    ]
+  },
+  "delivery": {
+    "backendDeployed": true,
+    "rendererNativeUploaded": false,
+    "pwaDeployment": false,
+    "storeReviewChanged": false,
+    "sharedMacUsed": false
+  },
+  "limits": [
+    "The named GitHub account did not contain the reported Foguoji conversation. Its exact answer has not been audited.",
+    "One intermediate isolated model qualification failed without its response being retained; the diagnostic runner now retains failed output. The final instrumented run completed in one call. This does not establish a zero-failure generation rate.",
+    "A deployment health probe initially used the wrong internal Host and rolled back. After correcting the probe, deployment succeeded and both external service URLs passed.",
+    "No new installed-device or macOS runtime qualification was run. Native map presentation changes require a new binary."
+  ]
+}

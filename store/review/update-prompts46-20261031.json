@@ -1,0 +1,107 @@
+{
+  "date": "2026-10-31",
+  "source": "768fd5326984d91c0b3d53460319fd7d63045747",
+  "version": "1.0.16",
+  "build": 46,
+  "apple": [
+    {
+      "platform": "MAC_OS",
+      "id": "f91c9072-6b12-4480-b058-560efedbe142",
+      "version": "1.0.16",
+      "build": "46",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    },
+    {
+      "platform": "IOS",
+      "id": "40ff3717-625d-4953-bfdc-219212e2237f",
+      "version": "1.0.16",
+      "build": "46",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    }
+  ],
+  "artifacts": [
+    {
+      "platform": "ios",
+      "source": "768fd5326984d91c0b3d53460319fd7d63045747",
+      "version": "1.0.16",
+      "build": "46",
+      "sha256": "b72684e1829247efa10ce972d8db88e536d1dfcc9db1b6cf9399ed8b2dc4d7b9",
+      "bytes": 12209151,
+      "archive": {
+        "bundle": "art.lazying.bunko",
+        "resources": 88,
+        "signer": "Q8M2S2FY77",
+        "watch": {
+          "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+          "CFBundleShortVersionString": "1.0.16",
+          "CFBundleVersion": "46",
+          "WKCompanionAppBundleIdentifier": "art.lazying.bunko"
+        }
+      },
+      "exported": {
+        "bundle": "art.lazying.bunko",
+        "resources": 88,
+        "signer": "Q8M2S2FY77",
+        "watch": {
+          "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+          "CFBundleShortVersionString": "1.0.16",
+          "CFBundleVersion": "46",
+          "WKCompanionAppBundleIdentifier": "art.lazying.bunko"
+        }
+      }
+    },
+    {
+      "platform": "macos",
+      "source": "768fd5326984d91c0b3d53460319fd7d63045747",
+      "version": "1.0.16",
+      "build": "46",
+      "sha256": "bb8a893fb2f47d7c681980e58691f5d07cf4477a4436639e7b24a7564d981b95",
+      "bytes": 6510651,
+      "archive": {
+        "bundle": "art.lazying.bunko",
+        "resources": 86,
+        "signer": "Q8M2S2FY77",
+        "machO": {
+          "arm64": "12.0",
+          "x86_64": "12.0"
+        }
+      },
+      "exported": {
+        "bundle": "art.lazying.bunko",
+        "resources": 86,
+        "signer": "Q8M2S2FY77",
+        "machO": {
+          "arm64": "12.0",
+          "x86_64": "12.0"
+        }
+      }
+    }
+  ],
+  "android": {
+    "track": "internal",
+    "state": "AVAILABLE_TO_INTERNAL_TESTERS",
+    "version": "1.0.16",
+    "build": 46,
+    "sha256": "0b2aafbb64d776dbca1a1d19043450d6463a01a60810ad934d426be7c84615e4"
+  },
+  "windows": {
+    "channel": "unsigned x64 preview",
+    "url": "https://github.com/lachlanchen/LazyingArtWebsite/releases/download/windows-previews-20261030/Bunko-1.0.16-46-windows-x64-preview.exe",
+    "sha256": "cd0ebb3982d84e77dfe1b1fde0ea39c75b3f6f1d42ca5f61d98e1eb9493dd78b",
+    "bytes": 71770235
+  },
+  "qualification": {
+    "macSmokeChecks": 22,
+    "signedAndroidInstalledManualCheck": true,
+    "windowsNativeReaderRuntime": true,
+    "windowsUpdatePolicyChecks": 15,
+    "liveWebManualCheck": true,
+    "embeddedWatchVersionAndSignatureVerified": true,
+    "watchRuntimeTested": false,
+    "physicalMontereyOrDuoTested": false
+  },
+  "formalReviewOrProductionTracksChanged": false,
+  "billingAccountsOrRewardsChanged": false
+}

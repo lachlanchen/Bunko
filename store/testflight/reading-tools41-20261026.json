@@ -1,0 +1,176 @@
+{
+  "date": "2026-10-26",
+  "version": "1.0.15",
+  "source": "fb64aad7d1ab09aafec65a703c5c995c2407ed85",
+  "backend": {
+    "deployed": true,
+    "realHttpsMapSeconds": 10.16,
+    "regionsResolved": 13,
+    "historyPreserved": true,
+    "releaseHash": "7ba967ed0f7f"
+  },
+  "qualification": {
+    "clientTests": 181,
+    "serverTests": 169,
+    "macNativeChecks": 16,
+    "macRuntime": "macOS15.7.9 x86_64",
+    "androidUpgradeChecks": 7,
+    "browserWidths": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "actualModelContinuation": {
+      "seconds": 18.6,
+      "modelCalls": 4,
+      "firstResultRegions": 13,
+      "extendedPlaceIds": 16,
+      "separateAccountHistoryEmpty": true
+    },
+    "physicalAppleDeviceTestThisRound": false
+  },
+  "appleArtifacts": [
+    {
+      "platform": "ios",
+      "source": "fb64aad7d1ab09aafec65a703c5c995c2407ed85",
+      "version": "1.0.15",
+      "build": "41",
+      "sha256": "091f22b008b7de1f1de9c3122d7e2e67242ee7460e0f8b1d9a791a97ffba11d3",
+      "bytes": 12116990,
+      "archive": {
+        "bundle": "art.lazying.bunko",
+        "resources": 88,
+        "signer": "Q8M2S2FY77",
+        "watch": {
+          "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+          "CFBundleShortVersionString": "1.0.15",
+          "CFBundleVersion": "41",
+          "WKCompanionAppBundleIdentifier": "art.lazying.bunko"
+        }
+      },
+      "exported": {
+        "bundle": "art.lazying.bunko",
+        "resources": 88,
+        "signer": "Q8M2S2FY77",
+        "watch": {
+          "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+          "CFBundleShortVersionString": "1.0.15",
+          "CFBundleVersion": "41",
+          "WKCompanionAppBundleIdentifier": "art.lazying.bunko"
+        }
+      }
+    },
+    {
+      "platform": "macos",
+      "source": "fb64aad7d1ab09aafec65a703c5c995c2407ed85",
+      "version": "1.0.15",
+      "build": "41",
+      "sha256": "f0ed40897bc83853acb340ae0feae5d31a21fd1f1b1407584ad7e43cf98e3162",
+      "bytes": 6509655,
+      "archive": {
+        "bundle": "art.lazying.bunko",
+        "resources": 86,
+        "signer": "Q8M2S2FY77",
+        "machO": {
+          "arm64": "12.0",
+          "x86_64": "12.0"
+        }
+      },
+      "exported": {
+        "bundle": "art.lazying.bunko",
+        "resources": 86,
+        "signer": "Q8M2S2FY77",
+        "machO": {
+          "arm64": "12.0",
+          "x86_64": "12.0"
+        }
+      }
+    }
+  ],
+  "android": {
+    "at": "2026-10-25T16:38:33.777525+00:00",
+    "app": "art.lazying.bunko",
+    "version": "1.0.15",
+    "build": 42,
+    "track": "internal",
+    "state": "Available to internal testers",
+    "aabSha256": "564ad6f2b5b44044b24584a87fcc67e85aa915be2769bcb31175f475deb33706",
+    "source": "fb64aad7d1ab09aafec65a703c5c995c2407ed85",
+    "replacedInternalBuild": 38,
+    "superseded41Published": false,
+    "publicReleaseChanged": false
+  },
+  "appleInternalAvailability": [
+    {
+      "id": "8b18cc0f-cc08-4626-9743-2b59ec950f94",
+      "platform": "IOS",
+      "version": "1.0.15",
+      "build": "41",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING",
+      "group": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+      "locales": [
+        "en-US",
+        "zh-Hans",
+        "zh-Hant",
+        "ja"
+      ]
+    },
+    {
+      "id": "29a5264f-83eb-46d2-949b-27e1267aa9ab",
+      "platform": "MAC_OS",
+      "version": "1.0.15",
+      "build": "41",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING",
+      "group": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+      "locales": [
+        "en-US",
+        "zh-Hans",
+        "zh-Hant",
+        "ja"
+      ]
+    }
+  ],
+  "formalReviewChanged": false,
+  "publicPwaChanged": false,
+  "resourceCleanup": {
+    "at": "2026-10-25T16:58:50.885945+00:00",
+    "guardAbsent": true,
+    "ownedProcessIdentitiesAbsent": 279,
+    "temporarySignerAbsent": true,
+    "originalSearchListRestored": true,
+    "profilesRestored": 6,
+    "sourceFilesUnchanged": 264,
+    "handbackSha256": "3bb9bf7461b9de97cc8bcad18c3dc2fb3c3044f150ac7715b0665758bf524987",
+    "localUploadProxyAndBrowserEmulatorPortsClosed": true
+  },
+  "at": "2026-10-25T17:06:36.299318+00:00",
+  "status": "Available to existing TestFlight and Google Play internal testers",
+  "formalReview": {
+    "at": "2026-10-25T17:05:14.042689+00:00",
+    "macReview": "WAITING_FOR_REVIEW",
+    "selectedBuild": "40",
+    "new41SubmittedForReview": false
+  },
+  "features": [
+    "Bounded place lookup, dated-layer discovery and authorized passage search",
+    "Thirteen colored Eastern Han reference provinces with source/date labels",
+    "Fixed city anchors, named labels and collision avoidance",
+    "Continued maps preserve prior results and account-scoped history"
+  ],
+  "mapLayer": {
+    "referenceYearCE": 140,
+    "source": "https://commons.wikimedia.org/wiki/File:Han_orientaux_140.svg",
+    "license": "CC-BY-SA-4.0",
+    "westernExtentCropped": true,
+    "exact191BordersOrMilitaryControlClaimed": false
+  },
+  "capture": {
+    "file": "docs/images/historical-maps-20261026/han-cities-phone.png",
+    "sha256": "a659edb6311f7d849e025a0974c21a4b045fd8787089fd7d52511ea0780f261c",
+    "channel": "Chromium actual component with synthetic demonstration content",
+    "publicStoreScreenshotChanged": false
+  }
+}

@@ -1,3 +1,11 @@
+import { companionAvailability, companionClientAddress, companionModelScope } from './companion-region.mjs'
+import {linkFailures,linkFailure} from './account-link-errors.mjs'
+import {sharePage} from './share-page.mjs'
+import {createRewardSourceRoutes} from './reward-source-routes.mjs'
+import {createProfileStore} from './shared-link-store.mjs'
+import {createGitHubConnections} from './github-connection.mjs'
+import {PROFILE_BINDING,ProfileLinkError} from './lazyingart-profile.mjs'
+import {createLacBalance,LacReadError} from './lac-balance.mjs'
 import { createDocumentAgent, agentPaths } from './agent/service.mjs'
 import { AppError } from './agent/common.mjs'
 import { createDemoAuth } from './demo-auth.mjs'
@@ -32,7 +40,7 @@ function passage(value) {
   return value
 }
 
-export function createService(config, { fetchImpl = fetch, now = Date.now, database = ':memory:' } = {}) {
+export function createService(config, { fetchImpl = fetch, now = Date.now, database = ':memory:', profileOptions = {}, pointsProvider, rewardOptions = {} } = {}) {
   const base = new URL(config.publicUrl)
   if (base.protocol !== 'https:' || base.pathname !== PREFIX || base.search || base.hash) throw new Error('Invalid publicUrl')
   const origins = new Set(config.origins ?? ['https://lachlan.lazying.art', 'https://lachlanchen.github.io', 'capacitor://localhost', 'https://localhost', 'bunko://localhost', 'null'])
@@ -56,6 +64,13 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, data TEXT NOT NULL, expires INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS threads (passage TEXT PRIMARY KEY, issue INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS posts (id TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, result TEXT, expires INTEGER NOT NULL);`)
+  db.exec('CREATE TABLE IF NOT EXISTS discussion_authors(kind TEXT NOT NULL,id INTEGER NOT NULL,owner TEXT NOT NULL,user TEXT NOT NULL,PRIMARY KEY(kind,id))')
+  const displayComment = (comment, kind = 'comment') => {
+    if (!comment) return null
+    const result = kind === 'issue' ? safeIssue(comment) : safeComment(comment)
+    const author = db.prepare('SELECT user FROM discussion_authors WHERE kind=? AND id=?').get(kind, comment.id)
+    return author ? {...result,user:JSON.parse(author.user)} : result
+  }
   // Revocation is durable even if a disabled account is later re-enabled with
   // the same password. Do not wait for each old device to make a request.
   db.exec('BEGIN IMMEDIATE')
@@ -69,10 +84,42 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     }
     db.exec('COMMIT')
   } catch (error) { db.exec('ROLLBACK'); db.close(); throw error }
+  const localSession = id => {
+    const row=db.prepare('SELECT data FROM sessions WHERE id=? AND expires>?').get(id,now())
+    if(!row)return null
+    const auth=unseal(row.data)
+    if(auth.provider==='demo')return null
+    return {owner:cloudOwner(auth.user),user:auth.user,authenticatedAt:auth.authenticatedAt}
+  }
+  const activeOwner=owner=>db.prepare('SELECT id FROM sessions WHERE expires>?').all(now()).some(row=>localSession(row.id)?.owner===owner)
+  db.exec('CREATE TABLE IF NOT EXISTS bunko_local_accounts(owner TEXT PRIMARY KEY,user TEXT NOT NULL)')
+  for(const row of db.prepare('SELECT data FROM sessions').all()){
+    try{const auth=unseal(row.data);if(auth.provider!=='demo'&&auth.user)db.prepare('INSERT OR IGNORE INTO bunko_local_accounts VALUES(?,?)').run(cloudOwner(auth.user),seal(auth.user))}catch{/* Preserve unreadable historical rows. */}
+  }
+  const legacyOwnerExists=owner=>{
+    for(const {name} of db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all()){
+      if(!/^(?:agent_|cloud_|profile_|lac_|discussion_|github_|bunko_)[a-z_]+$/.test(name))continue
+      if(db.prepare('PRAGMA table_info('+name+')').all().some(c=>c.name==='owner')&&db.prepare('SELECT 1 FROM '+name+' WHERE owner=? LIMIT 1').get(owner))return true
+    }
+    return false
+  }
+  const githubConnections=createGitHubConnections({db,seal,unseal,now,legacyOwnerExists,active:activeOwner,refresh:async(data,expected)=>{
+    const response=await fetchImpl('https://github.com/login/oauth/access_token',{method:'POST',headers:{Accept:'application/json','Content-Type':'application/json'},body:JSON.stringify({client_id:config.clientId,client_secret:config.clientSecret,grant_type:'refresh_token',refresh_token:data.refreshToken}),signal:AbortSignal.timeout(12000),redirect:'error'})
+    const value=await response.json()
+    if(!response.ok||!value.access_token||!value.refresh_token||!Number.isFinite(value.expires_in)||!Number.isFinite(value.refresh_token_expires_in))throw new ProfileLinkError('github_reconnect_required')
+    const user=safeUser(await github('/user',value.access_token));if(user.id!==expected.id)throw new ProfileLinkError('identity_invalid')
+    return{token:value.access_token,refreshToken:value.refresh_token,accessExpires:now()+Math.min(SESSION_MS,value.expires_in*1000),refreshExpires:now()+value.refresh_token_expires_in*1000}
+  }})
+  const profileStore={db,localSession,active:activeOwner,requireActive:owner=>{if(!activeOwner(owner))throw new ProfileLinkError('local_session_changed')},flowActive:id=>!!db.prepare('SELECT 1 FROM flows WHERE id=? AND expires>?').get(id,now())}
+  const sharedProfile=createProfileStore(profileStore,config.lazyingart,{...profileOptions,now})
+  if(sharedProfile.enabled&&config.publicUrl+'/oauth/lazyingart/callback'!==PROFILE_BINDING.redirectUri)throw new Error('Shared callback binding mismatch')
+  const lacBalance=createLacBalance(db,config.lacPoints,{binding:PROFILE_BINDING,profile:sharedProfile,provider:pointsProvider,now})
+  const rewards=createRewardSourceRoutes(profileStore,{origin:base.origin,rewardSource:config.rewardSource},{...rewardOptions,now})
+  const revokeTimer=sharedProfile.flushRevocations?setInterval(()=>void sharedProfile.flushRevocations(),30000):null;revokeTimer?.unref()
   const cloudLedger = createCloudLedger(db, config.billing || {}, now)
   const cloudBilling = createCloudBilling(cloudLedger, config.billing || {}, { seal, unseal })
-  const agent = createDocumentAgent({ db, seal, unseal, config: config.agent || {}, cloud: cloudLedger, now })
   const bookMirror = config.bookMirror?.enabled === true ? createBookMirror({ database: config.bookMirror.database, maxBytes: config.bookMirror.maxBytes, fetchImpl, now }) : null
+  const agent = createDocumentAgent({ db, seal, unseal, config: config.agent || {}, cloud: cloudLedger, readBook: bookMirror?.get, now })
   const cleanup = () => {
     for (const table of ['flows', 'sessions', 'posts']) db.prepare(`DELETE FROM ${table} WHERE expires < ?`).run(now())
   }
@@ -148,6 +195,22 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     const latest = db.prepare('SELECT * FROM sessions WHERE id=? AND expires>?').get(row.id, now())
     if (!latest) fail(401, 'sign_in_again')
     let auth = unseal(latest.data)
+    if(auth.provider==='github-linked'){
+      const connection=await githubConnections.credential(cloudOwner(auth.user))
+      if(!connection||connection.epoch!==auth.githubEpoch||!db.prepare('SELECT id FROM sessions WHERE id=?').get(row.id))fail(401,'sign_in_again')
+      const expires=now()+PERSISTENT_MS;db.prepare('UPDATE sessions SET expires=? WHERE id=?').run(expires,row.id)
+      if(auth.storage==='cookie'&&res)cookie(res,value,expires)
+      return{...auth,token:connection.token,githubUser:connection.github,expires,sessionId:row.id}
+    }
+    if (auth.provider === 'lazyingart') {
+      try { await sharedProfile.authorizeSession(cloudOwner(auth.user), {fresh:refresh,epoch:auth.profileEpoch}) }
+      catch(error) { if(['reconnect_required','authorization_rejected'].includes(error.code)){db.prepare('DELETE FROM sessions WHERE id=?').run(row.id);fail(401,'sign_in_again')} throw error }
+      if(!db.prepare('SELECT id FROM sessions WHERE id=?').get(row.id))fail(401,'sign_in_again')
+      const expires=now()+PERSISTENT_MS
+      db.prepare('UPDATE sessions SET expires=? WHERE id=?').run(expires,row.id)
+      if(auth.storage==='cookie'&&res)cookie(res,value,expires)
+      return {...auth,expires,sessionId:row.id}
+    }
     if (auth.provider === 'demo') {
       if (!demo.current(auth.demoVersion)) { db.prepare('DELETE FROM sessions WHERE id=?').run(row.id); fail(401, 'sign_in_again') }
       const expires = now() + PERSISTENT_MS
@@ -196,11 +259,11 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     const nonce = opaque()
     res.setHeader('Content-Security-Policy', `default-src 'none'; script-src 'nonce-${nonce}'; style-src 'nonce-${nonce}'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'`)
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
-    res.end(`<!doctype html><html lang="en"><meta name="viewport" content="width=device-width"><title>Bunko · GitHub</title><style nonce="${nonce}">body{font:18px system-ui;background:#faf7f0;color:#272942;max-width:32rem;margin:15vh auto;padding:2rem;line-height:1.7}a{color:#403d78}</style><h1>Bunko · 文庫</h1><p>${error ? 'Sign-in was not completed. Return to Bunko and try again.' : 'Signed in. Return to Bunko to continue your conversation.'}</p>${target ? `<a href="${target}">Return to Bunko</a><script nonce="${nonce}">location.replace(${JSON.stringify(target)})</script>` : `<script nonce="${nonce}">window.close()</script>`}</html>`)
+    res.end(`<!doctype html><html lang="en"><meta name="viewport" content="width=device-width"><title>Sign in · Bunko</title><style nonce="${nonce}">body{font:18px system-ui;background:#faf7f0;color:#272942;max-width:32rem;margin:15vh auto;padding:2rem;line-height:1.7}a{color:#403d78}</style><h1>Bunko · 文庫</h1><p>${error ? 'Sign-in was not completed. Return to Bunko and try again.' : 'Signed in. Return to Bunko to continue your conversation.'}</p>${target ? `<a href="${target}">Return to Bunko</a><script nonce="${nonce}">location.replace(${JSON.stringify(target)})</script>` : `<script nonce="${nonce}">window.close()</script>`}</html>`)
   }
   const cloudPaths = ['catalog', 'purchase', 'checkout', 'portal', 'restore'].map(p => `${PREFIX}/v1/cloud/${p}`)
   const notificationPaths = ['apple', 'google', 'stripe'].map(p => `${PREFIX}/v1/cloud/notifications/${p}`)
-  const postPaths = ['/v1/auth/start', '/v1/auth/demo', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post', ...agentPaths].map(p => PREFIX + p).concat(cloudPaths)
+  const postPaths = ['/v1/auth/methods', '/v1/auth/start', '/v1/auth/cancel', '/v1/auth/demo', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post', ...['status','start','complete','cancel','disconnect','balance','activity'].map(p=>'/v1/lazyingart/'+p), ...agentPaths].map(p => PREFIX + p).concat(cloudPaths)
   const server = createServer(async (req, res) => {
     res.setHeader('Cache-Control', 'no-store')
     res.setHeader('Referrer-Policy', 'no-referrer')
@@ -212,7 +275,21 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       if (active >= 40) fail(503, 'busy')
       active++; counted = true
       const raw = req.url ?? '', path = raw.split('?')[0]
-      if (path !== `${PREFIX}/oauth/callback` && raw !== path) fail(404, 'not_found')
+      if(await rewards.route(req,res))return
+      if (![`${PREFIX}/oauth/callback`,`${PREFIX}/oauth/lazyingart`,`${PREFIX}/oauth/lazyingart/callback`].includes(path) && raw !== path) fail(404, 'not_found')
+      const sharedBook = path.match(new RegExp('^' + PREFIX + '/share/book/([a-z0-9-]{1,120})$'))
+      if (sharedBook && ['GET','HEAD'].includes(req.method)) {
+        if (!bookMirror) fail(503, 'book_mirror_unavailable')
+        limit(`share:${req.socket.remoteAddress}`, 90, 60000)
+        const index = JSON.parse(Buffer.from((await bookMirror.get('reader-index.json')).body).toString('utf8'))
+        const book = index.books.find(row => row.id === sharedBook[1])
+        if (!book) fail(404, 'book_not_found')
+        const id = book.id, title = book.title?.en || Object.values(book.title || {})[0] || id
+        const card = {app:'Bunko',title,description:book.author || 'Read with interlaced languages and ruby readings.',url:'https://bunko.lazying.art/bunko/share/book/'+id,web:'https://lachlan.lazying.art/Bunko/?book='+id,native:'art.lazying.bunko://book/'+id,image:'https://lachlan.lazying.art/Bunko/icon-512.png',appleID:'6815137919',androidID:'art.lazying.bunko'}
+        res.setHeader('Content-Security-Policy', "default-src 'none'; style-src 'unsafe-inline'; img-src https://lachlan.lazying.art; base-uri 'none'; frame-ancestors 'none'")
+        res.writeHead(200, {'Content-Type':'text/html; charset=utf-8'})
+        res.end(req.method === 'HEAD' ? undefined : sharePage(card)); return
+      }
       if (bookMirror && path.startsWith(`${PREFIX}/books-cache/`)) {
         res.setHeader('Access-Control-Allow-Origin', '*')
         if (!['GET', 'HEAD'].includes(req.method)) fail(405, 'method_denied')
@@ -226,7 +303,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         const input = await body(req, 200000, true)
         json(res, await cloudBilling.notification(path.split('/').pop(), req, input.value, input.raw)); return
       }
-      if (!postPaths.includes(path) && ![`${PREFIX}/healthz`, `${PREFIX}/oauth/callback`].includes(path)) fail(404, 'not_found')
+      if (!postPaths.includes(path) && ![`${PREFIX}/healthz`, `${PREFIX}/oauth/callback`,`${PREFIX}/oauth/lazyingart`,`${PREFIX}/oauth/lazyingart/callback`].includes(path)) fail(404, 'not_found')
       const origin = req.headers.origin
       if (origin && !origins.has(origin)) fail(403, 'origin_denied')
       if (origin) { res.setHeader('Access-Control-Allow-Origin', origin); res.setHeader('Access-Control-Allow-Credentials', 'true') }
@@ -239,6 +316,58 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       const ip = req.headers['x-bunko-client-address'] ?? req.socket.remoteAddress
       limit(`request:${ip}`, 180, 60000)
       cleanup()
+      if(req.method==='GET'&&path===`${PREFIX}/oauth/lazyingart`){
+        if(!sharedProfile.enabled)fail(503,'shared_login_unavailable')
+        const ticket=new URL(raw,base).searchParams.get('ticket'),row=db.prepare('SELECT data FROM flows WHERE id=? AND expires>?').get(ticket,now())
+        if(!row)fail(400,'flow_expired')
+        const flow=unseal(row.data);if(!['shared-link','shared-login'].includes(flow.kind)||flow.started)fail(400,'invalid_flow')
+        db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({...flow,started:true}),ticket)
+        const binder=opaque(),result=await sharedProfile.begin({binding:binder,...flow.context,flow:ticket,intent:flow.kind==='shared-login'?'login':'link',provider:flow.provider})
+        res.setHeader('Set-Cookie',`__Host-bunko-link=${binder}; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=600`)
+        res.writeHead(303,{Location:result.authorizationUrl});res.end();return
+      }
+      if(req.method==='GET'&&path===`${PREFIX}/oauth/lazyingart/callback`){
+        if(!sharedProfile.enabled)fail(503,'shared_login_unavailable')
+        const binder=req.headers.cookie?.split(';').map(v=>v.trim()).find(v=>v.startsWith('__Host-bunko-link='))?.slice('__Host-bunko-link='.length)
+        let result
+        try {result=await sharedProfile.complete({callbackUrl:new URL(raw,base).href,binding:binder})}
+        catch(error){
+          // The store attaches this flow only after verifying/consuming callback proof.
+          if(error instanceof ProfileLinkError&&error.linkFlow&&linkFailures[error.code]){
+            const row=db.prepare('SELECT data FROM flows WHERE id=? AND expires>?').get(error.linkFlow,now())
+            const flow=row&&unseal(row.data)
+            if(['shared-link','shared-login'].includes(flow?.kind)){
+              db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({...flow,linkError:error.code,error:true,reauthError:error.code}),error.linkFlow)
+              res.setHeader('Set-Cookie','__Host-bunko-link=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0')
+              if(flow.platform==='native'){callbackPage(res,flow.platform,error.linkFlow,true);return}
+              res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Content-Security-Policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"})
+              res.end('<!doctype html><meta name="viewport" content="width=device-width"><title>Bunko account connection</title><h1>Account not connected</h1><p>'+linkFailure(error.code).message+'</p><p>Return to Bunko to continue.</p>');return
+            }
+          }
+          throw error
+        }
+        const row=db.prepare('SELECT data FROM flows WHERE id=? AND expires>?').get(result.flow,now())
+        if(!row)fail(400,'flow_expired')
+        const flow=unseal(row.data)
+        if(flow.kind==='shared-login') {
+          db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({...flow,auth:{provider:'lazyingart',user:result.user,profileEpoch:result.epoch,storage:flow.storage,authenticatedAt:now(),expires:now()+PERSISTENT_MS}}),result.flow)
+          res.setHeader('Set-Cookie','__Host-bunko-link=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0')
+          callbackPage(res,flow.platform,result.flow);return
+        }
+        db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({...flow,completed:true}),result.flow)
+        // GitHub-first readers already granted the repository-scoped connection.
+        // Keep that identity available when they later sign in through a central provider.
+        const original=db.prepare('SELECT data FROM sessions WHERE id=?').get(flow.context.sessionHash)
+        const local=original&&unseal(original.data)
+        if(local&&local.provider!=='lazyingart'&&local.provider!=='demo'&&local.provider!=='github-linked'&&Number.isSafeInteger(local.user.id)){
+          const connected=githubConnections.connect(local.user,local.user,local)
+          db.prepare('UPDATE sessions SET data=? WHERE id=?').run(seal({provider:'github-linked',user:local.user,githubEpoch:connected.epoch,storage:local.storage,authenticatedAt:local.authenticatedAt}),flow.context.sessionHash)
+        }
+        res.setHeader('Set-Cookie','__Host-bunko-link=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0')
+        if(flow.platform==='native'){callbackPage(res,flow.platform,result.flow);return}
+        res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Content-Security-Policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"})
+        res.end('<!doctype html><html lang="en"><meta name="viewport" content="width=device-width"><title>Bunko account connected</title><h1>Account connected</h1><p>Return to Bunko to continue reading.</p></html>');return
+      }
       if (req.method === 'GET' && path === `${PREFIX}/oauth/callback`) {
         const params = new URL(raw, base).searchParams, state = params.get('state')
         if (!validOpaque(state)) fail(400, 'invalid_state')
@@ -259,16 +388,20 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
           if (!response.ok || !token.access_token || token.error) fail(502, 'exchange_failed')
           const user = safeUser(await github('/user', token.access_token))
           if (!Number.isSafeInteger(user.id) || typeof user.login !== 'string') fail(502, 'invalid_user')
+          const linked=githubConnections.lookup(user.id),canonical=linked?.user||user
+          if(flow.reauth&&(cloudOwner(canonical)!==flow.reauth.owner||localSession(flow.reauth.sessionHash)?.owner!==flow.reauth.owner))throw new ProfileLinkError('local_session_changed')
+          if(flow.connectGithub&&localSession(flow.connectGithub.sessionHash)?.owner!==flow.connectGithub.owner)throw new ProfileLinkError('local_session_changed')
           const accessExpires = now() + Math.min(SESSION_MS, (token.expires_in ?? 28800) * 1000)
           const persistent = !!flow.storage && typeof token.refresh_token === 'string' && Number.isFinite(token.refresh_token_expires_in)
-          flow.auth = { token: token.access_token, user, accessExpires, expires: accessExpires, persistent, storage: flow.storage,
+          flow.auth = { token: token.access_token, user, authenticatedAt:now(), accessExpires, expires: accessExpires, persistent, storage: flow.storage,
             ...(persistent ? { refreshToken: token.refresh_token, refreshExpires: now() + token.refresh_token_expires_in * 1000 } : {}) }
           // Refresh tokens stay encrypted on the cloud; only Bunko's opaque session reaches native storage.
+          if(linked)flow.canonical=canonical
           delete flow.githubVerifier
           db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal(flow), row.id)
           callbackPage(res, flow.platform, row.id)
-        } catch {
-          db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({ ...flow, error: true, githubVerifier: undefined }), row.id)
+        } catch(error) {
+          db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({ ...flow, error: true, reauthError:(flow.reauth||flow.connectGithub)&&error instanceof ProfileLinkError?error.code:undefined, githubVerifier: undefined }), row.id)
           callbackPage(res, flow.platform, row.id, true)
         }
         return
@@ -286,6 +419,42 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         limit(`billing:${owner}`, 20, 60000)
         json(res, action === 'purchase' ? await cloudBilling.purchase(input.platform, input, owner) : await cloudBilling.web(action, input, owner)); return
       }
+      if(path.startsWith(`${PREFIX}/v1/lazyingart/`)){
+        const action=path.split('/').pop(),input=await body(req)
+        let auth;try{auth=await session(req,res,false)}catch(e){if(action!=='status'||e.status!==401)throw e}
+        if(action==='status'){const owner=auth&&cloudOwner(auth.user);json(res,{enabled:sharedProfile.linkEnabled??sharedProfile.enabled,points: lacBalance.enabled,signedIn:!!auth,eligible:!!auth&&auth.provider!=='demo',...(auth&&sharedProfile.status?sharedProfile.status(owner):{linked:false,state:'unlinked'}),github:auth&&auth.provider!=='demo'?{available:sharedProfile.canLink?.(owner)===true,...githubConnections.status(owner),...(!['lazyingart','github-linked'].includes(auth.provider)?{connected:true,state:'active',login:auth.user.login}:{})}:undefined});return}
+        if(!auth||auth.provider==='demo')fail(403,'shared_account_requires_personal_login')
+        if(action==='activity'){
+          if(Object.keys(input).length!==1||input.kind!=='foreground')fail(400,'invalid_activity')
+          limit(`lac-activity:${cloudOwner(auth.user)}`,12,60000)
+          json(res,await rewards.foreground({id:cloudOwner(auth.user)}));return
+        }
+        if(!sharedProfile.enabled)fail(503,'shared_login_unavailable')
+        const owner=cloudOwner(auth.user)
+        if(action==='start'){
+          if(!sharedProfile.canLink(owner))fail(503,'shared_login_unavailable')
+          if(!validOpaque(input.challenge)||input.consent!==true)fail(400,'explicit_link_required')
+          if(!Number.isSafeInteger(auth.authenticatedAt)||auth.authenticatedAt<now()-600000)fail(403,'local_reauthentication_required')
+          const id=opaque(),context={owner,sessionHash:auth.sessionId,authenticatedAt:auth.authenticatedAt}
+          db.prepare('INSERT INTO flows VALUES(?,NULL,?,?)').run(id,seal({kind:'shared-link',challenge:input.challenge,context,platform:input.platform==='native'?'native':'web'}),now()+FLOW_MS)
+          json(res,{flow:id,url:config.publicUrl+'/oauth/lazyingart?ticket='+id});return
+        }
+        if(action==='complete'||action==='cancel'){
+          const row=db.prepare('SELECT data FROM flows WHERE id=? AND expires>?').get(input.flow,now());if(!row)fail(410,'flow_expired')
+          const flow=unseal(row.data)
+          if(flow.kind!=='shared-link'||flow.context.sessionHash!==auth.sessionId||!validOpaque(input.verifier)||!same(hash(input.verifier),flow.challenge))fail(400,'invalid_verifier')
+          if(action==='cancel'){db.prepare('DELETE FROM flows WHERE id=?').run(input.flow);json(res,{ok:true});return}
+          if(flow.linkError)throw new ProfileLinkError(flow.linkError)
+          json(res,flow.completed?{linked:true}:{pending:true});return
+        }
+        if(action==='disconnect'){if(auth.provider==='lazyingart')fail(409,'use_sign_out');rewards.hold(owner);sharedProfile.disconnect(owner);json(res,{ok:true});return}
+        if(action==='balance'){
+          if(!lacBalance.enabled)fail(503,'points_not_qualified')
+          const value=await lacBalance.read(owner)
+          if(!localSession(auth.sessionId))fail(401,'sign_in_again')
+          json(res,value);return
+        }
+      }
       const isAgent = agentPaths.includes(path.slice(PREFIX.length))
       if (isAgent) {
         if (path.endsWith('/upload')) {
@@ -297,9 +466,16 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         const input = await body(req, path.endsWith('/upload') ? 27_000_000 : 18000)
         // Sign-out during a large upload invalidates this operation.
         if (!db.prepare('SELECT id FROM sessions WHERE id=?').get(auth.sessionId)) fail(401, 'sign_in_again')
-        json(res, await agent.handle(path.split('/').pop(), input, auth.user)); return
+        const action = path.split('/').pop()
+        const modelScope = companionModelScope(input.clientRegion, companionClientAddress(req))
+        json(res, await agent.handle(action, input, auth.user, modelScope)); return
       }
       const input = await body(req)
+      if(path===`${PREFIX}/v1/auth/methods`){
+        let additional=[]
+        try{additional=await sharedProfile.loginProviders?.({advertised:true})||[]}catch{ /* Existing GitHub remains available during an issuer outage. */ }
+        json(res,{providers:[...(config.clientId&&config.clientSecret?['github']:[]),...additional],companion:companionAvailability(input.clientRegion,companionClientAddress(req))});return
+      }
       if (path === `${PREFIX}/v1/auth/demo`) {
         if (!demo.enabled) fail(503, 'demo_unavailable')
         limit(`demo:${ip}`, 8, 900000)
@@ -321,39 +497,88 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         json(res, { flow: id }); return
       }
       if (path === `${PREFIX}/v1/auth/start`) {
-        if (!config.clientId || !config.clientSecret) fail(503, 'not_configured')
+        const provider=input.provider??'github'
+        if(!['github','google','apple','lazyingart'].includes(provider))fail(400,'invalid_flow')
+        if (provider==='github'&&(!config.clientId || !config.clientSecret)) fail(503, 'not_configured')
         limit(`start:${ip}`, 10, 600000)
         if (!validOpaque(input.challenge) || !['web', 'native'].includes(input.platform)) fail(400, 'invalid_flow')
         const storage = input.storage
         if (storage !== undefined && !['cookie', 'secure'].includes(storage)) fail(400, 'invalid_flow')
         if (storage === 'cookie' && (origin !== 'https://lachlan.lazying.art' || input.platform !== 'web')) fail(400, 'invalid_flow')
         if (storage === 'secure' && input.platform !== 'native') fail(400, 'invalid_flow')
+        const local=input.reauthenticate===true||input.connectGithub===true?await session(req,res,input.connectGithub===true):null
+        if(local?.provider==='demo')fail(403,'shared_account_requires_personal_login')
+        let connectGithub
+        if(input.connectGithub===true){
+          if(provider!=='github'||input.consent!==true||input.reauthenticate===true)fail(400,'explicit_link_required')
+          if(!sharedProfile.canLink?.(cloudOwner(local.user)))fail(503,'shared_login_unavailable')
+          if(!Number.isSafeInteger(local.authenticatedAt)||local.authenticatedAt<now()-600000)throw new ProfileLinkError('local_reauthentication_required')
+          connectGithub={owner:cloudOwner(local.user),sessionHash:local.sessionId,user:local.user}
+        }
+        const reauth=local&&!connectGithub?{owner:cloudOwner(local.user),sessionHash:local.sessionId}:null
+        if(provider!=='github'){
+          if(!(await sharedProfile.loginProviders?.()||[]).includes(provider))fail(503,'provider_unavailable')
+          if(!local&&credential(req))fail(409,'sign_out_before_login')
+          const id=opaque(),context=local?{owner:cloudOwner(local.user),sessionHash:local.sessionId,authenticatedAt:local.authenticatedAt}:{}
+          db.prepare('INSERT INTO flows VALUES(?,NULL,?,?)').run(id,seal({kind:'shared-login',provider,challenge:input.challenge,platform:input.platform,storage,context,...(reauth?{reauth}:{})}),now()+FLOW_MS)
+          json(res,{flow:id,url:config.publicUrl+'/oauth/lazyingart?ticket='+id});return
+        }
         const id = opaque(), state = opaque(), verifier = opaque()
-        db.prepare('INSERT INTO flows VALUES (?,?,?,?)').run(id, hash(state), seal({ challenge: input.challenge, platform: input.platform, storage, githubVerifier: verifier }), now() + FLOW_MS)
+        db.prepare('INSERT INTO flows VALUES (?,?,?,?)').run(id, hash(state), seal({ challenge: input.challenge, platform: input.platform, storage, githubVerifier: verifier,...(reauth?{reauth}:{}),...(connectGithub?{connectGithub}:{}) }), now() + FLOW_MS)
         json(res, { flow: id, url: `https://github.com/login/oauth/authorize?${new URLSearchParams({ client_id: config.clientId, redirect_uri: `${config.publicUrl}/oauth/callback`, state, code_challenge: hash(verifier), code_challenge_method: 'S256' })}` }); return
       }
-      if (path === `${PREFIX}/v1/auth/complete`) {
+      if (path === `${PREFIX}/v1/auth/complete` || path===`${PREFIX}/v1/auth/cancel`) {
         if (!validOpaque(input.flow) || !validOpaque(input.verifier)) fail(400, 'invalid_flow')
         const row = db.prepare('SELECT * FROM flows WHERE id=? AND expires>?').get(input.flow, now())
         if (!row) fail(410, 'flow_expired')
         const flow = unseal(row.data)
+        if(flow.kind==='shared-link')fail(400,'invalid_flow')
         if (!same(flow.challenge, hash(input.verifier))) fail(403, 'invalid_verifier')
+        if(path.endsWith('/cancel')){
+          if(flow.completed?.token)db.prepare('DELETE FROM sessions WHERE id=?').run(hash(flow.completed.token))
+          if(flow.completing)db.prepare('DELETE FROM sessions WHERE id=?').run(hash(flow.completing))
+          db.prepare('DELETE FROM flows WHERE id=?').run(row.id);json(res,{ok:true});return
+        }
         if (flow.demoVersion && !demo.current(flow.demoVersion)) fail(401, 'sign_in_again')
         if (flow.completed) {
-          if (!db.prepare('SELECT id FROM sessions WHERE id=? AND expires>?').get(hash(flow.completed.token), now())) fail(410, 'flow_expired')
+          const completedSession=db.prepare('SELECT data FROM sessions WHERE id=? AND expires>?').get(hash(flow.completed.token), now())
+          if (!completedSession) fail(410, 'flow_expired')
+          const completedAuth=unseal(completedSession.data)
+          if(completedAuth.provider==='lazyingart')await sharedProfile.authorizeSession(cloudOwner(completedAuth.user),{fresh:true,epoch:completedAuth.profileEpoch})
           if (flow.storage === 'cookie') cookie(res, flow.completed.token, flow.completed.expires)
           json(res, { ...flow.completed, ...(flow.storage === 'cookie' ? { token: undefined } : {}) }); return
         }
-        if (flow.error) { db.prepare('DELETE FROM flows WHERE id=?').run(row.id); fail(400, 'authorization_cancelled') }
+        if (flow.error) { db.prepare('DELETE FROM flows WHERE id=?').run(row.id); if(flow.reauthError)throw new ProfileLinkError(flow.reauthError);fail(400, 'authorization_cancelled') }
+        if(flow.completing){json(res,{pending:true});return}
         if (!flow.auth) { json(res, { pending: true }); return }
         const token = opaque()
+        db.prepare('UPDATE flows SET data=? WHERE id=?').run(seal({...flow,completing:token}),row.id)
+        const requireFlow=()=>{const current=db.prepare('SELECT data FROM flows WHERE id=? AND expires>?').get(row.id,now());if(!current||unseal(current.data).completing!==token)fail(410,'flow_expired')}
+        try {
+        if(flow.reauth){const local=await session(req,res,false);if(local.sessionId!==flow.reauth.sessionHash||cloudOwner(local.user)!==flow.reauth.owner)throw new ProfileLinkError('local_session_changed')}
+        if(flow.connectGithub||flow.canonical){
+          if(flow.connectGithub){const local=await session(req,res,true);if(local.sessionId!==flow.connectGithub.sessionHash||cloudOwner(local.user)!==flow.connectGithub.owner)throw new ProfileLinkError('local_session_changed')}
+          requireFlow()
+          const linked=githubConnections.connect(flow.connectGithub?.user||flow.canonical,flow.auth.user,flow.auth)
+          flow.auth={provider:'github-linked',user:linked.user,githubEpoch:linked.epoch,storage:flow.storage,authenticatedAt:now(),expires:now()+PERSISTENT_MS}
+        }
+        requireFlow()
         const expires = flow.auth.persistent ? Math.min(now() + PERSISTENT_MS, flow.auth.refreshExpires) : flow.auth.expires
         db.prepare('INSERT INTO sessions VALUES (?,?,?)').run(hash(token), seal(flow.auth), expires)
-        const completed = { token, user: flow.auth.user, expires }
+        if(flow.auth.provider!=='demo')db.prepare('INSERT OR IGNORE INTO bunko_local_accounts VALUES(?,?)').run(cloudOwner(flow.auth.user),seal(flow.auth.user))
+        if(flow.auth.provider==='lazyingart')await sharedProfile.authorizeSession(cloudOwner(flow.auth.user),{fresh:true,epoch:flow.auth.profileEpoch})
+        requireFlow()
+        const completed = { token, user: flow.auth.user, expires, ...(flow.auth.provider==='lazyingart'?{method:'lazyingart'}:{}) }
         // A lost completion response can be recovered with the same bound verifier.
         db.prepare('UPDATE flows SET data=?, expires=? WHERE id=?').run(seal({ challenge: flow.challenge, storage: flow.storage, demoVersion: flow.demoVersion, completed }), now() + 60000, row.id)
         if (flow.storage === 'cookie') cookie(res, token, expires)
         json(res, { ...completed, ...(flow.storage === 'cookie' ? { token: undefined } : {}) }); return
+        }catch(error){
+          db.prepare('DELETE FROM sessions WHERE id=?').run(hash(token))
+          const current=db.prepare('SELECT data FROM flows WHERE id=?').get(row.id)
+          if(current&&unseal(current.data).completing===token)db.prepare('UPDATE flows SET data=? WHERE id=?').run(row.data,row.id)
+          throw error
+        }
       }
       if (path === `${PREFIX}/v1/discussions/read`) {
         const key = passage(input.passage), page = input.page ?? 1
@@ -363,22 +588,28 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         const token = await publicReadToken()
         const issue = await findThread(key, token)
         const comments = issue ? await github(`/repos/${REPO}/issues/${issue.number}/comments?per_page=30&page=${page}`, token) : []
-        const value = { issue: safeIssue(issue), comments: comments.map(safeComment), nextPage: comments.length === 30 ? page + 1 : null }
+        const value = { issue: displayComment(issue,'issue'), comments: comments.map(c=>displayComment(c)), nextPage: comments.length === 30 ? page + 1 : null }
         if (cache.size >= 500) cache.delete(cache.keys().next().value)
         cache.set(cacheKey, { value, until: now() + 60000 }); json(res, value); return
       }
       if (path === `${PREFIX}/v1/logout`) {
         const value = credential(req)
-        if (value) db.prepare('DELETE FROM sessions WHERE id=?').run(hash(value))
+        if (value) {
+          const local=localSession(hash(value))
+          db.prepare('DELETE FROM sessions WHERE id=?').run(hash(value))
+          // Other devices keep their own valid session. Revoke the shared
+          // credential when the last app session leaves, or on explicit unlink.
+          if(local&&!activeOwner(local.owner))sharedProfile.disconnect?.(local.owner)
+        }
         cookie(res, ''); json(res, { ok: true }); return
       }
       const auth = await session(req, res)
       if (path === `${PREFIX}/v1/session`) {
-        try { if (auth.provider !== 'demo') await github('/user', auth.token) } catch (error) {
+        try { if (!['demo','lazyingart'].includes(auth.provider)){const providerUser=await github('/user',auth.token);if(providerUser.id!==(auth.githubUser||auth.user).id)fail(401,'sign_in_again')} } catch (error) {
           if (error.status === 401) { db.prepare('DELETE FROM sessions WHERE id=?').run(auth.sessionId); cookie(res, '') }
           throw error
         }
-        json(res, { user: auth.user, expires: auth.expires }); return
+        json(res, { user: auth.user, expires: auth.expires, ...(auth.provider==='lazyingart'?{method:'lazyingart'}:{}) }); return
       }
       if (path === `${PREFIX}/v1/discussions/post`) {
         const key = passage(input.passage)
@@ -396,21 +627,28 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
         try {
           const issue = await findThread(key, await publicReadToken())
           if (issue?.locked) fail(423, 'thread_locked')
-          const token = auth.provider === 'demo' ? await installationToken('write') : auth.token
+          const personal=auth.provider==='lazyingart'?await githubConnections.credential(cloudOwner(auth.user)):null
+          const serviceAuthor=auth.provider==='demo'||(auth.provider==='lazyingart'&&!personal)
+          const token = personal?.token||(serviceAuthor ? await installationToken('write') : auth.token)
+          if(serviceAuthor&&!token)fail(503,'discussion_posting_unavailable')
           // This remains a real public post, visibly attributed to the demo
           // account. Never impersonate the owner or a GitHub reviewer identity.
-          const commentBody = (auth.provider === 'demo' ? '**Bunko demo account** · Posted through Bunko\n\n' : '') + input.body.trim()
+          const attribution=auth.provider==='lazyingart'&&serviceAuthor?`**${auth.user.login.replace(/[\r\n\\`*_\[\]<>#]/g,' ').slice(0,128)}** · Bunko reader · Posted through Bunko\n\n`:auth.provider==='demo'?'**Bunko demo account** · Posted through Bunko\n\n':''
+          const commentBody = attribution + input.body.trim()
+          const rememberAuthor=(kind,item)=>{if(auth.provider==='lazyingart'&&serviceAuthor)db.prepare('INSERT INTO discussion_authors VALUES(?,?,?,?)').run(kind,item.id,cloudOwner(auth.user),JSON.stringify({...auth.user,kind:'lazyingart'}))}
           const marker = `\n<!-- bunko-post:${id} -->`
           db.prepare('INSERT INTO posts VALUES (?,?,NULL,?)').run(id, fingerprint, now() + 7 * 86400000)
           let result
           try {
             if (issue) {
               const comment = await github(`/repos/${REPO}/issues/${issue.number}/comments`, token, { body: commentBody + marker })
-              result = { issue: safeIssue(issue), comment: safeComment(comment) }
+              rememberAuthor('comment',comment)
+              result = { issue: displayComment(issue,'issue'), comment: displayComment(comment) }
             } else {
               const created = await github(`/repos/${REPO}/issues`, token, { title: title(key), body: `> ${input.excerpt.replace(/\n/g, '\n> ')}\n\nPassage: ${key}\n\n${commentBody}${marker}`, labels: ['passage'] })
               db.prepare('INSERT OR REPLACE INTO threads VALUES (?,?)').run(key, created.number)
-              result = { issue: safeIssue(created), comment: null }
+              rememberAuthor('issue',created)
+              result = { issue: displayComment(created,'issue'), comment: null }
             }
           } catch (error) {
             // A transport timeout may follow a successful write. Never silently send that post twice.
@@ -425,6 +663,8 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       }
       fail(404, 'not_found')
     } catch (error) {
+      if(error instanceof ProfileLinkError)error.status=linkFailure(error.code).status
+      if(error instanceof LacReadError)error.status=['points_link_required','points_consent_required'].includes(error.code)?403:503
       // Only fixed route names and controlled error codes; never queries, bodies or tokens.
       if (process.env.BUNKO_LOG_ERRORS === '1' && (error.status ?? 503) >= 400) {
         const route = (req.url ?? '').split('?')[0]
@@ -439,7 +679,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
   server.maxHeadersCount = 40
   server.keepAliveTimeout = 5000
   const timer = setInterval(cleanup, 60000); timer.unref()
-  server.on('close', () => { clearInterval(timer); agent.close(); cloudBilling.stop(); db.close(); void bookMirror?.close() })
+  server.on('close', () => { clearInterval(timer); clearInterval(revokeTimer); agent.close(); cloudBilling.stop(); db.close(); void bookMirror?.close() })
   return server
 }
 

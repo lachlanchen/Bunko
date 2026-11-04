@@ -1,0 +1,124 @@
+{
+  "verifiedAt": "2026-10-07T11:25:36.791787+00:00",
+  "version": "1.0.11",
+  "build": 18,
+  "source": "d9d7881115ab66d4e8b9f1c47338767a050f495a",
+  "branch": "test/rounded-icons-20261007",
+  "apple": [
+    {
+      "platform": "IOS",
+      "id": "ff71071f-6edc-428a-87dc-79cc059de672",
+      "version": "1.0.11",
+      "build": "18",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    },
+    {
+      "platform": "MAC_OS",
+      "id": "3fbeb571-d19e-4f34-b0ac-97bb33f0887c",
+      "version": "1.0.11",
+      "build": "18",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    }
+  ],
+  "google": {
+    "app": "Bunko",
+    "version": "1.0.11",
+    "build": 18,
+    "track": "internal",
+    "release": 13,
+    "status": "Available to internal testers",
+    "productionChanged": false,
+    "source": "d9d7881115ab66d4e8b9f1c47338767a050f495a",
+    "consoleUrl": "https://play.google.com/console/u/0/developers/6157557679644496686/app/4972575539744983205/tracks/4701547714770281380?tab=releases"
+  },
+  "packages": [
+    {
+      "repo": "Bunko",
+      "platform": "ios",
+      "version": "1.0.11",
+      "build": "18",
+      "bundleId": "art.lazying.bunko",
+      "signatureVerified": true,
+      "sha256": "7c3c9b3daad76ed9aeb950f06bd0456c70aa7f1d876fdc5a6248baa99ff60240",
+      "watchVersionMatched": true
+    },
+    {
+      "repo": "Bunko",
+      "platform": "macos",
+      "version": "1.0.11",
+      "build": "18",
+      "bundleId": "art.lazying.bunko",
+      "signatureVerified": true,
+      "sha256": "ba8b021a4bb69d3fb1b76f149b38be76866d74c4bd08a324036758f8deb018f0",
+      "architectures": [
+        "x86_64",
+        "arm64"
+      ]
+    }
+  ],
+  "android": {
+    "files": {
+      "android/app/build/outputs/bundle/release/app-release.aab": "3202cb999adf00af2da23fa43b217f708693632b4ab09a4c99a834b2878c896d",
+      "android/app/build/outputs/apk/release/app-release.apk": "51e521f3c8530616da2f0ff847e6ec1633bf1c36c0e95fa9ab6a73279b650813"
+    },
+    "iconEntries": [
+      "base/res/mipmap-hdpi-v4/ic_launcher.png",
+      "base/res/mipmap-ldpi-v4/ic_launcher.png",
+      "base/res/mipmap-mdpi-v4/ic_launcher.png",
+      "base/res/mipmap-xhdpi-v4/ic_launcher.png",
+      "base/res/mipmap-xxhdpi-v4/ic_launcher.png",
+      "base/res/mipmap-xxxhdpi-v4/ic_launcher.png"
+    ]
+  },
+  "testOnly": true,
+  "productionReviewSubmitted": false,
+  "productionReviewReplaced": false,
+  "webDeployed": false,
+  "mastersPreserved": true,
+  "checks": {
+    "projectTests": 139,
+    "rendererAndBuild": true,
+    "androidLintAndSignature": true,
+    "signedAppleArchiveAndExport": true,
+    "macIntelAndAppleSilicon": true,
+    "iconSourceAndPackagedAlphaChecks": true
+  },
+  "qualificationLimits": [
+    "Icon and packaging update; no new physical-device functional or purchase test was performed.",
+    "iOS and Watch retain the existing opaque artwork and system-applied masks."
+  ],
+  "productionReadback": {
+    "at": "2026-10-07T11:25:38.974876+00:00",
+    "attachedBuildsPreserved": true,
+    "noNewProductionVersion": true,
+    "apple": [
+      {
+        "platform": "MAC_OS",
+        "version": "1.0.10",
+        "state": "IN_REVIEW",
+        "versionId": "850f8ea8-3e03-4825-a12d-d55a7c9f2ca6",
+        "buildId": "74b65c86-e6c8-4508-96fa-e2a12db79138",
+        "build": "16"
+      },
+      {
+        "platform": "MAC_OS",
+        "version": "1.0.8",
+        "state": "READY_FOR_SALE",
+        "versionId": "731c37f4-b4ed-4268-bafa-e5bfda8f7284",
+        "buildId": "86831728-f214-4e77-b553-59c77470e1ad",
+        "build": "10"
+      },
+      {
+        "platform": "IOS",
+        "version": "1.0.10",
+        "state": "READY_FOR_SALE",
+        "versionId": "2917e845-3d48-486d-b74a-c0acd968e270",
+        "buildId": "2aa119e0-47a3-4ec9-86a5-13cdd6956d82",
+        "build": "16"
+      }
+    ],
+    "googleBuild": 17
+  }
+}

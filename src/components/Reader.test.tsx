@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeAll, expect, it, vi } from 'vitest'
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Reader } from './Reader'
 import { copies } from '../i18n'
 import { DEFAULT_SETTINGS } from '../lib/settings'
@@ -11,6 +11,23 @@ vi.mock('../lib/library', () => ({ loadChapter: vi.fn(async () => chapter) }))
 beforeAll(() => { HTMLElement.prototype.scrollTo = vi.fn() })
 afterEach(() => { cleanup(); window.getSelection()?.removeAllRanges(); vi.unstubAllGlobals() })
 const meta: BookMeta = { schema: 1, id: 'sample', mode: 'trilingual_standard', primary: 'ja', langs: ['ja', 'en'], title: {}, titleText: { ja: '作品' }, author: {}, chapters: [{ n: 1, file: 'c001.json', bytes: 1, paras: 1, title: { ja: '第一章' } }], bytes: 1, paras: 1 }
+it('reveals changed language layouts without rebuilding passages and respects reduced motion', async () => {
+  const cancel=vi.fn(),animate=vi.fn(()=>({cancel}))
+  vi.stubGlobal('matchMedia',vi.fn(()=>({matches:false})))
+  const original=HTMLElement.prototype.animate
+  HTMLElement.prototype.animate=animate as unknown as typeof original
+  try{
+    const props={meta,chapterIndex:0,settings:{...DEFAULT_SETTINGS,langs:['ja','en']},copy:copies.en,ui:'en' as const,onChapter:vi.fn(),onPlace:vi.fn(),startParagraph:0,onOpenChapters:vi.fn(),onOpenSettings:vi.fn(),onBack:vi.fn(),backLabel:'Back'}
+    const view=render(<Reader {...props}/>);await screen.findByText('English translation')
+    await waitFor(()=>expect(animate).toHaveBeenCalledTimes(1))
+    const passage=view.container.querySelector('[data-para]')
+    view.rerender(<Reader {...props} settings={{...props.settings,langs:['en','ja']}}/>);
+    await waitFor(()=>expect(animate).toHaveBeenCalledTimes(2));expect(view.container.querySelector('[data-para]')).toBe(passage)
+    vi.stubGlobal('matchMedia',vi.fn(()=>({matches:true})))
+    view.rerender(<Reader {...props} settings={{...props.settings,layout:'paired'}}/>);
+    expect(animate).toHaveBeenCalledTimes(2)
+  }finally{HTMLElement.prototype.animate=original}
+})
 it('shows the selected main in single-language mode and preserves selection order in interlinear mode', async () => {
   const props = { meta, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs: ['en', 'ja'] as const }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
   const view = render(<Reader {...props} settings={{ ...props.settings, langs: ['en', 'ja'], layout: 'source' }} />)
@@ -66,6 +83,28 @@ it('waits for an explicit Dictionary action and keeps the selected substring', a
   vi.unstubAllGlobals()
 })
 
+it.each(['interlinear', 'paired'] as const)('shares a passage discussion across language bubbles in %s, with optional translation bubbles', async (layout) => {
+  vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, json: async () => ({ issue: null, comments: [], nextPage: null }) })))
+  const props = { meta, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs: ['ja', 'en'], layout }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
+  const view = render(<Reader {...props} />)
+  await screen.findByText('English translation')
+  fireEvent.click(screen.getByRole('button', { name: 'Discuss passage' }))
+  const original = new URL(screen.getByRole('link', { name: 'View on GitHub' }).getAttribute('href')!)
+  fireEvent.click(screen.getByRole('button', { name: 'Close' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Discuss passage · English' }))
+  expect(screen.getByText('English translation', { selector: 'blockquote' })).toBeTruthy()
+  const translated = new URL(screen.getByRole('link', { name: 'View on GitHub' }).getAttribute('href')!)
+  expect(translated.searchParams.get('title')).toBe(original.searchParams.get('title'))
+  expect(translated.searchParams.get('title')).toContain('sample/c001.json/p1/0')
+  fireEvent.click(screen.getByRole('button', { name: 'Close' }))
+  view.rerender(<Reader {...props} settings={{ ...props.settings, translationBubbles: false }} />)
+  expect(screen.queryByRole('button', { name: 'Discuss passage · English' })).toBeNull()
+  expect(screen.getByRole('button', { name: 'Discuss passage' })).toBeTruthy()
+  view.rerender(<Reader {...props} settings={{ ...props.settings, langs: ['en', 'ja'], translationBubbles: false }} />)
+  fireEvent.click(screen.getByRole('button', { name: 'Discuss passage' }))
+  expect(screen.getByText('English translation', { selector: 'blockquote' })).toBeTruthy()
+})
+
 it('renders arbitrary layers, RTL and regional language tags in both layouts and passage tools', async () => {
   const { loadChapter } = await import('../lib/library')
   const langs = ['ar', 'en', 'zh', 'ja', 'he', 'fr-CA', 'hi', 'el']
@@ -109,7 +148,7 @@ it('folds translation notes separately and omits missing language rows in paired
   const props = { meta, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs: ['en', 'ja'], layout: 'paired' as const }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
   const { container } = render(<Reader {...props} />)
   await screen.findByText('日本語の原文')
-  const notes = container.querySelector('details')!
+  const notes = container.querySelector<HTMLDetailsElement>('details.passage-notes')!
   expect(notes.open).toBe(false)
   expect(notes.querySelector('summary')?.textContent).toBe('Translation notes')
   expect(notes.querySelectorAll('.para-line')).toHaveLength(1)

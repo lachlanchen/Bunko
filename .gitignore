@@ -20,3 +20,8 @@ macos/DerivedData/
 __pycache__/
 *.pyc
 android/local.properties
+
+windows/bin/
+windows/obj/
+tools/windows/policy-tests/bin/
+tools/windows/policy-tests/obj/

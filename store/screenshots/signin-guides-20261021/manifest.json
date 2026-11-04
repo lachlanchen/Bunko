@@ -1,0 +1,14 @@
+{
+  "captured": "2026-10-21",
+  "build": "1.0.14 (31) candidate",
+  "channel": "Chromium render of actual components, synthetic availability/dated journey and separately recorded actual public-preface model result",
+  "scope": "Draft assets for internal candidate; not uploaded to a public listing. Sign-in screenshots use fixture methods, not a provider qualification claim.",
+  "files": {
+    "phone-map.png": "719e1bd1806dff9b4109e64ca124c909bf9bb065376fa011c7181fb5831a2ed8",
+    "desktop-map.png": "6114f8f6536c4f56da2b08e6883b41cdf9336f187716e4bbe5cc6f880acfdc11",
+    "phone-tree.png": "540e2d0b9f1827f26fd4cef6be402757593c25046894f1007ff51107af9ac432",
+    "desktop-timeline.png": "5928cf4426e8bbc05659ef5d1b2b95a1487020fb96d7fcc71f98aac4acffdff2",
+    "signin-320-en-paper.png": "030a183f0968f0d3f0761d670c3fd8a0b74807ff39686e216d773fd69f3c2c99",
+    "signin-390-ja-paper.png": "914695d359e62189c259b23a10dfbd9bc4357193dd1332a2e5e50c7f3b78cb63"
+  }
+}

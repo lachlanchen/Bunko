@@ -9,3 +9,18 @@
 "Ruby readings" = "ふりがな・ピンイン";
 "Ruby size" = "読みのサイズ";
 "Send this excerpt again from your iPhone to add ruby and sentence alignment." = "iPhoneからこの抜粋を再送すると、読みと文ごとの対訳が表示されます。";
+
+"App updates" = "アプリの更新";
+"Update available" = "更新があります";
+"Check for updates" = "更新を確認";
+"Checking for updates…" = "更新を確認中…";
+"You’re up to date." = "最新の状態です。";
+"Could not check for updates. Try again when online." = "更新を確認できません。オンラインで再度お試しください。";
+"Open store" = "ストアを開く";
+"Later" = "あとで";
+"Installed version" = "現在のバージョン";
+"Update & reload" = "更新して再読み込み";
+"A new version is ready. Update when you have finished reading or writing." = "新しいバージョンがあります。読書や入力を終えてから更新できます。";
+"Return to the library and finish writing before updating." = "ライブラリに戻り、入力を終えてから更新してください。";
+"Could not open the store." = "ストアを開けませんでした。";
+"Update the app from the App Store on your iPhone." = "iPhone の App Store でアプリを更新してください。";

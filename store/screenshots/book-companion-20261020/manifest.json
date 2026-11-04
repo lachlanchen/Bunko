@@ -1,0 +1,60 @@
+{
+  "capturedAt": "2026-10-20T09:36:41.483Z",
+  "version": "1.0.14",
+  "build": 28,
+  "channel": "Actual React UI in a desktop browser; synthetic book and responses for layout QA. Not an installed native screenshot or live-provider receipt.",
+  "captures": [
+    {
+      "file": "phone-chat.png",
+      "sha256": "e1a0571595d93bc36a2ada5b8125e08a8a3e873ca2afcaf5fd7330b7717401d7",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "phone-people.png",
+      "sha256": "f912a443fe3c6932ff7bcb302981492c4513403de2a96a509f5e1ce4232dcb8c",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "phone-places.png",
+      "sha256": "653f61c1e7d5042ad6f49dc28b03636e48f20e0b6c179993b2737b0210fd1689",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "phone-timeline.png",
+      "sha256": "a053187c6f950c422ed8bfefcc5e05e17b809728d966bf9192825324f3e6d008",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "desktop-places.png",
+      "sha256": "51cc03ea944f1b7217b83adb9349e45e44569abdb280bb7a3cd910d3286b9aaa",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "night-people.png",
+      "sha256": "7454157223389488fab37e6431d50446c12819a6ae1472c8b11b68f39788b393",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "japanese-chat.png",
+      "sha256": "89da78486d79e0d566b1d82c7df9a762d17edb3fb982f0aa6625cbaa1b5079a2",
+      "visuallyReviewed": true
+    }
+  ],
+  "sourceFiles": {
+    "src/components/BookCompanion.tsx": "da09f7cbf4920016f4987ce364f4e8f60bc2a4b0125475ff940976f7b6071e1c",
+    "src/components/BookGuide.tsx": "79979c1fac7a450843805b89b39bc3f0fb51db975b5c10f18e0c9c96a46759dc",
+    "src/components/bookCompanion.css": "465ecddd02d1cdaa6d59fae0f1a2db46d3d9a31f590fc7566f4aaa4c9f65f8ca",
+    "src/components/documentAgent.css": "f3c73a584b8a42221f9dffc518e802d9b89bfabbb5f231f38440acf2228b2883",
+    "src/components/bookCompanionCopy.ts": "af5bc599649a18945f219d34d54e273672118df6f39a44ecebc3b7c64d7054fc"
+  },
+  "checks": [
+    "chat follows last rendered answer",
+    "composer within viewport",
+    "no horizontal page overflow",
+    "people/place/timeline tabs",
+    "focus entity",
+    "source navigation",
+    "night/Japanese/150% text/320px/keyboard/desktop"
+  ],
+  "uploadedToStores": false
+}

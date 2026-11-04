@@ -1,6 +1,7 @@
 import Foundation
 import WatchConnectivity
 import Capacitor
+import StoreKit
 
 final class WatchSender: NSObject, WCSessionDelegate {
     static let shared = WatchSender()
@@ -68,5 +69,29 @@ final class BunkoWatchPlugin: CAPPlugin, CAPBridgedPlugin {
 final class BunkoBridgeController: CAPBridgeViewController {
     override func capacitorDidLoad() {
         bridge?.registerPluginInstance(BunkoWatchPlugin())
+        bridge?.registerPluginInstance(BunkoRegionPlugin())
     }
+}
+
+/// Store region is independent of the reading/UI language. No location permission.
+@objc(BunkoRegionPlugin)
+final class BunkoRegionPlugin: CAPPlugin, CAPBridgedPlugin {
+    let identifier = "BunkoRegionPlugin"
+    let jsName = "BunkoRegion"
+    let pluginMethods: [CAPPluginMethod] = [CAPPluginMethod(name: "current", returnType: CAPPluginReturnPromise)]
+    private var storefrontTask: Task<Void, Never>?
+    override func load() {
+        storefrontTask = Task { [weak self] in
+            for await _ in Storefront.updates {
+                await MainActor.run { self?.webView?.evaluateJavaScript("window.dispatchEvent(new Event('bunko-region-changed'))", completionHandler: nil) }
+            }
+        }
+    }
+    @objc func current(_ call: CAPPluginCall) {
+        Task {
+            let storefront = await Storefront.current
+            call.resolve(["storefront": storefront?.countryCode ?? "", "deviceRegion": Locale.current.regionCode ?? ""])
+        }
+    }
+    deinit { storefrontTask?.cancel() }
 }

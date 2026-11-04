@@ -1,0 +1,83 @@
+{
+  "at": "2026-10-22T14:44:21.740955+00:00",
+  "source": "666da63fc92165d323dc3e0fdb4819658bfd52d8",
+  "build": "1.0.14 (33)",
+  "captures": [
+    {
+      "file": "phone-chat.png",
+      "sha256": "580325fdf4674b40b01853db08dc2052fe1acd3f6f2601d79c6130b61e28ac0a",
+      "channel": "Actual web components, synthetic layout fixture",
+      "selectedForStore": false
+    },
+    {
+      "file": "phone-people.png",
+      "sha256": "8469376bb13a1d16ed9b88d214501e153c337b2bcce67529595f3c969bba9663",
+      "channel": "Actual web components, synthetic layout fixture",
+      "selectedForStore": false
+    },
+    {
+      "file": "phone-places.png",
+      "sha256": "9bfa234546e0d2f69f3fdd40cd4f0a62c5ce38fc340ba0b15661e111bd1f217e",
+      "channel": "Actual web components, synthetic layout fixture",
+      "selectedForStore": false
+    },
+    {
+      "file": "phone-timeline.png",
+      "sha256": "02973b5a79cb35abc25cfc916d6b8c7b478181601520bd25a474ca0c5680387b",
+      "channel": "Actual web components, synthetic layout fixture",
+      "selectedForStore": false
+    },
+    {
+      "file": "desktop-chat.png",
+      "sha256": "b2c2dd91151d2a9580f8da67ccdfbc3251dd68886408e580bbe6a44b38ec3197",
+      "channel": "Actual web components, synthetic layout fixture",
+      "selectedForStore": false
+    },
+    {
+      "file": "desktop-people.png",
+      "sha256": "796905fe6cb766f127203a9e73b74718e159b6febf4a7b2ae2537b47e5cb6276",
+      "channel": "Actual web components, synthetic layout fixture",
+      "selectedForStore": false
+    },
+    {
+      "file": "night-chat.png",
+      "sha256": "ff7aad3678df04384f061bed650772e1163b4b57d01e568482aabd525bc2ee33",
+      "channel": "Actual web components, synthetic layout fixture",
+      "selectedForStore": false
+    },
+    {
+      "file": "native33-people.png",
+      "sha256": "2d9c6b1257a6edbe25a8872b61694659413efb8a98b47f108ec196a4943609df",
+      "channel": "Android API34 installed Debug33",
+      "selectedForStore": false
+    },
+    {
+      "file": "native33-map.png",
+      "sha256": "584acdc4648083110d223ac67b2df735388dc4bb85a5b328d4ff456c95786d1e",
+      "channel": "Android API34 installed Debug33",
+      "selectedForStore": false,
+      "reason": "Retained smoke evidence; viewport includes sign-in panel and crops map."
+    },
+    {
+      "file": "native33-timeline.png",
+      "sha256": "fb81df648043df7ff1200fbd47cfbb3a68c3cac0c1a057a81e86d34520aefb31",
+      "channel": "Android API34 installed Debug33",
+      "selectedForStore": false
+    },
+    {
+      "file": "chapters-collapsed.png",
+      "sha256": "cd237e51a56b2dc7f43415a7503fd39a6533aceae1370604acf747b26eae3cb0",
+      "channel": "Actual ChapterRow at320px; synthetic long title",
+      "selectedForStore": false
+    },
+    {
+      "file": "chapters-expanded.png",
+      "sha256": "533d5b1131914437e6de60de9a0202667988f9cced6ec8b79fe950ce4a1b48e7",
+      "channel": "Actual ChapterRow at320px; synthetic long title",
+      "selectedForStore": false
+    }
+  ],
+  "reviewed": true,
+  "storeScreenshots": "Prepared local draft; no public screenshot upload or review in this internal-build round",
+  "nativeRuntimeGap": "No new iOS/macOS device GUI run; native package/resource/signature/minimum-OS gates passed separately"
+}

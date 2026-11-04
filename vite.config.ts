@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => ({
   base: './',
   server: { watch: { ignored: ['**/.runtime/**'] } },
   define: { __APP_VERSION__: JSON.stringify(version) },
-  build: { target: mode === 'macos' ? 'safari15.6' : undefined },
+  build: { target: mode === 'macos' || mode === 'native' ? 'safari15' : undefined },
   plugins: [
     react(),
     {
@@ -44,14 +44,14 @@ export default defineConfig(({ mode }) => ({
         icons: [
           { src: './icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: './icon-512.png', sizes: '512x512', type: 'image/png' },
-          { src: './icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: './icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
       workbox: {
         maximumFileSizeToCacheInBytes: 6_000_000,
         skipWaiting: false,
         clientsClaim: false,
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,woff2}', 'reading-atlas-NOTICES.txt'],
         // Book JSON is cached by the app in IndexedDB, not by the service
         // worker: the app needs to know what it holds, and a 10 MB chapter has
         // no business in the precache.

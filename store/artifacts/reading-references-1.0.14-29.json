@@ -1,0 +1,113 @@
+{
+  "verifiedAt": "2026-10-20T17:11:15.790713+00:00",
+  "version": "1.0.14",
+  "build": 29,
+  "source": "99cf65a132e5fb1c97e4f4d5e6ded1159faddfd1",
+  "apple": [
+    {
+      "platform": "MAC_OS",
+      "id": "2468d973-1393-4582-9862-cdcc1443ded2",
+      "version": "1.0.14",
+      "build": "29",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING",
+      "internalGroupId": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+      "betaNoteLocalesVerified": [
+        "en-US",
+        "ja",
+        "zh-Hans",
+        "zh-Hant"
+      ]
+    },
+    {
+      "platform": "IOS",
+      "id": "2ac353da-3760-419c-b40e-d20ebf0bea2c",
+      "version": "1.0.14",
+      "build": "29",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING",
+      "internalGroupId": "108dd9da-466f-4bf7-82b7-b2cccace4896",
+      "betaNoteLocalesVerified": [
+        "en-US",
+        "ja",
+        "zh-Hans",
+        "zh-Hant"
+      ]
+    }
+  ],
+  "appleArtifacts": [
+    {
+      "platform": "ios",
+      "source": "99cf65a132e5fb1c97e4f4d5e6ded1159faddfd1",
+      "version": "1.0.14",
+      "build": "29",
+      "sha256": "2f9737f137663000b75208d3fdebfcd91492019e1198c7e1e2b13c0d55447e47",
+      "bytes": 12314541,
+      "archive": {
+        "bundle": "art.lazying.bunko",
+        "resources": 86,
+        "signer": "Q8M2S2FY77",
+        "watch": {
+          "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+          "CFBundleShortVersionString": "1.0.14",
+          "CFBundleVersion": "29",
+          "WKCompanionAppBundleIdentifier": "art.lazying.bunko"
+        }
+      },
+      "exported": {
+        "bundle": "art.lazying.bunko",
+        "resources": 86,
+        "signer": "Q8M2S2FY77",
+        "watch": {
+          "CFBundleIdentifier": "art.lazying.bunko.watchkitapp",
+          "CFBundleShortVersionString": "1.0.14",
+          "CFBundleVersion": "29",
+          "WKCompanionAppBundleIdentifier": "art.lazying.bunko"
+        }
+      }
+    },
+    {
+      "platform": "macos",
+      "source": "99cf65a132e5fb1c97e4f4d5e6ded1159faddfd1",
+      "version": "1.0.14",
+      "build": "29",
+      "sha256": "93242b81e48249dfdc5f028659ea4a90231a75e5a67d2dd905311e65e52a37c6",
+      "bytes": 6712408,
+      "archive": {
+        "bundle": "art.lazying.bunko",
+        "resources": 84,
+        "signer": "Q8M2S2FY77",
+        "machO": {
+          "arm64": "12.0",
+          "x86_64": "12.0"
+        }
+      },
+      "exported": {
+        "bundle": "art.lazying.bunko",
+        "resources": 84,
+        "signer": "Q8M2S2FY77",
+        "machO": {
+          "arm64": "12.0",
+          "x86_64": "12.0"
+        }
+      }
+    }
+  ],
+  "android": {
+    "track": "internal",
+    "state": "Available to internal testers",
+    "aabSha256": "3e8b2c2030ff597761ab3cf4d3d560d9dda7234c97f469d00045ed96c4599ff3",
+    "notesLocales": 4
+  },
+  "cleanup": {
+    "at": "2026-10-20T17:10:13.646196+00:00",
+    "guardAbsent": true,
+    "ownedPhaseGroupsAbsent": true,
+    "signingRestored": true,
+    "profilesVerified": 6
+  },
+  "formalReviewSubmitted": false,
+  "publicReleaseChanged": false,
+  "noSimulatorOrGuiOperation": true,
+  "physicalRuntimeTest": false
+}

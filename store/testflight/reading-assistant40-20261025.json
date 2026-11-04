@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "app": "Bunko",
+  "platform": "MAC_OS",
+  "source": "4afd95d1477cb18bbe6a1710df7f669343f9c7a0",
+  "marketingVersion": "1.0.15",
+  "build": "40",
+  "appleBuildId": "6712c5ac-3b16-4c87-ac27-6d0ed16d4365",
+  "reviewId": "83cced08-122e-455b-9926-1998290bcbeb",
+  "reviewState": "WAITING_FOR_REVIEW",
+  "releaseType": "AFTER_APPROVAL",
+  "replacesBuild": "39",
+  "testFlight": "IN_BETA_TESTING",
+  "verifiedAt": "2026-10-25T08:56:38.381799+00:00",
+  "artifact": {
+    "sha256": "70cebe56987b67c452dba577637f25edc596762baebb1d68290cf84e1bde63c7",
+    "bytes": 6489133,
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumOS": "12.0",
+    "bundledResourceHashesVerified": 86
+  },
+  "tests": {
+    "clientPassed": 178,
+    "serverPassed": 163,
+    "macRuntimePassed": 15,
+    "stagedServiceUserPassed": 44,
+    "liveDeepSeekAnswer": true,
+    "liveUploadAndConversion": true,
+    "savedHistory": true,
+    "syntheticTestDataRemoved": true
+  },
+  "metadata": {
+    "localizedDescriptions": 4,
+    "reviewNotesCorrected": true,
+    "existingScreenshotsVerifiedComplete": 6
+  },
+  "cleanup": {
+    "guardReleased": true,
+    "signingRestored": true,
+    "temporarySignerRemoved": true,
+    "uploadProxyClosed": true,
+    "macHold": false
+  },
+  "limitations": [
+    "Storefront matrix uses synthetic country fixtures, not a physical mainland-network test.",
+    "No new iOS/Watch/Android binary or PWA deployment in this Mac review replacement."
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "at": "2026-10-22T21:27:03.193966+00:00",
+  "source": "5b2f54025dfd516f7e26d099d71f49f636be3f6c",
+  "scope": "Reading response JSON recovery",
+  "backend": {
+    "deployed": true,
+    "at": "2026-10-22T21:25:03.856284+00:00",
+    "release": "reading-json-8361e4efe38c",
+    "previous": "companion33-83646b93dd8c",
+    "files": {
+      "agent/book-companion.mjs": "ad8f6233184e2b9be32a2ae7189b31da648f294b9420c61a61829f3a7ba9dcc2",
+      "agent/structured-task.mjs": "10acb62befac4ff2d3ca46cbcd215f83abef3da01c9e7bec162d771bbbeb2d34"
+    },
+    "configurationUnchanged": true,
+    "publicChecks": [
+      {
+        "host": "bunko.lazying.art",
+        "health": 200,
+        "ready": true,
+        "anonymousAgent": 401
+      },
+      {
+        "host": "llm.lazying.art",
+        "health": 200,
+        "ready": true,
+        "anonymousAgent": 401
+      }
+    ]
+  },
+  "tests": {
+    "client": 155,
+    "server": 146,
+    "lint": true,
+    "renderer": true,
+    "webBuild": true,
+    "capturedMalformedResponsesRecovered": 2,
+    "liveDeployedProvider": {
+      "state": "completed",
+      "calls": 1,
+      "elapsedMs": 8226,
+      "answerChars": 1021,
+      "knowledge": "mixed",
+      "isolatedDatabase": true
+    },
+    "browser": {
+      "at": "2026-10-22T21:22:30.787Z",
+      "kind": "Current component; synthetic book/history and failure; local browser only",
+      "singleError": true,
+      "cleanup": true
+    }
+  },
+  "clientDisplayFix": {
+    "sourceTested": true,
+    "nativeBuildsChanged": false,
+    "pwaDeployed": false
+  },
+  "nativeInternalBuild": 35,
+  "publicReviewChanged": false,
+  "privateEvidence": ".runtime/guide-recovery-20261023/"
+}
