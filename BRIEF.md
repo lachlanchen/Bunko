@@ -1,5 +1,18 @@
 # Bunko — product brief
 
+## Reading comfort and tappable map details · 2026-11-05
+
+The owner renews improvements to maps, reading-agent reliability, text sizing and
+real walkthrough recordings for Bunko and OnlyIdeas. Map details stay inside the
+map, with source passages, connected places and focus/previous/next controls.
+Book text reaches250%, interface text150%, with independent ruby and reduced-motion
+transitions. The bounded provider-recovery correction is live. Full source checks,
+a real Faxian guide and multi-width browser checks pass. Candidate48 is being
+qualified for existing internal groups; native delivery is not yet claimed.
+Existing public reviews, accounts, plans and balances are preserved. Optional
+Google/Apple/LazyingArt callback and canonical LAC consent qualification remain
+separate from central discovery. See `docs/reading-comfort-20261105.md`.
+
 ## Internal Apple delivery · 2026-11-01
 
 Apple iOS/Watch and universal Mac **1.0.16 (47)** are `VALID` and

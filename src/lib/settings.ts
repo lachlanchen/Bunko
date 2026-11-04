@@ -29,6 +29,7 @@ export const DEFAULT_SETTINGS: ReadingSettings = {
   grammar: false,
   translationBubbles: true,
   fontScale: 1,
+  interfaceScale: 1,
   rubyScale: 1,
   theme: 'system',
   serif: true,
@@ -52,8 +53,21 @@ async function write(key: string, value: unknown): Promise<void> {
   }
 }
 
-export const loadSettings = () => read<ReadingSettings>(SETTINGS_KEY, DEFAULT_SETTINGS)
-export const saveSettings = (settings: ReadingSettings) => write(SETTINGS_KEY, settings)
+export function normalizeSettings(value: ReadingSettings): ReadingSettings {
+  const scale = (number: unknown, low: number, high: number) => typeof number === 'number' && Number.isFinite(number) ? Math.min(high, Math.max(low, number)) : 1
+  return { ...DEFAULT_SETTINGS, ...value,
+    langs: Array.isArray(value.langs) ? [...new Set(value.langs.filter(lang => typeof lang === 'string' && /^[A-Za-z][A-Za-z0-9_-]{0,34}$/.test(lang)))].slice(0, 20) : [],
+    layout: ['source','interlinear','paired'].includes(value.layout) ? value.layout : DEFAULT_SETTINGS.layout,
+    theme: ['paper','night','system'].includes(value.theme) ? value.theme : DEFAULT_SETTINGS.theme,
+    ruby: typeof value.ruby === 'boolean' ? value.ruby : DEFAULT_SETTINGS.ruby,
+    grammar: typeof value.grammar === 'boolean' ? value.grammar : DEFAULT_SETTINGS.grammar,
+    serif: typeof value.serif === 'boolean' ? value.serif : DEFAULT_SETTINGS.serif,
+    translationBubbles: typeof value.translationBubbles === 'boolean' ? value.translationBubbles : DEFAULT_SETTINGS.translationBubbles,
+    fontScale: scale(value.fontScale, .85, 2.5), rubyScale: scale(value.rubyScale, .7, 1.8), interfaceScale: scale(value.interfaceScale, 1, 1.5),
+  }
+}
+export const loadSettings = async () => normalizeSettings(await read<ReadingSettings>(SETTINGS_KEY, DEFAULT_SETTINGS))
+export const saveSettings = (settings: ReadingSettings) => write(SETTINGS_KEY, normalizeSettings(settings))
 
 export async function loadPlaces(): Promise<Record<string, Place>> {
   try {

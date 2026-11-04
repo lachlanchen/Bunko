@@ -37,7 +37,8 @@ test('qualified fallback uses provider-specific fields and explicit consent unde
   assert.equal(calls[1].body.reasoning_effort, 'low')
   assert.equal(calls[1].body.max_completion_tokens, 4096)
   assert.equal('temperature' in calls[1].body, false)
-  assert.ok(calls[1].timeout <= calls[0].timeout)
+  assert.ok(calls[0].timeout <= 700)
+  assert.ok(calls[1].timeout <= 1000)
   assert.equal(calls[1].headers.Authorization, 'Bearer private-openai')
   db.close()
 })
@@ -109,4 +110,16 @@ test('a DeepSeek label cannot route regional requests through an unqualified gat
   const router = createModelRouter({ db, config: { model: { name: 'deepseek-flash', url: 'https://other.invalid/chat/completions' } }, provider: async () => { calls++; return {} } })
   await assert.rejects(router.forRequest(['DeepSeek'], { deepseekOnly: true })('', { body: '{}' }), /not connected/)
   assert.equal(calls, 0); db.close()
+})
+
+test('a capable-model outage can use the qualified primary and retains time for that alternate', async () => {
+  const db = new DatabaseSync(':memory:'), calls = []; let clock = 0
+  const router = createModelRouter({ db, now: () => clock, config: { models: { capable: 'deepseek-v4-pro', providers: { deepseek: { token: 'fixture', qualifiedModels: ['deepseek-flash','deepseek-v4-pro'] } } } }, provider: async (_url, options) => {
+    calls.push({ model: JSON.parse(options.body).model, timeout: options.timeout })
+    if (calls.length === 1) { clock += options.timeout; throw Object.assign(new Error('slow transient'), { retryable: true }) }
+    return { choices: [{ message: { content: '{}' } }] }
+  } })
+  await router.forRequest(['DeepSeek'])('', { quality: 'capable', timeout: 10000, body: '{}' })
+  assert.deepEqual(calls,[{model:'deepseek-v4-pro',timeout:7000},{model:'deepseek-flash',timeout:3000}])
+  db.close()
 })

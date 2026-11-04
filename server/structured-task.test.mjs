@@ -62,3 +62,15 @@ test('nested schema faults give bounded field-specific repair hints without mode
   await assert.rejects(runStructuredReading({ kind: 'guide', messages: [{ role: 'user', content: 'Build guide' }], maxTokens: 1000, timeoutMs: 500,
     complete: async () => ({ choices: [{ message: { content: JSON.stringify(value) } }] }) }), e => e.repairable === true && e.repairDetails.includes('$.people[0].certainty') && !e.repairDetails.includes('PRIVATE MODEL TEXT'))
 })
+
+test('complete JSON fences and BOMs are recovered without a second completion; surrounding prose is refused', async () => {
+  const json = JSON.stringify(answer)
+  for (const content of ['\uFEFF'+json, '```json\n'+json+'\n```', '```\n'+json+'\n```']) {
+    let calls = 0
+    const value = await runStructuredReading({ kind:'answer', messages:[{role:'user',content:'Read P1'}], maxTokens:1000, timeoutMs:500,
+      complete:async()=>{calls++;return{choices:[{message:{content}}]}} })
+    assert.deepEqual(JSON.parse(JSON.stringify(value)),answer);assert.equal(calls,1)
+  }
+  await assert.rejects(runStructuredReading({ kind:'answer', messages:[{role:'user',content:'Read P1'}], maxTokens:1000, timeoutMs:500,
+    complete:async()=>({choices:[{message:{content:'Unverified prose\n```json\n'+json+'\n```'}}]}) }),e=>e.repairable===true)
+})

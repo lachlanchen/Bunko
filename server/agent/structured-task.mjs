@@ -21,6 +21,11 @@ const updates = { updateModes: object({ people: mode, places: mode, timeline: mo
 // Never complete truncated objects, drop fields or invent missing evidence.
 function parseReadingJSON(content) {
   if (typeof content !== 'string') throw new SyntaxError('Missing JSON text')
+  // Accept only a complete enclosing JSON fence, never extract an arbitrary
+  // object from prose or complete a truncated response. The JSON stays data.
+  content = content.trim()
+  const fenced = content.match(/^```(?:json)?\s*\n([\s\S]*)\n```$/i)
+  if (fenced) content = fenced[1]
   try { return JSON.parse(content) } catch { /* Try lossless string escaping only. */ }
   let quoted = false, escaped = false, normalized = ''
   for (const char of content) {

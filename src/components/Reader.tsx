@@ -88,6 +88,7 @@ export function Reader({
   const visibleParagraph = useRef(startParagraph)
   const [focus, setFocus] = useState<ReadingFocus | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const appearance = useRef('')
   const row = meta.chapters[chapterIndex]
   // Anything not matching the chapter now on screen is a stale load.
   const chapter = loaded.file === row?.file ? loaded.chapter : null
@@ -99,6 +100,17 @@ export function Reader({
     [settings.langs, meta.langs],
   )
   const shown: LangCode[] = settings.layout === 'source' ? [langs[0] ?? meta.primary] : langs.length ? langs : [meta.primary]
+  const appearanceKey = `${meta.id}:${chapter?.id}:${settings.layout}:${shown.join(',')}`
+
+  useEffect(() => {
+    if (!chapter || overlayOpen || appearance.current === appearanceKey) return
+    const changedChapter = !appearance.current.startsWith(`${meta.id}:${chapter.id}:`)
+    appearance.current = appearanceKey
+    const page = scrollRef.current
+    if (!page?.animate || window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches) return
+    const animation = page.animate(changedChapter ? [{ opacity: .6, transform: 'translateX(8px)' }, { opacity: 1, transform: 'translateX(0)' }] : [{ opacity: .65 }, { opacity: 1 }], { duration: 180, easing: 'ease-out' })
+    return () => animation.cancel()
+  }, [appearanceKey, chapter, meta.id, overlayOpen])
 
   useEffect(() => {
     if (!row) return

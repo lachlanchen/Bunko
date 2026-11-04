@@ -36,6 +36,7 @@ export async function downloadPublic(input, { maxBytes = 20_000_000, redirects =
 export async function providerJSON(url, options = {}) {
   const timeout = AbortSignal.timeout(options.timeout || 60_000);
   const signal = options.signal ? AbortSignal.any([options.signal, timeout]) : timeout;
+  try {
   const res = await fetch(url, { ...options, redirect: 'error', signal });
   if (!res.ok) {
     await res.body?.cancel();
@@ -55,4 +56,11 @@ export async function providerJSON(url, options = {}) {
   } catch (error) { await reader.cancel().catch(() => {}); throw error; }
   const body = Buffer.concat(chunks).toString();
   try { return JSON.parse(body); } catch { throw new AppError('Provider returned an unreadable response.', 502); }
+  } catch (error) {
+    if (options.signal?.aborted) throw error;
+    if (timeout.aborted || ['ECONNRESET', 'ETIMEDOUT', 'UND_ERR_CONNECT_TIMEOUT', 'UND_ERR_SOCKET', 'UND_ERR_HEADERS_TIMEOUT'].includes(error?.cause?.code)) {
+      throw Object.assign(new AppError('The reading provider connection was interrupted.', timeout.aborted ? 504 : 502), { retryable: true });
+    }
+    throw error;
+  }
 }

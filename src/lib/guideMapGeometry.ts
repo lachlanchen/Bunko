@@ -7,8 +7,8 @@ export function mapMarkerPositions(points: [number, number][], scale: number) {
     let chosen = point
     search: for (let ring = 0; ring <= 8; ring++) for (let step = 0; step < (ring ? 12 : 1); step++) {
       const angle = step * Math.PI / 6
-      const candidate: [number, number] = [point[0] + Math.cos(angle) * ring * 36 / scale, point[1] + Math.sin(angle) * ring * 36 / scale]
-      if (placed.every(p => Math.hypot(p[0] - candidate[0], p[1] - candidate[1]) * scale >= 35)) { chosen = candidate; break search }
+      const candidate: [number, number] = [point[0] + Math.cos(angle) * ring * 46 / scale, point[1] + Math.sin(angle) * ring * 46 / scale]
+      if (placed.every(p => Math.hypot(p[0] - candidate[0], p[1] - candidate[1]) * scale >= 45)) { chosen = candidate; break search }
     }
     placed.push(chosen)
   }
@@ -25,7 +25,7 @@ export function mapLabelPositions(points: [number, number][], widths: number[], 
     search: for (let ring = 0; ring <= 25; ring++) for (let step = 0; step < (ring ? 16 : 1); step++) {
       const angle = step * Math.PI / 8
       const candidate: [number, number] = [point[0] + Math.cos(angle) * ring * 8 / scale, point[1] + Math.sin(angle) * ring * 8 / scale]
-      if (placed.every((p, j) => Math.abs(p[0] - candidate[0]) * scale >= (widths[i] + widths[j]) / 2 + 4 || Math.abs(p[1] - candidate[1]) * scale >= 34)) { chosen = candidate; break search }
+      if (placed.every((p, j) => Math.abs(p[0] - candidate[0]) * scale >= (widths[i] + widths[j]) / 2 + 4 || Math.abs(p[1] - candidate[1]) * scale >= 46)) { chosen = candidate; break search }
     }
     placed.push(chosen)
   }

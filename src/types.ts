@@ -89,6 +89,7 @@ export interface ReadingSettings {
   grammar: boolean
   translationBubbles: boolean
   fontScale: number
+  interfaceScale?: number
   rubyScale: number
   theme: 'paper' | 'night' | 'system'
   serif: boolean

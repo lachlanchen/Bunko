@@ -1,4 +1,5 @@
 import { ChapterRow } from './components/ChapterRow'
+import {readerComfortCopy} from './components/readerComfortCopy'
 import {bookIdFromLink} from './lib/bookLink'
 import {observeForegroundUse} from './lib/activityRewards'
 import {App as CapacitorApp} from '@capacitor/app'
@@ -142,6 +143,11 @@ export default function App() {
     media?.addEventListener('change', apply)
     return () => media?.removeEventListener('change', apply)
   }, [settings.theme])
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--ui-scale', String(settings.interfaceScale ?? 1))
+    return () => { document.documentElement.style.removeProperty('--ui-scale') }
+  }, [settings.interfaceScale])
 
   const update = useCallback((patch: Partial<ReadingSettings>) => {
     setSettings((current) => {
@@ -636,17 +642,20 @@ function SettingsSheet({
           id="main-text-size"
           type="range"
           min={0.85}
-          max={1.6}
+          max={2.5}
           step={0.05}
           value={settings.fontScale}
           onChange={(event) => onChange({ fontScale: Number(event.target.value) })}
         />
+        <div className="chips size-presets">{[1,1.25,1.5,2,2.5].map(scale => <button key={scale} type="button" aria-pressed={Math.abs(settings.fontScale-scale)<.01} className={Math.abs(settings.fontScale-scale)<.01?'active':''} onClick={()=>onChange({fontScale:scale})}>{Math.round(scale*100)}%</button>)}</div>
         <label className="size-label" htmlFor="ruby-text-size">{copy.rubySize}<output>{Math.round(settings.rubyScale * 100)}%</output></label>
         <input id="ruby-text-size" type="range" min={0.7} max={1.8} step={0.05} value={settings.rubyScale} onChange={(event) => onChange({ rubyScale: Number(event.target.value) })} />
         <div className="type-preview" style={{ fontSize: `${settings.fontScale}rem`, '--ruby-size': `${settings.rubyScale * .52}rem` } as CSSProperties}>
           <Line line={ui === 'ja' ? [['文庫', 'ぶんこ'], 'で読む。'] : ui.startsWith('zh') ? [['阅读', 'yuè dú'], '，慢慢品味。'] : [['文庫', 'ぶんこ'], ' · A page to enjoy.']} ruby={settings.ruby} />
         </div>
       </section>
+
+      <section><label htmlFor="interface-size" className="size-label">{readerComfortCopy[ui].interfaceSize}</label><select id="interface-size" value={settings.interfaceScale??1} onChange={event=>onChange({interfaceScale:Number(event.target.value)})}>{[1,1.15,1.3,1.5].map((scale,i)=><option value={scale} key={scale}>{[readerComfortCopy[ui].standard,readerComfortCopy[ui].large,readerComfortCopy[ui].larger,readerComfortCopy[ui].largest][i]} · {Math.round(scale*100)}%</option>)}</select><p className="hint">{readerComfortCopy[ui].interfaceHint}</p></section>
 
       <section>
         <h3>{copy.theme}</h3>

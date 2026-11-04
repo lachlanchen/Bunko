@@ -72,7 +72,8 @@ export function createModelRouter({ db, config, provider, now = Date.now }) {
       // Only host validation can request the one bounded repair with a stronger model.
       // Book text and model output cannot select a route or add a provider.
       const primary = ['repair', 'capable'].includes(options.quality) && settings.capable ? settings.capable : settings.primary
-      const candidates = [...new Set([primary, settings.fallback].filter(Boolean))].map(id => routes.get(id))
+      const alternate = settings.fallback && settings.fallback !== primary ? settings.fallback : primary !== settings.primary ? settings.primary : ''
+      const candidates = [...new Set([primary, alternate].filter(Boolean))].map(id => routes.get(id))
       requireValue(candidates[0], 'The reading assistant is not connected.', 503)
       const raw = JSON.parse(options.body)
       const deadline = now() + Math.min(options.timeout || 60000, 110000)
@@ -91,7 +92,9 @@ export function createModelRouter({ db, config, provider, now = Date.now }) {
         requireValue(remaining > 0 && !options.signal?.aborted, 'The reading request was interrupted.', 504)
         try {
           const transportOptions = { ...options }; delete transportOptions.quality
-          return await provider(route.url, { ...transportOptions, timeout: remaining,
+          // Leave time for one qualified alternate after a slow transient failure.
+          const attemptTimeout = i === 0 && candidates.length > 1 ? Math.max(1, Math.floor(remaining * .7)) : remaining
+          return await provider(route.url, { ...transportOptions, timeout: attemptTimeout,
             headers: { 'Content-Type': 'application/json', ...(route.token ? { Authorization: `Bearer ${route.token}` } : {}) },
             body: JSON.stringify(body) })
         } catch (error) {

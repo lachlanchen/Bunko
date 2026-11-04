@@ -1,12 +1,13 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode, type PointerEvent } from 'react'
+import { useCallback, useEffect, useImperativeHandle, useRef, useState, type ReactNode, type PointerEvent, type Ref } from 'react'
 import { Maximize2, Minimize2, Minus, Plus, Scan } from 'lucide-react'
 import type { UILanguage } from '../i18n'
 import { useBackAction } from '../lib/backNavigation'
 import { guideVisualCopy } from './guideVisualCopy'
 
 /** A bounded local SVG viewport. Panning owns its gestures, never reader Back. */
-export function GuideCanvas({ width, height, label, ui, children, footer, stateKey, initialFocus }: {
-  width: number; height: number; label: string; ui: UILanguage; children: ReactNode | ((scale: number) => ReactNode); footer?: ReactNode; stateKey?: string; initialFocus?: { x: number; y: number }
+export interface GuideCamera { focus: (point: { x: number; y: number }) => void }
+export function GuideCanvas({ width, height, label, ui, children, footer, stateKey, initialFocus, inspector, cameraRef, closeOnSelect = true }: {
+  width: number; height: number; label: string; ui: UILanguage; children: ReactNode | ((scale: number) => ReactNode); footer?: ReactNode; stateKey?: string; initialFocus?: { x: number; y: number }; inspector?: ReactNode; cameraRef?: Ref<GuideCamera>; closeOnSelect?: boolean
 }) {
   const t = guideVisualCopy[ui], svg = useRef<SVGSVGElement>(null)
   const [expanded, setExpanded] = useState(false)
@@ -47,6 +48,13 @@ export function GuideCanvas({ width, height, label, ui, children, footer, stateK
     // Keep the place under the pointer stationary while zooming.
     update({ x: old.x + dx * (1 / (old.zoom || fit) - 1 / next), y: old.y + dy * (1 / (old.zoom || fit) - 1 / next), zoom: next })
   }, [fit, update])
+  useImperativeHandle(cameraRef, () => ({ focus(point) {
+    const next = Math.min(4, Math.max(fit * 2, current.current.zoom || fit))
+    // Keep a focused place in the clear part of the map, beside its details.
+    const wide = window.innerWidth >= 900
+    update({ x: point.x + (inspector && wide ? Math.min(300, size.width * .42) / 2 : 0) / next,
+      y: point.y + (inspector && !wide ? Math.min(110, size.height * .2) : 0) / next, zoom: next })
+  } }), [fit, inspector, size.width, size.height, update])
   useEffect(() => {
     const element = svg.current
     if (!element) return
@@ -85,7 +93,7 @@ export function GuideCanvas({ width, height, label, ui, children, footer, stateK
   return <div ref={container} className={`guide-canvas${expanded ? ' expanded' : ''}`} {...(expanded ? { role: 'dialog', 'aria-modal': true, 'aria-label': label } : {})}
     onKeyDown={e => {
       if (!expanded || e.key !== 'Tab') return
-      const controls = [...(container.current?.querySelectorAll<HTMLElement>('button:not(:disabled), [tabindex="0"]') || [])]
+      const controls = [...(container.current?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled), summary, [tabindex="0"]') || [])].filter(control => !control.closest('[hidden]') && ![...container.current!.querySelectorAll('details:not([open])')].some(details => details.contains(control) && control !== details.querySelector('summary')))
       if (!controls.length) return
       const first = controls[0], last = controls[controls.length - 1]
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus() }
@@ -99,11 +107,13 @@ export function GuideCanvas({ width, height, label, ui, children, footer, stateK
         <button type="button" aria-label={expanded ? t.close : t.expand} title={expanded ? t.close : t.expand} onClick={() => setExpanded(v => !v)}>{expanded ? <Minimize2 size={17} /> : <Maximize2 size={17} />}</button>
       </div>
     </div>
-    <svg ref={svg} tabIndex={0} viewBox={`${view.x - size.width / effectiveZoom / 2} ${view.y - size.height / effectiveZoom / 2} ${size.width / effectiveZoom} ${size.height / effectiveZoom}`} role="group" aria-label={label} data-no-swipe="true"
+    <div className="guide-canvas-stage"><svg ref={svg} tabIndex={0} viewBox={`${view.x - size.width / effectiveZoom / 2} ${view.y - size.height / effectiveZoom / 2} ${size.width / effectiveZoom} ${size.height / effectiveZoom}`} role="group" aria-label={label} data-no-swipe="true"
       onPointerDown={pointerDown} onPointerMove={pointerMove}
       onPointerUp={e => { pointers.current.delete(e.pointerId) }} onPointerCancel={e => { pointers.current.delete(e.pointerId); moved.current = true }}
+      onLostPointerCapture={e => { pointers.current.delete(e.pointerId) }}
+      onPointerLeave={e => { if (!e.currentTarget.hasPointerCapture?.(e.pointerId)) pointers.current.delete(e.pointerId) }}
       onClickCapture={e => { if (moved.current && e.detail) { e.preventDefault(); e.stopPropagation() } }}
-      onClick={e => { if (expanded && e.target instanceof Element && e.target.closest('[role="button"]')) setExpanded(false) }}
+      onClick={e => { if (expanded && closeOnSelect && e.target instanceof Element && e.target.closest('[role="button"]')) setExpanded(false) }}
       onKeyDown={e => {
         if (e.key === '+' || e.key === '=') { e.preventDefault(); zoom(1.35) }
         if (e.key === '-') { e.preventDefault(); zoom(1 / 1.35) }
@@ -113,7 +123,7 @@ export function GuideCanvas({ width, height, label, ui, children, footer, stateK
         if (e.key === 'Home') { e.preventDefault(); update({ x: width / 2, y: height / 2, zoom: 0 }) }
       }}>
       <title>{label}</title>{typeof children === 'function' ? children(effectiveZoom) : children}
-    </svg>
+    </svg>{inspector}</div>
     <div className="guide-canvas-footer">{footer}<p>{t.drag}</p></div>
   </div>
 }

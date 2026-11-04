@@ -29,9 +29,9 @@ function Connections({ nodes, edges, ui, onRead, kind, guideKey, bookId, mapYear
       <button type="button" aria-pressed={geographic} onClick={() => setGeographic(true)}>{v.map}</button>
       <button type="button" aria-pressed={!geographic} onClick={() => { setGeographic(false); select('') }}>{v.story}</button>
     </div>}
-    {kind === 'places' && geographic ? <Suspense fallback={<p role="status">{t.generating}</p>}><GuideMap nodes={nodes} edges={edges} guideKey={guideKey} bookId={bookId} mapYear={mapYear} ui={ui} onSelect={select} onEdge={selectEdge} selectedEdge={edgeIndex} /></Suspense>
+    {kind === 'places' && geographic ? <Suspense fallback={<><p role="status">{v.map}…</p><div className="guide-entity-grid">{shown.map(node => <article key={node.id} className="guide-card"><h2 dir="auto">{node.name}</h2><p dir="auto">{node.detail}</p><PassageEvidence citations={node.citations} ui={ui} onRead={onRead}/></article>)}</div></>}><GuideMap nodes={nodes} edges={edges} guideKey={guideKey} bookId={bookId} mapYear={mapYear} ui={ui} selected={focused} onSelect={select} onEdge={selectEdge} selectedEdge={edgeIndex} onRead={onRead} /></Suspense>
       : <GuideGraph nodes={nodes} edges={edges} guideKey={`${guideKey}:${kind}`} ui={ui} selected={focused} onSelect={select} onEdge={selectEdge} label={kind === 'places' ? t.schematic : t.people} />}
-    <div ref={details} className="guide-details-panel">
+    {!(kind === 'places' && geographic) && <div ref={details} className="guide-details-panel">
       {edge && <article className="guide-connection selected" aria-live="polite"><h3><bdi>{nodes.find(n => n.id === edge.from)?.name}</bdi><span aria-hidden="true">{edge.direction === 'forward' ? '→' : '↔'}</span><bdi>{nodes.find(n => n.id === edge.to)?.name}</bdi></h3><p dir="auto">{edge.label}</p>{edge.certainty !== 'stated' && <span className="guide-uncertain">{edge.certainty === 'background' ? t.background : t.interpretation}</span>}<PassageEvidence citations={edge.citations} ui={ui} onRead={onRead} /></article>}
       <div className="guide-entity-grid">{shown.map(node => <article key={node.id} className="guide-card">
         <h2 dir="auto">{node.name}</h2>{!!node.aliases.length && <p className="guide-aliases" dir="auto">{node.aliases.join(' · ')}</p>}
@@ -44,7 +44,7 @@ function Connections({ nodes, edges, ui, onRead, kind, guideKey, bookId, mapYear
           <p dir="auto">{item.label}</p>{item.certainty !== 'stated' && <span className="guide-uncertain">{item.certainty === 'background' ? t.background : t.interpretation}</span>}<PassageEvidence citations={item.citations} ui={ui} onRead={onRead} />
         </article>)}
       </details>}
-    </div>
+    </div>}
   </>
 }
 
