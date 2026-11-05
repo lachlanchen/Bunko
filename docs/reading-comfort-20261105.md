@@ -18,7 +18,7 @@ fallback. The server correction is deployed; no provider catalog was changed.
 
 ## Qualification
 
-- Full lint, 187 client tests, server tests, renderer checks and production build
+- Full lint, 188 client tests, 184 server tests, renderer checks and production build
   passed. The focused provider recovery suite passed all 17 cases on the server.
 - A real whole-book Faxian request completed with four people, six places and
   five events. Thirteen browser checks covered map interaction, saved reuse and
@@ -27,7 +27,7 @@ fallback. The server correction is deployed; no provider catalog was changed.
 - Existing accounts, content, sessions and billing records were checked unchanged
   across deployment. Both current and legacy HTTPS service routes pass health.
 - These browser results are not physical iOS, Watch, Monterey or Duo runtime
-  qualification. Candidate 48 requires its separate native internal-delivery gates.
+  qualification. Build 48 passed its separate native gates and is available internally; see [delivery details](internal-build48-20261105.md).
 
 GitHub remains the only publicly enabled Bunko sign-in method at this checkpoint.
 The optional central methods and canonical LAC consumer require their actual

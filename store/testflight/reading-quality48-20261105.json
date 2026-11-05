@@ -1,0 +1,59 @@
+{
+  "app": "Bunko",
+  "version": "1.0.16",
+  "build": 48,
+  "source": "614c399da92024cd6e8162bf849f9c268dac6e87",
+  "appleInternal": [
+    {
+      "platform": "MAC_OS",
+      "id": "d4e07927-569b-4983-b06a-dde20e1d5fec",
+      "version": "1.0.16",
+      "build": "48",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    },
+    {
+      "platform": "IOS",
+      "id": "f68c0409-ae3b-490d-a809-b783fce83f90",
+      "version": "1.0.16",
+      "build": "48",
+      "processing": "VALID",
+      "internal": "IN_BETA_TESTING"
+    }
+  ],
+  "androidInternal": {
+    "versionCode": 48,
+    "state": "active",
+    "existingTestersPreserved": true
+  },
+  "artifacts": [
+    {
+      "platform": "ios",
+      "sha256": "ea5c7e79f5131223c34a1251311257d547443aa5f812beb8ec07330b1741d185",
+      "bytes": 12216682
+    },
+    {
+      "platform": "macos",
+      "sha256": "f78c0405303f0dfd6f7151f462efec435f6cb086484cedc7c04158e44698e7ac",
+      "bytes": 6513944
+    }
+  ],
+  "qa": {
+    "nativeMacChecks": 22,
+    "clientTests": 188,
+    "serverTests": 184,
+    "rendererAndProductionBuild": true,
+    "realGuideAndBrowserChecks": true
+  },
+  "preservation": {
+    "independentHandback": true,
+    "originalCleanupFailurePreserved": true,
+    "acceptedException": "One existing simulator lastUsedAt field changed; device state and all other fields/bytes preserved; no metadata edits"
+  },
+  "coverageGaps": [
+    "Official Duo poses/reserved regions",
+    "New physical iPhone/Watch execution",
+    "New Monterey runtime checks"
+  ],
+  "publicReviewOrReleaseChanged": false
+}

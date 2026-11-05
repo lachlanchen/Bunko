@@ -1,5 +1,16 @@
 # Bunko — product brief
 
+## Internal Apple and Android delivery · 2026-11-05
+
+Apple iOS/Watch and universal Mac **1.0.16 (48)** are VALID /
+IN_BETA_TESTING in the existing internal group; Android48 is active internally.
+This delivers tappable map details, portrait phone relationship graphs, expanded
+independent text/interface sizing and reading transitions. All22 native Mac
+checks and actual signed archive/export gates passed. Independent cleanup
+reconciliation preserved the original one-field simulator timestamp exception.
+No public release or review selection changed. See `docs/internal-build48-20261105.md`.
+
+
 ## Reading comfort and tappable map details · 2026-11-05
 
 The owner renews improvements to maps, reading-agent reliability, text sizing and
