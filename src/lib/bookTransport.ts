@@ -9,11 +9,11 @@ export const BOOK_ORIGINS = [
 
 export function validBookPath(path: string): boolean {
   if (path.length > 300 || path.includes('..')) return false
-  return /^(?:reader-index\.json|dictionaries\/(?:manifest\.json|(?:en|zh|ja)-[a-zA-Z0-9-]+\.json\.gz)|books\/[a-z0-9-]+\/(?:meta\.json|c[0-9]+(?:p[0-9]+)?(?:-[a-f0-9]+)?\.json|cover-[a-f0-9]+\.(?:webp|png|jpg)|assets\/[a-zA-Z0-9/_-]+\.(?:png|jpe?g|webp)))$/.test(path)
+  return /^(?:reader-index\.json|dictionaries\/(?:manifest\.json|(?:en|zh|ja)-[a-zA-Z0-9-]+\.json\.gz)|books\/[a-z0-9-]+\/(?:meta\.json|sentences-v1\.json|c[0-9]+(?:p[0-9]+)?(?:-[a-f0-9]+)?\.json|cover-[a-f0-9]+\.(?:webp|png|jpg)|assets\/[a-zA-Z0-9/_-]+\.(?:png|jpe?g|webp)))$/.test(path)
 }
 
 const aborted = () => new DOMException('Download cancelled', 'AbortError')
-const mutable = (path: string) => path === 'reader-index.json' || path.endsWith('/meta.json') || path === 'dictionaries/manifest.json'
+const mutable = (path: string) => path === 'reader-index.json' || path.endsWith('/meta.json') || path.endsWith('/sentences-v1.json') || path === 'dictionaries/manifest.json'
 
 export function createBookTransport({ fetcher = fetch, now = Date.now, timeout = 8000, idleTimeout = 20000 } = {}) {
   const failedUntil = new Map<string, number>()

@@ -18,6 +18,12 @@ import Foundation
   precondition(ruby.isValid)
   let rubyData = try JSONEncoder().encode(WatchShelf(schema: 1, readings: [ruby, good]))
   precondition(WatchShelf.decode(rubyData)?.readings == [ruby, good])
+  let split = WatchLine(lang: "ja", tokens: ja.tokens + ja.tokens, breaks: [2])
+  precondition(split.isValid && split.sentenceLines == [ja, ja] && split.text == ja.text + ja.text)
+  let decodedSplit = try JSONDecoder().decode(WatchLine.self, from: JSONEncoder().encode(split))
+  precondition(decodedSplit == split)
+  precondition(!WatchLine(lang: "ja", tokens: split.tokens, breaks: [2, 2]).isValid)
+  precondition(!WatchLine(lang: "ja", tokens: split.tokens, breaks: [4]).isValid)
   let legacy = Data(#"{"schema":1,"readings":[{"id":"old","title":"Old","subtitle":"","blocks":["Text"],"truncated":false}]}"#.utf8)
   precondition(WatchShelf.decode(legacy)?.readings.first?.sentences == nil)
   var bad = ruby; bad.sentences = []

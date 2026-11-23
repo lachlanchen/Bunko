@@ -78,3 +78,13 @@ it('transfers more than six language layers without losing text or order', () =>
   expect(reading.sentences?.[0].lines.map(line => line.lang)).toEqual(langs)
   expect(reading.blocks[0]).toContain('بِسْمِ اللَّهِ')
 })
+
+it('adds sentence boundaries inside existing language rows and keeps older Watch text intact', () => {
+  const p = { id: 'p1', src: '', u: [{ src: '', en: ['Read. Write.'], ja: [['読む', 'よむ'], 'だけ。'] }] }
+  const book = { ...chapter, p: [p] }
+  const sentences = watchExcerpt(meta, book, ['en', 'ja'], 0)
+  const paragraphs = watchExcerpt(meta, book, ['en', 'ja'], 0, false)
+  expect(sentences.blocks).toEqual(paragraphs.blocks)
+  expect(sentences.sentences?.[0].lines.map(line => line.breaks)).toEqual([[1], undefined])
+  expect(sentences.sentences?.[0].lines[1].tokens[0].ruby).toBe('よむ')
+})

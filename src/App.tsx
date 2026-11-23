@@ -597,15 +597,6 @@ function SettingsSheet({
   const langs = book?.langs ?? []
   return (
     <Sheet title={copy.settings} onClose={onClose} closeLabel={copy.close}>
-      {book && <section><TranslationRequest key={book.id} ui={ui} book={book} expanded onRead={onRead} /></section>}
-      <section><button type="button" className="cloud-entry" onClick={onCloud}><Sparkles size={18} />{cloudCopy[ui].title}</button></section>
-      {langs.length > 0 && (
-        <section>
-          <h3>{copy.show}</h3>
-          <LanguageChoices available={langs} selected={settings.langs} ui={ui} onChange={next => onChange({ langs: next })} />
-        </section>
-      )}
-
       <section>
         <h3>{copy.layout}</h3>
         <div className="chips">
@@ -614,6 +605,7 @@ function SettingsSheet({
               key={layout}
               type="button"
               className={settings.layout === layout ? 'active' : ''}
+              aria-pressed={settings.layout === layout}
               onClick={() => onChange({ layout })}
             >
               {layout === 'source'
@@ -625,6 +617,15 @@ function SettingsSheet({
           ))}
         </div>
       </section>
+
+      {langs.length > 0 && (
+        <section>
+          <h3>{copy.show}</h3>
+          <LanguageChoices available={langs} selected={settings.langs} ui={ui} onChange={next => onChange({ langs: next })} />
+        </section>
+      )}
+      {book && <section><TranslationRequest key={book.id} ui={ui} book={book} onRead={onRead} /></section>}
+      <section><button type="button" className="cloud-entry" onClick={onCloud}><Sparkles size={18} />{cloudCopy[ui].title}</button></section>
 
       <Toggle label={copy.ruby} hint={copy.rubyHint} on={settings.ruby} onChange={(ruby) => onChange({ ruby })} />
       <Toggle label={copy.translationBubbles} hint={copy.translationBubblesHint} on={settings.translationBubbles} onChange={(translationBubbles) => onChange({ translationBubbles })} />

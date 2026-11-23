@@ -2,9 +2,10 @@ import { unitLine } from './languages'
 import { Capacitor, registerPlugin } from '@capacitor/core'
 import type { BookMeta, Chapter, LangCode } from '../types'
 import { plainText, tokenParts } from './text'
+import { canSplitSentences, sentenceLines, type ChapterSentenceMap } from './sentences'
 
 export interface WatchToken { text: string; ruby?: string }
-export interface WatchLine { lang: LangCode; tokens: WatchToken[] }
+export interface WatchLine { lang: LangCode; tokens: WatchToken[]; breaks?: number[] }
 export interface WatchSentence { lines: WatchLine[] }
 
 export interface WatchReading {
@@ -21,16 +22,16 @@ const watch = registerPlugin<{ save(options: { reading: string }): Promise<void>
 export const supportsWatch = () => Capacitor.getPlatform() === 'ios'
 
 /** Transfer a small text excerpt; figures/math remain in the full phone edition. */
-export function watchExcerpt(meta: BookMeta, chapter: Chapter, langs: LangCode[], start: number): WatchReading {
+export function watchExcerpt(meta: BookMeta, chapter: Chapter, langs: LangCode[], start: number, sentences = true, map?: ChapterSentenceMap): WatchReading {
   const reading: WatchReading = {
     id: `${meta.id}/${chapter.n}/${start}`,
     title: (meta.titleText[meta.primary] ?? meta.id).slice(0, 150),
     subtitle: (plainText(chapter.title[langs[0]] ?? chapter.title[meta.primary]) || `Chapter ${chapter.n}`).slice(0, 150),
     blocks: [], sentences: [], truncated: false,
   }
-  const available = chapter.p.slice(Math.max(0, start))
   const languages = [...new Set(langs)]
-  excerpt: for (const paragraph of available) {
+  excerpt: for (let paragraphIndex = Math.max(0, start); paragraphIndex < chapter.p.length; paragraphIndex++) {
+    const paragraph = chapter.p[paragraphIndex]
     // The Watch excerpt follows the main passage; optional translation notes
     // stay in the phone reader and must not become a second Japanese sentence.
     if (paragraph.kind === 'annotation' || (paragraph.id.endsWith('-notes') && paragraph.u.every(unit => unit.annotation === true))) continue
@@ -41,13 +42,20 @@ export function watchExcerpt(meta: BookMeta, chapter: Chapter, langs: LangCode[]
     }
     // Book units are already aligned across languages. Preserve that alignment
     // instead of concatenating an entire paragraph in each language first.
-    for (const unit of paragraph.u) {
+    for (const [unitIndex, unit] of paragraph.u.entries()) {
       const lines: WatchLine[] = languages.flatMap(lang => {
-        const tokens = (unitLine(unit, lang) ?? []).map(token => {
-          const { text, reading: ruby } = tokenParts(token)
-          return ruby ? { text, ruby } : { text }
-        }).filter(token => token.text)
-        return tokens.length ? [{ lang, tokens }] : []
+        const line = unitLine(unit, lang) ?? []
+        const parts = sentences && canSplitSentences(paragraph) && !unit.rich && !unit.annotation
+          ? sentenceLines(line, lang, map?.[`${paragraphIndex}.${unitIndex}`]?.[lang]) : [line]
+        const tokens: WatchToken[] = [], breaks: number[] = []
+        for (const part of parts) {
+          if (tokens.length) breaks.push(tokens.length)
+          for (const token of part) {
+            const { text, reading: ruby } = tokenParts(token)
+            if (text) tokens.push(ruby ? { text, ruby } : { text })
+          }
+        }
+        return tokens.length ? [{ lang, tokens, ...(breaks.length ? { breaks } : {}) }] : []
       })
       const text = lines.map(line => line.tokens.map(token => token.text).join('')).join('\n\n')
       if (!text.trim()) continue

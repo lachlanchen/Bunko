@@ -7,12 +7,12 @@ import { htmlLanguage, languageDirection, unitLine } from '../lib/languages'
  * three arrangements come from the same data: the source line alone, every
  * gloss under its own source line, or whole paragraphs one after another.
  */
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { Fragment, memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { ChevronLeft, ChevronRight, List, MessageCircle, Settings2, Sparkles, Watch } from 'lucide-react'
 import { agentCopy } from './agentCopy'
 import type { BookMeta, Chapter, LangCode, ReadingSettings, Unit } from '../types'
 import { languageName, type UICopy, type UILanguage } from '../i18n'
-import { loadChapter } from '../lib/library'
+import { loadBookSentences, loadChapter } from '../lib/library'
 import { Line } from './Line'
 import { RichLine } from './RichLine'
 import { BookFigure } from './BookFigure'
@@ -23,6 +23,7 @@ import { SelectionTools } from './SelectionTools'
 import type { ReaderSelection } from '../lib/readerSelection'
 import { supportsWatch, watchExcerpt, sendToWatch } from '../lib/watchReading'
 import { preserveReadingViewport } from '../lib/readingViewport'
+import { canSplitSentences, sentenceChapterHash, sentenceLines, type BookSentenceMap } from '../lib/sentences'
 
 interface ReaderProps {
   meta: BookMeta
@@ -60,6 +61,20 @@ function PassageNotes({ enabled, label, children }: { enabled: boolean; label: s
   return enabled ? <details className="passage-notes"><summary>{label}</summary>{children}</details> : children
 }
 
+const SentenceText = memo(function SentenceText({ unit, lang, split, breaks, ruby, grammar }: {
+  unit: Unit; lang: LangCode; split: boolean; breaks?: number[]; ruby: boolean; grammar: boolean
+}) {
+  if (!split || unit.rich || unit.annotation) return <RichLine unit={unit} lang={lang} ruby={ruby} grammar={grammar} />
+  const lines = sentenceLines(unitLine(unit, lang) ?? [], lang, breaks)
+  if (lines.length === 1) return <Line line={lines[0]} lang={lang} ruby={ruby} grammar={grammar} />
+  return lines.map((line, index) => (
+    <Fragment key={index}>
+      {index > 0 && <br className="sentence-continuation" />}
+      <span data-display-sentence=""><Line line={line} lang={lang} ruby={ruby} grammar={grammar} /></span>
+    </Fragment>
+  ))
+})
+
 export function Reader({
   meta,
   chapterIndex,
@@ -87,6 +102,7 @@ export function Reader({
   const [watchBusy, setWatchBusy] = useState(false)
   const visibleParagraph = useRef(startParagraph)
   const [focus, setFocus] = useState<ReadingFocus | null>(null)
+  const [sentenceData, setSentenceData] = useState<{ book: string; chapters: BookSentenceMap }>()
   const scrollRef = useRef<HTMLDivElement>(null)
   const appearance = useRef('')
   const row = meta.chapters[chapterIndex]
@@ -94,6 +110,16 @@ export function Reader({
   const chapter = loaded.file === row?.file ? loaded.chapter : null
   const error = loaded.file === row?.file ? loaded.error : ''
   const activeFocus = focus?.key.startsWith(`${meta.id}/${row?.file}/`) ? focus : null
+
+  useEffect(() => {
+    const controller = new AbortController()
+    void loadBookSentences(meta.id, controller.signal).then(chapters => {
+      if (chapters && !controller.signal.aborted) setSentenceData({ book: meta.id, chapters })
+    })
+    return () => controller.abort()
+  }, [meta.id])
+  const published = sentenceData?.book === meta.id && row ? sentenceData.chapters[row.file] : undefined
+  const sentenceMap = useMemo(() => chapter && published?.chapterHash === sentenceChapterHash(chapter) ? published.units : undefined, [chapter, published])
 
   const langs = useMemo(
     () => settings.langs.filter((lang) => meta.langs.includes(lang)),
@@ -166,7 +192,7 @@ export function Reader({
     const host = scrollRef.current
     const target = host?.querySelector<HTMLElement>(`[data-para="${visibleParagraph.current}"]`)
     if (host && target) host.scrollTo({ top: target.offsetTop - 12, behavior: 'auto' })
-  }, [shownKey])
+  }, [shownKey, settings.layout])
 
   const handleScroll = useCallback(() => {
     const host = scrollRef.current
@@ -230,7 +256,7 @@ export function Reader({
         {supportsWatch() && <button type="button" disabled={!chapter || watchBusy} aria-label={watchLabel} onClick={async () => {
           if (!chapter) return
           setWatchBusy(true)
-          try { await sendToWatch(watchExcerpt(meta, chapter, shown, visibleParagraph.current)); setWatchStatus(watchQueued) }
+          try { await sendToWatch(watchExcerpt(meta, chapter, shown, visibleParagraph.current, settings.layout === 'interlinear', sentenceMap)); setWatchStatus(watchQueued) }
           catch (error) { setWatchStatus(error instanceof Error ? error.message : String(error)) }
           finally { setWatchBusy(false) }
         }}><Watch size={18} /></button>}
@@ -283,9 +309,11 @@ export function Reader({
                           unitLine(unit, lang)?.length ? (
                             <p className={`unit-line lang-${lang} ${lang === shown[0] ? 'reading-main' : 'reading-translation'}`} key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>
                               {lang !== shown[0] && <strong className="language-label">{languageName(lang, ui)}</strong>}
-                              <span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><RichLine
+                              <span data-reading="" data-reading-para={index} data-unit={unitIndex} data-lang={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}><SentenceText
                                 unit={unit}
                                 lang={lang}
+                                split={settings.layout === 'interlinear' && canSplitSentences(paragraph)}
+                                breaks={sentenceMap?.[`${index}.${unitIndex}`]?.[lang]}
                                 ruby={settings.ruby}
                                 grammar={settings.grammar}
                               /></span>

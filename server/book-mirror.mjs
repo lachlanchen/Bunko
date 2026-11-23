@@ -6,7 +6,7 @@ const MAX_FILE = 32 * 1024 * 1024
 const error = (status, code) => Object.assign(new Error(code), { status, code })
 export function validMirrorPath(path) {
   return typeof path === 'string' && path.length <= 300 && !path.includes('..') &&
-    /^(?:reader-index\.json|dictionaries\/(?:manifest\.json|(?:en|zh|ja)-[a-zA-Z0-9-]+\.json\.gz)|books\/[a-z0-9-]+\/(?:meta\.json|c[0-9]+(?:p[0-9]+)?(?:-[a-f0-9]+)?\.json|cover-[a-f0-9]+\.(?:webp|png|jpg)|assets\/[a-zA-Z0-9/_-]+\.(?:png|jpe?g|webp)))$/.test(path)
+    /^(?:reader-index\.json|dictionaries\/(?:manifest\.json|(?:en|zh|ja)-[a-zA-Z0-9-]+\.json\.gz)|books\/[a-z0-9-]+\/(?:meta\.json|sentences-v1\.json|c[0-9]+(?:p[0-9]+)?(?:-[a-f0-9]+)?\.json|cover-[a-f0-9]+\.(?:webp|png|jpg)|assets\/[a-zA-Z0-9/_-]+\.(?:png|jpe?g|webp)))$/.test(path)
 }
 const immutable = path => /\/(?:c[0-9]+(?:p[0-9]+)?|cover)-[a-f0-9]+\./.test(path) || /^dictionaries\/.+\.gz$/.test(path)
 function contentType(path, bytes) {

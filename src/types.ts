@@ -24,6 +24,8 @@ export interface BookRow {
   edition?: 'multilingual' | 'original-only'
   /** First publication in Bunko's catalog, never the last content refresh. */
   addedAt?: string
+  /** Optional display boundaries. Chapter data and passage IDs stay stable. */
+  sentenceSha256?: string
 }
 
 export interface ReaderIndex {

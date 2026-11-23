@@ -9,6 +9,9 @@ import { isLanguageCode } from './languages'
  */
 import type { BookMeta, BookRow, Chapter, ReaderIndex } from '../types'
 import { cacheFigure, removeFigures } from './bookAssets'
+import { sha256 } from '@noble/hashes/sha2.js'
+import { bytesToHex } from '@noble/hashes/utils.js'
+import type { BookSentenceMap } from './sentences'
 
 import { BOOK_ORIGINS, fetchBook } from './bookTransport'
 const REPO = 'lachlanchen/bunko-books'
@@ -196,6 +199,26 @@ export async function loadChapter(id: string, file: string, signal?: AbortSignal
   return chapter
 }
 
+/** Optional, catalog-pinned display hints. Unavailable data never blocks reading. */
+export async function loadBookSentences(id: string, signal?: AbortSignal): Promise<BookSentenceMap | null> {
+  const index = await cacheGet<ReaderIndex>('index')
+  const sha = index?.books.find(book => book.id === id)?.sentenceSha256
+  if (signal?.aborted || !sha || !/^[a-f0-9]{64}$/.test(sha)) return null
+  const key = `sentences:${id}:${sha}`
+  const cached = await cacheGet<BookSentenceMap>(key)
+  if (cached) return cached
+  try {
+    const response = await fetchBook(`books/${id}/sentences-v1.json`, signal)
+    const bytes = new Uint8Array(await response.arrayBuffer())
+    if (bytesToHex(sha256(bytes)) !== sha || signal?.aborted) return null
+    const value = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes))
+    if (!value || value.schema !== 1 || value.book !== id || !value.chapters || typeof value.chapters !== 'object' || Array.isArray(value.chapters)) return null
+    await cacheDeletePrefix(`sentences:${id}:`)
+    await cachePut(key, value.chapters)
+    return value.chapters
+  } catch { return null }
+}
+
 /** Is this chapter already on the device? */
 export async function hasChapter(id: string, file: string): Promise<boolean> {
   return (await cacheGet(`ch:${id}:${file}`)) !== null
@@ -230,6 +253,7 @@ export async function downloadedChapterCount(meta: BookMeta): Promise<number> {
 /** Give the space back. The book stays in the catalogue and can be fetched again. */
 export async function removeBook(id: string): Promise<void> {
   await removeFigures(id)
+  await cacheDeletePrefix(`sentences:${id}:`)
   await cacheDeletePrefix(`ch:${id}:`)
   await cacheDeletePrefix(`meta:${id}:`)
   // The original 1.0.0 reader used this exact legacy key. Including a trailing

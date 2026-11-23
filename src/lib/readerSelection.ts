@@ -31,6 +31,7 @@ export function readSelection(host: HTMLElement, selection = window.getSelection
 export function selectSentence(selected: ReaderSelection): void {
   const { passage, range } = selected
   if (!passage.contains(range.endContainer)) return
+  const displaySentence = elementAt(range.startContainer)?.closest('[data-display-sentence]')
   const prefix = document.createRange()
   prefix.selectNodeContents(passage)
   prefix.setEnd(range.startContainer, range.startOffset)
@@ -38,7 +39,16 @@ export function selectSentence(selected: ReaderSelection): void {
   const whole = document.createRange()
   whole.selectNodeContents(passage)
   const text = rangeText(whole)
-  const segments = typeof Intl.Segmenter === 'function'
+  const segments = displaySentence && displaySentence.contains(range.endContainer)
+    ? (() => {
+        const boundary = document.createRange()
+        boundary.selectNodeContents(passage)
+        boundary.setEndBefore(displaySentence)
+        const index = rangeText(boundary).length
+        boundary.selectNodeContents(displaySentence)
+        return [{ index, segment: rangeText(boundary) }]
+      })()
+    : typeof Intl.Segmenter === 'function'
     ? [...new Intl.Segmenter(passage.lang || 'en', { granularity: 'sentence' }).segment(text)].map(({ index, segment }) => ({ index, segment }))
     : [...text.matchAll(/[^。！？.!?]+[。！？.!?]*\s*/gu)].map((match) => ({ index: match.index, segment: match[0] }))
   const sentence = segments.find(({ index, segment }) => offset < index + segment.length)

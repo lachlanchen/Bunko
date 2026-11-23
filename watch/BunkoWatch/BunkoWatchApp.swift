@@ -111,8 +111,10 @@ struct WatchReader: View {
                                     Text(line.languageLabel)
                                         .font(.system(size: 10, weight: .bold))
                                         .foregroundStyle(line.lang.hasPrefix("ja") ? Color.orange : Color.cyan)
-                                    WatchRubyLine(line: line, textSize: min(24, max(14, textSize)),
-                                                  rubySize: min(13, max(7, rubySize)), showRuby: showRuby)
+                                    ForEach(Array(line.sentenceLines.enumerated()), id: \.offset) { _, sentence in
+                                        WatchRubyLine(line: sentence, textSize: min(24, max(14, textSize)),
+                                                      rubySize: min(13, max(7, rubySize)), showRuby: showRuby)
+                                    }
                                 }
                             }
                         }.id("sentence-\(currentPage)")

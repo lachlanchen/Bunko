@@ -8,7 +8,25 @@ struct WatchToken: Codable, Equatable {
 struct WatchLine: Codable, Equatable {
     let lang: String
     let tokens: [WatchToken]
+    var breaks: [Int]? = nil
     var text: String { tokens.map(\.text).joined() }
+    var sentenceLines: [WatchLine] {
+        guard let breaks, validBreaks else { return [self] }
+        let ends = [0] + breaks + [tokens.count]
+        return zip(ends, ends.dropFirst()).map { start, end in
+            WatchLine(lang: lang, tokens: Array(tokens[start..<end]))
+        }
+    }
+    private var validBreaks: Bool {
+        guard let breaks else { return true }
+        guard breaks.count < tokens.count else { return false }
+        var previous = 0
+        for point in breaks {
+            guard point > previous, point < tokens.count else { return false }
+            previous = point
+        }
+        return true
+    }
     var languageLabel: String {
         ["en": "English", "zh": "中文", "ja": "日本語", "wenyan": "文言", "zh_modern": "现代中文", "ja_modern": "現代日本語"][lang] ?? Locale.current.localizedString(forIdentifier: lang) ?? lang
     }
@@ -22,7 +40,7 @@ struct WatchLine: Codable, Equatable {
         lang.utf8.count <= 63 && !["src", "rich", "annotation"].contains(lang) &&
         (lang.range(of: #"^[A-Za-z]{2,8}(-[A-Za-z0-9]{1,8})*$"#, options: .regularExpression) != nil ||
          ["wenyan", "zh_modern", "ja_modern"].contains(lang)) &&
-        !tokens.isEmpty && tokens.count <= 2048 && tokens.allSatisfy {
+        !tokens.isEmpty && tokens.count <= 2048 && validBreaks && tokens.allSatisfy {
             !$0.text.isEmpty && $0.text.utf8.count <= 6000 && ($0.ruby?.utf8.count ?? 0) <= 512
         }
     }

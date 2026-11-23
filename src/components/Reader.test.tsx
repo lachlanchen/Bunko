@@ -4,13 +4,33 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { Reader } from './Reader'
 import { copies } from '../i18n'
 import { DEFAULT_SETTINGS } from '../lib/settings'
+import { sentenceChapterHash } from '../lib/sentences'
 import type { BookMeta, Chapter, LangCode } from '../types'
 
 const chapter: Chapter = { id: 'sample', n: 1, title: { ja: ['第一章'] }, p: [{ id: 'p1', src: 'ja', u: [{ src: 'ja', ja: ['日本語の原文'], en: ['English translation'] }] }] }
-vi.mock('../lib/library', () => ({ loadChapter: vi.fn(async () => chapter) }))
+vi.mock('../lib/library', () => ({ loadChapter: vi.fn(async () => chapter), loadBookSentences: vi.fn(async () => null) }))
 beforeAll(() => { HTMLElement.prototype.scrollTo = vi.fn() })
 afterEach(() => { cleanup(); window.getSelection()?.removeAllRanges(); vi.unstubAllGlobals() })
 const meta: BookMeta = { schema: 1, id: 'sample', mode: 'trilingual_standard', primary: 'ja', langs: ['ja', 'en'], title: {}, titleText: { ja: '作品' }, author: {}, chapters: [{ n: 1, file: 'c001.json', bytes: 1, paras: 1, title: { ja: '第一章' } }], bytes: 1, paras: 1 }
+
+it('defaults to fine sentences, applies the matching data map, and keeps layout and passage identity when toggled', async () => {
+  const { loadChapter, loadBookSentences } = await import('../lib/library')
+  const mixed = { ...chapter, p: [{ id: 'p1', src: '', u: [{ src: '', ja: [['本文', 'ほんぶん'], 'は一文。'], en: ['First. Second. Third.'] }] }] }
+  vi.mocked(loadChapter).mockResolvedValueOnce(mixed)
+  vi.mocked(loadBookSentences).mockResolvedValueOnce({ 'c001.json': { chapterHash: sentenceChapterHash(mixed), units: { '0.0': { en: [15] } } } })
+  const props = { meta, chapterIndex: 0, settings: { ...DEFAULT_SETTINGS, langs: ['ja', 'en'] }, copy: copies.en, ui: 'en' as const, onChapter: vi.fn(), onPlace: vi.fn(), startParagraph: 0, onOpenChapters: vi.fn(), onOpenSettings: vi.fn(), onBack: vi.fn(), backLabel: 'Back' }
+  const view = render(<Reader {...props} />)
+  await screen.findByText('Third.')
+  const passage = view.container.querySelector('[data-para]')
+  expect(passage?.querySelectorAll('.unit')).toHaveLength(1)
+  expect(passage?.querySelectorAll('.sentence-continuation')).toHaveLength(1)
+  expect(passage?.querySelector('[data-lang=en]')?.textContent).toBe('First. Second. Third.')
+  expect(passage?.querySelector('ruby rt')?.textContent).toBe('ほんぶん')
+  view.rerender(<Reader {...props} settings={{ ...props.settings, layout: 'paired' }} />)
+  expect(view.container.querySelector('[data-para]')).toBe(passage)
+  expect(passage?.querySelector('[data-lang=en][data-unit="0"]')?.textContent).toBe('First. Second. Third.')
+  expect(passage?.querySelector('.sentence-continuation')).toBeNull()
+})
 it('reveals changed language layouts without rebuilding passages and respects reduced motion', async () => {
   const cancel=vi.fn(),animate=vi.fn(()=>({cancel}))
   vi.stubGlobal('matchMedia',vi.fn(()=>({matches:false})))
