@@ -14,15 +14,20 @@ const sha = bytes => createHash('sha256').update(bytes).digest('hex')
 const { outputFiles } = await build({ entryPoints: [fileURLToPath(new URL('../src/lib/sentences.ts', import.meta.url))], bundle: true, format: 'esm', platform: 'node', write: false })
 const { makeChapterSentenceMap, sentenceChapterHash } = await import(`data:text/javascript;base64,${Buffer.from(outputFiles[0].contents).toString('base64')}`)
 const index = JSON.parse(await readFile(join(library, 'reader-index.json'), 'utf8'))
-if (selected.some(id => !index.books.some(book => book.id === id))) throw new Error('Unknown catalog ID')
+const books = selected.length ? [...new Set(selected)].map(id => ({ id })) : index.books
 const receipts = []
-for (const book of index.books) {
-  if (selected.length && !selected.includes(book.id)) continue
+for (const book of books) {
   if (!/^[a-z0-9-]+$/.test(book.id)) throw new Error('Invalid catalog ID')
   const source = join(library, 'books', book.id)
   const metaBytes = await readFile(join(source, 'meta.json'))
-  if (sha(metaBytes) !== book.sha256) throw new Error(`Changed metadata for ${book.id}`)
+  if (book.sha256 && sha(metaBytes) !== book.sha256) throw new Error(`Changed metadata for ${book.id}`)
   const meta = JSON.parse(metaBytes)
+  const rights = JSON.parse(await readFile(join(source, 'rights.json'), 'utf8'))
+  if (meta.id !== book.id || rights.id !== book.id || rights.status !== 'ship' ||
+      !rights.basis || !rights.checked || !rights.references?.length ||
+      meta.langs.length !== rights.langs.length || meta.langs.some(lang => !rights.langs.includes(lang))) {
+    throw new Error(`Edition not cleared for ${book.id}`)
+  }
   const chapters = Object.create(null)
   let boundaries = 0, units = 0
   for (const row of meta.chapters) {
