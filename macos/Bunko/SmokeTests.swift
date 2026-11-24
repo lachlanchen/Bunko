@@ -218,6 +218,28 @@ final class MacSmokeTests {
             _ = try await js("document.querySelector('.actions .primary').click()")
             try await wait("document.querySelector('.reader')?.dataset.chapter === '12' && document.querySelectorAll('ruby').length > 20")
             check("offline reload resumes the saved final chapter with HTTP blocked")
+            if ProcessInfo.processInfo.environment["BUNKO_EXPORT_QA"] == "1" {
+                try command("settings")
+                try await wait("Array.from(document.querySelectorAll('.sheet button')).some(b => b.textContent.trim() === 'Export EPUB')")
+                _ = try await js("Array.from(document.querySelectorAll('.sheet button')).find(b => b.textContent.trim() === 'Export EPUB').click()")
+                try await wait("Array.from(document.querySelectorAll('.sheet button')).some(b => b.textContent.trim() === 'Create EPUB')")
+                _ = try await js("Array.from(document.querySelectorAll('.sheet button')).find(b => b.textContent.trim() === 'Create EPUB').click()")
+                try await wait("Array.from(document.querySelectorAll('.sheet button')).some(b => b.textContent.trim() === 'Save EPUB')")
+                _ = try await js("Array.from(document.querySelectorAll('.sheet button')).find(b => b.textContent.trim() === 'Save EPUB').click()")
+                let export = output.appendingPathComponent("export.epub")
+                let deadline = Date().addingTimeInterval(20)
+                while !FileManager.default.fileExists(atPath: export.path), Date() < deadline {
+                    try await Task.sleep(nanoseconds: 250_000_000)
+                }
+                let epub = try Data(contentsOf: export, options: .mappedIfSafe)
+                guard epub.count > 1_000, String(data: epub[30..<58], encoding: .utf8) == "mimetypeapplication/epub+zip" else {
+                    throw URLError(.cannotDecodeContentData)
+                }
+                _ = try await js("document.querySelector('.sheet header button').click()")
+                try await wait("document.querySelector('.reader')?.dataset.chapter === '12' && !document.querySelector('.sheet')")
+                check("whole book exports offline in native WebKit and the Mac save bridge writes EPUB bytes")
+            }
+
             webView.configuration.userContentController.remove(block!)
             try command("library")
             try await wait("document.querySelector('.card[data-book-id=physics-classical-mechanics]')")

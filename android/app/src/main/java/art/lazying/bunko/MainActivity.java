@@ -32,6 +32,7 @@ public class MainActivity extends BridgeActivity {
                     "})().catch(() => {});", null);
             }
         });
+        registerPlugin(BunkoExportPlugin.class);
         super.load();
     }
 }

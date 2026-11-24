@@ -18,6 +18,7 @@
 		50B271D11FEDC1A000F3C39B /* public in Resources */ = {isa = PBXBuildFile; fileRef = 50B271D01FEDC1A000F3C39B /* public */; };
 		9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9582B6822FE993A50072D4E8 /* SceneDelegate.swift */; };
 		BC1000000000000000000011 /* WatchSender.swift */ = {isa = PBXBuildFile; fileRef = BC1000000000000000000001 /* WatchSender.swift */; };
+		BC1000000000000000000013 /* BunkoExportPlugin.swift */ = {isa = PBXBuildFile; fileRef = BC1000000000000000000003 /* BunkoExportPlugin.swift */; };
 		BC1000000000000000000012 /* WatchReading.swift */ = {isa = PBXBuildFile; fileRef = BC1000000000000000000002 /* WatchReading.swift */; };
 		BC1000000000000000000041 /* BunkoWatchApp.swift */ = {isa = PBXBuildFile; fileRef = BC1000000000000000000021 /* BunkoWatchApp.swift */; };
 		BC1000000000000000000042 /* WatchReading.swift */ = {isa = PBXBuildFile; fileRef = BC1000000000000000000022 /* WatchReading.swift */; };
@@ -44,6 +45,7 @@
 		9582B6822FE993A50072D4E8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		958DCC722DB07C7200EA8C5F /* debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = debug.xcconfig; path = ../debug.xcconfig; sourceTree = SOURCE_ROOT; };
 		BC1000000000000000000001 /* WatchSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchSender.swift"; sourceTree = "<group>"; };
+		BC1000000000000000000003 /* BunkoExportPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BunkoExportPlugin.swift"; sourceTree = "<group>"; };
 		BC1000000000000000000002 /* WatchReading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "../../../shared/apple/WatchReading.swift"; sourceTree = "<group>"; };
 		BC1000000000000000000021 /* BunkoWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BunkoWatchApp.swift"; sourceTree = "<group>"; };
 		BC1000000000000000000022 /* WatchReading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "../../shared/apple/WatchReading.swift"; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				2FAD9762203C412B000D30F8 /* config.xml */,
 				50B271D01FEDC1A000F3C39B /* public */,
 				BC1000000000000000000001 /* WatchSender.swift */,
+				BC1000000000000000000003 /* BunkoExportPlugin.swift */,
 				BC1000000000000000000002 /* WatchReading.swift */,
 			);
 			path = App;
@@ -247,6 +250,7 @@
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 				9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */,
 				BC1000000000000000000011 /* WatchSender.swift */,
+				BC1000000000000000000013 /* BunkoExportPlugin.swift */,
 				BC1000000000000000000012 /* WatchReading.swift */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -400,7 +404,7 @@
 				CODE_SIGN_IDENTITY = "Apple Distribution";
 				DEVELOPMENT_TEAM = Q8M2S2FY77;
 				PROVISIONING_PROFILE_SPECIFIER = "Bunko App Store";
-				CURRENT_PROJECT_VERSION = 49;
+				CURRENT_PROJECT_VERSION = 50;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -425,7 +429,7 @@
 				CODE_SIGN_IDENTITY = "Apple Distribution";
 				DEVELOPMENT_TEAM = Q8M2S2FY77;
 				PROVISIONING_PROFILE_SPECIFIER = "Bunko App Store";
-				CURRENT_PROJECT_VERSION = 49;
+				CURRENT_PROJECT_VERSION = 50;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -446,7 +450,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 49;
+				CURRENT_PROJECT_VERSION = 50;
 				DEVELOPMENT_TEAM = Q8M2S2FY77;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Bunko;
@@ -474,7 +478,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 49;
+				CURRENT_PROJECT_VERSION = 50;
 				DEVELOPMENT_TEAM = Q8M2S2FY77;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Bunko;

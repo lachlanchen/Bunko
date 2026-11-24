@@ -10,6 +10,7 @@ import { createDocumentAgent, agentPaths } from './agent/service.mjs'
 import { AppError } from './agent/common.mjs'
 import { createDemoAuth } from './demo-auth.mjs'
 import { createBookMirror } from './book-mirror.mjs'
+import { createKindleMail, wecomKindleTransport, KINDLE_EMAIL, KINDLE_BODY_LIMIT } from './kindle-mail.mjs'
 import { createCloudLedger, cloudOwner } from './cloud-ledger.mjs'
 import { createCloudBilling } from './cloud-billing.mjs'
 import { createServer } from 'node:http'
@@ -40,7 +41,7 @@ function passage(value) {
   return value
 }
 
-export function createService(config, { fetchImpl = fetch, now = Date.now, database = ':memory:', profileOptions = {}, pointsProvider, rewardOptions = {} } = {}) {
+export function createService(config, { fetchImpl = fetch, now = Date.now, database = ':memory:', profileOptions = {}, pointsProvider, rewardOptions = {}, kindleTransport } = {}) {
   const base = new URL(config.publicUrl)
   if (base.protocol !== 'https:' || base.pathname !== PREFIX || base.search || base.hash) throw new Error('Invalid publicUrl')
   const origins = new Set(config.origins ?? ['https://lachlan.lazying.art', 'https://lachlanchen.github.io', 'capacitor://localhost', 'https://localhost', 'bunko://localhost', 'null'])
@@ -65,6 +66,8 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
     CREATE TABLE IF NOT EXISTS threads (passage TEXT PRIMARY KEY, issue INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS posts (id TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, result TEXT, expires INTEGER NOT NULL);`)
   db.exec('CREATE TABLE IF NOT EXISTS discussion_authors(kind TEXT NOT NULL,id INTEGER NOT NULL,owner TEXT NOT NULL,user TEXT NOT NULL,PRIMARY KEY(kind,id))')
+  const kindleMail = createKindleMail({ db, now, key, send: config.kindleMail?.enabled === true
+    ? (kindleTransport ?? wecomKindleTransport(config.kindleMail.smtpClientPassword)) : undefined })
   const displayComment = (comment, kind = 'comment') => {
     if (!comment) return null
     const result = kind === 'issue' ? safeIssue(comment) : safeComment(comment)
@@ -121,6 +124,7 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
   const bookMirror = config.bookMirror?.enabled === true ? createBookMirror({ database: config.bookMirror.database, maxBytes: config.bookMirror.maxBytes, fetchImpl, now }) : null
   const agent = createDocumentAgent({ db, seal, unseal, config: config.agent || {}, cloud: cloudLedger, readBook: bookMirror?.get, now })
   const cleanup = () => {
+    kindleMail.prune?.()
     for (const table of ['flows', 'sessions', 'posts']) db.prepare(`DELETE FROM ${table} WHERE expires < ?`).run(now())
   }
   const limits = new Map(), cache = new Map(), locks = new Map()
@@ -263,7 +267,8 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
   }
   const cloudPaths = ['catalog', 'purchase', 'checkout', 'portal', 'restore'].map(p => `${PREFIX}/v1/cloud/${p}`)
   const notificationPaths = ['apple', 'google', 'stripe'].map(p => `${PREFIX}/v1/cloud/notifications/${p}`)
-  const postPaths = ['/v1/auth/methods', '/v1/auth/start', '/v1/auth/cancel', '/v1/auth/demo', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post', ...['status','start','complete','cancel','disconnect','balance','activity'].map(p=>'/v1/lazyingart/'+p), ...agentPaths].map(p => PREFIX + p).concat(cloudPaths)
+  const kindlePaths = ['/v1/kindle/status', '/v1/kindle/send'].map(path => PREFIX + path)
+  const postPaths = ['/v1/auth/methods', '/v1/auth/start', '/v1/auth/cancel', '/v1/auth/demo', '/v1/auth/complete', '/v1/session', '/v1/logout', '/v1/discussions/read', '/v1/discussions/post', ...['status','start','complete','cancel','disconnect','balance','activity'].map(p=>'/v1/lazyingart/'+p), ...agentPaths].map(p => PREFIX + p).concat(cloudPaths, kindlePaths)
   const server = createServer(async (req, res) => {
     res.setHeader('Cache-Control', 'no-store')
     res.setHeader('Referrer-Policy', 'no-referrer')
@@ -408,6 +413,29 @@ export function createService(config, { fetchImpl = fetch, now = Date.now, datab
       }
       if (req.method !== 'POST' || !postPaths.includes(path)) fail(405, 'method_denied')
       if (!origin || req.headers['x-bunko-client'] !== '1') fail(403, 'origin_required')
+      if (kindlePaths.includes(path)) {
+        const status = path.endsWith('/status')
+        if (status) {
+          await body(req)
+          let auth
+          if (kindleMail.enabled) {
+            try { auth = await session(req, res, false) }
+            catch (error) { if (error.status !== 401) throw error }
+          }
+          json(res, { enabled: kindleMail.enabled, signedIn: !!auth && auth.provider !== 'demo',
+            ...(kindleMail.enabled ? { sender: KINDLE_EMAIL } : {}) }); return
+        }
+        if (!kindleMail.enabled) fail(503, 'kindle_unavailable')
+        const auth = await session(req, res, false)
+        if (auth.provider === 'demo') fail(403, 'kindle_personal_account_required')
+        if (uploading >= 1) fail(503, 'busy')
+        uploading++; countedUpload = true
+        limit(`kindle:${cloudOwner(auth.user)}`, 12, 60_000)
+        const input = await body(req, KINDLE_BODY_LIMIT)
+        const owner = localSession(auth.sessionId)?.owner
+        if (!owner) fail(401, 'sign_in_again')
+        json(res, await kindleMail.deliver(owner, input)); return
+      }
       if (cloudPaths.includes(path)) {
         const action = path.split('/').pop()
         let auth

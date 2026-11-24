@@ -70,6 +70,7 @@ final class BunkoBridgeController: CAPBridgeViewController {
     override func capacitorDidLoad() {
         bridge?.registerPluginInstance(BunkoWatchPlugin())
         bridge?.registerPluginInstance(BunkoRegionPlugin())
+        bridge?.registerPluginInstance(BunkoExportPlugin())
     }
 }
 

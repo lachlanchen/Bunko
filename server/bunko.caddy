@@ -89,3 +89,20 @@ handle @bunko_cloud {
         header_up X-Bunko-Client-Address {remote_host}
     }
 }
+
+# Explicit EPUB delivery. The service also authenticates the user and validates the attachment.
+@bunko_kindle {
+    method POST OPTIONS
+    path /bunko/v1/kindle/status /bunko/v1/kindle/send
+}
+handle @bunko_kindle {
+    request_body {
+        max_size 17MB
+    }
+    reverse_proxy 127.0.0.1:18624 {
+        header_up Host llm.lazying.art
+        header_up -Forwarded
+        header_up -X-Forwarded-For
+        header_up X-Bunko-Client-Address {remote_host}
+    }
+}

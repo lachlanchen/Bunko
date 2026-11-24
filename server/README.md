@@ -62,3 +62,18 @@ run with the service suite. See [the adapter contract and remaining integration
 gates](../docs/lazyingart-adapter.md) before connecting it to any live login,
 session, refresh or account-linking path. Build 8 retains its verified GitHub
 authentication and current store reviews.
+
+### Send to Kindle
+
+The EPUB is generated in the reader. Only the explicit Send action uploads the
+selected file and a single `@kindle.com` destination. A Bunko session is
+required. The server keeps a short-lived delivery receipt that contains keyed
+fingerprints and status, with no attachment or cleartext destination.
+
+The feature is disabled without `kindleMail.enabled: true` in Bunko's
+protected service config. Set `kindleMail.smtpClientPassword` to the client
+authorization password issued specifically for `bunko@lazying.art` in WeCom.
+The application pins that address and certificate-verified implicit TLS to
+`smtp.exmail.qq.com:465`. Configure the two exact routes on both Bunko service
+origins before enabling. Readers approve the sender in their Amazon account.
+SMTP acceptance does not verify Kindle conversion or delivery.

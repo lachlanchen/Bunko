@@ -3,6 +3,7 @@ import WebKit
 import AuthenticationServices
 import Security
 import StoreKit
+import UniformTypeIdentifiers
 #if DEBUG
 import Network
 #endif
@@ -170,6 +171,33 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                 let status = SecItemDelete(query as CFDictionary)
                 replyHandler(true, status == errSecSuccess || status == errSecItemNotFound ? nil : "Secure storage unavailable")
             default: replyHandler(nil, "Invalid storage action")
+            }
+            return
+        }
+        if let export = body["saveEpub"] as? [String: String] {
+            guard let name = export["filename"], name.count <= 110,
+                  name.range(of: #"^[\p{L}\p{N}\p{M} _().-]+\.epub$"#, options: .regularExpression) != nil,
+                  let encoded = export["base64"], encoded.utf8.count <= 44_739_244,
+                  let data = Data(base64Encoded: encoded), data.count <= 32 * 1024 * 1024,
+                  data.starts(with: [0x50, 0x4B, 0x03, 0x04]) else {
+                replyHandler(nil, "Invalid EPUB"); return
+            }
+            #if DEBUG
+            if CommandLine.arguments.contains("--bunko-smoke-test"),
+               ProcessInfo.processInfo.environment["BUNKO_EXPORT_QA"] == "1" {
+                let target = URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("tmp/Bunko-Mac-QA/export.epub")
+                do { try data.write(to: target, options: .atomic); replyHandler(true, nil) }
+                catch { replyHandler(nil, "Could not save EPUB") }
+                return
+            }
+            #endif
+            let panel = NSSavePanel()
+            panel.nameFieldStringValue = name
+            panel.allowedContentTypes = [.epub]
+            panel.beginSheetModal(for: window) { choice in
+                guard choice == .OK, let url = panel.url else { replyHandler(false, nil); return }
+                do { try data.write(to: url, options: .atomic); replyHandler(true, nil) }
+                catch { replyHandler(nil, "Could not save EPUB") }
             }
             return
         }

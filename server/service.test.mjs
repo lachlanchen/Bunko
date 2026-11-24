@@ -2,13 +2,14 @@ import { test } from 'node:test'
 import { request as httpRequest } from 'node:http'
 import assert from 'node:assert/strict'
 import { randomBytes, createHash } from 'node:crypto'
+import { zipSync, strToU8 } from 'fflate'
 import { createService } from './service.mjs'
 const opaque = () => randomBytes(32).toString('base64url')
 const sha = value => createHash('sha256').update(value).digest('base64url')
 const key = 'sample/c001.json/p1/2'
 const config = { publicUrl: 'https://llm.lazying.art/bunko', clientId: 'fixture-client', clientSecret: 'fixture-secret', encryptionKey: randomBytes(32).toString('base64') }
 const user = { id: 7, login: 'reader' }
-async function setup(t, custom, configPatch = {}) {
+async function setup(t, custom, configPatch = {}, options = {}) {
   let time = Date.now(), writes = 0, issue = null, comments = [], tokenRequest
   const fetchImpl = async (url, options) => {
     if (custom) { const result = await custom(url, options); if (result) return result }
@@ -24,7 +25,7 @@ async function setup(t, custom, configPatch = {}) {
     if (url.endsWith('/issues/12')) return Response.json(issue)
     throw new Error('Unexpected fixture path')
   }
-  const server = createService({ ...config, ...configPatch }, { fetchImpl, now: () => time })
+  const server = createService({ ...config, ...configPatch }, { fetchImpl, now: () => time, ...options })
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
   t.after(() => new Promise(resolve => { server.close(resolve); server.closeAllConnections() }))
   const root = `http://127.0.0.1:${server.address().port}`
@@ -243,4 +244,31 @@ test('HTTP derives DeepSeek routing from region/IP and ignores a client-supplied
     const result=await s.request('/v1/agent/state',{clientRegion:region,modelScope:{deepseekOnly:false}},token,{'X-Bunko-Client-Address':ip})
     assert.equal(result.status,200);assert.deepEqual(result.body.modelPolicy.providers,['DeepSeek'])
   }
+})
+
+test('Kindle delivery is opt-in, requires the app session, and reuses the exact server receipt', async t => {
+  const disabled = await setup(t)
+  assert.deepEqual((await disabled.request('/v1/kindle/status', {})).body, { enabled: false, signedIn: false })
+  assert.equal((await disabled.request('/v1/kindle/send', {})).status, 503)
+  const messages = []
+  const s = await setup(t, null, { kindleMail: { enabled: true } }, {
+    kindleTransport: async message => { messages.push(message); return { accepted: [message.to] } },
+  })
+  assert.deepEqual((await s.request('/v1/kindle/status', {})).body,
+    { enabled: true, signedIn: false, sender: 'bunko@lazying.art' })
+  assert.equal((await s.request('/v1/kindle/send', {})).status, 401)
+  const token = await s.login()
+  assert.equal((await s.request('/v1/kindle/status', {}, token)).body.signedIn, true)
+  const content = zipSync({
+    mimetype: [strToU8('application/epub+zip'), { level: 0 }],
+    ...Object.fromEntries(['META-INF/container.xml', 'EPUB/content.opf', 'EPUB/nav.xhtml', 'EPUB/reader.css', 'EPUB/chapter-1.xhtml']
+      .map(name => [name, strToU8('Bunko')])),
+  })
+  const input = { recipient: 'test@kindle.com', filename: '文庫.epub', attachment: Buffer.from(content).toString('base64'), requestId: opaque() }
+  assert.equal((await s.request('/v1/kindle/send', input, token, { Origin: 'https://untrusted.invalid' })).status, 403)
+  assert.deepEqual((await s.request('/v1/kindle/send', input, token)).body, { accepted: true })
+  assert.deepEqual((await s.request('/v1/kindle/send', input, token)).body, { accepted: true })
+  assert.equal(messages.length, 1)
+  await s.request('/v1/logout', {}, token)
+  assert.equal((await s.request('/v1/kindle/send', input, token)).status, 401)
 })

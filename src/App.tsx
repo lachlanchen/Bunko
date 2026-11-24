@@ -40,6 +40,8 @@ import { BookCompanion } from './components/BookCompanion'
 import { companionReference, referenceKey, type BookCompanionContext, type BookReference } from './lib/bookCompanion'
 import { currentUser } from './lib/discussions'
 import { TranslationRequest } from './components/TranslationRequest'
+import { BookExport } from './components/BookExport'
+import { epubCopy } from './lib/epubCopy'
 import { Sheet } from './components/Sheet'
 import { LanguageChoices } from './components/LanguageChoices'
 import { CloudPlans } from './components/CloudPlans'
@@ -68,6 +70,7 @@ function categoryOf(book: BookRow): Filter {
 export default function App() {
   useEffect(observeForegroundUse,[])
   const [ui, setUI] = useState<UILanguage>('en')
+  const [exportOpen, setExportOpen] = useState(false)
   const [settings, setSettings] = useState<ReadingSettings>(DEFAULT_SETTINGS)
   const [index, setIndex] = useState<ReaderIndex | null>(null)
   const [indexError, setIndexError] = useState('')
@@ -102,7 +105,7 @@ export default function App() {
   const canReload = view !== 'reader' && !downloading && !request.trim()
   useBackNavigation()
   useBackAction(() => setView(view === 'reader' ? (companionPeek ? 'book-agent' : 'book') : 'library'), view !== 'library')
-  useBackAction(() => { if (showSettings) setShowSettings(false); else setShowChapters(false) }, showSettings || showChapters, 40)
+  useBackAction(() => { if (exportOpen) setExportOpen(false); else if (showSettings) setShowSettings(false); else setShowChapters(false) }, exportOpen || showSettings || showChapters, 40)
   useEffect(() => { if (view !== 'reader') readingVisit.current = null }, [view])
 
   useEffect(() => {
@@ -285,11 +288,11 @@ export default function App() {
   useEffect(() => {
     const command = (event: Event) => {
       switch ((event as CustomEvent<{ command: string }>).detail?.command) {
-        case 'settings': setShowSettings(true); break
+        case 'settings': setExportOpen(false); setShowSettings(true); break
         case 'check-updates': setShowSettings(true); void checkForUpdates(true); break
-        case 'library': setView('library'); setShowChapters(false); setShowSettings(false); break
+        case 'library': setView('library'); setShowChapters(false); setShowSettings(false); setExportOpen(false); break
         case 'search':
-          setView('library'); setShowChapters(false); setShowSettings(false)
+          setView('library'); setShowChapters(false); setShowSettings(false); setExportOpen(false)
           requestAnimationFrame(() => librarySearch.current?.focus())
           break
         case 'larger-text': update({ fontScale: Math.min(1.6, +(settings.fontScale + 0.05).toFixed(2)) }); break
@@ -308,12 +311,14 @@ export default function App() {
     return () => window.removeEventListener('bunko-command', command)
   }, [view, chapterIndex, settings.fontScale, update, goToChapter, checkForUpdates])
 
+  const openExport = () => { setShowSettings(false); setExportOpen(true) }
+  const exportSheet = exportOpen && meta && <BookExport key={meta.id} book={meta} settings={settings} ui={ui} onClose={() => setExportOpen(false)} />
   const settingsSheet = showSettings && <SettingsSheet
     copy={copy} ui={ui} settings={settings} book={view === 'book' || view === 'reader' ? meta : null}
     onUI={(next) => { setUI(next); void saveUI({ language: next }) }}
     onChange={update} onClose={() => setShowSettings(false)} onRead={readAvailableTranslation} storage={storage}
     request={request} setRequest={setRequest}
-    updates={updates} canReload={canReload}
+    updates={updates} canReload={canReload} onExport={openExport}
     onCloud={() => { setShowSettings(false); setView('cloud') }}
   />
 
@@ -368,7 +373,7 @@ export default function App() {
           }}
           onBack={() => setView(companionPeek ? 'book-agent' : 'book')}
           backLabel={copy.back}
-          overlayOpen={showChapters || showSettings}
+          overlayOpen={showChapters || showSettings || exportOpen}
         />
         {showChapters && (
           <Sheet title={copy.chapterList} onClose={() => setShowChapters(false)} closeLabel={copy.close}>
@@ -380,6 +385,7 @@ export default function App() {
           </Sheet>
         )}
         {settingsSheet}
+        {exportSheet}
       </>
     )
   }
@@ -391,6 +397,7 @@ export default function App() {
         <UpdatePrompt ui={ui} updates={updates} canReload={canReload} />
         <MobileStorePrompt copy={copy} />
         {settingsSheet}
+        {exportSheet}
         <nav className="book-toolbar">
           <button className="link-back" type="button" onClick={() => setView('library')}>
             ← {copy.library}
@@ -428,6 +435,7 @@ export default function App() {
             </section>
 
             <div className="actions">
+              <button type="button" onClick={openExport}><Download size={16} />{epubCopy[ui].title}</button>
               <ReadingShare ui={ui} title={meta.titleText[settings.langs[0]] || meta.titleText[meta.primary] || meta.id} url={"https://bunko.lazying.art/bunko/share/book/"+encodeURIComponent(meta.id)} />
               <button type="button" className="primary" onClick={() => startReading(!places[meta.id])}>
                 <BookOpen size={17} /> {places[meta.id] ? copy.continueReading : copy.start}
@@ -565,6 +573,7 @@ export default function App() {
 
 function SettingsSheet({
   onRead,
+  onExport,
   onCloud,
   updates,
   canReload,
@@ -580,6 +589,7 @@ function SettingsSheet({
   setRequest,
 }: {
   onCloud: () => void
+  onExport: () => void
   updates: Updates
   canReload: boolean
   copy: import('./i18n').UICopy
@@ -624,6 +634,7 @@ function SettingsSheet({
           <LanguageChoices available={langs} selected={settings.langs} ui={ui} onChange={next => onChange({ langs: next })} />
         </section>
       )}
+      {book && <section><button type="button" onClick={onExport}><Download size={16} />{epubCopy[ui].title}</button></section>}
       {book && <section><TranslationRequest key={book.id} ui={ui} book={book} onRead={onRead} /></section>}
       <section><button type="button" className="cloud-entry" onClick={onCloud}><Sparkles size={18} />{cloudCopy[ui].title}</button></section>
 
