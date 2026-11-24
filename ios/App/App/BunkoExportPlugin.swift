@@ -5,7 +5,7 @@ import UIKit
 final class BunkoExportPlugin: CAPPlugin, CAPBridgedPlugin {
     let identifier = "BunkoExportPlugin"
     let jsName = "BunkoExport"
-    let pluginMethods = [CAPPluginMethod(name: "save", returnType: CAPPluginReturnPromise)]
+    let pluginMethods: [CAPPluginMethod] = [CAPPluginMethod(name: "save", returnType: CAPPluginReturnPromise)]
 
     @objc func save(_ call: CAPPluginCall) {
         guard let filename = call.getString("filename"), filename.count <= 110,
