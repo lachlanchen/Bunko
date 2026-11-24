@@ -7,6 +7,7 @@ import { loadBookSentences, loadChapter } from './library'
 import { canSplitSentences, sentenceChapterHash, sentenceLines, type ChapterSentenceMap } from './sentences'
 import { plainText, tokenParts } from './text'
 import { EPUB_TYPE, EPUB_MAX_BYTES, epubLanguages } from './epubOptions'
+import { epubFigure } from './epubImage'
 
 const xml = '<?xml version="1.0" encoding="UTF-8"?>'
 // eslint-disable-next-line no-control-regex -- Match the XML 1.0 character range.
@@ -100,12 +101,11 @@ export async function createEpub(book: BookMeta, edition: Edition, {
     if (!/^assets\/[a-zA-Z0-9/_-]+\.(?:png|jpe?g|webp)$/.test(path)) throw new Error('epub_invalid_figure')
     let href = images.get(path)
     if (!href) {
-      const ext = path.endsWith('.png') ? 'png' : path.endsWith('.webp') ? 'webp' : 'jpeg'
       const id = `image-${images.size + 1}`
-      href = `${id}.${ext}`
-      const image = new Uint8Array(await (await reads.image(`books/${book.id}/${path}`, signal)).arrayBuffer())
-      add(`EPUB/${href}`, image, true)
-      manifest.push(`<item id="${id}" href="${href}" media-type="image/${ext}" />`)
+      const image = await epubFigure(await reads.image(`books/${book.id}/${path}`, signal), path)
+      href = `${id}.${image.type}`
+      add(`EPUB/${href}`, image.bytes, true)
+      manifest.push(`<item id="${id}" href="${href}" media-type="image/${image.type}" />`)
       images.set(path, href)
     }
     return `<img src="${href}" alt="${escape(caption)}" />`

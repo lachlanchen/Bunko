@@ -92,6 +92,28 @@ final class MacSmokeTests {
         }
     }
 
+
+    private func saveFixtureEPUB(as name: String) async throws {
+        try command("settings")
+        try await wait("Array.from(document.querySelectorAll('.sheet button')).some(b => b.textContent.trim() === 'Export EPUB')")
+        _ = try await js("Array.from(document.querySelectorAll('.sheet button')).find(b => b.textContent.trim() === 'Export EPUB').click()")
+        try await wait("Array.from(document.querySelectorAll('.sheet button')).some(b => b.textContent.trim() === 'Create EPUB')")
+        _ = try await js("Array.from(document.querySelectorAll('.sheet button')).find(b => b.textContent.trim() === 'Create EPUB').click()")
+        try await wait("Array.from(document.querySelectorAll('.sheet button')).some(b => b.textContent.trim() === 'Save EPUB')")
+        _ = try await js("Array.from(document.querySelectorAll('.sheet button')).find(b => b.textContent.trim() === 'Save EPUB').click()")
+        let export = output.appendingPathComponent("export.epub")
+        let deadline = Date().addingTimeInterval(20)
+        while !FileManager.default.fileExists(atPath: export.path), Date() < deadline {
+            try await Task.sleep(nanoseconds: 250_000_000)
+        }
+        let epub = try Data(contentsOf: export, options: .mappedIfSafe)
+        guard epub.count > 1_000, String(data: epub[30..<58], encoding: .utf8) == "mimetypeapplication/epub+zip" else {
+            throw URLError(.cannotDecodeContentData)
+        }
+        _ = try await js("document.querySelector('.sheet header button').click()")
+        try FileManager.default.moveItem(at: export, to: output.appendingPathComponent(name))
+    }
+
     func run() async {
         do {
             try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
@@ -219,23 +241,7 @@ final class MacSmokeTests {
             try await wait("document.querySelector('.reader')?.dataset.chapter === '12' && document.querySelectorAll('ruby').length > 20")
             check("offline reload resumes the saved final chapter with HTTP blocked")
             if ProcessInfo.processInfo.environment["BUNKO_EXPORT_QA"] == "1" {
-                try command("settings")
-                try await wait("Array.from(document.querySelectorAll('.sheet button')).some(b => b.textContent.trim() === 'Export EPUB')")
-                _ = try await js("Array.from(document.querySelectorAll('.sheet button')).find(b => b.textContent.trim() === 'Export EPUB').click()")
-                try await wait("Array.from(document.querySelectorAll('.sheet button')).some(b => b.textContent.trim() === 'Create EPUB')")
-                _ = try await js("Array.from(document.querySelectorAll('.sheet button')).find(b => b.textContent.trim() === 'Create EPUB').click()")
-                try await wait("Array.from(document.querySelectorAll('.sheet button')).some(b => b.textContent.trim() === 'Save EPUB')")
-                _ = try await js("Array.from(document.querySelectorAll('.sheet button')).find(b => b.textContent.trim() === 'Save EPUB').click()")
-                let export = output.appendingPathComponent("export.epub")
-                let deadline = Date().addingTimeInterval(20)
-                while !FileManager.default.fileExists(atPath: export.path), Date() < deadline {
-                    try await Task.sleep(nanoseconds: 250_000_000)
-                }
-                let epub = try Data(contentsOf: export, options: .mappedIfSafe)
-                guard epub.count > 1_000, String(data: epub[30..<58], encoding: .utf8) == "mimetypeapplication/epub+zip" else {
-                    throw URLError(.cannotDecodeContentData)
-                }
-                _ = try await js("document.querySelector('.sheet header button').click()")
+                try await saveFixtureEPUB(as: "export-offline.epub")
                 try await wait("document.querySelector('.reader')?.dataset.chapter === '12' && !document.querySelector('.sheet')")
                 check("whole book exports offline in native WebKit and the Mac save bridge writes EPUB bytes")
             }
@@ -254,6 +260,10 @@ final class MacSmokeTests {
             if (try await js("document.querySelectorAll('.katex-error,.math-error').length")) as? Int != 0 { throw URLError(.cannotParseResponse) }
             check("physics equations and figures render without TeX errors")
             try await screenshot("04-physics-figures")
+            if ProcessInfo.processInfo.environment["BUNKO_EXPORT_QA"] == "1" {
+                try await saveFixtureEPUB(as: "export-physics.epub")
+                check("science EPUB exports through the native writer with Kindle-compatible figure formats")
+            }
             if ProcessInfo.processInfo.environment["BUNKO_MAP_QA"] == "1" {
                 // The isolated operator copies this synthetic component fixture
                 // into the Debug product only. Release resources exclude it.
