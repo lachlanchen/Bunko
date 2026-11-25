@@ -5,6 +5,7 @@ import { readingBranch, readingMemory, visualGroups } from './book-memory.mjs'
 import { createReadingTools } from './reading-tools.mjs'
 import { checkMapRequest } from './map-grounding.mjs'
 import { applyReadingUpdate, updateBases, readingTask } from './reading-updates.mjs'
+import { chineseScript, convertChinese } from '../title-locale.mjs'
 
 const VERSION = 3
 const kinds = new Set(['answer', 'guide', 'explore'])
@@ -57,10 +58,23 @@ export async function bookContext(ref, read, { maxChars = 48000 } = {}) {
   const passages = []
   const first = ['paragraph', 'sentence'].includes(ref.scope) ? ref.paragraph : 0
   let characters = 0
+  const script = chineseScript(ref.language)
+  const other = script === 'Hant' ? 'Hans' : 'Hant'
+  const layers = script ? meta.langs.filter(lang => lang !== 'wenyan' && chineseScript(lang) === other) : []
+  const fallback = layers.find(lang => lang === `zh-${other}`) ?? layers[0]
   for (let i = end; i >= first && passages.length < 800; i--) {
     const p = chapter.p[i]
-    let text = (p.u || []).map(u => plain(u[ref.language])).filter(Boolean).join('\n')
-    if (ref.scope === 'sentence') { requireValue(text.includes(ref.quote), 'The selected sentence does not match this edition. Select it again.', 409); text = ref.quote }
+    const lines = (p.u || []).map(u => plain(u[ref.language]) || (fallback ? convertChinese(plain(u[fallback]), script) : '')).filter(Boolean)
+    let text = lines.join('\n')
+    if (ref.scope === 'sentence') {
+      // Script variants still come from the hash-verified passage. The reader
+      // applies the same phrase converter per aligned unit.
+      const scripts = ref.language === 'wenyan' ? ['Hans', 'Hant'] : script ? [other] : []
+      const match = text.includes(ref.quote) || scripts.some(target =>
+        lines.map(line => convertChinese(line, target)).join('\n').includes(ref.quote))
+      requireValue(match, 'The selected sentence does not match this edition. Select it again.', 409)
+      text = ref.quote
+    }
     if (!text.trim()) continue
     if (characters + text.length > maxChars) {
       if (!passages.length) passages.unshift({ id: `P${i + 1}`, paragraph: i, text: text.slice(0, maxChars), partial: true })
