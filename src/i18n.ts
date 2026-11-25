@@ -434,10 +434,12 @@ export const uiLanguageNames: Record<UILanguage, string> = {
 export function languageName(lang: string, ui: UILanguage): string {
   const table: Record<string, Record<UILanguage, string>> = {
     en: { en: 'English', 'zh-Hans': '英文', 'zh-Hant': '英文', ja: '英語' },
-    zh: { en: 'Chinese', 'zh-Hans': '中文', 'zh-Hant': '中文', ja: '中国語' },
+    zh: { en: 'Simplified Chinese', 'zh-Hans': '简体中文', 'zh-Hant': '簡體中文', ja: '簡体字中国語' },
+    'zh-Hans': { en: 'Simplified Chinese', 'zh-Hans': '简体中文', 'zh-Hant': '簡體中文', ja: '簡体字中国語' },
+    'zh-Hant': { en: 'Traditional Chinese', 'zh-Hans': '繁体中文', 'zh-Hant': '繁體中文', ja: '繁体字中国語' },
     ja: { en: 'Japanese', 'zh-Hans': '日文', 'zh-Hant': '日文', ja: '日本語' },
     wenyan: { en: 'Classical Chinese', 'zh-Hans': '文言文', 'zh-Hant': '文言文', ja: '漢文' },
-    zh_modern: { en: 'Modern Chinese', 'zh-Hans': '现代中文', 'zh-Hant': '現代中文', ja: '現代中国語' },
+    zh_modern: { en: 'Modern Chinese (Simplified)', 'zh-Hans': '现代中文（简体）', 'zh-Hant': '現代中文（簡體）', ja: '現代中国語（簡体字）' },
     ja_modern: { en: 'Modern Japanese', 'zh-Hans': '现代日文', 'zh-Hant': '現代日文', ja: '現代日本語' },
   }
   if (table[lang]?.[ui]) return table[lang][ui]

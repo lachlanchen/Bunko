@@ -1,4 +1,5 @@
 import type { BookRow, Place } from '../types'
+import { localizedTitle } from '../../server/title-locale.mjs'
 import type { LibrarySort } from './settings'
 
 const date = (value?: string) => {
@@ -10,7 +11,7 @@ const readTime = (place?: Place) => typeof place?.lastReadAt === 'number' && Num
 /** Sort a copy; filtering and catalog refresh must never mutate shared data. */
 export function orderBooks(books: BookRow[], sort: LibrarySort, places: Record<string, Place>, locale: string): BookRow[] {
   const collator = new Intl.Collator(locale, { numeric: true, sensitivity: 'base' })
-  const title = (book: BookRow) => book.title[book.primary] || book.id
+  const titles = new Map(books.map(book => [book.id, localizedTitle(book.title, locale, book.primary, book.id).text]))
   return [...books].sort((a, b) => {
     let result = 0
     if (sort === 'recent') {
@@ -21,6 +22,6 @@ export function orderBooks(books: BookRow[], sort: LibrarySort, places: Record<s
     }
     if (sort === 'added' || (sort === 'recent' && !result)) result = date(b.addedAt) - date(a.addedAt)
     if (sort === 'author') result = collator.compare(a.author, b.author)
-    return result || collator.compare(title(a), title(b)) || a.id.localeCompare(b.id)
+    return result || collator.compare(titles.get(a.id)!, titles.get(b.id)!) || a.id.localeCompare(b.id)
   })
 }

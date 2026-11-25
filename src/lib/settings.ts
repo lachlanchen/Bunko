@@ -1,4 +1,5 @@
 import { baseLanguage } from './languages'
+import { chineseReadingOptions, readingLanguage } from './chineseEdition'
 /**
  * Everything the reader chooses, and where they got to in each book.
  *
@@ -119,10 +120,16 @@ export const saveUI = (state: UIState) => write(UI_KEY, state)
  * language is a better first impression than all four lines at once.
  */
 export function defaultLangsFor(bookLangs: LangCode[], ui: UIState['language']): LangCode[] {
+  const available = chineseReadingOptions(bookLangs)
   const primary = bookLangs[0]
+  if (!primary) return []
+  if ((ui === 'zh-Hant' || ui === 'zh-Hans') && baseLanguage(primary) === 'zh' && primary !== 'wenyan') {
+    const local = readingLanguage(ui, bookLangs)
+    if (available.includes(local)) return [local]
+  }
   const preference: LangCode[] =
-    ui === 'ja' ? ['ja', 'ja_modern'] : ui === 'en' ? ['en'] : ['zh', 'zh_modern']
-  const gloss = preference.find((lang) => bookLangs.includes(lang) && lang !== primary)
+    ui === 'ja' ? ['ja', 'ja_modern'] : ui === 'en' ? ['en'] : [readingLanguage(ui, bookLangs)]
+  const gloss = preference.find((lang) => available.includes(lang) && lang !== primary)
     ?? bookLangs.find(lang => lang !== primary && baseLanguage(lang) === baseLanguage(ui))
   return gloss ? [primary, gloss] : [primary]
 }

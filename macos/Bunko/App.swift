@@ -201,10 +201,46 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             }
             return
         }
+        if let export = body["shareImage"] as? [String: Any] {
+            guard let name = export["filename"] as? String,
+                  name.range(of: #"^bunko-[a-z0-9-]{1,120}\.png$"#, options: .regularExpression) != nil,
+                  let encoded = export["base64"] as? String, encoded.utf8.count <= 11_184_812,
+                  let data = Data(base64Encoded: encoded), data.count <= 8 * 1024 * 1024,
+                  data.starts(with: [0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]) else {
+                replyHandler(nil, "Invalid card"); return
+            }
+            if export["save"] as? Bool == true {
+                #if DEBUG
+                if CommandLine.arguments.contains("--bunko-smoke-test"),
+                   ProcessInfo.processInfo.environment["BUNKO_EXPORT_QA"] == "1" {
+                    let target = URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("tmp/Bunko-Mac-QA/share-card.png")
+                    do { try data.write(to: target, options: .atomic); replyHandler(true, nil) }
+                    catch { replyHandler(nil, "Could not save the card") }
+                    return
+                }
+                #endif
+                let panel = NSSavePanel()
+                panel.nameFieldStringValue = name
+                panel.allowedContentTypes = [.png]
+                panel.beginSheetModal(for: window) { choice in
+                    guard choice == .OK, let url = panel.url else { replyHandler(false, nil); return }
+                    do { try data.write(to: url, options: .atomic); replyHandler(true, nil) }
+                    catch { replyHandler(nil, "Could not save the card") }
+                }
+            } else {
+                guard let image = NSImage(data: data) else { replyHandler(nil, "Invalid card"); return }
+                NSSharingServicePicker(items: [image]).show(
+                    relativeTo: NSRect(x: webView.bounds.midX, y: 40, width: 1, height: 1),
+                    of: webView, preferredEdge: .minY)
+                replyHandler(true, nil)
+            }
+            return
+        }
         if let share = body["share"] as? [String: String], let title = share["title"],
            let value = share["url"], let url = URL(string: value),
            url.scheme == "https", url.host == "bunko.lazying.art",
-           url.path.range(of: "^/bunko/share/book/[a-z0-9-]{1,120}$", options: .regularExpression) != nil {
+           url.user == nil, url.password == nil, url.port == nil, url.query == nil, url.fragment == nil,
+           url.path.range(of: "^/bunko/share/book/[a-z0-9-]{1,120}(/(en|ja|zh-Hans|zh-Hant))?$", options: .regularExpression) != nil {
             let picker = NSSharingServicePicker(items: [String(title.prefix(400)), url])
             picker.show(relativeTo: NSRect(x:webView.bounds.midX,y:40,width:1,height:1), of:webView, preferredEdge:.minY)
             replyHandler(true, nil); return

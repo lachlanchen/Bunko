@@ -21,7 +21,15 @@
     "Copied. Paste into EchoMind to choose who to send it to.": "Copied. Paste into EchoMind to choose who to send it to.",
     "Copied. Paste into AiMemo and review before sending.": "Copied. Paste into AiMemo and review before sending.",
     "Link copied. Paste it into your chat.": "Link copied. Paste it into your chat.",
-    "Could not share. Try copying the link.": "Could not share. Try copying the link."
+    "Could not share. Try copying the link.": "Could not share. Try copying the link.",
+    "Share link": "Share link",
+    "WeChat and other chats": "WeChat and other chats",
+    "Share image": "Share image",
+    "Instagram and Stories": "Instagram and Stories",
+    "Save card": "Save card",
+    "Card saved": "Card saved",
+    "Preparing card…": "Preparing card…",
+    "Could not prepare the card.": "Could not prepare the card."
   },
   "zh-Hans": {
     "Share": "分享",
@@ -45,7 +53,15 @@
     "Copied. Paste into EchoMind to choose who to send it to.": "已复制。粘贴到 EchoMind 后选择发送对象。",
     "Copied. Paste into AiMemo and review before sending.": "已复制。粘贴到 AiMemo，确认后再发送。",
     "Link copied. Paste it into your chat.": "链接已复制，可粘贴到聊天中。",
-    "Could not share. Try copying the link.": "分享失败，请尝试复制链接。"
+    "Could not share. Try copying the link.": "分享失败，请尝试复制链接。",
+    "Share link": "分享链接",
+    "WeChat and other chats": "微信及其他聊天应用",
+    "Share image": "分享图片",
+    "Instagram and Stories": "Instagram 和快拍",
+    "Save card": "保存卡片",
+    "Card saved": "卡片已保存",
+    "Preparing card…": "正在生成卡片…",
+    "Could not prepare the card.": "无法生成分享卡片。"
   },
   "zh-Hant": {
     "Share": "分享",
@@ -69,7 +85,15 @@
     "Copied. Paste into EchoMind to choose who to send it to.": "已複製。貼到 EchoMind 後選擇傳送對象。",
     "Copied. Paste into AiMemo and review before sending.": "已複製。貼到 AiMemo，確認後再傳送。",
     "Link copied. Paste it into your chat.": "連結已複製，可貼到聊天中。",
-    "Could not share. Try copying the link.": "分享失敗，請嘗試複製連結。"
+    "Could not share. Try copying the link.": "分享失敗，請嘗試複製連結。",
+    "Share link": "分享連結",
+    "WeChat and other chats": "微信及其他通訊應用程式",
+    "Share image": "分享圖片",
+    "Instagram and Stories": "Instagram 和限時動態",
+    "Save card": "儲存卡片",
+    "Card saved": "卡片已儲存",
+    "Preparing card…": "正在建立卡片…",
+    "Could not prepare the card.": "無法製作分享卡片。"
   },
   "ja": {
     "Share": "共有",
@@ -93,6 +117,14 @@
     "Copied. Paste into EchoMind to choose who to send it to.": "コピーしました。EchoMind に貼り付けて送信先を選んでください。",
     "Copied. Paste into AiMemo and review before sending.": "コピーしました。AiMemo に貼り付け、確認して送信してください。",
     "Link copied. Paste it into your chat.": "リンクをコピーしました。チャットに貼り付けてください。",
-    "Could not share. Try copying the link.": "共有できませんでした。リンクをコピーしてください。"
+    "Could not share. Try copying the link.": "共有できませんでした。リンクをコピーしてください。",
+    "Share link": "リンクを共有",
+    "WeChat and other chats": "WeChatなどのチャット",
+    "Share image": "画像を共有",
+    "Instagram and Stories": "Instagram・ストーリーズ",
+    "Save card": "カードを保存",
+    "Card saved": "カードを保存しました",
+    "Preparing card…": "カードを作成中…",
+    "Could not prepare the card.": "共有カードを作成できませんでした。"
   }
 }

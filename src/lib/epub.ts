@@ -8,6 +8,8 @@ import { canSplitSentences, sentenceChapterHash, sentenceLines, type ChapterSent
 import { plainText, tokenParts } from './text'
 import { EPUB_TYPE, EPUB_MAX_BYTES, epubLanguages } from './epubOptions'
 import { epubFigure } from './epubImage'
+import { localizedTitle } from '../../server/title-locale.mjs'
+import { readingScriptView } from './chineseEdition'
 
 const xml = '<?xml version="1.0" encoding="UTF-8"?>'
 // eslint-disable-next-line no-control-regex -- Match the XML 1.0 character range.
@@ -63,7 +65,7 @@ export async function createEpub(book: BookMeta, edition: Edition, {
   const check = () => { if (signal?.aborted) throw new DOMException('Export cancelled', 'AbortError') }
   const langs = epubLanguages(book, edition)
   const [primary] = langs
-  const title = book.titleText[primary] || book.titleText[book.primary] || book.id
+  const title = localizedTitle(book.titleText, primary, book.primary, book.id).text
   const modified = new Date().toISOString().replace(/\.\d+Z$/, 'Z')
   const chunks: ArrayBuffer[] = []
   let zipFailure: unknown
@@ -137,10 +139,11 @@ export async function createEpub(book: BookMeta, edition: Edition, {
   onProgress?.(0, book.chapters.length)
   for (const [position, row] of book.chapters.entries()) {
     check()
-    const chapter: Chapter = await reads.chapter(book.id, row.file, signal)
-    if (chapter.n !== row.n) throw new Error('epub_edition_changed')
+    const original: Chapter = await reads.chapter(book.id, row.file, signal)
+    if (original.n !== row.n) throw new Error('epub_edition_changed')
     const sidecar = cuts?.[row.file]
-    const map = sidecar?.chapterHash === sentenceChapterHash(chapter) ? sidecar.units : undefined
+    const map = sidecar?.chapterHash === sentenceChapterHash(original) ? sidecar.units : undefined
+    const chapter = readingScriptView(original, book.langs, langs)
     const headingTag = chapter.title?.[primary] ? primary : book.primary
     const heading = chapter.title?.[headingTag]
     const label = plainText(heading) || row.title[primary] || row.title[book.primary] || String(row.n)

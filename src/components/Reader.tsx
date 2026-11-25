@@ -1,4 +1,7 @@
 import {ReadingShare} from './ReadingShare'
+import { bookDisplayTitle, chapterDisplayTitle } from '../lib/localizedBook'
+import { bookShareURL } from '../lib/bookShare'
+import { readingScriptView, selectedReadingLanguages, sourceReadingLanguage } from '../lib/chineseEdition'
 import { htmlLanguage, languageDirection, unitLine } from '../lib/languages'
 /**
  * The reading screen.
@@ -16,7 +19,6 @@ import { loadBookSentences, loadChapter } from '../lib/library'
 import { Line } from './Line'
 import { RichLine } from './RichLine'
 import { BookFigure } from './BookFigure'
-import { plainText } from '../lib/text'
 import { passageKey } from '../lib/readingTools'
 import { ReadingPanel, type ReadingFocus } from './ReadingPanel'
 import { SelectionTools } from './SelectionTools'
@@ -27,6 +29,7 @@ import { canSplitSentences, sentenceChapterHash, sentenceLines, type BookSentenc
 
 interface ReaderProps {
   meta: BookMeta
+  cover?: string
   chapterIndex: number
   settings: ReadingSettings
   copy: UICopy
@@ -77,6 +80,7 @@ const SentenceText = memo(function SentenceText({ unit, lang, split, breaks, rub
 
 export function Reader({
   meta,
+  cover,
   chapterIndex,
   settings,
   copy,
@@ -107,7 +111,7 @@ export function Reader({
   const appearance = useRef('')
   const row = meta.chapters[chapterIndex]
   // Anything not matching the chapter now on screen is a stale load.
-  const chapter = loaded.file === row?.file ? loaded.chapter : null
+  const original = loaded.file === row?.file ? loaded.chapter : null
   const error = loaded.file === row?.file ? loaded.error : ''
   const activeFocus = focus?.key.startsWith(`${meta.id}/${row?.file}/`) ? focus : null
 
@@ -119,13 +123,16 @@ export function Reader({
     return () => controller.abort()
   }, [meta.id])
   const published = sentenceData?.book === meta.id && row ? sentenceData.chapters[row.file] : undefined
-  const sentenceMap = useMemo(() => chapter && published?.chapterHash === sentenceChapterHash(chapter) ? published.units : undefined, [chapter, published])
+  const sentenceMap = useMemo(() => original && published?.chapterHash === sentenceChapterHash(original) ? published.units : undefined, [original, published])
 
   const langs = useMemo(
-    () => settings.langs.filter((lang) => meta.langs.includes(lang)),
+    () => selectedReadingLanguages(settings.langs, meta.langs),
     [settings.langs, meta.langs],
   )
   const shown: LangCode[] = settings.layout === 'source' ? [langs[0] ?? meta.primary] : langs.length ? langs : [meta.primary]
+  const scriptLanguages = shown.join('|')
+  const chapter = useMemo(() => original && readingScriptView(original, meta.langs, scriptLanguages.split('|')), [original, meta.langs, scriptLanguages])
+  const canonicalLanguage = (lang: string) => sourceReadingLanguage(lang, meta.langs) ?? meta.primary
   const appearanceKey = `${meta.id}:${chapter?.id}:${settings.layout}:${shown.join(',')}`
 
   useEffect(() => {
@@ -174,12 +181,12 @@ export function Reader({
     startRef.current = startParagraph
   })
   useEffect(() => {
-    if (!chapter) return
+    if (!original) return
     const host = scrollRef.current
     if (!host) return
     const target = host.querySelector<HTMLElement>(`[data-para="${startRef.current}"]`)
     host.scrollTo({ top: target ? target.offsetTop - 12 : 0, behavior: 'auto' })
-  }, [chapter])
+  }, [original])
 
   useEffect(() => {
     const host = scrollRef.current
@@ -219,10 +226,8 @@ export function Reader({
     return () => cancelAnimationFrame(frame)
   }, [chapter, handleScroll])
 
-  const title =
-    plainText(chapter?.title?.[shown[0]] ?? chapter?.title?.[meta.primary]) ||
-    row?.title?.[meta.primary] ||
-    `${copy.chapterList} ${row?.n ?? ''}`
+  const bookTitle = bookDisplayTitle(meta, ui)
+  const heading = chapterDisplayTitle(row, ui, meta.primary, original, `${copy.chapterList} ${row?.n ?? ''}`)
   const discussLabel = { en: 'Discuss passage', 'zh-Hans': '讨论这段', 'zh-Hant': '討論這段', ja: 'この箇所を話し合う' }[ui]
   const notesLabel = { en: 'Translation notes', 'zh-Hans': '译注', 'zh-Hant': '譯注', ja: '訳注' }[ui]
   const watchLabel = { en: 'Send excerpt to Apple Watch', 'zh-Hans': '发送选段到 Apple Watch', 'zh-Hant': '傳送選段到 Apple Watch', ja: '抜粋をApple Watchへ送る' }[ui]
@@ -248,9 +253,9 @@ export function Reader({
           <ChevronLeft size={20} />
         </button>
         <button type="button" className="reader-bar-title" onClick={onOpenChapters} aria-label={copy.chapterList}>
-          <strong>{title}</strong>
+          <strong lang={htmlLanguage(heading.lang)} dir={languageDirection(heading.lang)}>{heading.text}</strong>
           <small>
-            <List size={11} /> {meta.titleText[meta.primary] ?? meta.id}
+            <List size={11} /> <bdi lang={htmlLanguage(bookTitle.lang)} dir={languageDirection(bookTitle.lang)}>{bookTitle.text}</bdi>
           </small>
         </button>
         {supportsWatch() && <button type="button" disabled={!chapter || watchBusy} aria-label={watchLabel} onClick={async () => {
@@ -260,8 +265,8 @@ export function Reader({
           catch (error) { setWatchStatus(error instanceof Error ? error.message : String(error)) }
           finally { setWatchBusy(false) }
         }}><Watch size={18} /></button>}
-        {onCompanion && <button type="button" disabled={!chapter} onClick={() => onCompanion(visibleParagraph.current, shown[0])} aria-label={agentCopy[ui].name}><Sparkles size={18} /></button>}
-        <ReadingShare ui={ui} title={meta.titleText[settings.langs[0]] || meta.titleText[meta.primary] || meta.id} url={"https://bunko.lazying.art/bunko/share/book/"+encodeURIComponent(meta.id)} />
+        {onCompanion && <button type="button" disabled={!chapter} onClick={() => onCompanion(visibleParagraph.current, canonicalLanguage(shown[0]))} aria-label={agentCopy[ui].name}><Sparkles size={18} /></button>}
+        <ReadingShare ui={ui} title={bookTitle.text} titleLanguage={bookTitle.lang} author={meta.author?.name} cover={cover} url={bookShareURL(meta.id, ui)} />
         <button type="button" onClick={onOpenSettings} aria-label={copy.settings}>
           <Settings2 size={18} />
         </button>
@@ -287,8 +292,8 @@ export function Reader({
 
         {chapter && (
           <article>
-            <ChapterHeading key={chapter.id} label={plainText(chapter.title?.[shown[0]] ?? chapter.title?.[meta.primary])} lang={htmlLanguage(chapter.title?.[shown[0]] ? shown[0] : meta.primary)} dir={languageDirection(chapter.title?.[shown[0]] ? shown[0] : meta.primary)}>
-              <Line line={chapter.title?.[shown[0]] ?? chapter.title?.[meta.primary]} ruby={settings.ruby} />
+            <ChapterHeading key={chapter.id} label={heading.text} lang={htmlLanguage(heading.lang)} dir={languageDirection(heading.lang)}>
+              {heading.line ? <Line line={heading.line} ruby={settings.ruby} /> : heading.text}
             </ChapterHeading>
             {chapter.p.map((paragraph, index) => (paragraph.figure || paragraph.u.some(unit => shown.some(lang => unitLine(unit, lang)?.length))) && (
               <div className={`para${paragraph.kind ? ` para-${paragraph.kind}` : ''}`} key={paragraph.id || index} data-para={index}>
@@ -348,7 +353,7 @@ export function Reader({
       {chapter && !activeFocus && !overlayOpen && <SelectionTools key={`${row.file}:${settings.layout}:${shown.join(',')}`} host={scrollRef} ui={ui} onOpen={openSelection} onCompanion={onCompanion ? selected => {
         const id = selected.passage.dataset.readingPara
         const paragraph = Number(id)
-        if (Number.isSafeInteger(paragraph) && chapter.p[paragraph] && selected.passage.dataset.lang) onCompanion(paragraph, selected.passage.dataset.lang, selected.text)
+        if (Number.isSafeInteger(paragraph) && chapter.p[paragraph] && selected.passage.dataset.lang) onCompanion(paragraph, canonicalLanguage(selected.passage.dataset.lang), selected.text)
       } : undefined} />}
       {activeFocus && <ReadingPanel key={`${activeFocus.key}:${activeFocus.word ?? ''}:${activeFocus.lang}`} focus={activeFocus} ui={ui} onClose={() => setFocus(null)} />}
     </div>

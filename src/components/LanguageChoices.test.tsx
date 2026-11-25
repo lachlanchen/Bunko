@@ -9,12 +9,12 @@ it('follows click order, promotes the next main, and appends a reselected langua
   render(<Harness />)
   fireEvent.click(screen.getByRole('button', { name: 'Japanese, 1' }))
   expect(screen.getByRole('button', { name: 'English, 1' }).className).toContain('main-language')
-  fireEvent.click(screen.getByRole('button', { name: 'Chinese' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Simplified Chinese' }))
   fireEvent.click(screen.getByRole('button', { name: 'Japanese' }))
-  expect(screen.getByRole('button', { name: 'Chinese, 2' }).className).toContain('translation-language')
+  expect(screen.getByRole('button', { name: 'Simplified Chinese, 2' }).className).toContain('translation-language')
   expect(screen.getByRole('button', { name: 'Japanese, 3' }).getAttribute('aria-pressed')).toBe('true')
   fireEvent.click(screen.getByRole('button', { name: 'English, 1' }))
-  expect(screen.getByRole('button', { name: 'Chinese, 1' }).className).toContain('main-language')
+  expect(screen.getByRole('button', { name: 'Simplified Chinese, 1' }).className).toContain('main-language')
 })
 it('ignores stale book layers and keeps the last selected language', () => {
   function Harness() { const [selected, set] = useState(['fr', 'en']); return <LanguageChoices available={['ja', 'en']} selected={selected} ui="en" onChange={set} /> }

@@ -1,6 +1,7 @@
 import { useId, useState } from 'react'
 import { languageName, type UILanguage } from '../i18n'
 import type { BookMeta } from '../types'
+import { bookDisplayTitle } from '../lib/localizedBook'
 import { translationIssueUrl } from '../lib/library'
 import { availableTranslation, translationLanguages } from '../lib/availableTranslation'
 
@@ -14,7 +15,7 @@ const words = {
 export function TranslationRequest({ ui, book, expanded = false, onRead }: { ui: UILanguage; book?: BookMeta | null; expanded?: boolean; onRead?: (language: string) => void }) {
   const copy = words[ui], id = useId()
   const [title, setTitle] = useState(''), [language, setLanguage] = useState<string>(ui), [other, setOther] = useState('')
-  const bookTitle = book ? book.titleText[book.primary] || book.id : title.trim()
+  const bookTitle = book ? bookDisplayTitle(book, ui).text : title.trim()
   const target = language === 'other' ? other.trim() : `${languageName(language, 'en')} (${language})`
   const available = book ? availableTranslation(book.langs, language === 'other' ? other : language) : undefined
   const href = !available && bookTitle && target ? translationIssueUrl({ title: bookTitle, bookId: book?.id, author: book?.author.name, languages: book?.langs, target }) : undefined

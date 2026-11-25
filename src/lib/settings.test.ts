@@ -9,7 +9,7 @@ describe('which languages a book opens with', () => {
     expect(defaultLangsFor([...trilingual], 'zh-Hans')).toEqual(['en', 'zh'])
     expect(defaultLangsFor([...trilingual], 'ja')).toEqual(['en', 'ja'])
     expect(defaultLangsFor([...quadrilingual], 'ja')).toEqual(['wenyan', 'ja_modern'])
-    expect(defaultLangsFor([...quadrilingual], 'zh-Hant')).toEqual(['wenyan', 'zh_modern'])
+    expect(defaultLangsFor([...quadrilingual], 'zh-Hant')).toEqual(['wenyan', 'zh-Hant'])
   })
 
   it('shows the source alone when the reader already reads it', () => {

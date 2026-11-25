@@ -244,6 +244,18 @@ final class MacSmokeTests {
                 try await saveFixtureEPUB(as: "export-offline.epub")
                 try await wait("document.querySelector('.reader')?.dataset.chapter === '12' && !document.querySelector('.sheet')")
                 check("whole book exports offline in native WebKit and the Mac save bridge writes EPUB bytes")
+                try await wait("document.querySelector('.reader-bar-title bdi')?.textContent === 'Sanshirō'")
+                _ = try await js("document.querySelector('.reader-bar .reading-share-trigger').click()")
+                try await wait("Array.from(document.querySelectorAll('.reading-share button')).some(b => !b.disabled && b.textContent.trim() === 'Save card')")
+                _ = try await js("Array.from(document.querySelectorAll('.reading-share button')).find(b => b.textContent.trim() === 'Save card').click()")
+                try await wait("document.querySelector('.reading-share [role=status]')?.textContent === 'Card saved'")
+                let card = try Data(contentsOf: output.appendingPathComponent("share-card.png"))
+                guard let bitmap = NSBitmapImageRep(data: card), bitmap.pixelsWide == 1080, bitmap.pixelsHigh == 1350 else {
+                    throw URLError(.cannotDecodeContentData)
+                }
+                _ = try await js("document.querySelector('.reading-share header button').click()")
+                check("localized book title and offline PNG sharing through the Mac bridge")
+
             }
 
             webView.configuration.userContentController.remove(block!)

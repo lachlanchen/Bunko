@@ -5,6 +5,9 @@ import {observeForegroundUse} from './lib/activityRewards'
 import {App as CapacitorApp} from '@capacitor/app'
 import {Capacitor} from '@capacitor/core'
 import {ReadingShare} from './components/ReadingShare'
+import { bookDisplayTitle } from './lib/localizedBook'
+import { chineseReadingOptions, selectedReadingLanguages } from './lib/chineseEdition'
+import { bookShareURL } from './lib/bookShare'
 import {SharedAccount} from './components/SharedAccount'
 import { htmlLanguage, languageDirection } from './lib/languages'
 import { BUNKO_LEGAL_API } from './lib/serviceOrigins'
@@ -167,7 +170,7 @@ export default function App() {
       if (filter === 'device' && !onDevice[book.id]) return false
       if (filter !== 'all' && filter !== 'device' && categoryOf(book) !== filter) return false
       if (!text) return true
-      const haystack = [book.id, book.author, ...Object.values(book.title)].join(' ').toLowerCase()
+      const haystack = [book.id, book.author, ...Object.values(book.title), bookDisplayTitle(book, ui).text].join(' ').toLowerCase()
       return haystack.includes(text)
     }), librarySort, places, ui)
   }, [index, filter, query, onDevice, librarySort, places, ui])
@@ -183,7 +186,7 @@ export default function App() {
       const count = await downloadedChapterCount(loaded)
       setOnDevice((current) => ({ ...current, [loaded.id]: count }))
       setSettings((current) => {
-        if (current.langs.some((lang) => loaded.langs.includes(lang))) return current
+        if (selectedReadingLanguages(current.langs, loaded.langs).length) return current
         const next = { ...current, langs: defaultLangsFor(loaded.langs, ui) }
         void saveSettings(next)
         return next
@@ -225,7 +228,7 @@ export default function App() {
   )
 
   const readAvailableTranslation = useCallback((language: string) => {
-    if (!meta?.langs.includes(language)) return
+    if (!meta || !chineseReadingOptions(meta.langs).includes(language)) return
     update({ langs: [language], layout: 'interlinear' })
     setShowSettings(false)
     if (view !== 'reader') startReading(false)
@@ -354,6 +357,7 @@ export default function App() {
       <>
         <Reader
           meta={meta}
+          cover={index?.books.find(book => book.id === meta.id)?.cover}
           chapterIndex={chapterIndex}
           settings={companionPeek && referenceLanguage ? { ...settings, langs: [referenceLanguage, ...settings.langs.filter(l => l !== referenceLanguage)] } : settings}
           copy={copy}
@@ -391,6 +395,7 @@ export default function App() {
   }
 
   if (view === 'book') {
+    const heading = meta ? bookDisplayTitle(meta, ui) : undefined
     const row = index?.books.find((book) => book.id === meta?.id)
     return (
       <main className="page-shell">
@@ -408,15 +413,15 @@ export default function App() {
         </nav>
         {!meta && <p className={`notice${bookError ? ' error' : ''}`}>{bookError || `${copy.loading}…`}</p>}
         {meta && bookError && <p className="notice error" role="status">{bookError}</p>}
-        {meta && row && (
+        {meta && row && heading && (
           <>
             <section className="book-hero">
               <Cover book={row} />
               <div>
-                <h1 lang={htmlLanguage(meta.primary)} dir={languageDirection(meta.primary)}>{meta.titleText[meta.primary] ?? meta.id}</h1>
+                <h1 lang={htmlLanguage(heading.lang)} dir={languageDirection(heading.lang)}>{heading.text}</h1>
                 <p className="book-alt">
                   {meta.langs
-                    .filter((lang) => lang !== meta.primary && meta.titleText[lang])
+                    .filter((lang) => lang === meta.primary && meta.titleText[lang] && meta.titleText[lang] !== heading.text)
                     .map((lang) => <bdi key={lang} lang={htmlLanguage(lang)} dir={languageDirection(lang)}>{meta.titleText[lang]}</bdi>)}
                 </p>
                 {meta.author?.name && <p className="book-author">{meta.author.name}</p>}
@@ -425,7 +430,7 @@ export default function App() {
                   {(meta.bytes / 1e6).toFixed(1)} MB
                 </p>
                 <p className="book-langs">
-                  {meta.langs.map((lang) => (
+                  {chineseReadingOptions(meta.langs).map((lang) => (
                     <span key={lang} className="pill">
                       {languageName(lang, ui)}
                     </span>
@@ -436,7 +441,7 @@ export default function App() {
 
             <div className="actions">
               <button type="button" onClick={openExport}><Download size={16} />{epubCopy[ui].title}</button>
-              <ReadingShare ui={ui} title={meta.titleText[settings.langs[0]] || meta.titleText[meta.primary] || meta.id} url={"https://bunko.lazying.art/bunko/share/book/"+encodeURIComponent(meta.id)} />
+              <ReadingShare ui={ui} title={heading.text} titleLanguage={heading.lang} author={row.author} cover={row.cover} url={bookShareURL(meta.id, ui)} />
               <button type="button" className="primary" onClick={() => startReading(!places[meta.id])}>
                 <BookOpen size={17} /> {places[meta.id] ? copy.continueReading : copy.start}
               </button>
@@ -552,17 +557,20 @@ export default function App() {
         }}><RefreshCw size={16} className={refreshing ? 'spinning' : ''} /></button>
       </div>}
       <section className="grid">
-        {books.map((book) => (
+        {books.map((book) => {
+          const title = bookDisplayTitle(book, ui)
+          return (
           <button key={book.id} data-book-id={book.id} type="button" className="card" onClick={() => void openBook(book)}>
             <Cover book={book} />
-            <strong lang={htmlLanguage(book.primary)} dir={languageDirection(book.primary)}>{book.title[book.primary] ?? book.id}</strong>
+            <strong lang={htmlLanguage(title.lang)} dir={languageDirection(title.lang)}>{title.text}</strong>
             <small>{book.author}</small>
             <em>
               {book.chapters} {copy.chapters}
               {onDevice[book.id] ? ` · ${copy.downloaded}` : ''}
             </em>
           </button>
-        ))}
+          )
+        })}
       </section>
       {index && !books.length && <p className="notice">{copy.noResults}</p>}
 
@@ -604,7 +612,7 @@ function SettingsSheet({
   request: string
   setRequest: (value: string) => void
 }) {
-  const langs = book?.langs ?? []
+  const langs = book ? chineseReadingOptions(book.langs) : []
   return (
     <Sheet title={copy.settings} onClose={onClose} closeLabel={copy.close}>
       <section>
@@ -631,7 +639,7 @@ function SettingsSheet({
       {langs.length > 0 && (
         <section>
           <h3>{copy.show}</h3>
-          <LanguageChoices available={langs} selected={settings.langs} ui={ui} onChange={next => onChange({ langs: next })} />
+          <LanguageChoices available={langs} selected={book ? selectedReadingLanguages(settings.langs, book.langs) : []} ui={ui} onChange={next => onChange({ langs: next })} />
         </section>
       )}
       {book && <section><button type="button" onClick={onExport}><Download size={16} />{epubCopy[ui].title}</button></section>}

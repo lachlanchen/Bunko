@@ -7,5 +7,5 @@ interface Window {
 }
 
 interface Window {
-  webkit?: { messageHandlers: { bunkoAuth: { postMessage: (message: { region?: boolean; share?: {title:string;url:string}; saveEpub?: { filename: string; base64: string }; url?: string; cancel?: boolean; storage?: 'read' | 'save' | 'clear'; token?: string }) => Promise<unknown> } } }
+  webkit?: { messageHandlers: { bunkoAuth: { postMessage: (message: { region?: boolean; share?: {title:string;url:string}; saveEpub?: { filename: string; base64: string }; shareImage?: { filename: string; base64: string; save: boolean }; url?: string; cancel?: boolean; storage?: 'read' | 'save' | 'clear'; token?: string }) => Promise<unknown> } } }
 }

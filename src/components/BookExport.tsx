@@ -8,6 +8,7 @@ import { kindleMailRequest, kindleMailStatus, saveEpub, sendEpubToKindle } from 
 import { LanguageChoices } from './LanguageChoices'
 import { Sheet } from './Sheet'
 import { epubCopy } from '../lib/epubCopy'
+import { chineseReadingOptions } from '../lib/chineseEdition'
 
 export function BookExport({ book, settings, ui, onClose }: {
   book: BookMeta; settings: ReadingSettings; ui: UILanguage; onClose: () => void
@@ -84,7 +85,7 @@ export function BookExport({ book, settings, ui, onClose }: {
     <section>
       <h3>{copy.languages}</h3>
       <fieldset disabled={busy} className="epub-choices">
-        <LanguageChoices available={book.langs} selected={langs} ui={ui} onChange={value => change(() => setLangs(value))} />
+        <LanguageChoices available={chineseReadingOptions(book.langs)} selected={langs} ui={ui} onChange={value => change(() => setLangs(value))} />
         <div className="chips">
           <button type="button" aria-pressed={layout === 'interlinear'} className={layout === 'interlinear' ? 'active' : ''} onClick={() => change(() => setLayout('interlinear'))}>{reader.layoutInterlinear}</button>
           <button type="button" aria-pressed={layout === 'paired'} className={layout === 'paired' ? 'active' : ''} onClick={() => change(() => setLayout('paired'))}>{reader.layoutPaired}</button>
