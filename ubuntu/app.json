@@ -1,0 +1,9 @@
+{
+  "name": "Bunko",
+  "slug": "bunko",
+  "id": "art.lazying.bunko",
+  "home": "https://lachlan.lazying.art/Bunko/",
+  "version": "1.0.16",
+  "build": 1,
+  "library_action": "document.querySelector(\".link-back\")?.click()"
+}
